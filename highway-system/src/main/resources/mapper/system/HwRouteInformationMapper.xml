@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hg.system.mapper.HwRouteInformationMapper">
+    
+    <resultMap type="HwRouteInformation" id="HwRouteInformationResult">
+        <result property="id"    column="id"    />
+        <result property="routeName"    column="route_name"    />
+        <result property="routeCoding"    column="route_coding"    />
+        <result property="adminiStrative"    column="admini_strative"    />
+        <result property="typeConstruction"    column="type_construction"    />
+        <result property="routeMileage"    column="route_mileage"    />
+        <result property="routeType"    column="route_type"    />
+        <result property="startingPointname"    column="starting_pointName"    />
+        <result property="endPointName"    column="end_point_name"    />
+        <result property="startingPointLongitude"    column="starting_point_longitude"    />
+        <result property="endPointLongitude"    column="end_point_longitude"    />
+        <result property="startLatitude"    column="start_latitude"    />
+        <result property="endLatitude"    column="end_latitude"    />
+        <result property="startingPointStation"    column="starting_point_station"    />
+        <result property="endPointStation"    column="end_point_station"    />
+        <result property="numberRoadSegments"    column="number_road_segments"    />
+    </resultMap>
+
+    <sql id="selectHwRouteInformationVo">
+        select id, route_name, route_coding, admini_strative, type_construction, route_mileage, route_type, starting_pointName, end_point_name, starting_point_longitude, end_point_longitude, start_latitude, end_latitude, starting_point_station, end_point_station, number_road_segments from hw_route_information
+    </sql>
+
+    <select id="selectHwRouteInformationList" parameterType="HwRouteInformation" resultMap="HwRouteInformationResult">
+        <include refid="selectHwRouteInformationVo"/>
+        <where>  
+            <if test="routeName != null  and routeName != ''"> and route_name like concat('%', #{routeName}, '%')</if>
+            <if test="routeCoding != null  and routeCoding != ''"> and route_coding = #{routeCoding}</if>
+            <if test="adminiStrative != null  and adminiStrative != ''"> and admini_strative = #{adminiStrative}</if>
+            <if test="typeConstruction != null  and typeConstruction != ''"> and type_construction = #{typeConstruction}</if>
+            <if test="routeMileage != null  and routeMileage != ''"> and route_mileage = #{routeMileage}</if>
+            <if test="routeType != null  and routeType != ''"> and route_type = #{routeType}</if>
+            <if test="startingPointname != null  and startingPointname != ''"> and starting_pointName like concat('%', #{startingPointname}, '%')</if>
+            <if test="endPointName != null  and endPointName != ''"> and end_point_name like concat('%', #{endPointName}, '%')</if>
+            <if test="startLatitude != null  and startLatitude != ''"> and start_latitude = #{startLatitude}</if>
+            <if test="endLatitude != null  and endLatitude != ''"> and end_latitude = #{endLatitude}</if>
+            <if test="startingPointStation != null  and startingPointStation != ''"> and starting_point_station = #{startingPointStation}</if>
+            <if test="endPointStation != null  and endPointStation != ''"> and end_point_station = #{endPointStation}</if>
+            <if test="numberRoadSegments != null  and numberRoadSegments != ''"> and number_road_segments = #{numberRoadSegments}</if>
+        </where>
+    </select>
+    
+    <select id="selectHwRouteInformationById" parameterType="Long" resultMap="HwRouteInformationResult">
+        <include refid="selectHwRouteInformationVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertHwRouteInformation" parameterType="HwRouteInformation" useGeneratedKeys="true" keyProperty="id">
+        insert into hw_route_information
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="routeName != null">route_name,</if>
+            <if test="routeCoding != null">route_coding,</if>
+            <if test="adminiStrative != null">admini_strative,</if>
+            <if test="typeConstruction != null">type_construction,</if>
+            <if test="routeMileage != null">route_mileage,</if>
+            <if test="routeType != null">route_type,</if>
+            <if test="startingPointname != null">starting_pointName,</if>
+            <if test="endPointName != null">end_point_name,</if>
+            <if test="startingPointLongitude != null">starting_point_longitude,</if>
+            <if test="endPointLongitude != null">end_point_longitude,</if>
+            <if test="startLatitude != null">start_latitude,</if>
+            <if test="endLatitude != null">end_latitude,</if>
+            <if test="startingPointStation != null">starting_point_station,</if>
+            <if test="endPointStation != null">end_point_station,</if>
+            <if test="numberRoadSegments != null">number_road_segments,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="routeName != null">#{routeName},</if>
+            <if test="routeCoding != null">#{routeCoding},</if>
+            <if test="adminiStrative != null">#{adminiStrative},</if>
+            <if test="typeConstruction != null">#{typeConstruction},</if>
+            <if test="routeMileage != null">#{routeMileage},</if>
+            <if test="routeType != null">#{routeType},</if>
+            <if test="startingPointname != null">#{startingPointname},</if>
+            <if test="endPointName != null">#{endPointName},</if>
+            <if test="startingPointLongitude != null">#{startingPointLongitude},</if>
+            <if test="endPointLongitude != null">#{endPointLongitude},</if>
+            <if test="startLatitude != null">#{startLatitude},</if>
+            <if test="endLatitude != null">#{endLatitude},</if>
+            <if test="startingPointStation != null">#{startingPointStation},</if>
+            <if test="endPointStation != null">#{endPointStation},</if>
+            <if test="numberRoadSegments != null">#{numberRoadSegments},</if>
+         </trim>
+    </insert>
+
+    <update id="updateHwRouteInformation" parameterType="HwRouteInformation">
+        update hw_route_information
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="routeName != null">route_name = #{routeName},</if>
+            <if test="routeCoding != null">route_coding = #{routeCoding},</if>
+            <if test="adminiStrative != null">admini_strative = #{adminiStrative},</if>
+            <if test="typeConstruction != null">type_construction = #{typeConstruction},</if>
+            <if test="routeMileage != null">route_mileage = #{routeMileage},</if>
+            <if test="routeType != null">route_type = #{routeType},</if>
+            <if test="startingPointname != null">starting_pointName = #{startingPointname},</if>
+            <if test="endPointName != null">end_point_name = #{endPointName},</if>
+            <if test="startingPointLongitude != null">starting_point_longitude = #{startingPointLongitude},</if>
+            <if test="endPointLongitude != null">end_point_longitude = #{endPointLongitude},</if>
+            <if test="startLatitude != null">start_latitude = #{startLatitude},</if>
+            <if test="endLatitude != null">end_latitude = #{endLatitude},</if>
+            <if test="startingPointStation != null">starting_point_station = #{startingPointStation},</if>
+            <if test="endPointStation != null">end_point_station = #{endPointStation},</if>
+            <if test="numberRoadSegments != null">number_road_segments = #{numberRoadSegments},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteHwRouteInformationById" parameterType="Long">
+        delete from hw_route_information where id = #{id}
+    </delete>
+
+    <delete id="deleteHwRouteInformationByIds" parameterType="String">
+        delete from hw_route_information where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
