@@ -251,6 +251,7 @@ public class SysUserController extends BaseController
     @GetMapping("/deptTree")
     public AjaxResult deptTree(SysDept dept)
     {
+        System.out.println(123);
         return success(deptService.selectDeptTreeList(dept));
     }
 }

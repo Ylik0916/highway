@@ -20,10 +20,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="createTime" column="create_time" />
 		<result property="updateBy"   column="update_by"   />
 		<result property="updateTime" column="update_time" />
+		<result property="landForm" column="land_form" />
+		<result property="postcode" column="postcode" />
+		<result property="longitude" column="longitude" />
+		<result property="latitude" column="latitude" />
+		<result property="priorityRoute" column="priority_route" />
+		<result property="priorityRouteCode" column="priority_route_code" />
+		<result property="priorityRouteGrade" column="priority_route_grade" />
+		<result property="situation" column="situation" />
 	</resultMap>
 	
 	<sql id="selectDeptVo">
-        select d.dept_id, d.parent_id, d.ancestors, d.dept_name, d.order_num, d.leader, d.phone, d.email, d.status, d.del_flag, d.create_by, d.create_time 
+        select d.dept_id, d.parent_id, d.ancestors, d.dept_name, d.order_num, d.leader, d.phone, d.email, d.status, d.del_flag, d.create_by, d.create_time
+        ,d.land_form,d.postcode,d.longitude,d.latitude,d.priority_route,d.priority_route_code,d.priority_route_grade,d.situation
         from sys_dept d
     </sql>
     
@@ -60,6 +69,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <select id="selectDeptById" parameterType="Long" resultMap="SysDeptResult">
 		select d.dept_id, d.parent_id, d.ancestors, d.dept_name, d.order_num, d.leader, d.phone, d.email, d.status,
+				d.land_form,d.postcode,d.longitude,d.latitude,d.priority_route,d.priority_route_code,d.priority_route_grade,d.situation,
 			(select dept_name from sys_dept where dept_id = d.parent_id) parent_name
 		from sys_dept d
 		where d.dept_id = #{deptId}
@@ -99,7 +109,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			<if test="email != null and email != ''">email,</if>
  			<if test="status != null">status,</if>
  			<if test="createBy != null and createBy != ''">create_by,</if>
- 			create_time
+			<if test="landForm != null and landForm != ''">land_form,</if>
+			<if test="postcode != null and postcode != ''">postcode,</if>
+			<if test="longitude != null and longitude != ''">longitude,</if>
+			<if test="latitude != null and latitude != ''">latitude,</if>
+			<if test="priorityRoute != null and priorityRoute != ''">priority_route,</if>
+			<if test="priorityRouteCode != null and priorityRouteCode != ''">priority_route_code,</if>
+			<if test="priorityRouteGrade != null and priorityRouteGrade != ''">priority_route_grade,</if>
+			<if test="situation != null and situation != ''">situation,</if>
+				create_time
  		)values(
  			<if test="deptId != null and deptId != 0">#{deptId},</if>
  			<if test="parentId != null and parentId != 0">#{parentId},</if>
@@ -111,6 +129,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			<if test="email != null and email != ''">#{email},</if>
  			<if test="status != null">#{status},</if>
  			<if test="createBy != null and createBy != ''">#{createBy},</if>
+			<if test="landForm != null and landForm != ''">#{landForm},</if>
+			<if test="postcode != null and postcode != ''">#{postcode},</if>
+			<if test="longitude != null and longitude != ''">#{longitude},</if>
+			<if test="latitude != null and latitude != ''">#{latitude},</if>
+			<if test="priorityRoute != null and priorityRoute != ''">#{priorityRoute},</if>
+			<if test="priorityRouteCode != null and priorityRouteCode != ''">#{priorityRouteCode},</if>
+			<if test="priorityRouteGrade != null and priorityRouteGrade != ''">#{priorityRouteGrade},</if>
+			<if test="situation != null and situation != ''">#{situation},</if>
  			sysdate()
  		)
 	</insert>
@@ -127,6 +153,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			<if test="email != null">email = #{email},</if>
  			<if test="status != null and status != ''">status = #{status},</if>
  			<if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+ 			<if test="landForm != null and landForm != ''">land_form = #{landForm},</if>
+ 			<if test="postcode != null and postcode != ''">postcode = #{postcode},</if>
+ 			<if test="longitude != null and longitude != ''">longitude = #{longitude},</if>
+ 			<if test="latitude != null and latitude != ''">latitude = #{latitude},</if>
+ 			<if test="priorityRoute != null and priorityRoute != ''">priority_route = #{priorityRoute},</if>
+ 			<if test="priorityRouteCode != null and priorityRouteCode != ''">priority_route_code = #{priorityRouteCode},</if>
+ 			<if test="priorityRouteGrade != null and priorityRouteGrade != ''">priority_route_grade = #{priorityRouteGrade},</if>
+ 			<if test="situation != null and situation != ''">situation = #{situation},</if>
  			update_time = sysdate()
  		</set>
  		where dept_id = #{deptId}

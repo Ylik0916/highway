@@ -51,7 +51,88 @@ public class SysDept extends BaseEntity
 
     /** 父部门名称 */
     private String parentName;
-    
+
+//    所属地形
+    private String landForm;
+//    行政编码
+    private String postcode;
+//    经度
+    private String longitude;
+//    纬度
+    private String latitude;
+//    优选通达路线名称
+    private String priorityRoute;
+//    优选通达路线编码
+    private String priorityRouteCode;
+//    优选通达路线行政等级
+    private String priorityRouteGrade;
+//    通达现状
+    private String situation;
+
+    public String getLandForm() {
+        return landForm;
+    }
+
+    public void setLandForm(String landForm) {
+        this.landForm = landForm;
+    }
+
+    public String getPostcode() {
+        return postcode;
+    }
+
+    public void setPostcode(String postcode) {
+        this.postcode = postcode;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getPriorityRoute() {
+        return priorityRoute;
+    }
+
+    public void setPriorityRoute(String priorityRoute) {
+        this.priorityRoute = priorityRoute;
+    }
+
+    public String getPriorityRouteCode() {
+        return priorityRouteCode;
+    }
+
+    public void setPriorityRouteCode(String priorityRouteCode) {
+        this.priorityRouteCode = priorityRouteCode;
+    }
+
+    public String getPriorityRouteGrade() {
+        return priorityRouteGrade;
+    }
+
+    public void setPriorityRouteGrade(String priorityRouteGrade) {
+        this.priorityRouteGrade = priorityRouteGrade;
+    }
+
+    public String getSituation() {
+        return situation;
+    }
+
+    public void setSituation(String situation) {
+        this.situation = situation;
+    }
+
     /** 子部门 */
     private List<SysDept> children = new ArrayList<SysDept>();
 
@@ -181,23 +262,49 @@ public class SysDept extends BaseEntity
         this.children = children;
     }
 
+//    @Override
+//    public String toString() {
+//        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
+//            .append("deptId", getDeptId())
+//            .append("parentId", getParentId())
+//            .append("ancestors", getAncestors())
+//            .append("deptName", getDeptName())
+//            .append("orderNum", getOrderNum())
+//            .append("leader", getLeader())
+//            .append("phone", getPhone())
+//            .append("email", getEmail())
+//            .append("status", getStatus())
+//            .append("delFlag", getDelFlag())
+//            .append("createBy", getCreateBy())
+//            .append("createTime", getCreateTime())
+//            .append("updateBy", getUpdateBy())
+//            .append("updateTime", getUpdateTime())
+//            .toString();
+//    }
+
     @Override
     public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("deptId", getDeptId())
-            .append("parentId", getParentId())
-            .append("ancestors", getAncestors())
-            .append("deptName", getDeptName())
-            .append("orderNum", getOrderNum())
-            .append("leader", getLeader())
-            .append("phone", getPhone())
-            .append("email", getEmail())
-            .append("status", getStatus())
-            .append("delFlag", getDelFlag())
-            .append("createBy", getCreateBy())
-            .append("createTime", getCreateTime())
-            .append("updateBy", getUpdateBy())
-            .append("updateTime", getUpdateTime())
-            .toString();
+        return "SysDept{" +
+                "deptId=" + deptId +
+                ", parentId=" + parentId +
+                ", ancestors='" + ancestors + '\'' +
+                ", deptName='" + deptName + '\'' +
+                ", orderNum=" + orderNum +
+                ", leader='" + leader + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", status='" + status + '\'' +
+                ", delFlag='" + delFlag + '\'' +
+                ", parentName='" + parentName + '\'' +
+                ", landForm='" + landForm + '\'' +
+                ", postcode='" + postcode + '\'' +
+                ", longitude='" + longitude + '\'' +
+                ", latitude='" + latitude + '\'' +
+                ", priorityRoute='" + priorityRoute + '\'' +
+                ", priorityRouteCode='" + priorityRouteCode + '\'' +
+                ", priorityRouteGrade='" + priorityRouteGrade + '\'' +
+                ", situation='" + situation + '\'' +
+                ", children=" + children +
+                '}';
     }
 }
