@@ -107,15 +107,24 @@
       </el-table-column>
       <el-table-column label="起点名称" align="center" prop="startingPointname" />
       <el-table-column label="终点名称" align="center" prop="endPointName" />
-      <el-table-column label="起点经度" align="center" prop="startingPointLongitude" />
-      <el-table-column label="终点经度" align="center" prop="endPointLongitude" />
-      <el-table-column label="起点纬度" align="center" prop="startLatitude" />
-      <el-table-column label="终点纬度" align="center" prop="endLatitude" />
-      <el-table-column label="起点桩号" align="center" prop="startingPointStation" />
-      <el-table-column label="终点桩号" align="center" prop="endPointStation" />
-      <el-table-column label="路段数量" align="center" prop="numberRoadSegments" />
+<!--      <el-table-column label="起点经度" align="center" prop="startingPointLongitude" />-->
+<!--      <el-table-column label="终点经度" align="center" prop="endPointLongitude" />-->
+<!--      <el-table-column label="起点纬度" align="center" prop="startLatitude" />-->
+<!--      <el-table-column label="终点纬度" align="center" prop="endLatitude" />-->
+<!--      <el-table-column label="起点桩号" align="center" prop="startingPointStation" />-->
+<!--      <el-table-column label="终点桩号" align="center" prop="endPointStation" />-->
+<!--      <el-table-column label="路段数量" align="center" prop="numberRoadSegments" />-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
+
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-edit"
+            @click="getMenuIs(scope.row)"
+            v-hasPermi="['system:information:edit']"
+          >详情</el-button>
+
           <el-button
             size="mini"
             type="text"
@@ -270,6 +279,9 @@ export default {
     this.getList();
   },
   methods: {
+    getMenuIs(row){
+      this.$router.push({path:'/basics/xiangqing',query: {id:row.id}})
+    },
     /** 查询路线列表列表 */
     getList() {
       this.loading = true;
