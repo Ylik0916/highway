@@ -56,18 +56,42 @@
       :default-expand-all="isExpandAll"
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
     >
-      <el-table-column prop="deptName" label="部门名称" width="260"></el-table-column>
-      <el-table-column prop="orderNum" label="排序" width="200"></el-table-column>
+      <el-table-column prop="deptName" label="行政名称" width="200"></el-table-column>
+<!--      <el-table-column prop="orderNum" label="排序" width="50"></el-table-column>-->
+      <el-table-column prop="postcode" label="行政编码" width="80" :show-overflow-tooltip="true"></el-table-column>
+      <el-table-column prop="longitude" label="经度" width="80" :show-overflow-tooltip="true"></el-table-column>
+      <el-table-column prop="latitude" label="纬度" width="80" :show-overflow-tooltip="true"></el-table-column>
+      <el-table-column prop="priorityRoute" label="优选通达路线名称" width="100"></el-table-column>
+      <el-table-column prop="priorityRouteCode" label="优选通达路线编码" width="100"></el-table-column>
+
+      <el-table-column label="优选通达路线行政等级" align="center" prop="landForm">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.optimization" :value="scope.row.priorityRouteGrade"/>
+        </template>
+      </el-table-column>
+
+      <el-table-column label="所属地形" align="center" prop="landForm">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.terrain" :value="scope.row.landForm"/>
+        </template>
+      </el-table-column>
+
+      <el-table-column label="通达现状" align="center" prop="landForm">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.access" :value="scope.row.situation"/>
+        </template>
+      </el-table-column>
+
       <el-table-column prop="status" label="状态" width="100">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" align="center" prop="createTime" width="200">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime) }}</span>
-        </template>
-      </el-table-column>
+<!--      <el-table-column label="创建时间" align="center" prop="createTime" width="200">-->
+<!--        <template slot-scope="scope">-->
+<!--          <span>{{ parseTime(scope.row.createTime) }}</span>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -108,7 +132,7 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="部门名称" prop="deptName">
+            <el-form-item label="行政名称" prop="deptName">
               <el-input v-model="form.deptName" placeholder="请输入部门名称" />
             </el-form-item>
           </el-col>
@@ -118,6 +142,80 @@
             </el-form-item>
           </el-col>
         </el-row>
+
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="行政编码" prop="postcode">
+              <el-input v-model="form.postcode" placeholder="请输入行政编码" maxlength="20" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="经度" prop="longitude">
+              <el-input v-model="form.longitude" placeholder="请输入经度" maxlength="20" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="纬度" prop="latitude">
+              <el-input v-model="form.latitude" placeholder="请输入纬度" maxlength="20" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="优选通达路线名称" prop="priorityRoute">
+              <el-input v-model="form.priorityRoute" placeholder="请输入优选通达路线名称" maxlength="20" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="优选通达路线编码" prop="priorityRouteCode">
+              <el-input v-model="form.priorityRouteCode" placeholder="请输入优选通达路线编码" maxlength="20" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="优选通达路线行政等级"  prop="priorityRouteGrade" label-width="90px">
+              <el-select v-model="form.priorityRouteGrade" placeholder="请选择优选通达路线行政等级">
+                <el-option
+                  v-for="dict in dict.type.optimization"
+                  :key="dict.value"
+                  :label="dict.label"
+                  :value="dict.value"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="所属地形" prop="landForm">
+              <el-select v-model="form.landForm" placeholder="请选择所属地形">
+                <el-option
+                  v-for="dict in dict.type.terrain"
+                  :key="dict.value"
+                  :label="dict.label"
+                  :value="dict.value"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="通达现状" prop="situation">
+              <el-select v-model="form.situation" placeholder="请选择通达现状">
+                <el-option
+                  v-for="dict in dict.type.access"
+                  :key="dict.value"
+                  :label="dict.label"
+                  :value="dict.value"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
         <el-row>
           <el-col :span="12">
             <el-form-item label="负责人" prop="leader">
@@ -164,7 +262,7 @@ import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
 export default {
   name: "Dept",
-  dicts: ['sys_normal_disable'],
+  dicts: ['sys_normal_disable','terrain','access','optimization'],
   components: { Treeselect },
   data() {
     return {
@@ -197,10 +295,13 @@ export default {
           { required: true, message: "上级部门不能为空", trigger: "blur" }
         ],
         deptName: [
-          { required: true, message: "部门名称不能为空", trigger: "blur" }
+          { required: true, message: "行政名称不能为空", trigger: "blur" }
         ],
         orderNum: [
           { required: true, message: "显示排序不能为空", trigger: "blur" }
+        ],
+        postcode: [
+          { required: true, message: "行政编码不能为空", trigger: "blur" }
         ],
         email: [
           {
@@ -277,7 +378,7 @@ export default {
         this.form.parentId = row.deptId;
       }
       this.open = true;
-      this.title = "添加部门";
+      this.title = "添加下级行政区划";
       listDept().then(response => {
         this.deptOptions = this.handleTree(response.data, "deptId");
       });
@@ -296,7 +397,7 @@ export default {
       getDept(row.deptId).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改部门";
+        this.title = "下级行政区划编辑";
         listDeptExcludeChild(row.deptId).then(response => {
           this.deptOptions = this.handleTree(response.data, "deptId");
           if (this.deptOptions.length == 0) {

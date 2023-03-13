@@ -139,10 +139,12 @@
         <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="50" align="center" />
           <el-table-column label="用户编号" align="center" key="userId" prop="userId" v-if="columns[0].visible" />
-          <el-table-column label="用户名称" align="center" key="userName" prop="userName" v-if="columns[1].visible" :show-overflow-tooltip="true" />
-          <el-table-column label="用户昵称" align="center" key="nickName" prop="nickName" v-if="columns[2].visible" :show-overflow-tooltip="true" />
-          <el-table-column label="部门" align="center" key="deptName" prop="dept.deptName" v-if="columns[3].visible" :show-overflow-tooltip="true" />
-          <el-table-column label="手机号码" align="center" key="phonenumber" prop="phonenumber" v-if="columns[4].visible" width="120" />
+          <el-table-column label="行政区划" align="center" key="deptName" prop="dept.deptName" v-if="columns[3].visible" :show-overflow-tooltip="true" />
+          <el-table-column label="登录名称" align="center" key="userName" prop="userName" v-if="columns[1].visible" :show-overflow-tooltip="true" />
+          <el-table-column label="用户名称" align="center" key="nickName" prop="nickName" v-if="columns[2].visible" :show-overflow-tooltip="true" />
+          <el-table-column label="电话号码" align="center" key="phonenumber" prop="phonenumber" v-if="columns[4].visible" width="120" />
+          <el-table-column label="邮箱地址" align="center" key="email" prop="email" v-if="columns[7].visible" width="120" />
+          <el-table-column label="性别" align="center" key="sex" prop="sex" :formatter="sfktFormate" v-if="columns[8].visible"/>
           <el-table-column label="状态" align="center" key="status" v-if="columns[5].visible">
             <template slot-scope="scope">
               <el-switch
@@ -420,7 +422,9 @@ export default {
         { key: 3, label: `部门`, visible: true },
         { key: 4, label: `手机号码`, visible: true },
         { key: 5, label: `状态`, visible: true },
-        { key: 6, label: `创建时间`, visible: true }
+        { key: 6, label: `创建时间`, visible: true },
+        { key: 7, label: `邮箱地址`, visible: true },
+        { key: 7, label: `性别`, visible: true }
       ],
       // 表单校验
       rules: {
@@ -466,6 +470,16 @@ export default {
     });
   },
   methods: {
+    //table表格格式化
+    sfktFormate(row,index){
+      if (row.sex == 0) {
+        return "男";
+      } else if(row.sex == 1){
+        return "女";
+      }else if(row.sex == 2){
+        return "未知";
+      }
+    },
     /** 查询用户列表 */
     getList() {
       this.loading = true;
