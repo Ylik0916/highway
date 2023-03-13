@@ -14,14 +14,14 @@ import com.hg.system.service.IHwProjectInformationService;
  * @date 2023-03-07
  */
 @Service
-public class HwProjectInformationServiceImpl implements IHwProjectInformationService 
+public class HwProjectInformationServiceImpl implements IHwProjectInformationService
 {
     @Autowired
     private HwProjectInformationMapper hwProjectInformationMapper;
 
     /**
      * 查询项目信息管理
-     * 
+     *
      * @param projectId 项目信息管理主键
      * @return 项目信息管理
      */
@@ -33,7 +33,7 @@ public class HwProjectInformationServiceImpl implements IHwProjectInformationSer
 
     /**
      * 查询项目信息管理列表
-     * 
+     *
      * @param hwProjectInformation 项目信息管理
      * @return 项目信息管理
      */
@@ -45,7 +45,7 @@ public class HwProjectInformationServiceImpl implements IHwProjectInformationSer
 
     /**
      * 新增项目信息管理
-     * 
+     *
      * @param hwProjectInformation 项目信息管理
      * @return 结果
      */
@@ -57,7 +57,7 @@ public class HwProjectInformationServiceImpl implements IHwProjectInformationSer
 
     /**
      * 修改项目信息管理
-     * 
+     *
      * @param hwProjectInformation 项目信息管理
      * @return 结果
      */
@@ -69,7 +69,7 @@ public class HwProjectInformationServiceImpl implements IHwProjectInformationSer
 
     /**
      * 批量删除项目信息管理
-     * 
+     *
      * @param projectIds 需要删除的项目信息管理主键
      * @return 结果
      */
@@ -81,7 +81,7 @@ public class HwProjectInformationServiceImpl implements IHwProjectInformationSer
 
     /**
      * 删除项目信息管理信息
-     * 
+     *
      * @param projectId 项目信息管理主键
      * @return 结果
      */

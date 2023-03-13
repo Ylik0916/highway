@@ -28,7 +28,7 @@ import com.hg.common.core.page.TableDataInfo;
  * @date 2023-03-07
  */
 @RestController
-@RequestMapping("/system/information")
+@RequestMapping("/system/projectInformation")
 public class HwProjectInformationController extends BaseController
 {
     @Autowired
@@ -37,7 +37,7 @@ public class HwProjectInformationController extends BaseController
     /**
      * 查询项目信息管理列表
      */
-    @PreAuthorize("@ss.hasPermi('system:information:list')")
+    @PreAuthorize("@ss.hasPermi('system:projectInformation:list')")
     @GetMapping("/list")
     public TableDataInfo list(HwProjectInformation hwProjectInformation)
     {
@@ -49,7 +49,7 @@ public class HwProjectInformationController extends BaseController
     /**
      * 导出项目信息管理列表
      */
-    @PreAuthorize("@ss.hasPermi('system:information:export')")
+    @PreAuthorize("@ss.hasPermi('system:projectInformation:export')")
     @Log(title = "项目信息管理", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, HwProjectInformation hwProjectInformation)
@@ -62,7 +62,7 @@ public class HwProjectInformationController extends BaseController
     /**
      * 获取项目信息管理详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:information:query')")
+    @PreAuthorize("@ss.hasPermi('system:projectInformation:query')")
     @GetMapping(value = "/{projectId}")
     public AjaxResult getInfo(@PathVariable("projectId") Long projectId)
     {
@@ -72,7 +72,7 @@ public class HwProjectInformationController extends BaseController
     /**
      * 新增项目信息管理
      */
-    @PreAuthorize("@ss.hasPermi('system:information:add')")
+    @PreAuthorize("@ss.hasPermi('system:projectInformation:add')")
     @Log(title = "项目信息管理", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody HwProjectInformation hwProjectInformation)
@@ -83,7 +83,7 @@ public class HwProjectInformationController extends BaseController
     /**
      * 修改项目信息管理
      */
-    @PreAuthorize("@ss.hasPermi('system:information:edit')")
+    @PreAuthorize("@ss.hasPermi('system:projectInformation:edit')")
     @Log(title = "项目信息管理", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody HwProjectInformation hwProjectInformation)
@@ -94,11 +94,12 @@ public class HwProjectInformationController extends BaseController
     /**
      * 删除项目信息管理
      */
-    @PreAuthorize("@ss.hasPermi('system:information:remove')")
+    @PreAuthorize("@ss.hasPermi('system:projectInformation:remove')")
     @Log(title = "项目信息管理", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{projectIds}")
+    @DeleteMapping("/{projectIds}")
     public AjaxResult remove(@PathVariable Long[] projectIds)
     {
         return toAjax(hwProjectInformationService.deleteHwProjectInformationByProjectIds(projectIds));
     }
 }
+

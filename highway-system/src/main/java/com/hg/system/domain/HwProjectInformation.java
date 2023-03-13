@@ -38,7 +38,7 @@ public class HwProjectInformation extends BaseEntity
 
     /** 项目阶段 */
     @Excel(name = "项目阶段")
-    private Integer projectPhase;
+    private String projectPhase;
 
     /** 开工时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -99,183 +99,183 @@ public class HwProjectInformation extends BaseEntity
     @Excel(name = "招标费用==》暂定金，单位：万元")
     private Long provisionalPayment;
 
-    public void setProjectId(Long projectId) 
+    public void setProjectId(Long projectId)
     {
         this.projectId = projectId;
     }
 
-    public Long getProjectId() 
+    public Long getProjectId()
     {
         return projectId;
     }
-    public void setProjectName(String projectName) 
+    public void setProjectName(String projectName)
     {
         this.projectName = projectName;
     }
 
-    public String getProjectName() 
+    public String getProjectName()
     {
         return projectName;
     }
-    public void setAdministrativeRegion(Integer administrativeRegion) 
+    public void setAdministrativeRegion(Integer administrativeRegion)
     {
         this.administrativeRegion = administrativeRegion;
     }
 
-    public Integer getAdministrativeRegion() 
+    public Integer getAdministrativeRegion()
     {
         return administrativeRegion;
     }
-    public void setRouteCoding(Long routeCoding) 
+    public void setRouteCoding(Long routeCoding)
     {
         this.routeCoding = routeCoding;
     }
 
-    public Long getRouteCoding() 
+    public Long getRouteCoding()
     {
         return routeCoding;
     }
-    public void setRouteName(String routeName) 
+    public void setRouteName(String routeName)
     {
         this.routeName = routeName;
     }
 
-    public String getRouteName() 
+    public String getRouteName()
     {
         return routeName;
     }
-    public void setProjectPhase(Integer projectPhase) 
+    public void setProjectPhase(String projectPhase)
     {
         this.projectPhase = projectPhase;
     }
 
-    public Integer getProjectPhase() 
+    public String getProjectPhase()
     {
         return projectPhase;
     }
-    public void setStartTime(Date startTime) 
+    public void setStartTime(Date startTime)
     {
         this.startTime = startTime;
     }
 
-    public Date getStartTime() 
+    public Date getStartTime()
     {
         return startTime;
     }
-    public void setSubmitTime(Date submitTime) 
+    public void setSubmitTime(Date submitTime)
     {
         this.submitTime = submitTime;
     }
 
-    public Date getSubmitTime() 
+    public Date getSubmitTime()
     {
         return submitTime;
     }
-    public void setEndTime(Date endTime) 
+    public void setEndTime(Date endTime)
     {
         this.endTime = endTime;
     }
 
-    public Date getEndTime() 
+    public Date getEndTime()
     {
         return endTime;
     }
-    public void setInvestCost(Long investCost) 
+    public void setInvestCost(Long investCost)
     {
         this.investCost = investCost;
     }
 
-    public Long getInvestCost() 
+    public Long getInvestCost()
     {
         return investCost;
     }
-    public void setInvestEquipmentCost(Long investEquipmentCost) 
+    public void setInvestEquipmentCost(Long investEquipmentCost)
     {
         this.investEquipmentCost = investEquipmentCost;
     }
 
-    public Long getInvestEquipmentCost() 
+    public Long getInvestEquipmentCost()
     {
         return investEquipmentCost;
     }
-    public void setInvestEngineeringCost(Long investEngineeringCost) 
+    public void setInvestEngineeringCost(Long investEngineeringCost)
     {
         this.investEngineeringCost = investEngineeringCost;
     }
 
-    public Long getInvestEngineeringCost() 
+    public Long getInvestEngineeringCost()
     {
         return investEngineeringCost;
     }
-    public void setDesignCost(Long designCost) 
+    public void setDesignCost(Long designCost)
     {
         this.designCost = designCost;
     }
 
-    public Long getDesignCost() 
+    public Long getDesignCost()
     {
         return designCost;
     }
-    public void setDesignEquipmentCost(Long designEquipmentCost) 
+    public void setDesignEquipmentCost(Long designEquipmentCost)
     {
         this.designEquipmentCost = designEquipmentCost;
     }
 
-    public Long getDesignEquipmentCost() 
+    public Long getDesignEquipmentCost()
     {
         return designEquipmentCost;
     }
-    public void setDesignEngineeringCost(Long designEngineeringCost) 
+    public void setDesignEngineeringCost(Long designEngineeringCost)
     {
         this.designEngineeringCost = designEngineeringCost;
     }
 
-    public Long getDesignEngineeringCost() 
+    public Long getDesignEngineeringCost()
     {
         return designEngineeringCost;
     }
-    public void setConstructionCost(Long constructionCost) 
+    public void setConstructionCost(Long constructionCost)
     {
         this.constructionCost = constructionCost;
     }
 
-    public Long getConstructionCost() 
+    public Long getConstructionCost()
     {
         return constructionCost;
     }
-    public void setConstructionEquipmentCost(Long constructionEquipmentCost) 
+    public void setConstructionEquipmentCost(Long constructionEquipmentCost)
     {
         this.constructionEquipmentCost = constructionEquipmentCost;
     }
 
-    public Long getConstructionEquipmentCost() 
+    public Long getConstructionEquipmentCost()
     {
         return constructionEquipmentCost;
     }
-    public void setConstructionEngineeringCost(Long constructionEngineeringCost) 
+    public void setConstructionEngineeringCost(Long constructionEngineeringCost)
     {
         this.constructionEngineeringCost = constructionEngineeringCost;
     }
 
-    public Long getConstructionEngineeringCost() 
+    public Long getConstructionEngineeringCost()
     {
         return constructionEngineeringCost;
     }
-    public void setContractCost(Long contractCost) 
+    public void setContractCost(Long contractCost)
     {
         this.contractCost = contractCost;
     }
 
-    public Long getContractCost() 
+    public Long getContractCost()
     {
         return contractCost;
     }
-    public void setProvisionalPayment(Long provisionalPayment) 
+    public void setProvisionalPayment(Long provisionalPayment)
     {
         this.provisionalPayment = provisionalPayment;
     }
 
-    public Long getProvisionalPayment() 
+    public Long getProvisionalPayment()
     {
         return provisionalPayment;
     }
@@ -283,26 +283,26 @@ public class HwProjectInformation extends BaseEntity
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("projectId", getProjectId())
-            .append("projectName", getProjectName())
-            .append("administrativeRegion", getAdministrativeRegion())
-            .append("routeCoding", getRouteCoding())
-            .append("routeName", getRouteName())
-            .append("projectPhase", getProjectPhase())
-            .append("startTime", getStartTime())
-            .append("submitTime", getSubmitTime())
-            .append("endTime", getEndTime())
-            .append("investCost", getInvestCost())
-            .append("investEquipmentCost", getInvestEquipmentCost())
-            .append("investEngineeringCost", getInvestEngineeringCost())
-            .append("designCost", getDesignCost())
-            .append("designEquipmentCost", getDesignEquipmentCost())
-            .append("designEngineeringCost", getDesignEngineeringCost())
-            .append("constructionCost", getConstructionCost())
-            .append("constructionEquipmentCost", getConstructionEquipmentCost())
-            .append("constructionEngineeringCost", getConstructionEngineeringCost())
-            .append("contractCost", getContractCost())
-            .append("provisionalPayment", getProvisionalPayment())
-            .toString();
+                .append("projectId", getProjectId())
+                .append("projectName", getProjectName())
+                .append("administrativeRegion", getAdministrativeRegion())
+                .append("routeCoding", getRouteCoding())
+                .append("routeName", getRouteName())
+                .append("projectPhase", getProjectPhase())
+                .append("startTime", getStartTime())
+                .append("submitTime", getSubmitTime())
+                .append("endTime", getEndTime())
+                .append("investCost", getInvestCost())
+                .append("investEquipmentCost", getInvestEquipmentCost())
+                .append("investEngineeringCost", getInvestEngineeringCost())
+                .append("designCost", getDesignCost())
+                .append("designEquipmentCost", getDesignEquipmentCost())
+                .append("designEngineeringCost", getDesignEngineeringCost())
+                .append("constructionCost", getConstructionCost())
+                .append("constructionEquipmentCost", getConstructionEquipmentCost())
+                .append("constructionEngineeringCost", getConstructionEngineeringCost())
+                .append("contractCost", getContractCost())
+                .append("provisionalPayment", getProvisionalPayment())
+                .toString();
     }
 }

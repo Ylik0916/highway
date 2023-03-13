@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hg.system.mapper.HwProjectInformationMapper">
-    
+
     <resultMap type="HwProjectInformation" id="HwProjectInformationResult">
         <result property="projectId"    column="project_id"    />
         <result property="projectName"    column="project_name"    />
@@ -33,12 +33,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectHwProjectInformationList" parameterType="HwProjectInformation" resultMap="HwProjectInformationResult">
         <include refid="selectHwProjectInformationVo"/>
-        <where>  
+        <where>
             <if test="projectName != null  and projectName != ''"> and project_name like concat('%', #{projectName}, '%')</if>
             <if test="administrativeRegion != null "> and administrative_region = #{administrativeRegion}</if>
             <if test="routeCoding != null "> and route_coding = #{routeCoding}</if>
             <if test="routeName != null  and routeName != ''"> and route_name like concat('%', #{routeName}, '%')</if>
-            <if test="projectPhase != null "> and project_phase = #{projectPhase}</if>
+            <if test="projectPhase != null  and projectPhase != ''"> and project_phase = #{projectPhase}</if>
             <if test="startTime != null "> and start_time = #{startTime}</if>
             <if test="submitTime != null "> and submit_time = #{submitTime}</if>
             <if test="endTime != null "> and end_time = #{endTime}</if>
@@ -55,12 +55,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="provisionalPayment != null "> and provisional_payment = #{provisionalPayment}</if>
         </where>
     </select>
-    
+
     <select id="selectHwProjectInformationByProjectId" parameterType="Long" resultMap="HwProjectInformationResult">
         <include refid="selectHwProjectInformationVo"/>
         where project_id = #{projectId}
     </select>
-        
+
     <insert id="insertHwProjectInformation" parameterType="HwProjectInformation" useGeneratedKeys="true" keyProperty="projectId">
         insert into hw_project_information
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -83,7 +83,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="constructionEngineeringCost != null">construction_engineering_cost,</if>
             <if test="contractCost != null">contract_cost,</if>
             <if test="provisionalPayment != null">provisional_payment,</if>
-         </trim>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="projectName != null and projectName != ''">#{projectName},</if>
             <if test="administrativeRegion != null">#{administrativeRegion},</if>
@@ -104,7 +104,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="constructionEngineeringCost != null">#{constructionEngineeringCost},</if>
             <if test="contractCost != null">#{contractCost},</if>
             <if test="provisionalPayment != null">#{provisionalPayment},</if>
-         </trim>
+        </trim>
     </insert>
 
     <update id="updateHwProjectInformation" parameterType="HwProjectInformation">
@@ -138,7 +138,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteHwProjectInformationByProjectIds" parameterType="String">
-        delete from hw_project_information where project_id in 
+        delete from hw_project_information where project_id in
         <foreach item="projectId" collection="array" open="(" separator="," close=")">
             #{projectId}
         </foreach>
