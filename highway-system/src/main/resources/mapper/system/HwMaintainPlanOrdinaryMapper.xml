@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hg.system.mapper.HwMaintainPlanOrdinaryMapper">
+    
+    <resultMap type="HwMaintainPlanOrdinary" id="HwMaintainPlanOrdinaryResult">
+        <result property="mpoid"    column="mpoid"    />
+        <result property="administrative"    column="administrative"    />
+        <result property="pathCode"    column="path_code"    />
+        <result property="villageName"    column="village_name"    />
+        <result property="maintainMileage"    column="maintain_mileage"    />
+        <result property="pitchRoad"    column="pitch_road"    />
+        <result property="gravelRoad"    column="gravel_road"    />
+        <result property="allFund"    column="all_fund"    />
+        <result property="cityFund"    column="city_fund"    />
+        <result property="countyFund"    column="county_fund"    />
+        <result property="auditStatusid"    column="audit_statusid"    />
+    </resultMap>
+
+    <sql id="selectHwMaintainPlanOrdinaryVo">
+        select mpoid, administrative, path_code, village_name, maintain_mileage, pitch_road, gravel_road, all_fund, city_fund, county_fund, audit_statusid from hw_maintain_plan_ordinary
+    </sql>
+
+    <select id="selectHwMaintainPlanOrdinaryList" parameterType="HwMaintainPlanOrdinary" resultMap="HwMaintainPlanOrdinaryResult">
+        <include refid="selectHwMaintainPlanOrdinaryVo"/>
+        <where>  
+            <if test="administrative != null  and administrative != ''"> and administrative = #{administrative}</if>
+            <if test="pathCode != null  and pathCode != ''"> and path_code = #{pathCode}</if>
+            <if test="villageName != null  and villageName != ''"> and village_name like concat('%', #{villageName}, '%')</if>
+            <if test="maintainMileage != null  and maintainMileage != ''"> and maintain_mileage = #{maintainMileage}</if>
+            <if test="pitchRoad != null  and pitchRoad != ''"> and pitch_road = #{pitchRoad}</if>
+            <if test="gravelRoad != null  and gravelRoad != ''"> and gravel_road = #{gravelRoad}</if>
+            <if test="allFund != null  and allFund != ''"> and all_fund = #{allFund}</if>
+            <if test="cityFund != null  and cityFund != ''"> and city_fund = #{cityFund}</if>
+            <if test="countyFund != null  and countyFund != ''"> and county_fund = #{countyFund}</if>
+            <if test="auditStatusid != null "> and audit_statusid = #{auditStatusid}</if>
+        </where>
+    </select>
+    
+    <select id="selectHwMaintainPlanOrdinaryByMpoid" parameterType="Long" resultMap="HwMaintainPlanOrdinaryResult">
+        <include refid="selectHwMaintainPlanOrdinaryVo"/>
+        where mpoid = #{mpoid}
+    </select>
+        
+    <insert id="insertHwMaintainPlanOrdinary" parameterType="HwMaintainPlanOrdinary" useGeneratedKeys="true" keyProperty="mpoid">
+        insert into hw_maintain_plan_ordinary
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="administrative != null">administrative,</if>
+            <if test="pathCode != null">path_code,</if>
+            <if test="villageName != null">village_name,</if>
+            <if test="maintainMileage != null">maintain_mileage,</if>
+            <if test="pitchRoad != null">pitch_road,</if>
+            <if test="gravelRoad != null">gravel_road,</if>
+            <if test="allFund != null">all_fund,</if>
+            <if test="cityFund != null">city_fund,</if>
+            <if test="countyFund != null">county_fund,</if>
+            <if test="auditStatusid != null">audit_statusid,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="administrative != null">#{administrative},</if>
+            <if test="pathCode != null">#{pathCode},</if>
+            <if test="villageName != null">#{villageName},</if>
+            <if test="maintainMileage != null">#{maintainMileage},</if>
+            <if test="pitchRoad != null">#{pitchRoad},</if>
+            <if test="gravelRoad != null">#{gravelRoad},</if>
+            <if test="allFund != null">#{allFund},</if>
+            <if test="cityFund != null">#{cityFund},</if>
+            <if test="countyFund != null">#{countyFund},</if>
+            <if test="auditStatusid != null">#{auditStatusid},</if>
+         </trim>
+    </insert>
+
+    <update id="updateHwMaintainPlanOrdinary" parameterType="HwMaintainPlanOrdinary">
+        update hw_maintain_plan_ordinary
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="administrative != null">administrative = #{administrative},</if>
+            <if test="pathCode != null">path_code = #{pathCode},</if>
+            <if test="villageName != null">village_name = #{villageName},</if>
+            <if test="maintainMileage != null">maintain_mileage = #{maintainMileage},</if>
+            <if test="pitchRoad != null">pitch_road = #{pitchRoad},</if>
+            <if test="gravelRoad != null">gravel_road = #{gravelRoad},</if>
+            <if test="allFund != null">all_fund = #{allFund},</if>
+            <if test="cityFund != null">city_fund = #{cityFund},</if>
+            <if test="countyFund != null">county_fund = #{countyFund},</if>
+            <if test="auditStatusid != null">audit_statusid = #{auditStatusid},</if>
+        </trim>
+        where mpoid = #{mpoid}
+    </update>
+
+    <delete id="deleteHwMaintainPlanOrdinaryByMpoid" parameterType="Long">
+        delete from hw_maintain_plan_ordinary where mpoid = #{mpoid}
+    </delete>
+
+    <delete id="deleteHwMaintainPlanOrdinaryByMpoids" parameterType="String">
+        delete from hw_maintain_plan_ordinary where mpoid in 
+        <foreach item="mpoid" collection="array" open="(" separator="," close=")">
+            #{mpoid}
+        </foreach>
+    </delete>
+</mapper>
