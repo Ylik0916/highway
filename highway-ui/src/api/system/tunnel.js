@@ -8,7 +8,6 @@ export function listTunnel(query) {
     params: query
   })
 }
-
 // 查询隧道信息详细
 export function getTunnel(tunnelId) {
   return request({

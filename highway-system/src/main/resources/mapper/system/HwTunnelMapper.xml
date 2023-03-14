@@ -78,17 +78,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectHwTunnelVo">
-        select tunnel_id, route_coding, route_name, tunnel_name, tunnel_number, tunnel_center_pile_number, starting_pile_number, tunnel_length, tunnel_overall_width, tunnel_clear_width, tunnel_clear_height, sidewalk_width, tunnel_length_type, section_form, opening_form, lining_material, fire_equipments, number_of_safe_channels, underwater_tunnel_or_not, nature_of_custodial_unit, tunnel_rating, date_of_assessment, rating_unit, tunnel_rating_civil_construction, rating_date_civil_construction, evaluate_the_civil_construction, tunnel_rating_grade, rating_unit_mechanical, date_of_evaluation, tunnel_rating_other, rating_unit_other, original_tunnel_coding, type_of_pavement_layer, tunnel_lighting, tunnel_ventilation, tunnel_elevation, tunnel_maintenance_grade, tunnel_drainage_type, tunnel_location, completion_time, opening_date, reason_for_change, tunnel_electronics, name_of_design_company, name_of_supervisory_unit, name_of_construction_unit, name_of_supervision_unit, name_of_construction, custodial_unit_code, name_of_custodial_unit, conversion_year, tunnel_reconstruction_site, recent_renovation_project, date_of_completion, tunnel_trouble_location, Tunnel_damage_description, tunnel_longitude, tunnel_latitude, reporting_unit, reporting_unit_code, reporting_unit_principal, reporting_person, reporting_person_telephone, auditor, auditor_telephone, acquisition_time, modification_time, remarks, route_id, long_tunnel_directory from hw_tunnel
+        select tunnel_id, route_coding, route_name, tunnel_name, tunnel_number, tunnel_center_pile_number, starting_pile_number, tunnel_length, tunnel_overall_width, tunnel_clear_width, tunnel_clear_height, sidewalk_width, tunnel_length_type, section_form, opening_form, lining_material, fire_equipments, number_of_safe_channels, underwater_tunnel_or_not, nature_of_custodial_unit, tunnel_rating, date_of_assessment, rating_unit, tunnel_rating_civil_construction, rating_date_civil_construction, evaluate_the_civil_construction, tunnel_rating_grade, rating_unit_mechanical, date_of_evaluation, tunnel_rating_other, rating_unit_other, original_tunnel_coding, type_of_pavement_layer, tunnel_lighting, tunnel_ventilation, tunnel_elevation, tunnel_maintenance_grade, tunnel_drainage_type, tunnel_location, completion_time, opening_date, reason_for_change, tunnel_electronics, name_of_design_company, name_of_supervisory_unit, name_of_construction_unit, name_of_supervision_unit, name_of_construction, custodial_unit_code, name_of_custodial_unit, conversion_year, tunnel_reconstruction_site, recent_renovation_project, date_of_completion, tunnel_trouble_location, Tunnel_damage_description, tunnel_longitude, tunnel_latitude, reporting_unit, reporting_unit_code, reporting_unit_principal, reporting_person, reporting_person_telephone, auditor, auditor_telephone, acquisition_time, modification_time, remarks, route_id, long_tunnel_directory from hw_tunnel,hw_route_information
+    </sql>
+    <sql id="selectHwTunnelVo1">
+        select tunnel_id, tunnel_name, tunnel_number, tunnel_center_pile_number, starting_pile_number, tunnel_length, tunnel_overall_width, tunnel_clear_width, tunnel_clear_height, sidewalk_width, tunnel_length_type, section_form, opening_form, lining_material, fire_equipments, number_of_safe_channels, underwater_tunnel_or_not, nature_of_custodial_unit, tunnel_rating, date_of_assessment, rating_unit, tunnel_rating_civil_construction, rating_date_civil_construction, evaluate_the_civil_construction, tunnel_rating_grade, rating_unit_mechanical, date_of_evaluation, tunnel_rating_other, rating_unit_other, original_tunnel_coding, type_of_pavement_layer, tunnel_lighting, tunnel_ventilation, tunnel_elevation, tunnel_maintenance_grade, tunnel_drainage_type, tunnel_location, completion_time, opening_date, reason_for_change, tunnel_electronics, name_of_design_company, name_of_supervisory_unit, name_of_construction_unit, name_of_supervision_unit, name_of_construction, custodial_unit_code, name_of_custodial_unit, conversion_year, tunnel_reconstruction_site, recent_renovation_project, date_of_completion, tunnel_trouble_location, Tunnel_damage_description, tunnel_longitude, tunnel_latitude, reporting_unit, reporting_unit_code, reporting_unit_principal, reporting_person, reporting_person_telephone, auditor, auditor_telephone, acquisition_time, modification_time, remarks, route_id, long_tunnel_directory from hw_tunnel
     </sql>
 
     <select id="selectHwTunnelList" parameterType="HwTunnel" resultMap="HwTunnelResult">
         <include refid="selectHwTunnelVo"/>
-        <where>  
+        <where>
+            <if test="routeId != null "> and route_id = #{routeId}</if>
+            <if test="routeId != null "> and id = #{routeId}</if>
+--              // where hw_tunnel.route_id = hw_route_information.id
         </where>
     </select>
     
     <select id="selectHwTunnelByTunnelId" parameterType="Long" resultMap="HwTunnelResult">
-        <include refid="selectHwTunnelVo"/>
+        <include refid="selectHwTunnelVo1"/>
         where tunnel_id = #{tunnelId}
     </select>
         

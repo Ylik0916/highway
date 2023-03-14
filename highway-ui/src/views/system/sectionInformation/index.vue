@@ -706,7 +706,7 @@ export default {
   props:['routeId'],
   data() {
     return {
-      routeId:this.routeId,
+      // routeId:this.routeId,
       // 遮罩层
       loading: true,
       // 选中数组

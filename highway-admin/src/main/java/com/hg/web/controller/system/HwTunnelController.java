@@ -54,6 +54,7 @@ public class HwTunnelController extends BaseController
     @PostMapping("/export")
     public void export(HttpServletResponse response, HwTunnel hwTunnel)
     {
+        System.out.println(hwTunnel.toString());
         List<HwTunnel> list = hwTunnelService.selectHwTunnelList(hwTunnel);
         ExcelUtil<HwTunnel> util = new ExcelUtil<HwTunnel>(HwTunnel.class);
         util.exportExcel(response, list, "隧道信息数据");
