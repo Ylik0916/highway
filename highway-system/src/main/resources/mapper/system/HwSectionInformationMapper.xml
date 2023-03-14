@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hg.system.mapper.HwSectionInformationMapper">
+
+    <resultMap type="HwSectionInformation" id="HwSectionInformationResult">
+        <result property="roadsectionid"    column="roadSectionId"    />
+        <result property="routeid"    column="routeId"    />
+        <result property="routecoding"    column="routeCoding"    />
+        <result property="sectionCoding"    column="Section_coding"    />
+        <result property="sectionSerialNumber"    column="Section_serial_number"    />
+        <result property="originName"    column="Origin_name"    />
+        <result property="startingLongitude"    column="Starting_longitude"    />
+        <result property="startingLatitude"    column="Starting_latitude"    />
+        <result property="startingPileNumber"    column="Starting_pile_number"    />
+        <result property="startingElevation"    column="Starting_elevation"    />
+        <result property="cutoffPoint"    column="Cutoff_point"    />
+        <result property="destinationName"    column="Destination_name"    />
+        <result property="finishingPost"    column="finishing_post"    />
+        <result property="longitudepoint"    column="LongitudePoint"    />
+        <result property="latitudedestination"    column="LatitudeDestination"    />
+        <result property="elevationdestinationpoint"    column="ElevationDestinationPoint"    />
+        <result property="endpointdemarcationpoint"    column="endPointDemarcationPoint"    />
+        <result property="technicalGradeRoadSection"    column="Technical_grade_road_section"    />
+        <result property="sectionPavementType"    column="Section_pavement_type"    />
+        <result property="roadLength"    column="Road_length"    />
+        <result property="actualMileage"    column="Actual_mileage"    />
+        <result property="pavementWidth"    column="Pavement_width"    />
+        <result property="widthSubgrade"    column="Width_subgrade"    />
+        <result property="repeatedSection"    column="repeated_section"    />
+        <result property="repeatRouteCoding"    column="Repeat_route_coding"    />
+        <result property="sequenceRepeatedSections"    column="Sequence_repeated_sections"    />
+        <result property="repeatStartingPostNumber"    column="Repeat_starting_post_number"    />
+        <result property="repeatStopPostNumber"    column="Repeat_stop_post_number"    />
+        <result property="greenMileage"    column="Green_mileage"    />
+        <result property="okgreenMileage"    column="okGreen_mileage"    />
+        <result property="maintenanceMileage"    column="Maintenance_mileage"    />
+        <result property="chengguanSection"    column="Chengguan_section"    />
+        <result property="trafficFineRain"    column="traffic_fine_rain"    />
+        <result property="highSpeed"    column="high_speed"    />
+        <result property="fairRainMileage"    column="Fair_rain_mileage"    />
+        <result property="pavementEvaluationResult"    column="Pavement_evaluation_result"    />
+        <result property="yearInclusion"    column="Year_inclusion"    />
+        <result property="numberCulverts"    column="Number_culverts"    />
+        <result property="natureCharge"    column="Nature_charge"    />
+        <result property="roadBroken"    column="road_broken"    />
+        <result property="lastModificationTime"    column="Last_modification_time"    />
+        <result property="completionTime"    column="Completion_time"    />
+        <result property="custodialUnitCode"    column="Custodial_unit_code"    />
+        <result property="nameCustodialUnit"    column="Name_custodial_unit"    />
+        <result property="curingType"    column="Curing_type"    />
+        <result property="typeConservation"    column="Type_conservation"    />
+        <result property="reasonChange"    column="Reason_change"    />
+        <result property="landform"    column="landform"    />
+        <result property="openingDate"    column="Opening_date"    />
+        <result property="numberLanes"    column="Number_lanes"    />
+        <result property="typeBrokenChain"    column="Type_broken_chain"    />
+        <result property="originalRouteCoding"    column="Original_route_coding"    />
+        <result property="originalRouteName"    column="Original_route_name"    />
+        <result property="ofTheOriginalSection"    column="of_the_original_section"    />
+        <result property="theOriginalSection"    column="the_original_section"    />
+        <result property="originalRoadLength"    column="Original_road_length"    />
+        <result property="designSpeed"    column="Design_speed"    />
+        <result property="interprovincialentrancesexits"    column="InterprovincialEntrancesExits"    />
+        <result property="surfaceThickness"    column="Surface_thickness"    />
+        <result property="nationalHighwayNumber"    column="national_highway_number"    />
+        <result property="adoptTrunkRoad"    column="adopt_trunk_road"    />
+        <result property="lastyearrepairmaintenance"    column="LastYearRepairMaintenance"    />
+        <result property="reportingUnit"    column="Reporting_unit"    />
+        <result property="fillUnitCode"    column="Fill_unit_code"    />
+        <result property="personchargereportingUnit"    column="PersonChargeReporting_unit"    />
+        <result property="formfiller"    column="FormFiller"    />
+        <result property="telephonenumberperson"    column="TelephoneNumberPerson"    />
+        <result property="auditor"    column="auditor"    />
+        <result property="auditorTelephone"    column="Auditor_telephone"    />
+        <result property="acquisitionTime"    column="Acquisition_time"    />
+        <result property="modificationTime"    column="Modification_time"    />
+        <result property="remarks"    column="remarks"    />
+    </resultMap>
+
+    <sql id="selectHwSectionInformationVo">
+        select roadSectionId, routeId, routeCoding, Section_coding, Section_serial_number, Origin_name, Starting_longitude, Starting_latitude, Starting_pile_number, Starting_elevation, Cutoff_point, Destination_name, finishing_post, LongitudePoint, LatitudeDestination, ElevationDestinationPoint, endPointDemarcationPoint, Technical_grade_road_section, Section_pavement_type, Road_length, Actual_mileage, Pavement_width, Width_subgrade, repeated_section, Repeat_route_coding, Sequence_repeated_sections, Repeat_starting_post_number, Repeat_stop_post_number, Green_mileage, okGreen_mileage, Maintenance_mileage, Chengguan_section, traffic_fine_rain, high_speed, Fair_rain_mileage, Pavement_evaluation_result, Year_inclusion, Number_culverts, Nature_charge, road_broken, Last_modification_time, Completion_time, Custodial_unit_code, Name_custodial_unit, Curing_type, Type_conservation, Reason_change, landform, Opening_date, Number_lanes, Type_broken_chain, Original_route_coding, Original_route_name, of_the_original_section, the_original_section, Original_road_length, Design_speed, InterprovincialEntrancesExits, Surface_thickness, national_highway_number, adopt_trunk_road, LastYearRepairMaintenance, Reporting_unit, Fill_unit_code, PersonChargeReporting_unit, FormFiller, TelephoneNumberPerson, auditor, Auditor_telephone, Acquisition_time, Modification_time, remarks from hw_section_information
+    </sql>
+
+    <select id="selectHwSectionInformationList" parameterType="HwSectionInformation" resultMap="HwSectionInformationResult">
+        <include refid="selectHwSectionInformationVo"/>
+        <where>
+            <if test="routeid != null "> and routeId = #{routeid}</if>
+            <if test="routecoding != null  and routecoding != ''"> and routeCoding = #{routecoding}</if>
+            <if test="sectionCoding != null  and sectionCoding != ''"> and Section_coding = #{sectionCoding}</if>
+            <if test="sectionSerialNumber != null  and sectionSerialNumber != ''"> and Section_serial_number = #{sectionSerialNumber}</if>
+            <if test="originName != null  and originName != ''"> and Origin_name like concat('%', #{originName}, '%')</if>
+            <if test="startingLongitude != null  and startingLongitude != ''"> and Starting_longitude = #{startingLongitude}</if>
+            <if test="startingLatitude != null  and startingLatitude != ''"> and Starting_latitude = #{startingLatitude}</if>
+            <if test="startingPileNumber != null  and startingPileNumber != ''"> and Starting_pile_number = #{startingPileNumber}</if>
+            <if test="startingElevation != null  and startingElevation != ''"> and Starting_elevation = #{startingElevation}</if>
+            <if test="cutoffPoint != null  and cutoffPoint != ''"> and Cutoff_point = #{cutoffPoint}</if>
+            <if test="destinationName != null  and destinationName != ''"> and Destination_name like concat('%', #{destinationName}, '%')</if>
+            <if test="finishingPost != null  and finishingPost != ''"> and finishing_post = #{finishingPost}</if>
+            <if test="longitudepoint != null  and longitudepoint != ''"> and LongitudePoint = #{longitudepoint}</if>
+            <if test="latitudedestination != null  and latitudedestination != ''"> and LatitudeDestination = #{latitudedestination}</if>
+            <if test="elevationdestinationpoint != null  and elevationdestinationpoint != ''"> and ElevationDestinationPoint = #{elevationdestinationpoint}</if>
+            <if test="endpointdemarcationpoint != null  and endpointdemarcationpoint != ''"> and endPointDemarcationPoint = #{endpointdemarcationpoint}</if>
+            <if test="technicalGradeRoadSection != null  and technicalGradeRoadSection != ''"> and Technical_grade_road_section = #{technicalGradeRoadSection}</if>
+            <if test="sectionPavementType != null  and sectionPavementType != ''"> and Section_pavement_type = #{sectionPavementType}</if>
+            <if test="roadLength != null  and roadLength != ''"> and Road_length = #{roadLength}</if>
+            <if test="actualMileage != null  and actualMileage != ''"> and Actual_mileage = #{actualMileage}</if>
+            <if test="pavementWidth != null  and pavementWidth != ''"> and Pavement_width = #{pavementWidth}</if>
+            <if test="widthSubgrade != null  and widthSubgrade != ''"> and Width_subgrade = #{widthSubgrade}</if>
+            <if test="repeatedSection != null  and repeatedSection != ''"> and repeated_section = #{repeatedSection}</if>
+            <if test="repeatRouteCoding != null  and repeatRouteCoding != ''"> and Repeat_route_coding = #{repeatRouteCoding}</if>
+            <if test="sequenceRepeatedSections != null  and sequenceRepeatedSections != ''"> and Sequence_repeated_sections = #{sequenceRepeatedSections}</if>
+            <if test="repeatStartingPostNumber != null  and repeatStartingPostNumber != ''"> and Repeat_starting_post_number = #{repeatStartingPostNumber}</if>
+            <if test="repeatStopPostNumber != null  and repeatStopPostNumber != ''"> and Repeat_stop_post_number = #{repeatStopPostNumber}</if>
+            <if test="okgreenMileage != null  and okgreenMileage != ''"> and okGreen_mileage = #{okgreenMileage}</if>
+            <if test="maintenanceMileage != null  and maintenanceMileage != ''"> and Maintenance_mileage = #{maintenanceMileage}</if>
+            <if test="chengguanSection != null  and chengguanSection != ''"> and Chengguan_section = #{chengguanSection}</if>
+            <if test="trafficFineRain != null  and trafficFineRain != ''"> and traffic_fine_rain = #{trafficFineRain}</if>
+            <if test="highSpeed != null  and highSpeed != ''"> and high_speed = #{highSpeed}</if>
+            <if test="fairRainMileage != null  and fairRainMileage != ''"> and Fair_rain_mileage = #{fairRainMileage}</if>
+            <if test="pavementEvaluationResult != null  and pavementEvaluationResult != ''"> and Pavement_evaluation_result = #{pavementEvaluationResult}</if>
+            <if test="yearInclusion != null  and yearInclusion != ''"> and Year_inclusion = #{yearInclusion}</if>
+            <if test="numberCulverts != null  and numberCulverts != ''"> and Number_culverts = #{numberCulverts}</if>
+            <if test="natureCharge != null  and natureCharge != ''"> and Nature_charge = #{natureCharge}</if>
+            <if test="roadBroken != null  and roadBroken != ''"> and road_broken = #{roadBroken}</if>
+            <if test="lastModificationTime != null  and lastModificationTime != ''"> and Last_modification_time = #{lastModificationTime}</if>
+            <if test="completionTime != null  and completionTime != ''"> and Completion_time = #{completionTime}</if>
+            <if test="custodialUnitCode != null  and custodialUnitCode != ''"> and Custodial_unit_code = #{custodialUnitCode}</if>
+            <if test="nameCustodialUnit != null  and nameCustodialUnit != ''"> and Name_custodial_unit = #{nameCustodialUnit}</if>
+            <if test="curingType != null  and curingType != ''"> and Curing_type = #{curingType}</if>
+            <if test="typeConservation != null  and typeConservation != ''"> and Type_conservation = #{typeConservation}</if>
+            <if test="reasonChange != null  and reasonChange != ''"> and Reason_change = #{reasonChange}</if>
+            <if test="landform != null  and landform != ''"> and landform = #{landform}</if>
+            <if test="openingDate != null  and openingDate != ''"> and Opening_date = #{openingDate}</if>
+            <if test="numberLanes != null  and numberLanes != ''"> and Number_lanes = #{numberLanes}</if>
+            <if test="typeBrokenChain != null  and typeBrokenChain != ''"> and Type_broken_chain = #{typeBrokenChain}</if>
+            <if test="originalRouteCoding != null  and originalRouteCoding != ''"> and Original_route_coding = #{originalRouteCoding}</if>
+            <if test="originalRouteName != null  and originalRouteName != ''"> and Original_route_name like concat('%', #{originalRouteName}, '%')</if>
+            <if test="ofTheOriginalSection != null  and ofTheOriginalSection != ''"> and of_the_original_section = #{ofTheOriginalSection}</if>
+            <if test="theOriginalSection != null  and theOriginalSection != ''"> and the_original_section = #{theOriginalSection}</if>
+            <if test="originalRoadLength != null  and originalRoadLength != ''"> and Original_road_length = #{originalRoadLength}</if>
+            <if test="designSpeed != null  and designSpeed != ''"> and Design_speed = #{designSpeed}</if>
+            <if test="interprovincialentrancesexits != null  and interprovincialentrancesexits != ''"> and InterprovincialEntrancesExits = #{interprovincialentrancesexits}</if>
+            <if test="surfaceThickness != null  and surfaceThickness != ''"> and Surface_thickness = #{surfaceThickness}</if>
+            <if test="nationalHighwayNumber != null  and nationalHighwayNumber != ''"> and national_highway_number = #{nationalHighwayNumber}</if>
+            <if test="adoptTrunkRoad != null  and adoptTrunkRoad != ''"> and adopt_trunk_road = #{adoptTrunkRoad}</if>
+            <if test="lastyearrepairmaintenance != null  and lastyearrepairmaintenance != ''"> and LastYearRepairMaintenance = #{lastyearrepairmaintenance}</if>
+            <if test="reportingUnit != null  and reportingUnit != ''"> and Reporting_unit = #{reportingUnit}</if>
+            <if test="fillUnitCode != null  and fillUnitCode != ''"> and Fill_unit_code = #{fillUnitCode}</if>
+            <if test="personchargereportingUnit != null  and personchargereportingUnit != ''"> and PersonChargeReporting_unit = #{personchargereportingUnit}</if>
+            <if test="formfiller != null  and formfiller != ''"> and FormFiller = #{formfiller}</if>
+            <if test="telephonenumberperson != null  and telephonenumberperson != ''"> and TelephoneNumberPerson = #{telephonenumberperson}</if>
+            <if test="auditor != null  and auditor != ''"> and auditor = #{auditor}</if>
+            <if test="auditorTelephone != null  and auditorTelephone != ''"> and Auditor_telephone = #{auditorTelephone}</if>
+            <if test="acquisitionTime != null  and acquisitionTime != ''"> and Acquisition_time = #{acquisitionTime}</if>
+            <if test="modificationTime != null  and modificationTime != ''"> and Modification_time = #{modificationTime}</if>
+            <if test="remarks != null  and remarks != ''"> and remarks = #{remarks}</if>
+        </where>
+    </select>
+
+    <select id="selectHwSectionInformationByRoadsectionid" parameterType="Long" resultMap="HwSectionInformationResult">
+        <include refid="selectHwSectionInformationVo"/>
+        where roadSectionId = #{roadsectionid}
+    </select>
+
+    <insert id="insertHwSectionInformation" parameterType="HwSectionInformation" useGeneratedKeys="true" keyProperty="roadsectionid">
+        insert into hw_section_information
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="routeid != null">routeId,</if>
+            <if test="routecoding != null">routeCoding,</if>
+            <if test="sectionCoding != null">Section_coding,</if>
+            <if test="sectionSerialNumber != null">Section_serial_number,</if>
+            <if test="originName != null">Origin_name,</if>
+            <if test="startingLongitude != null">Starting_longitude,</if>
+            <if test="startingLatitude != null">Starting_latitude,</if>
+            <if test="startingPileNumber != null">Starting_pile_number,</if>
+            <if test="startingElevation != null">Starting_elevation,</if>
+            <if test="cutoffPoint != null">Cutoff_point,</if>
+            <if test="destinationName != null">Destination_name,</if>
+            <if test="finishingPost != null">finishing_post,</if>
+            <if test="longitudepoint != null">LongitudePoint,</if>
+            <if test="latitudedestination != null">LatitudeDestination,</if>
+            <if test="elevationdestinationpoint != null">ElevationDestinationPoint,</if>
+            <if test="endpointdemarcationpoint != null">endPointDemarcationPoint,</if>
+            <if test="technicalGradeRoadSection != null">Technical_grade_road_section,</if>
+            <if test="sectionPavementType != null">Section_pavement_type,</if>
+            <if test="roadLength != null">Road_length,</if>
+            <if test="actualMileage != null">Actual_mileage,</if>
+            <if test="pavementWidth != null">Pavement_width,</if>
+            <if test="widthSubgrade != null">Width_subgrade,</if>
+            <if test="repeatedSection != null">repeated_section,</if>
+            <if test="repeatRouteCoding != null">Repeat_route_coding,</if>
+            <if test="sequenceRepeatedSections != null">Sequence_repeated_sections,</if>
+            <if test="repeatStartingPostNumber != null">Repeat_starting_post_number,</if>
+            <if test="repeatStopPostNumber != null and repeatStopPostNumber != ''">Repeat_stop_post_number,</if>
+            <if test="greenMileage != null">Green_mileage,</if>
+            <if test="okgreenMileage != null">okGreen_mileage,</if>
+            <if test="maintenanceMileage != null">Maintenance_mileage,</if>
+            <if test="chengguanSection != null">Chengguan_section,</if>
+            <if test="trafficFineRain != null">traffic_fine_rain,</if>
+            <if test="highSpeed != null">high_speed,</if>
+            <if test="fairRainMileage != null">Fair_rain_mileage,</if>
+            <if test="pavementEvaluationResult != null">Pavement_evaluation_result,</if>
+            <if test="yearInclusion != null">Year_inclusion,</if>
+            <if test="numberCulverts != null">Number_culverts,</if>
+            <if test="natureCharge != null">Nature_charge,</if>
+            <if test="roadBroken != null">road_broken,</if>
+            <if test="lastModificationTime != null">Last_modification_time,</if>
+            <if test="completionTime != null">Completion_time,</if>
+            <if test="custodialUnitCode != null">Custodial_unit_code,</if>
+            <if test="nameCustodialUnit != null">Name_custodial_unit,</if>
+            <if test="curingType != null">Curing_type,</if>
+            <if test="typeConservation != null">Type_conservation,</if>
+            <if test="reasonChange != null">Reason_change,</if>
+            <if test="landform != null">landform,</if>
+            <if test="openingDate != null">Opening_date,</if>
+            <if test="numberLanes != null">Number_lanes,</if>
+            <if test="typeBrokenChain != null">Type_broken_chain,</if>
+            <if test="originalRouteCoding != null">Original_route_coding,</if>
+            <if test="originalRouteName != null">Original_route_name,</if>
+            <if test="ofTheOriginalSection != null">of_the_original_section,</if>
+            <if test="theOriginalSection != null">the_original_section,</if>
+            <if test="originalRoadLength != null">Original_road_length,</if>
+            <if test="designSpeed != null">Design_speed,</if>
+            <if test="interprovincialentrancesexits != null">InterprovincialEntrancesExits,</if>
+            <if test="surfaceThickness != null">Surface_thickness,</if>
+            <if test="nationalHighwayNumber != null">national_highway_number,</if>
+            <if test="adoptTrunkRoad != null">adopt_trunk_road,</if>
+            <if test="lastyearrepairmaintenance != null">LastYearRepairMaintenance,</if>
+            <if test="reportingUnit != null">Reporting_unit,</if>
+            <if test="fillUnitCode != null">Fill_unit_code,</if>
+            <if test="personchargereportingUnit != null">PersonChargeReporting_unit,</if>
+            <if test="formfiller != null">FormFiller,</if>
+            <if test="telephonenumberperson != null">TelephoneNumberPerson,</if>
+            <if test="auditor != null">auditor,</if>
+            <if test="auditorTelephone != null">Auditor_telephone,</if>
+            <if test="acquisitionTime != null">Acquisition_time,</if>
+            <if test="modificationTime != null">Modification_time,</if>
+            <if test="remarks != null">remarks,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="routeid != null">#{routeid},</if>
+            <if test="routecoding != null">#{routecoding},</if>
+            <if test="sectionCoding != null">#{sectionCoding},</if>
+            <if test="sectionSerialNumber != null">#{sectionSerialNumber},</if>
+            <if test="originName != null">#{originName},</if>
+            <if test="startingLongitude != null">#{startingLongitude},</if>
+            <if test="startingLatitude != null">#{startingLatitude},</if>
+            <if test="startingPileNumber != null">#{startingPileNumber},</if>
+            <if test="startingElevation != null">#{startingElevation},</if>
+            <if test="cutoffPoint != null">#{cutoffPoint},</if>
+            <if test="destinationName != null">#{destinationName},</if>
+            <if test="finishingPost != null">#{finishingPost},</if>
+            <if test="longitudepoint != null">#{longitudepoint},</if>
+            <if test="latitudedestination != null">#{latitudedestination},</if>
+            <if test="elevationdestinationpoint != null">#{elevationdestinationpoint},</if>
+            <if test="endpointdemarcationpoint != null">#{endpointdemarcationpoint},</if>
+            <if test="technicalGradeRoadSection != null">#{technicalGradeRoadSection},</if>
+            <if test="sectionPavementType != null">#{sectionPavementType},</if>
+            <if test="roadLength != null">#{roadLength},</if>
+            <if test="actualMileage != null">#{actualMileage},</if>
+            <if test="pavementWidth != null">#{pavementWidth},</if>
+            <if test="widthSubgrade != null">#{widthSubgrade},</if>
+            <if test="repeatedSection != null">#{repeatedSection},</if>
+            <if test="repeatRouteCoding != null">#{repeatRouteCoding},</if>
+            <if test="sequenceRepeatedSections != null">#{sequenceRepeatedSections},</if>
+            <if test="repeatStartingPostNumber != null">#{repeatStartingPostNumber},</if>
+            <if test="repeatStopPostNumber != null and repeatStopPostNumber != ''">#{repeatStopPostNumber},</if>
+            <if test="greenMileage != null">#{greenMileage},</if>
+            <if test="okgreenMileage != null">#{okgreenMileage},</if>
+            <if test="maintenanceMileage != null">#{maintenanceMileage},</if>
+            <if test="chengguanSection != null">#{chengguanSection},</if>
+            <if test="trafficFineRain != null">#{trafficFineRain},</if>
+            <if test="highSpeed != null">#{highSpeed},</if>
+            <if test="fairRainMileage != null">#{fairRainMileage},</if>
+            <if test="pavementEvaluationResult != null">#{pavementEvaluationResult},</if>
+            <if test="yearInclusion != null">#{yearInclusion},</if>
+            <if test="numberCulverts != null">#{numberCulverts},</if>
+            <if test="natureCharge != null">#{natureCharge},</if>
+            <if test="roadBroken != null">#{roadBroken},</if>
+            <if test="lastModificationTime != null">#{lastModificationTime},</if>
+            <if test="completionTime != null">#{completionTime},</if>
+            <if test="custodialUnitCode != null">#{custodialUnitCode},</if>
+            <if test="nameCustodialUnit != null">#{nameCustodialUnit},</if>
+            <if test="curingType != null">#{curingType},</if>
+            <if test="typeConservation != null">#{typeConservation},</if>
+            <if test="reasonChange != null">#{reasonChange},</if>
+            <if test="landform != null">#{landform},</if>
+            <if test="openingDate != null">#{openingDate},</if>
+            <if test="numberLanes != null">#{numberLanes},</if>
+            <if test="typeBrokenChain != null">#{typeBrokenChain},</if>
+            <if test="originalRouteCoding != null">#{originalRouteCoding},</if>
+            <if test="originalRouteName != null">#{originalRouteName},</if>
+            <if test="ofTheOriginalSection != null">#{ofTheOriginalSection},</if>
+            <if test="theOriginalSection != null">#{theOriginalSection},</if>
+            <if test="originalRoadLength != null">#{originalRoadLength},</if>
+            <if test="designSpeed != null">#{designSpeed},</if>
+            <if test="interprovincialentrancesexits != null">#{interprovincialentrancesexits},</if>
+            <if test="surfaceThickness != null">#{surfaceThickness},</if>
+            <if test="nationalHighwayNumber != null">#{nationalHighwayNumber},</if>
+            <if test="adoptTrunkRoad != null">#{adoptTrunkRoad},</if>
+            <if test="lastyearrepairmaintenance != null">#{lastyearrepairmaintenance},</if>
+            <if test="reportingUnit != null">#{reportingUnit},</if>
+            <if test="fillUnitCode != null">#{fillUnitCode},</if>
+            <if test="personchargereportingUnit != null">#{personchargereportingUnit},</if>
+            <if test="formfiller != null">#{formfiller},</if>
+            <if test="telephonenumberperson != null">#{telephonenumberperson},</if>
+            <if test="auditor != null">#{auditor},</if>
+            <if test="auditorTelephone != null">#{auditorTelephone},</if>
+            <if test="acquisitionTime != null">#{acquisitionTime},</if>
+            <if test="modificationTime != null">#{modificationTime},</if>
+            <if test="remarks != null">#{remarks},</if>
+         </trim>
+    </insert>
+
+    <update id="updateHwSectionInformation" parameterType="HwSectionInformation">
+        update highway.hw_section_information
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="routeid != null">routeId = #{routeid},</if>
+            <if test="routecoding != null">routeCoding = #{routecoding},</if>
+            <if test="sectionCoding != null">Section_coding = #{sectionCoding},</if>
+            <if test="sectionSerialNumber != null">Section_serial_number = #{sectionSerialNumber},</if>
+            <if test="originName != null">Origin_name = #{originName},</if>
+            <if test="startingLongitude != null">Starting_longitude = #{startingLongitude},</if>
+            <if test="startingLatitude != null">Starting_latitude = #{startingLatitude},</if>
+            <if test="startingPileNumber != null">Starting_pile_number = #{startingPileNumber},</if>
+            <if test="startingElevation != null">Starting_elevation = #{startingElevation},</if>
+            <if test="cutoffPoint != null">Cutoff_point = #{cutoffPoint},</if>
+            <if test="destinationName != null">Destination_name = #{destinationName},</if>
+            <if test="finishingPost != null">finishing_post = #{finishingPost},</if>
+            <if test="longitudepoint != null">LongitudePoint = #{longitudepoint},</if>
+            <if test="latitudedestination != null">LatitudeDestination = #{latitudedestination},</if>
+            <if test="elevationdestinationpoint != null">ElevationDestinationPoint = #{elevationdestinationpoint},</if>
+            <if test="endpointdemarcationpoint != null">endPointDemarcationPoint = #{endpointdemarcationpoint},</if>
+            <if test="technicalGradeRoadSection != null">Technical_grade_road_section = #{technicalGradeRoadSection},</if>
+            <if test="sectionPavementType != null">Section_pavement_type = #{sectionPavementType},</if>
+            <if test="roadLength != null">Road_length = #{roadLength},</if>
+            <if test="actualMileage != null">Actual_mileage = #{actualMileage},</if>
+            <if test="pavementWidth != null">Pavement_width = #{pavementWidth},</if>
+            <if test="widthSubgrade != null">Width_subgrade = #{widthSubgrade},</if>
+            <if test="repeatedSection != null">repeated_section = #{repeatedSection},</if>
+            <if test="repeatRouteCoding != null">Repeat_route_coding = #{repeatRouteCoding},</if>
+            <if test="sequenceRepeatedSections != null">Sequence_repeated_sections = #{sequenceRepeatedSections},</if>
+            <if test="repeatStartingPostNumber != null">Repeat_starting_post_number = #{repeatStartingPostNumber},</if>
+            <if test="repeatStopPostNumber != null and repeatStopPostNumber != ''">Repeat_stop_post_number = #{repeatStopPostNumber},</if>
+            <if test="greenMileage != null">Green_mileage = #{greenMileage},</if>
+            <if test="okgreenMileage != null">okGreen_mileage = #{okgreenMileage},</if>
+            <if test="maintenanceMileage != null">Maintenance_mileage = #{maintenanceMileage},</if>
+            <if test="chengguanSection != null">Chengguan_section = #{chengguanSection},</if>
+            <if test="trafficFineRain != null">traffic_fine_rain = #{trafficFineRain},</if>
+            <if test="highSpeed != null">high_speed = #{highSpeed},</if>
+            <if test="fairRainMileage != null">Fair_rain_mileage = #{fairRainMileage},</if>
+            <if test="pavementEvaluationResult != null">Pavement_evaluation_result = #{pavementEvaluationResult},</if>
+            <if test="yearInclusion != null">Year_inclusion = #{yearInclusion},</if>
+            <if test="numberCulverts != null">Number_culverts = #{numberCulverts},</if>
+            <if test="natureCharge != null">Nature_charge = #{natureCharge},</if>
+            <if test="roadBroken != null">road_broken = #{roadBroken},</if>
+            <if test="lastModificationTime != null">Last_modification_time = #{lastModificationTime},</if>
+            <if test="completionTime != null">Completion_time = #{completionTime},</if>
+            <if test="custodialUnitCode != null">Custodial_unit_code = #{custodialUnitCode},</if>
+            <if test="nameCustodialUnit != null">Name_custodial_unit = #{nameCustodialUnit},</if>
+            <if test="curingType != null">Curing_type = #{curingType},</if>
+            <if test="typeConservation != null">Type_conservation = #{typeConservation},</if>
+            <if test="reasonChange != null">Reason_change = #{reasonChange},</if>
+            <if test="landform != null">landform = #{landform},</if>
+            <if test="openingDate != null">Opening_date = #{openingDate},</if>
+            <if test="numberLanes != null">Number_lanes = #{numberLanes},</if>
+            <if test="typeBrokenChain != null">Type_broken_chain = #{typeBrokenChain},</if>
+            <if test="originalRouteCoding != null">Original_route_coding = #{originalRouteCoding},</if>
+            <if test="originalRouteName != null">Original_route_name = #{originalRouteName},</if>
+            <if test="ofTheOriginalSection != null">of_the_original_section = #{ofTheOriginalSection},</if>
+            <if test="theOriginalSection != null">the_original_section = #{theOriginalSection},</if>
+            <if test="originalRoadLength != null">Original_road_length = #{originalRoadLength},</if>
+            <if test="designSpeed != null">Design_speed = #{designSpeed},</if>
+            <if test="interprovincialentrancesexits != null">InterprovincialEntrancesExits = #{interprovincialentrancesexits},</if>
+            <if test="surfaceThickness != null">Surface_thickness = #{surfaceThickness},</if>
+            <if test="nationalHighwayNumber != null">national_highway_number = #{nationalHighwayNumber},</if>
+            <if test="adoptTrunkRoad != null">adopt_trunk_road = #{adoptTrunkRoad},</if>
+            <if test="lastyearrepairmaintenance != null">LastYearRepairMaintenance = #{lastyearrepairmaintenance},</if>
+            <if test="reportingUnit != null">Reporting_unit = #{reportingUnit},</if>
+            <if test="fillUnitCode != null">Fill_unit_code = #{fillUnitCode},</if>
+            <if test="personchargereportingUnit != null">PersonChargeReporting_unit = #{personchargereportingUnit},</if>
+            <if test="formfiller != null">FormFiller = #{formfiller},</if>
+            <if test="telephonenumberperson != null">TelephoneNumberPerson = #{telephonenumberperson},</if>
+            <if test="auditor != null">auditor = #{auditor},</if>
+            <if test="auditorTelephone != null">Auditor_telephone = #{auditorTelephone},</if>
+            <if test="acquisitionTime != null">Acquisition_time = #{acquisitionTime},</if>
+            <if test="modificationTime != null">Modification_time = #{modificationTime},</if>
+            <if test="remarks != null">remarks = #{remarks},</if>
+        </trim>
+        where roadSectionId = #{roadsectionid}
+    </update>
+
+    <delete id="deleteHwSectionInformationByRoadsectionid" parameterType="Long">
+        delete from hw_section_information where roadSectionId = #{roadsectionid}
+    </delete>
+
+    <delete id="deleteHwSectionInformationByRoadsectionids" parameterType="String">
+        delete from hw_section_information where roadSectionId in
+        <foreach item="roadsectionid" collection="array" open="(" separator="," close=")">
+            #{roadsectionid}
+        </foreach>
+    </delete>
+</mapper>
