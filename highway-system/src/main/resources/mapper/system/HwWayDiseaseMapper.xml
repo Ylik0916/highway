@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hg.system.mapper.HwWayDiseaseMapper">
+    
+    <resultMap type="HwWayDisease" id="HwWayDiseaseResult">
+        <result property="wdid"    column="wdid"    />
+        <result property="diseaseName"    column="disease_name"    />
+        <result property="pathCode"    column="path_code"    />
+        <result property="pathName"    column="path_name"    />
+        <result property="sectionCode"    column="section_code"    />
+        <result property="sectionName"    column="section_name"    />
+        <result property="reporter"    column="reporter"    />
+        <result property="reportDate"    column="report_date"    />
+        <result property="reportType"    column="report_type"    />
+        <result property="statusid"    column="statusid"    />
+        <result property="wherePath"    column="where_path"    />
+        <result property="diseaseStake"    column="disease_stake"    />
+        <result property="diseaseLatitude"    column="disease_latitude"    />
+        <result property="diseaseLongitude"    column="disease_longitude"    />
+        <result property="diseaseMessage"    column="disease_message"    />
+        <result property="diseaseImg"    column="disease_img"    />
+        <result property="maintainSite"    column="maintain_site"    />
+        <result property="maintainCase"    column="maintain_case"    />
+        <result property="maintainPeople"    column="maintain_people"    />
+        <result property="maintainFund"    column="maintain_fund"    />
+        <result property="beginTime"    column="begin_time"    />
+        <result property="overTime"    column="over_time"    />
+        <result property="maintainRemark"    column="maintain_remark"    />
+        <result property="maintainImg"    column="maintain_img"    />
+        <result property="maintainUnit"    column="maintain_unit"    />
+        <result property="damageCase"    column="damage_case"    />
+        <result property="horizontalPositions"    column="horizontal_positions"    />
+        <result property="forecastCase"    column="forecast_case"    />
+        <result property="disposeMeasure"    column="dispose_measure"    />
+        <result property="drivingDirection"    column="driving_direction"    />
+        <result property="disposeStake"    column="dispose_stake"    />
+        <result property="disposeRemark"    column="dispose_remark"    />
+        <result property="disposeTime"    column="dispose_time"    />
+        <result property="disposeImg"    column="dispose_img"    />
+    </resultMap>
+
+    <sql id="selectHwWayDiseaseVo">
+        select wdid, disease_name, path_code, path_name, section_code, section_name, reporter, report_date, report_type, statusid, where_path, disease_stake, disease_latitude, disease_longitude, disease_message, disease_img, maintain_site, maintain_case, maintain_people, maintain_fund, begin_time, over_time, maintain_remark, maintain_img, maintain_unit, damage_case, horizontal_positions, forecast_case, dispose_measure, driving_direction, dispose_stake, dispose_remark, dispose_time, dispose_img from hw_way_disease
+    </sql>
+
+    <select id="selectHwWayDiseaseList" parameterType="HwWayDisease" resultMap="HwWayDiseaseResult">
+        <include refid="selectHwWayDiseaseVo"/>
+        <where>  
+            <if test="diseaseName != null  and diseaseName != ''"> and disease_name like concat('%', #{diseaseName}, '%')</if>
+            <if test="pathCode != null  and pathCode != ''"> and path_code = #{pathCode}</if>
+            <if test="pathName != null  and pathName != ''"> and path_name like concat('%', #{pathName}, '%')</if>
+            <if test="sectionCode != null  and sectionCode != ''"> and section_code = #{sectionCode}</if>
+            <if test="sectionName != null  and sectionName != ''"> and section_name like concat('%', #{sectionName}, '%')</if>
+            <if test="reporter != null  and reporter != ''"> and reporter = #{reporter}</if>
+            <if test="reportDate != null "> and report_date = #{reportDate}</if>
+            <if test="reportType != null  and reportType != ''"> and report_type = #{reportType}</if>
+            <if test="statusid != null "> and statusid = #{statusid}</if>
+            <if test="wherePath != null  and wherePath != ''"> and where_path = #{wherePath}</if>
+            <if test="diseaseStake != null  and diseaseStake != ''"> and disease_stake = #{diseaseStake}</if>
+            <if test="diseaseLatitude != null  and diseaseLatitude != ''"> and disease_latitude = #{diseaseLatitude}</if>
+            <if test="diseaseLongitude != null  and diseaseLongitude != ''"> and disease_longitude = #{diseaseLongitude}</if>
+            <if test="diseaseMessage != null  and diseaseMessage != ''"> and disease_message = #{diseaseMessage}</if>
+            <if test="diseaseImg != null  and diseaseImg != ''"> and disease_img = #{diseaseImg}</if>
+            <if test="maintainSite != null  and maintainSite != ''"> and maintain_site = #{maintainSite}</if>
+            <if test="maintainCase != null  and maintainCase != ''"> and maintain_case = #{maintainCase}</if>
+            <if test="maintainPeople != null  and maintainPeople != ''"> and maintain_people = #{maintainPeople}</if>
+            <if test="maintainFund != null "> and maintain_fund = #{maintainFund}</if>
+            <if test="beginTime != null "> and begin_time = #{beginTime}</if>
+            <if test="overTime != null "> and over_time = #{overTime}</if>
+            <if test="maintainRemark != null  and maintainRemark != ''"> and maintain_remark = #{maintainRemark}</if>
+            <if test="maintainImg != null  and maintainImg != ''"> and maintain_img = #{maintainImg}</if>
+            <if test="maintainUnit != null  and maintainUnit != ''"> and maintain_unit = #{maintainUnit}</if>
+            <if test="damageCase != null  and damageCase != ''"> and damage_case = #{damageCase}</if>
+            <if test="horizontalPositions != null  and horizontalPositions != ''"> and horizontal_positions = #{horizontalPositions}</if>
+            <if test="forecastCase != null  and forecastCase != ''"> and forecast_case = #{forecastCase}</if>
+            <if test="disposeMeasure != null  and disposeMeasure != ''"> and dispose_measure = #{disposeMeasure}</if>
+            <if test="drivingDirection != null  and drivingDirection != ''"> and driving_direction = #{drivingDirection}</if>
+            <if test="disposeStake != null  and disposeStake != ''"> and dispose_stake = #{disposeStake}</if>
+            <if test="disposeRemark != null  and disposeRemark != ''"> and dispose_remark = #{disposeRemark}</if>
+            <if test="disposeTime != null "> and dispose_time = #{disposeTime}</if>
+            <if test="disposeImg != null  and disposeImg != ''"> and dispose_img = #{disposeImg}</if>
+        </where>
+    </select>
+    
+    <select id="selectHwWayDiseaseByWdid" parameterType="Long" resultMap="HwWayDiseaseResult">
+        <include refid="selectHwWayDiseaseVo"/>
+        where wdid = #{wdid}
+    </select>
+        
+    <insert id="insertHwWayDisease" parameterType="HwWayDisease" useGeneratedKeys="true" keyProperty="wdid">
+        insert into hw_way_disease
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="diseaseName != null">disease_name,</if>
+            <if test="pathCode != null">path_code,</if>
+            <if test="pathName != null">path_name,</if>
+            <if test="sectionCode != null">section_code,</if>
+            <if test="sectionName != null">section_name,</if>
+            <if test="reporter != null">reporter,</if>
+            <if test="reportDate != null">report_date,</if>
+            <if test="reportType != null">report_type,</if>
+            <if test="statusid != null">statusid,</if>
+            <if test="wherePath != null">where_path,</if>
+            <if test="diseaseStake != null">disease_stake,</if>
+            <if test="diseaseLatitude != null">disease_latitude,</if>
+            <if test="diseaseLongitude != null">disease_longitude,</if>
+            <if test="diseaseMessage != null">disease_message,</if>
+            <if test="diseaseImg != null">disease_img,</if>
+            <if test="maintainSite != null">maintain_site,</if>
+            <if test="maintainCase != null">maintain_case,</if>
+            <if test="maintainPeople != null">maintain_people,</if>
+            <if test="maintainFund != null">maintain_fund,</if>
+            <if test="beginTime != null">begin_time,</if>
+            <if test="overTime != null">over_time,</if>
+            <if test="maintainRemark != null">maintain_remark,</if>
+            <if test="maintainImg != null">maintain_img,</if>
+            <if test="maintainUnit != null">maintain_unit,</if>
+            <if test="damageCase != null">damage_case,</if>
+            <if test="horizontalPositions != null">horizontal_positions,</if>
+            <if test="forecastCase != null">forecast_case,</if>
+            <if test="disposeMeasure != null">dispose_measure,</if>
+            <if test="drivingDirection != null">driving_direction,</if>
+            <if test="disposeStake != null">dispose_stake,</if>
+            <if test="disposeRemark != null">dispose_remark,</if>
+            <if test="disposeTime != null">dispose_time,</if>
+            <if test="disposeImg != null">dispose_img,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="diseaseName != null">#{diseaseName},</if>
+            <if test="pathCode != null">#{pathCode},</if>
+            <if test="pathName != null">#{pathName},</if>
+            <if test="sectionCode != null">#{sectionCode},</if>
+            <if test="sectionName != null">#{sectionName},</if>
+            <if test="reporter != null">#{reporter},</if>
+            <if test="reportDate != null">#{reportDate},</if>
+            <if test="reportType != null">#{reportType},</if>
+            <if test="statusid != null">#{statusid},</if>
+            <if test="wherePath != null">#{wherePath},</if>
+            <if test="diseaseStake != null">#{diseaseStake},</if>
+            <if test="diseaseLatitude != null">#{diseaseLatitude},</if>
+            <if test="diseaseLongitude != null">#{diseaseLongitude},</if>
+            <if test="diseaseMessage != null">#{diseaseMessage},</if>
+            <if test="diseaseImg != null">#{diseaseImg},</if>
+            <if test="maintainSite != null">#{maintainSite},</if>
+            <if test="maintainCase != null">#{maintainCase},</if>
+            <if test="maintainPeople != null">#{maintainPeople},</if>
+            <if test="maintainFund != null">#{maintainFund},</if>
+            <if test="beginTime != null">#{beginTime},</if>
+            <if test="overTime != null">#{overTime},</if>
+            <if test="maintainRemark != null">#{maintainRemark},</if>
+            <if test="maintainImg != null">#{maintainImg},</if>
+            <if test="maintainUnit != null">#{maintainUnit},</if>
+            <if test="damageCase != null">#{damageCase},</if>
+            <if test="horizontalPositions != null">#{horizontalPositions},</if>
+            <if test="forecastCase != null">#{forecastCase},</if>
+            <if test="disposeMeasure != null">#{disposeMeasure},</if>
+            <if test="drivingDirection != null">#{drivingDirection},</if>
+            <if test="disposeStake != null">#{disposeStake},</if>
+            <if test="disposeRemark != null">#{disposeRemark},</if>
+            <if test="disposeTime != null">#{disposeTime},</if>
+            <if test="disposeImg != null">#{disposeImg},</if>
+         </trim>
+    </insert>
+
+    <update id="updateHwWayDisease" parameterType="HwWayDisease">
+        update hw_way_disease
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="diseaseName != null">disease_name = #{diseaseName},</if>
+            <if test="pathCode != null">path_code = #{pathCode},</if>
+            <if test="pathName != null">path_name = #{pathName},</if>
+            <if test="sectionCode != null">section_code = #{sectionCode},</if>
+            <if test="sectionName != null">section_name = #{sectionName},</if>
+            <if test="reporter != null">reporter = #{reporter},</if>
+            <if test="reportDate != null">report_date = #{reportDate},</if>
+            <if test="reportType != null">report_type = #{reportType},</if>
+            <if test="statusid != null">statusid = #{statusid},</if>
+            <if test="wherePath != null">where_path = #{wherePath},</if>
+            <if test="diseaseStake != null">disease_stake = #{diseaseStake},</if>
+            <if test="diseaseLatitude != null">disease_latitude = #{diseaseLatitude},</if>
+            <if test="diseaseLongitude != null">disease_longitude = #{diseaseLongitude},</if>
+            <if test="diseaseMessage != null">disease_message = #{diseaseMessage},</if>
+            <if test="diseaseImg != null">disease_img = #{diseaseImg},</if>
+            <if test="maintainSite != null">maintain_site = #{maintainSite},</if>
+            <if test="maintainCase != null">maintain_case = #{maintainCase},</if>
+            <if test="maintainPeople != null">maintain_people = #{maintainPeople},</if>
+            <if test="maintainFund != null">maintain_fund = #{maintainFund},</if>
+            <if test="beginTime != null">begin_time = #{beginTime},</if>
+            <if test="overTime != null">over_time = #{overTime},</if>
+            <if test="maintainRemark != null">maintain_remark = #{maintainRemark},</if>
+            <if test="maintainImg != null">maintain_img = #{maintainImg},</if>
+            <if test="maintainUnit != null">maintain_unit = #{maintainUnit},</if>
+            <if test="damageCase != null">damage_case = #{damageCase},</if>
+            <if test="horizontalPositions != null">horizontal_positions = #{horizontalPositions},</if>
+            <if test="forecastCase != null">forecast_case = #{forecastCase},</if>
+            <if test="disposeMeasure != null">dispose_measure = #{disposeMeasure},</if>
+            <if test="drivingDirection != null">driving_direction = #{drivingDirection},</if>
+            <if test="disposeStake != null">dispose_stake = #{disposeStake},</if>
+            <if test="disposeRemark != null">dispose_remark = #{disposeRemark},</if>
+            <if test="disposeTime != null">dispose_time = #{disposeTime},</if>
+            <if test="disposeImg != null">dispose_img = #{disposeImg},</if>
+        </trim>
+        where wdid = #{wdid}
+    </update>
+
+    <delete id="deleteHwWayDiseaseByWdid" parameterType="Long">
+        delete from hw_way_disease where wdid = #{wdid}
+    </delete>
+
+    <delete id="deleteHwWayDiseaseByWdids" parameterType="String">
+        delete from hw_way_disease where wdid in 
+        <foreach item="wdid" collection="array" open="(" separator="," close=")">
+            #{wdid}
+        </foreach>
+    </delete>
+</mapper>
