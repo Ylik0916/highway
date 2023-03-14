@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hg.system.mapper.HwTunnelMapper">
+    
+    <resultMap type="HwTunnel" id="HwTunnelResult">
+        <result property="tunnelId"    column="tunnel_id"    />
+        <result property="routeCoding"    column="route_coding"    />
+        <result property="routeName"    column="route_name"    />
+        <result property="tunnelName"    column="tunnel_name"    />
+        <result property="tunnelNumber"    column="tunnel_number"    />
+        <result property="tunnelCenterPileNumber"    column="tunnel_center_pile_number"    />
+        <result property="startingPileNumber"    column="starting_pile_number"    />
+        <result property="tunnelLength"    column="tunnel_length"    />
+        <result property="tunnelOverallWidth"    column="tunnel_overall_width"    />
+        <result property="tunnelClearWidth"    column="tunnel_clear_width"    />
+        <result property="tunnelClearHeight"    column="tunnel_clear_height"    />
+        <result property="sidewalkWidth"    column="sidewalk_width"    />
+        <result property="tunnelLengthType"    column="tunnel_length_type"    />
+        <result property="sectionForm"    column="section_form"    />
+        <result property="openingForm"    column="opening_form"    />
+        <result property="liningMaterial"    column="lining_material"    />
+        <result property="fireEquipments"    column="fire_equipments"    />
+        <result property="numberOfSafeChannels"    column="number_of_safe_channels"    />
+        <result property="underwaterTunnelOrNot"    column="underwater_tunnel_or_not"    />
+        <result property="natureOfCustodialUnit"    column="nature_of_custodial_unit"    />
+        <result property="tunnelRating"    column="tunnel_rating"    />
+        <result property="dateOfAssessment"    column="date_of_assessment"    />
+        <result property="ratingUnit"    column="rating_unit"    />
+        <result property="tunnelRatingCivilConstruction"    column="tunnel_rating_civil_construction"    />
+        <result property="ratingDateCivilConstruction"    column="rating_date_civil_construction"    />
+        <result property="evaluateTheCivilConstruction"    column="evaluate_the_civil_construction"    />
+        <result property="tunnelRatingGrade"    column="tunnel_rating_grade"    />
+        <result property="ratingUnitMechanical"    column="rating_unit_mechanical"    />
+        <result property="dateOfEvaluation"    column="date_of_evaluation"    />
+        <result property="tunnelRatingOther"    column="tunnel_rating_other"    />
+        <result property="ratingUnitOther"    column="rating_unit_other"    />
+        <result property="originalTunnelCoding"    column="original_tunnel_coding"    />
+        <result property="typeOfPavementLayer"    column="type_of_pavement_layer"    />
+        <result property="tunnelLighting"    column="tunnel_lighting"    />
+        <result property="tunnelVentilation"    column="tunnel_ventilation"    />
+        <result property="tunnelElevation"    column="tunnel_elevation"    />
+        <result property="tunnelMaintenanceGrade"    column="tunnel_maintenance_grade"    />
+        <result property="tunnelDrainageType"    column="tunnel_drainage_type"    />
+        <result property="tunnelLocation"    column="tunnel_location"    />
+        <result property="completionTime"    column="completion_time"    />
+        <result property="openingDate"    column="opening_date"    />
+        <result property="reasonForChange"    column="reason_for_change"    />
+        <result property="tunnelElectronics"    column="tunnel_electronics"    />
+        <result property="nameOfDesignCompany"    column="name_of_design_company"    />
+        <result property="nameOfSupervisoryUnit"    column="name_of_supervisory_unit"    />
+        <result property="nameOfConstructionUnit"    column="name_of_construction_unit"    />
+        <result property="nameOfSupervisionUnit"    column="name_of_supervision_unit"    />
+        <result property="nameOfConstruction"    column="name_of_construction"    />
+        <result property="custodialUnitCode"    column="custodial_unit_code"    />
+        <result property="nameOfCustodialUnit"    column="name_of_custodial_unit"    />
+        <result property="conversionYear"    column="conversion_year"    />
+        <result property="tunnelReconstructionSite"    column="tunnel_reconstruction_site"    />
+        <result property="recentRenovationProject"    column="recent_renovation_project"    />
+        <result property="dateOfCompletion"    column="date_of_completion"    />
+        <result property="tunnelTroubleLocation"    column="tunnel_trouble_location"    />
+        <result property="tunnelDamageDescription"    column="Tunnel_damage_description"    />
+        <result property="tunnelLongitude"    column="tunnel_longitude"    />
+        <result property="tunnelLatitude"    column="tunnel_latitude"    />
+        <result property="reportingUnit"    column="reporting_unit"    />
+        <result property="reportingUnitCode"    column="reporting_unit_code"    />
+        <result property="reportingUnitPrincipal"    column="reporting_unit_principal"    />
+        <result property="reportingPerson"    column="reporting_person"    />
+        <result property="reportingPersonTelephone"    column="reporting_person_telephone"    />
+        <result property="auditor"    column="auditor"    />
+        <result property="auditorTelephone"    column="auditor_telephone"    />
+        <result property="acquisitionTime"    column="acquisition_time"    />
+        <result property="modificationTime"    column="modification_time"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="routeId"    column="route_id"    />
+        <result property="longTunnelDirectory"    column="long_tunnel_directory"    />
+    </resultMap>
+
+    <sql id="selectHwTunnelVo">
+        select tunnel_id, route_coding, route_name, tunnel_name, tunnel_number, tunnel_center_pile_number, starting_pile_number, tunnel_length, tunnel_overall_width, tunnel_clear_width, tunnel_clear_height, sidewalk_width, tunnel_length_type, section_form, opening_form, lining_material, fire_equipments, number_of_safe_channels, underwater_tunnel_or_not, nature_of_custodial_unit, tunnel_rating, date_of_assessment, rating_unit, tunnel_rating_civil_construction, rating_date_civil_construction, evaluate_the_civil_construction, tunnel_rating_grade, rating_unit_mechanical, date_of_evaluation, tunnel_rating_other, rating_unit_other, original_tunnel_coding, type_of_pavement_layer, tunnel_lighting, tunnel_ventilation, tunnel_elevation, tunnel_maintenance_grade, tunnel_drainage_type, tunnel_location, completion_time, opening_date, reason_for_change, tunnel_electronics, name_of_design_company, name_of_supervisory_unit, name_of_construction_unit, name_of_supervision_unit, name_of_construction, custodial_unit_code, name_of_custodial_unit, conversion_year, tunnel_reconstruction_site, recent_renovation_project, date_of_completion, tunnel_trouble_location, Tunnel_damage_description, tunnel_longitude, tunnel_latitude, reporting_unit, reporting_unit_code, reporting_unit_principal, reporting_person, reporting_person_telephone, auditor, auditor_telephone, acquisition_time, modification_time, remarks, route_id, long_tunnel_directory from hw_tunnel
+    </sql>
+
+    <select id="selectHwTunnelList" parameterType="HwTunnel" resultMap="HwTunnelResult">
+        <include refid="selectHwTunnelVo"/>
+        <where>  
+        </where>
+    </select>
+    
+    <select id="selectHwTunnelByTunnelId" parameterType="Long" resultMap="HwTunnelResult">
+        <include refid="selectHwTunnelVo"/>
+        where tunnel_id = #{tunnelId}
+    </select>
+        
+    <insert id="insertHwTunnel" parameterType="HwTunnel" useGeneratedKeys="true" keyProperty="tunnelId">
+        insert into hw_tunnel
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="routeCoding != null">route_coding,</if>
+            <if test="routeName != null">route_name,</if>
+            <if test="tunnelName != null and tunnelName != ''">tunnel_name,</if>
+            <if test="tunnelNumber != null and tunnelNumber != ''">tunnel_number,</if>
+            <if test="tunnelCenterPileNumber != null">tunnel_center_pile_number,</if>
+            <if test="startingPileNumber != null">starting_pile_number,</if>
+            <if test="tunnelLength != null">tunnel_length,</if>
+            <if test="tunnelOverallWidth != null">tunnel_overall_width,</if>
+            <if test="tunnelClearWidth != null">tunnel_clear_width,</if>
+            <if test="tunnelClearHeight != null">tunnel_clear_height,</if>
+            <if test="sidewalkWidth != null">sidewalk_width,</if>
+            <if test="tunnelLengthType != null">tunnel_length_type,</if>
+            <if test="sectionForm != null">section_form,</if>
+            <if test="openingForm != null">opening_form,</if>
+            <if test="liningMaterial != null">lining_material,</if>
+            <if test="fireEquipments != null">fire_equipments,</if>
+            <if test="numberOfSafeChannels != null">number_of_safe_channels,</if>
+            <if test="underwaterTunnelOrNot != null">underwater_tunnel_or_not,</if>
+            <if test="natureOfCustodialUnit != null">nature_of_custodial_unit,</if>
+            <if test="tunnelRating != null">tunnel_rating,</if>
+            <if test="dateOfAssessment != null">date_of_assessment,</if>
+            <if test="ratingUnit != null">rating_unit,</if>
+            <if test="tunnelRatingCivilConstruction != null">tunnel_rating_civil_construction,</if>
+            <if test="ratingDateCivilConstruction != null">rating_date_civil_construction,</if>
+            <if test="evaluateTheCivilConstruction != null">evaluate_the_civil_construction,</if>
+            <if test="tunnelRatingGrade != null">tunnel_rating_grade,</if>
+            <if test="ratingUnitMechanical != null">rating_unit_mechanical,</if>
+            <if test="dateOfEvaluation != null">date_of_evaluation,</if>
+            <if test="tunnelRatingOther != null">tunnel_rating_other,</if>
+            <if test="ratingUnitOther != null">rating_unit_other,</if>
+            <if test="originalTunnelCoding != null">original_tunnel_coding,</if>
+            <if test="typeOfPavementLayer != null">type_of_pavement_layer,</if>
+            <if test="tunnelLighting != null">tunnel_lighting,</if>
+            <if test="tunnelVentilation != null">tunnel_ventilation,</if>
+            <if test="tunnelElevation != null">tunnel_elevation,</if>
+            <if test="tunnelMaintenanceGrade != null">tunnel_maintenance_grade,</if>
+            <if test="tunnelDrainageType != null">tunnel_drainage_type,</if>
+            <if test="tunnelLocation != null and tunnelLocation != ''">tunnel_location,</if>
+            <if test="completionTime != null">completion_time,</if>
+            <if test="openingDate != null">opening_date,</if>
+            <if test="reasonForChange != null">reason_for_change,</if>
+            <if test="tunnelElectronics != null">tunnel_electronics,</if>
+            <if test="nameOfDesignCompany != null">name_of_design_company,</if>
+            <if test="nameOfSupervisoryUnit != null">name_of_supervisory_unit,</if>
+            <if test="nameOfConstructionUnit != null">name_of_construction_unit,</if>
+            <if test="nameOfSupervisionUnit != null">name_of_supervision_unit,</if>
+            <if test="nameOfConstruction != null">name_of_construction,</if>
+            <if test="custodialUnitCode != null">custodial_unit_code,</if>
+            <if test="nameOfCustodialUnit != null">name_of_custodial_unit,</if>
+            <if test="conversionYear != null">conversion_year,</if>
+            <if test="tunnelReconstructionSite != null">tunnel_reconstruction_site,</if>
+            <if test="recentRenovationProject != null">recent_renovation_project,</if>
+            <if test="dateOfCompletion != null">date_of_completion,</if>
+            <if test="tunnelTroubleLocation != null">tunnel_trouble_location,</if>
+            <if test="tunnelDamageDescription != null">Tunnel_damage_description,</if>
+            <if test="tunnelLongitude != null and tunnelLongitude != ''">tunnel_longitude,</if>
+            <if test="tunnelLatitude != null and tunnelLatitude != ''">tunnel_latitude,</if>
+            <if test="reportingUnit != null and reportingUnit != ''">reporting_unit,</if>
+            <if test="reportingUnitCode != null and reportingUnitCode != ''">reporting_unit_code,</if>
+            <if test="reportingUnitPrincipal != null and reportingUnitPrincipal != ''">reporting_unit_principal,</if>
+            <if test="reportingPerson != null and reportingPerson != ''">reporting_person,</if>
+            <if test="reportingPersonTelephone != null and reportingPersonTelephone != ''">reporting_person_telephone,</if>
+            <if test="auditor != null and auditor != ''">auditor,</if>
+            <if test="auditorTelephone != null and auditorTelephone != ''">auditor_telephone,</if>
+            <if test="acquisitionTime != null">acquisition_time,</if>
+            <if test="modificationTime != null">modification_time,</if>
+            <if test="remarks != null and remarks != ''">remarks,</if>
+            <if test="routeId != null">route_id,</if>
+            <if test="longTunnelDirectory != null">long_tunnel_directory,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="routeCoding != null">#{routeCoding},</if>
+            <if test="routeName != null">#{routeName},</if>
+            <if test="tunnelName != null and tunnelName != ''">#{tunnelName},</if>
+            <if test="tunnelNumber != null and tunnelNumber != ''">#{tunnelNumber},</if>
+            <if test="tunnelCenterPileNumber != null">#{tunnelCenterPileNumber},</if>
+            <if test="startingPileNumber != null">#{startingPileNumber},</if>
+            <if test="tunnelLength != null">#{tunnelLength},</if>
+            <if test="tunnelOverallWidth != null">#{tunnelOverallWidth},</if>
+            <if test="tunnelClearWidth != null">#{tunnelClearWidth},</if>
+            <if test="tunnelClearHeight != null">#{tunnelClearHeight},</if>
+            <if test="sidewalkWidth != null">#{sidewalkWidth},</if>
+            <if test="tunnelLengthType != null">#{tunnelLengthType},</if>
+            <if test="sectionForm != null">#{sectionForm},</if>
+            <if test="openingForm != null">#{openingForm},</if>
+            <if test="liningMaterial != null">#{liningMaterial},</if>
+            <if test="fireEquipments != null">#{fireEquipments},</if>
+            <if test="numberOfSafeChannels != null">#{numberOfSafeChannels},</if>
+            <if test="underwaterTunnelOrNot != null">#{underwaterTunnelOrNot},</if>
+            <if test="natureOfCustodialUnit != null">#{natureOfCustodialUnit},</if>
+            <if test="tunnelRating != null">#{tunnelRating},</if>
+            <if test="dateOfAssessment != null">#{dateOfAssessment},</if>
+            <if test="ratingUnit != null">#{ratingUnit},</if>
+            <if test="tunnelRatingCivilConstruction != null">#{tunnelRatingCivilConstruction},</if>
+            <if test="ratingDateCivilConstruction != null">#{ratingDateCivilConstruction},</if>
+            <if test="evaluateTheCivilConstruction != null">#{evaluateTheCivilConstruction},</if>
+            <if test="tunnelRatingGrade != null">#{tunnelRatingGrade},</if>
+            <if test="ratingUnitMechanical != null">#{ratingUnitMechanical},</if>
+            <if test="dateOfEvaluation != null">#{dateOfEvaluation},</if>
+            <if test="tunnelRatingOther != null">#{tunnelRatingOther},</if>
+            <if test="ratingUnitOther != null">#{ratingUnitOther},</if>
+            <if test="originalTunnelCoding != null">#{originalTunnelCoding},</if>
+            <if test="typeOfPavementLayer != null">#{typeOfPavementLayer},</if>
+            <if test="tunnelLighting != null">#{tunnelLighting},</if>
+            <if test="tunnelVentilation != null">#{tunnelVentilation},</if>
+            <if test="tunnelElevation != null">#{tunnelElevation},</if>
+            <if test="tunnelMaintenanceGrade != null">#{tunnelMaintenanceGrade},</if>
+            <if test="tunnelDrainageType != null">#{tunnelDrainageType},</if>
+            <if test="tunnelLocation != null and tunnelLocation != ''">#{tunnelLocation},</if>
+            <if test="completionTime != null">#{completionTime},</if>
+            <if test="openingDate != null">#{openingDate},</if>
+            <if test="reasonForChange != null">#{reasonForChange},</if>
+            <if test="tunnelElectronics != null">#{tunnelElectronics},</if>
+            <if test="nameOfDesignCompany != null">#{nameOfDesignCompany},</if>
+            <if test="nameOfSupervisoryUnit != null">#{nameOfSupervisoryUnit},</if>
+            <if test="nameOfConstructionUnit != null">#{nameOfConstructionUnit},</if>
+            <if test="nameOfSupervisionUnit != null">#{nameOfSupervisionUnit},</if>
+            <if test="nameOfConstruction != null">#{nameOfConstruction},</if>
+            <if test="custodialUnitCode != null">#{custodialUnitCode},</if>
+            <if test="nameOfCustodialUnit != null">#{nameOfCustodialUnit},</if>
+            <if test="conversionYear != null">#{conversionYear},</if>
+            <if test="tunnelReconstructionSite != null">#{tunnelReconstructionSite},</if>
+            <if test="recentRenovationProject != null">#{recentRenovationProject},</if>
+            <if test="dateOfCompletion != null">#{dateOfCompletion},</if>
+            <if test="tunnelTroubleLocation != null">#{tunnelTroubleLocation},</if>
+            <if test="tunnelDamageDescription != null">#{tunnelDamageDescription},</if>
+            <if test="tunnelLongitude != null and tunnelLongitude != ''">#{tunnelLongitude},</if>
+            <if test="tunnelLatitude != null and tunnelLatitude != ''">#{tunnelLatitude},</if>
+            <if test="reportingUnit != null and reportingUnit != ''">#{reportingUnit},</if>
+            <if test="reportingUnitCode != null and reportingUnitCode != ''">#{reportingUnitCode},</if>
+            <if test="reportingUnitPrincipal != null and reportingUnitPrincipal != ''">#{reportingUnitPrincipal},</if>
+            <if test="reportingPerson != null and reportingPerson != ''">#{reportingPerson},</if>
+            <if test="reportingPersonTelephone != null and reportingPersonTelephone != ''">#{reportingPersonTelephone},</if>
+            <if test="auditor != null and auditor != ''">#{auditor},</if>
+            <if test="auditorTelephone != null and auditorTelephone != ''">#{auditorTelephone},</if>
+            <if test="acquisitionTime != null">#{acquisitionTime},</if>
+            <if test="modificationTime != null">#{modificationTime},</if>
+            <if test="remarks != null and remarks != ''">#{remarks},</if>
+            <if test="routeId != null">#{routeId},</if>
+            <if test="longTunnelDirectory != null">#{longTunnelDirectory},</if>
+         </trim>
+    </insert>
+
+    <update id="updateHwTunnel" parameterType="HwTunnel">
+        update hw_tunnel
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="routeCoding != null">route_coding = #{routeCoding},</if>
+            <if test="routeName != null">route_name = #{routeName},</if>
+            <if test="tunnelName != null and tunnelName != ''">tunnel_name = #{tunnelName},</if>
+            <if test="tunnelNumber != null and tunnelNumber != ''">tunnel_number = #{tunnelNumber},</if>
+            <if test="tunnelCenterPileNumber != null">tunnel_center_pile_number = #{tunnelCenterPileNumber},</if>
+            <if test="startingPileNumber != null">starting_pile_number = #{startingPileNumber},</if>
+            <if test="tunnelLength != null">tunnel_length = #{tunnelLength},</if>
+            <if test="tunnelOverallWidth != null">tunnel_overall_width = #{tunnelOverallWidth},</if>
+            <if test="tunnelClearWidth != null">tunnel_clear_width = #{tunnelClearWidth},</if>
+            <if test="tunnelClearHeight != null">tunnel_clear_height = #{tunnelClearHeight},</if>
+            <if test="sidewalkWidth != null">sidewalk_width = #{sidewalkWidth},</if>
+            <if test="tunnelLengthType != null">tunnel_length_type = #{tunnelLengthType},</if>
+            <if test="sectionForm != null">section_form = #{sectionForm},</if>
+            <if test="openingForm != null">opening_form = #{openingForm},</if>
+            <if test="liningMaterial != null">lining_material = #{liningMaterial},</if>
+            <if test="fireEquipments != null">fire_equipments = #{fireEquipments},</if>
+            <if test="numberOfSafeChannels != null">number_of_safe_channels = #{numberOfSafeChannels},</if>
+            <if test="underwaterTunnelOrNot != null">underwater_tunnel_or_not = #{underwaterTunnelOrNot},</if>
+            <if test="natureOfCustodialUnit != null">nature_of_custodial_unit = #{natureOfCustodialUnit},</if>
+            <if test="tunnelRating != null">tunnel_rating = #{tunnelRating},</if>
+            <if test="dateOfAssessment != null">date_of_assessment = #{dateOfAssessment},</if>
+            <if test="ratingUnit != null">rating_unit = #{ratingUnit},</if>
+            <if test="tunnelRatingCivilConstruction != null">tunnel_rating_civil_construction = #{tunnelRatingCivilConstruction},</if>
+            <if test="ratingDateCivilConstruction != null">rating_date_civil_construction = #{ratingDateCivilConstruction},</if>
+            <if test="evaluateTheCivilConstruction != null">evaluate_the_civil_construction = #{evaluateTheCivilConstruction},</if>
+            <if test="tunnelRatingGrade != null">tunnel_rating_grade = #{tunnelRatingGrade},</if>
+            <if test="ratingUnitMechanical != null">rating_unit_mechanical = #{ratingUnitMechanical},</if>
+            <if test="dateOfEvaluation != null">date_of_evaluation = #{dateOfEvaluation},</if>
+            <if test="tunnelRatingOther != null">tunnel_rating_other = #{tunnelRatingOther},</if>
+            <if test="ratingUnitOther != null">rating_unit_other = #{ratingUnitOther},</if>
+            <if test="originalTunnelCoding != null">original_tunnel_coding = #{originalTunnelCoding},</if>
+            <if test="typeOfPavementLayer != null">type_of_pavement_layer = #{typeOfPavementLayer},</if>
+            <if test="tunnelLighting != null">tunnel_lighting = #{tunnelLighting},</if>
+            <if test="tunnelVentilation != null">tunnel_ventilation = #{tunnelVentilation},</if>
+            <if test="tunnelElevation != null">tunnel_elevation = #{tunnelElevation},</if>
+            <if test="tunnelMaintenanceGrade != null">tunnel_maintenance_grade = #{tunnelMaintenanceGrade},</if>
+            <if test="tunnelDrainageType != null">tunnel_drainage_type = #{tunnelDrainageType},</if>
+            <if test="tunnelLocation != null and tunnelLocation != ''">tunnel_location = #{tunnelLocation},</if>
+            <if test="completionTime != null">completion_time = #{completionTime},</if>
+            <if test="openingDate != null">opening_date = #{openingDate},</if>
+            <if test="reasonForChange != null">reason_for_change = #{reasonForChange},</if>
+            <if test="tunnelElectronics != null">tunnel_electronics = #{tunnelElectronics},</if>
+            <if test="nameOfDesignCompany != null">name_of_design_company = #{nameOfDesignCompany},</if>
+            <if test="nameOfSupervisoryUnit != null">name_of_supervisory_unit = #{nameOfSupervisoryUnit},</if>
+            <if test="nameOfConstructionUnit != null">name_of_construction_unit = #{nameOfConstructionUnit},</if>
+            <if test="nameOfSupervisionUnit != null">name_of_supervision_unit = #{nameOfSupervisionUnit},</if>
+            <if test="nameOfConstruction != null">name_of_construction = #{nameOfConstruction},</if>
+            <if test="custodialUnitCode != null">custodial_unit_code = #{custodialUnitCode},</if>
+            <if test="nameOfCustodialUnit != null">name_of_custodial_unit = #{nameOfCustodialUnit},</if>
+            <if test="conversionYear != null">conversion_year = #{conversionYear},</if>
+            <if test="tunnelReconstructionSite != null">tunnel_reconstruction_site = #{tunnelReconstructionSite},</if>
+            <if test="recentRenovationProject != null">recent_renovation_project = #{recentRenovationProject},</if>
+            <if test="dateOfCompletion != null">date_of_completion = #{dateOfCompletion},</if>
+            <if test="tunnelTroubleLocation != null">tunnel_trouble_location = #{tunnelTroubleLocation},</if>
+            <if test="tunnelDamageDescription != null">Tunnel_damage_description = #{tunnelDamageDescription},</if>
+            <if test="tunnelLongitude != null and tunnelLongitude != ''">tunnel_longitude = #{tunnelLongitude},</if>
+            <if test="tunnelLatitude != null and tunnelLatitude != ''">tunnel_latitude = #{tunnelLatitude},</if>
+            <if test="reportingUnit != null and reportingUnit != ''">reporting_unit = #{reportingUnit},</if>
+            <if test="reportingUnitCode != null and reportingUnitCode != ''">reporting_unit_code = #{reportingUnitCode},</if>
+            <if test="reportingUnitPrincipal != null and reportingUnitPrincipal != ''">reporting_unit_principal = #{reportingUnitPrincipal},</if>
+            <if test="reportingPerson != null and reportingPerson != ''">reporting_person = #{reportingPerson},</if>
+            <if test="reportingPersonTelephone != null and reportingPersonTelephone != ''">reporting_person_telephone = #{reportingPersonTelephone},</if>
+            <if test="auditor != null and auditor != ''">auditor = #{auditor},</if>
+            <if test="auditorTelephone != null and auditorTelephone != ''">auditor_telephone = #{auditorTelephone},</if>
+            <if test="acquisitionTime != null">acquisition_time = #{acquisitionTime},</if>
+            <if test="modificationTime != null">modification_time = #{modificationTime},</if>
+            <if test="remarks != null and remarks != ''">remarks = #{remarks},</if>
+            <if test="routeId != null">route_id = #{routeId},</if>
+            <if test="longTunnelDirectory != null">long_tunnel_directory = #{longTunnelDirectory},</if>
+        </trim>
+        where tunnel_id = #{tunnelId}
+    </update>
+
+    <delete id="deleteHwTunnelByTunnelId" parameterType="Long">
+        delete from hw_tunnel where tunnel_id = #{tunnelId}
+    </delete>
+
+    <delete id="deleteHwTunnelByTunnelIds" parameterType="String">
+        delete from hw_tunnel where tunnel_id in 
+        <foreach item="tunnelId" collection="array" open="(" separator="," close=")">
+            #{tunnelId}
+        </foreach>
+    </delete>
+</mapper>
