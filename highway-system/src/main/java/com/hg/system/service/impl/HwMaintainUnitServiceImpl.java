@@ -1,24 +1,33 @@
 package com.hg.system.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.hg.system.domain.HwMaintainRegion;
 import com.hg.system.domain.HwMaintainUnit;
+import com.hg.system.mapper.HwMaintainRegionMapper;
 import com.hg.system.mapper.HwMaintainUnitMapper;
 import com.hg.system.service.IHwMaintainUnitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 养护单位管理Service业务层处理
  * 
- * @author ruoyi
+ * @author hg
  * @date 2023-03-07
  */
 @Service
+@Transactional
 public class HwMaintainUnitServiceImpl implements IHwMaintainUnitService
 {
     @Autowired
     private HwMaintainUnitMapper hwMaintainUnitMapper;
+
+    @Autowired
+    private HwMaintainRegionMapper hwMaintainRegionMapper;
+
 
     /**
      * 查询养护单位管理
@@ -29,7 +38,10 @@ public class HwMaintainUnitServiceImpl implements IHwMaintainUnitService
     @Override
     public HwMaintainUnit selectHwMaintainUnitByMuid(Long muid)
     {
-        return hwMaintainUnitMapper.selectHwMaintainUnitByMuid(muid);
+        HwMaintainUnit hwMaintainUnit = hwMaintainUnitMapper.selectHwMaintainUnitByMuid(muid);
+        List<Integer> list = hwMaintainRegionMapper.selectHwMaintainRegionByMuid(muid);
+        hwMaintainUnit.setAdministrative(list);
+        return hwMaintainUnit;
     }
 
     /**
@@ -53,7 +65,15 @@ public class HwMaintainUnitServiceImpl implements IHwMaintainUnitService
     @Override
     public int insertHwMaintainUnit(HwMaintainUnit hwMaintainUnit)
     {
-        return hwMaintainUnitMapper.insertHwMaintainUnit(hwMaintainUnit);
+        hwMaintainUnitMapper.insertHwMaintainUnit(hwMaintainUnit);
+        List<HwMaintainRegion> regionList = new ArrayList<>();
+        for (Integer integer : hwMaintainUnit.getAdministrative()) {
+            HwMaintainRegion hwMaintainRegion = new HwMaintainRegion();
+            hwMaintainRegion.setMuid(hwMaintainUnit.getMuid());
+            hwMaintainRegion.setRegionid(Long.valueOf(integer));
+            regionList.add(hwMaintainRegion);
+        }
+        return hwMaintainRegionMapper.insertHwMaintainRegionList(regionList);
     }
 
     /**

@@ -20,13 +20,13 @@
       <el-form-item label="审核状态" prop="auditStatusid">
         <el-input
           v-model="queryParams.auditStatusid"
-          placeholder="请输入审核状态id"
+          placeholder="请输入审核状态"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+	    <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
@@ -44,43 +44,24 @@
       </el-col>
       <el-col :span="1.5">
         <el-button
-          type="success"
+          type="info"
           plain
-          icon="el-icon-edit"
+          icon="el-icon-sort"
           size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:ordinary:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['system:ordinary:remove']"
-        >删除</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['system:ordinary:export']"
-        >导出</el-button>
+          @click="toggleExpandAll"
+        >展开/折叠</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="ordinaryList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="" align="center" prop="mpoid" />
-      <el-table-column label="行政区" align="center" prop="administrative" />
+    <el-table
+      v-if="refreshTable"
+      v-loading="loading"
+      :data="ordinaryList"
+      :default-expand-all="isExpandAll"
+      :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+    >
+<!--      row-key="administrative"-->
       <el-table-column label="路线编码" align="center" prop="pathCode" />
       <el-table-column label="村道名称" align="center" prop="villageName" />
       <el-table-column label="养护里程" align="center" prop="maintainMileage" />
@@ -102,6 +83,13 @@
           <el-button
             size="mini"
             type="text"
+            icon="el-icon-plus"
+            @click="handleAdd(scope.row)"
+            v-hasPermi="['system:ordinary:add']"
+          >新增</el-button>
+          <el-button
+            size="mini"
+            type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['system:ordinary:remove']"
@@ -110,17 +98,12 @@
       </el-table-column>
     </el-table>
 
-    <pagination
-      v-show="total>0"
-      :total="total"
-      :page.sync="queryParams.pageNum"
-      :limit.sync="queryParams.pageSize"
-      @pagination="getList"
-    />
-
     <!-- 添加或修改一般养护对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+        <el-form-item label="行政区" prop="administrative">
+          <treeselect v-model="form.administrative" :options="ordinaryOptions" :normalizer="normalizer" placeholder="请选择行政区" />
+        </el-form-item>
         <el-form-item label="路线编码" prop="pathCode">
           <el-input v-model="form.pathCode" placeholder="请输入路线编码" />
         </el-form-item>
@@ -159,33 +142,35 @@
 
 <script>
 import { listOrdinary, getOrdinary, delOrdinary, addOrdinary, updateOrdinary } from "@/api/system/ordinary";
+import Treeselect from "@riophae/vue-treeselect";
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
+import { listDept } from "@/api/system/dept";
 
 export default {
   name: "Ordinary",
+  components: {
+    Treeselect
+  },
   data() {
     return {
       // 遮罩层
       loading: true,
-      // 选中数组
-      ids: [],
-      // 非单个禁用
-      single: true,
-      // 非多个禁用
-      multiple: true,
       // 显示搜索条件
       showSearch: true,
-      // 总条数
-      total: 0,
       // 一般养护表格数据
       ordinaryList: [],
+      // 一般养护树选项
+      ordinaryOptions: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
       open: false,
+      // 是否展开，默认全部展开
+      isExpandAll: true,
+      // 重新渲染表格状态
+      refreshTable: true,
       // 查询参数
       queryParams: {
-        pageNum: 1,
-        pageSize: 10,
         administrative: null,
         pathCode: null,
         villageName: null,
@@ -212,9 +197,28 @@ export default {
     getList() {
       this.loading = true;
       listOrdinary(this.queryParams).then(response => {
-        this.ordinaryList = response.rows;
-        this.total = response.total;
+        // this.ordinaryList = this.handleTree(response.data, "deptId", "parentId");
+        this.ordinaryList = response.data;
         this.loading = false;
+      });
+    },
+    /** 转换一般养护数据结构 */
+    normalizer(node) {
+      if (node.children && !node.children.length) {
+        delete node.children;
+      }
+      return {
+        id: node.deptId,
+        label: node.deptName,
+        children: node.children
+      };
+    },
+	/** 查询一般养护下拉树结构 */
+    getTreeselect() {
+      listDept().then(response => {
+        this.ordinaryOptions = [];
+        // const data = { deptId: 0, deptName: '大陆', children: [] };
+        this.ordinaryOptions = this.handleTree(response.data, "deptId", "parentId");
       });
     },
     // 取消按钮
@@ -241,7 +245,6 @@ export default {
     },
     /** 搜索按钮操作 */
     handleQuery() {
-      this.queryParams.pageNum = 1;
       this.getList();
     },
     /** 重置按钮操作 */
@@ -249,23 +252,34 @@ export default {
       this.resetForm("queryForm");
       this.handleQuery();
     },
-    // 多选框选中数据
-    handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.mpoid)
-      this.single = selection.length!==1
-      this.multiple = !selection.length
-    },
     /** 新增按钮操作 */
-    handleAdd() {
+    handleAdd(row) {
       this.reset();
+      this.getTreeselect();
+      // if (row != null && row.administrative) {
+      //   this.form.administrative = row.administrative;
+      // } else {
+      //   this.form.administrative = 0;
+      // }
       this.open = true;
       this.title = "添加一般养护";
+    },
+    /** 展开/折叠操作 */
+    toggleExpandAll() {
+      this.refreshTable = false;
+      this.isExpandAll = !this.isExpandAll;
+      this.$nextTick(() => {
+        this.refreshTable = true;
+      });
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
-      const mpoid = row.mpoid || this.ids
-      getOrdinary(mpoid).then(response => {
+      this.getTreeselect();
+      if (row != null) {
+        this.form.administrative = row.administrative;
+      }
+      getOrdinary(row.mpoid).then(response => {
         this.form = response.data;
         this.open = true;
         this.title = "修改一般养护";
@@ -274,6 +288,7 @@ export default {
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
+        console.log(this.form)
         if (valid) {
           if (this.form.mpoid != null) {
             updateOrdinary(this.form).then(response => {
@@ -293,19 +308,12 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      const mpoids = row.mpoid || this.ids;
-      this.$modal.confirm('是否确认删除一般养护编号为"' + mpoids + '"的数据项？').then(function() {
-        return delOrdinary(mpoids);
+      this.$modal.confirm('是否确认删除一般养护编号为"' + row.mpoid + '"的数据项？').then(function() {
+        return delOrdinary(row.mpoid);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
-    },
-    /** 导出按钮操作 */
-    handleExport() {
-      this.download('system/ordinary/export', {
-        ...this.queryParams
-      }, `ordinary_${new Date().getTime()}.xlsx`)
     }
   }
 };

@@ -77,6 +77,8 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
     <el-table v-loading="loading" :data="unitList" @selection-change="handleSelectionChange">
+      <el-table-column type="selection" width="55" align="center" />
+      <el-table-column label="" align="center" prop="muid" />
       <el-table-column label="单位编码" :show-overflow-tooltip="true" align="center" prop="unitCode" />
       <el-table-column label="单位全称" :show-overflow-tooltip="true" align="center" prop="unitDesignation" />
       <el-table-column label="单位名称" :show-overflow-tooltip="true" align="center" prop="unitName" />
@@ -119,35 +121,67 @@
     />
 
     <!-- 添加或修改养护单位管理对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
+    <el-dialog :title="title" :visible.sync="open" width="1100px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="110px">
-        <el-form-item label="单位编码" prop="unitCode">
-          <el-input v-model="form.unitCode" placeholder="请输入单位编码" />
-        </el-form-item>
-        <el-form-item label="单位全称" prop="unitDesignation">
-          <el-input v-model="form.unitDesignation" placeholder="请输入单位全称" />
-        </el-form-item>
-        <el-form-item label="单位名称" prop="unitName">
-          <el-input v-model="form.unitName" placeholder="请输入单位名称" />
-        </el-form-item>
-        <el-form-item label="养护用户登录名" prop="loginName">
-          <el-input v-model="form.loginName" placeholder="请输入登录名" />
-        </el-form-item>
-        <el-form-item label="单位地址" prop="unitSite">
-          <el-input v-model="form.unitSite" placeholder="请输入单位地址" />
-        </el-form-item>
-        <el-form-item label="单位电话" prop="uniyPhone">
-          <el-input v-model="form.uniyPhone" placeholder="请输入单位电话" />
-        </el-form-item>
-        <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" placeholder="请输入备注" />
-        </el-form-item>
+        <el-row>
+          <el-col :span="8">
+            <div class="grid-content">
+              <el-form-item label="单位编码" prop="unitCode">
+                <el-input v-model="form.unitCode" placeholder="请输入单位编码" />
+              </el-form-item>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="grid-content">
+              <el-form-item label="单位全称" prop="unitDesignation">
+                <el-input v-model="form.unitDesignation" placeholder="请输入单位全称" />
+              </el-form-item>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="grid-content">
+              <el-form-item label="单位名称" prop="unitName">
+                <el-input v-model="form.unitName" placeholder="请输入单位名称" />
+              </el-form-item>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="8">
+            <div class="grid-content">
+              <el-form-item label="养护用户登录名" prop="loginName">
+                <el-input v-model="form.loginName" placeholder="请输入登录名" />
+              </el-form-item>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="grid-content">
+              <el-form-item label="单位地址" prop="unitSite">
+                <el-input v-model="form.unitSite" placeholder="请输入单位地址" />
+              </el-form-item>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="grid-content">
+              <el-form-item label="单位电话" prop="uniyPhone">
+                <el-input v-model="form.uniyPhone" placeholder="请输入单位电话" />
+              </el-form-item>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="8">
+            <div class="grid-content">
+              <el-form-item label="备注" prop="remark">
+                <el-input v-model="form.remark" placeholder="请输入备注" />
+              </el-form-item>
+            </div>
+          </el-col>
+          <el-col :span="8"><div class="grid-content"></div></el-col>
+          <el-col :span="8"><div class="grid-content"></div></el-col>
+        </el-row>
         <el-form-item label="行政区划权限">
-          <el-cascader
-            :options="options"
-            :props="props"
-            clearable>
-          </el-cascader>
+          <treeselect :show-count="true" :multiple="true" v-model="form.administrative" :options="options" :normalizer="normalizer" placeholder="请选择行政区" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -156,8 +190,8 @@
       </div>
     </el-dialog>
 
-    <!-- 详情按钮页面 -->
-    <el-dialog :title="details" :visible.sync="detailsOpen" width="1200px" append-to-body>
+    <!-- 详情按钮页面 append-to-body-->
+    <el-dialog :title="details" :visible.sync="detailsOpen" width="1200px" append-to-body >
       <el-row>
         <el-col :span="8"><div class="grid-content"><span>单位编码:</span><span>{{form.unitCode}}</span></div></el-col>
         <el-col :span="8"><div class="grid-content"><span>单位全称:</span><span>{{form.unitDesignation}}</span></div></el-col>
@@ -174,11 +208,13 @@
       <el-row>
         <el-col :span="24"><div class="grid-content"><span>行政区划权限:</span><span>
           <el-tree
-            :data="data"
+            :data="options"
             show-checkbox
-            node-key="id"
-            :default-expanded-keys="[2, 3]"
-            :default-checked-keys="[5]">
+            node-key="deptId"
+            :props="defaultProps"
+            default-expand-all
+            :highlight-current = "true"
+            :default-checked-keys="form.administrative">
           </el-tree>
         </span></div></el-col>
       </el-row>
@@ -189,9 +225,14 @@
 <script>
 import { listUnit, getUnit, delUnit, addUnit, updateUnit } from "@/api/system/unit";
 import { listDept } from "@/api/system/dept";
+import Treeselect from "@riophae/vue-treeselect";
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
 export default {
   name: "Unit",
+  components: {
+    Treeselect
+  },
   data() {
     return {
       // 遮罩层
@@ -231,13 +272,12 @@ export default {
       // 表单校验
       rules: {
       },
-      props: {
-        multiple: true,
-        value: 'deptId',
+      options: [],
+      //详情默认配置
+      defaultProps: {
         label: 'deptName',
-        // children: 'children'
+        disabled: 'disableStatus'
       },
-      options: []
     };
   },
   created() {
@@ -268,23 +308,37 @@ export default {
         loginName: null,
         unitSite: null,
         uniyPhone: null,
-        remark: null
+        remark: null,
+        administrative: null
       };
       this.resetForm("form");
     },
-    /** 处理行政区展示数据 */
-    changeDeptList(parentId,list){
-      const res = []
+    /** 详情按钮禁用 */
+    disabledDetails(list) {
+      let res = [];
       list.forEach((i)=>{
-        if (i.parentId === parentId) {
-          const children = this.changeDeptList(i.deptId,list);
-          if (children.length) {
-            i.children = children;
-          }
+          i['disableStatus'] = true;
           res.push(i);
-        }
       });
       return res;
+    },
+    /** 转换一般养护数据结构 */
+    normalizer(node) {
+      if (node.children && !node.children.length) {
+        delete node.children;
+      }
+      return {
+        id: node.deptId,
+        label: node.deptName,
+        children: node.children
+      };
+    },
+    /** 查询一般养护下拉树结构 */
+    getTreeselect() {
+      listDept().then(response => {
+        // const data = { deptId: 0, deptName: '大陆', children: [] };
+        this.options = this.handleTree(this.disabledDetails(response.data), "deptId", "parentId");
+      });
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -305,16 +359,14 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
-      /** 打开页面前查询行政 */
-      listDept().then(response => {
-        this.options = this.changeDeptList(0,response.data);
-        this.open = true;
-        this.title = "添加养护单位管理";
-      });
+      this.getTreeselect();
+      this.open = true;
+      this.title = "添加养护单位管理";
     },
     /** 详情按钮操作 */
     handleOne(row) {
       this.reset();
+      this.getTreeselect();
       const muid = row.muid || this.ids
       getUnit(muid).then(response => {
         this.form = response.data;
@@ -343,6 +395,7 @@ export default {
               this.getList();
             });
           } else {
+            console.log(this.form)
             addUnit(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;

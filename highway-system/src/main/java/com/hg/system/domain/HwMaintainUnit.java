@@ -5,6 +5,8 @@ import com.hg.common.core.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.util.List;
+
 
 /**
  * 养护单位管理对象 hw_maintain_unit
@@ -42,6 +44,8 @@ public class HwMaintainUnit extends BaseEntity
     /** 单位电话 */
     @Excel(name = "单位电话")
     private String uniyPhone;
+
+    private List<Integer> administrative;
 
     public void setMuid(Long muid) 
     {
@@ -107,17 +111,25 @@ public class HwMaintainUnit extends BaseEntity
         return uniyPhone;
     }
 
+    public List<Integer> getAdministrative() {
+        return administrative;
+    }
+
+    public void setAdministrative(List<Integer> administrative) {
+        this.administrative = administrative;
+    }
+
     @Override
     public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("muid", getMuid())
-            .append("unitCode", getUnitCode())
-            .append("unitDesignation", getUnitDesignation())
-            .append("unitName", getUnitName())
-            .append("loginName", getLoginName())
-            .append("unitSite", getUnitSite())
-            .append("uniyPhone", getUniyPhone())
-            .append("remark", getRemark())
-            .toString();
+        return "HwMaintainUnit{" +
+                "muid=" + muid +
+                ", unitCode='" + unitCode + '\'' +
+                ", unitDesignation='" + unitDesignation + '\'' +
+                ", unitName='" + unitName + '\'' +
+                ", loginName='" + loginName + '\'' +
+                ", unitSite='" + unitSite + '\'' +
+                ", uniyPhone='" + uniyPhone + '\'' +
+                ", administrative=" + administrative +
+                '}';
     }
 }
