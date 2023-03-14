@@ -1,7 +1,9 @@
 package com.hg.system.mapper;
 
-import java.util.List;
 import com.hg.system.domain.HwSignageInformation;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * 标识标牌Mapper接口
@@ -9,6 +11,7 @@ import com.hg.system.domain.HwSignageInformation;
  * @author ruoyi
  * @date 2023-03-14
  */
+@Component
 public interface HwSignageInformationMapper 
 {
     /**
@@ -58,4 +61,11 @@ public interface HwSignageInformationMapper
      * @return 结果
      */
     public int deleteHwSignageInformationByIdentificationTagIds(Long[] identificationTagIds);
+
+    /**
+     * 根据路线Id查询所有的标识标牌
+     * @param routeid 路段id
+     * @return 标识标牌集合
+     */
+    public List<HwSignageInformation> selectHwSignageInformationListByRouteId(Long routeid);
 }

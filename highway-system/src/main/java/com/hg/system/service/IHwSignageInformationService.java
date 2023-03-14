@@ -1,7 +1,8 @@
 package com.hg.system.service;
 
-import java.util.List;
 import com.hg.system.domain.HwSignageInformation;
+
+import java.util.List;
 
 /**
  * 标识标牌Service接口
@@ -58,4 +59,11 @@ public interface IHwSignageInformationService
      * @return 结果
      */
     public int deleteHwSignageInformationByIdentificationTagId(Long identificationTagId);
+
+    /**
+     * 根据路线Id查询所有的标识标牌
+     * @param routeid 路段id
+     * @return 标识标牌集合
+     */
+    public List<HwSignageInformation> selectHwSignageInformationListByRouteId(Long routeid);
 }

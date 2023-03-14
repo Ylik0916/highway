@@ -1,11 +1,12 @@
 package com.hg.system.service.impl;
 
-import java.util.List;
+import com.hg.system.domain.HwSignageInformation;
+import com.hg.system.mapper.HwSignageInformationMapper;
+import com.hg.system.service.IHwSignageInformationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.hg.system.mapper.HwSignageInformationMapper;
-import com.hg.system.domain.HwSignageInformation;
-import com.hg.system.service.IHwSignageInformationService;
+
+import java.util.List;
 
 /**
  * 标识标牌Service业务层处理
@@ -89,5 +90,10 @@ public class HwSignageInformationServiceImpl implements IHwSignageInformationSer
     public int deleteHwSignageInformationByIdentificationTagId(Long identificationTagId)
     {
         return hwSignageInformationMapper.deleteHwSignageInformationByIdentificationTagId(identificationTagId);
+    }
+
+    @Override
+    public List<HwSignageInformation> selectHwSignageInformationListByRouteId(Long routeid) {
+        return hwSignageInformationMapper.selectHwSignageInformationListByRouteId(routeid);
     }
 }

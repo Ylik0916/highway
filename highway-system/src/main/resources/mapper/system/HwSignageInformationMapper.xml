@@ -34,7 +34,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectHwSignageInformationVo"/>
         where identification_tag_ID = #{identificationTagId}
     </select>
-        
+
+    <select id="selectHwSignageInformationListByRouteId"
+            resultType="com.hg.system.domain.HwSignageInformation">
+        <include refid="selectHwSignageInformationVo"/>
+        where routeid = #{routeid}
+    </select>
+
     <insert id="insertHwSignageInformation" parameterType="HwSignageInformation" useGeneratedKeys="true" keyProperty="identificationTagId">
         insert into hw_signage_information
         <trim prefix="(" suffix=")" suffixOverrides=",">
