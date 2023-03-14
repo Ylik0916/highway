@@ -120,7 +120,7 @@
           <el-button
             size="mini"
             type="text"
-            icon="el-icon-edit"
+            icon="el-icon-finished"
             @click="getMenuIs(scope.row)"
             v-hasPermi="['system:information:edit']"
           >详情</el-button>
