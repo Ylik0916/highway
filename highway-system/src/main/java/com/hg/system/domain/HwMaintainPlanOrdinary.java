@@ -59,7 +59,29 @@ public class HwMaintainPlanOrdinary extends BaseEntity
     @Excel(name = "审核状态id")
     private Long auditStatusid;
 
-    public void setMpoid(Long mpoid) 
+    /** 行政区名 */
+    private String administrativeName;
+
+    /** 行政区编码 */
+    private String administrativeCode;
+
+    public String getAdministrativeName() {
+        return administrativeName;
+    }
+
+    public void setAdministrativeName(String administrativeName) {
+        this.administrativeName = administrativeName;
+    }
+
+    public String getAdministrativeCode() {
+        return administrativeCode;
+    }
+
+    public void setAdministrativeCode(String administrativeCode) {
+        this.administrativeCode = administrativeCode;
+    }
+
+    public void setMpoid(Long mpoid)
     {
         this.mpoid = mpoid;
     }
@@ -173,6 +195,8 @@ public class HwMaintainPlanOrdinary extends BaseEntity
             .append("cityFund", getCityFund())
             .append("countyFund", getCountyFund())
             .append("auditStatusid", getAuditStatusid())
+            .append("administrativeName", getAdministrativeName())
+            .append("administrativeCode", getAdministrativeCode())
             .toString();
     }
 }

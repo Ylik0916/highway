@@ -16,10 +16,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="cityFund"    column="city_fund"    />
         <result property="countyFund"    column="county_fund"    />
         <result property="auditStatusid"    column="audit_statusid"    />
+        <result property="administrativeName" column="dept_name" />
+        <result property="administrativeCode" column="postcode" />
     </resultMap>
 
     <sql id="selectHwMaintainPlanOrdinaryVo">
-        select mpoid, administrative, path_code, village_name, maintain_mileage, pitch_road, gravel_road, all_fund, city_fund, county_fund, audit_statusid from hw_maintain_plan_ordinary
+        select mpoid, administrative, path_code, village_name, maintain_mileage, pitch_road, gravel_road, all_fund, city_fund, county_fund, audit_statusid,dept_name,postcode
+        from hw_maintain_plan_ordinary left join sys_dept on hw_maintain_plan_ordinary.administrative=sys_dept.dept_id
     </sql>
 
     <select id="selectHwMaintainPlanOrdinaryList" parameterType="HwMaintainPlanOrdinary" resultMap="HwMaintainPlanOrdinaryResult">
