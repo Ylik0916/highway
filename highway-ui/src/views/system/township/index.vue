@@ -9,7 +9,7 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="行政区划编号" prop="administrativeDivisionNumber">
+      <el-form-item label-width="100px" label="行政区划编号" prop="administrativeDivisionNumber">
         <el-input
           v-model="queryParams.administrativeDivisionNumber"
           placeholder="请输入行政区划编号"

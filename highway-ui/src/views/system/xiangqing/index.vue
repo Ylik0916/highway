@@ -83,6 +83,7 @@ export default {
   box-shadow: #97a8be;
   border-radius: 10px;
   width: 91%;
+  height: 250px;
   margin: 30px auto auto;
   font-size: 18px;
 }

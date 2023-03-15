@@ -21,8 +21,24 @@ export default {
     }
 };
 </script>
-<style scoped>
+<style>
 #app .theme-picker {
   display: none;
+}
+.body2{
+  background-color: #ededf7;
+  box-shadow: #97a8be;
+  border-radius: 10px;
+  height: 800px;
+  font-size: 18px;
+  border: 1px #ededf7 ridge;
+}
+.body3{
+  background-color: white;
+  margin: 30px auto auto;
+  font-size: 18px;
+  box-shadow: #97a8be;
+  width: 91%;
+  border-radius: 10px;
 }
 </style>

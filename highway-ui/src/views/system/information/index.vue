@@ -1,5 +1,6 @@
 <template>
-  <div class="app-container">
+  <div class="body2">
+  <div class="app-container body3">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="路线名称" prop="routeName">
         <el-input
@@ -220,6 +221,7 @@
       </div>
     </el-dialog>
   </div>
+  </div>
 </template>
 
 <script>
@@ -389,3 +391,6 @@ export default {
   }
 };
 </script>
+<style>
+
+</style>
