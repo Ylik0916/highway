@@ -27,8 +27,7 @@
   <el-tabs v-model="activeName" type="card" style="width: 100%" @tab-click="handleClick" tab-position="top">
     <el-tab-pane label="路段信息" name="first"><section-information :routeId="routeId"></section-information></el-tab-pane>
     <el-tab-pane label="桥梁信息" name="second">桥梁信息</el-tab-pane>
-    <el-tab-pane label="路资路产" name="third">路资路产</el-tab-pane>
-    <el-tab-pane label="隧道信息" name="fourth"><Tunnel></Tunnel></el-tab-pane>
+    <el-tab-pane label="隧道信息" name="fourth"><Tunnel :rou="routeId"></Tunnel></el-tab-pane>
     <el-tab-pane label="病害信息" name="firth">病害信息</el-tab-pane>
   </el-tabs>
   </div>

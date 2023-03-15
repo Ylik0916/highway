@@ -52,186 +52,256 @@ public class HwTunnel extends BaseEntity
     private Long tunnelOverallWidth;
 
     /** 隧道净宽（米） */
+    @Excel(name = "隧道净宽", readConverterExp = "米=")
     private Long tunnelClearWidth;
 
     /** 隧道净高（米） */
+    @Excel(name = "隧道净高", readConverterExp = "米=")
     private Long tunnelClearHeight;
 
     /** 人行道宽（米） */
+    @Excel(name = "人行道宽", readConverterExp = "米=")
     private Long sidewalkWidth;
 
     /** 按隧道长度分类 */
+    @Excel(name = "按隧道长度分类")
     private String tunnelLengthType;
 
     /** 断面形式 */
+    @Excel(name = "断面形式")
     private String sectionForm;
 
     /** 洞口形式 */
+    @Excel(name = "洞口形式")
     private String openingForm;
 
     /** 衬砌材料 */
+    @Excel(name = "衬砌材料")
     private String liningMaterial;
 
     /** 消防设施 */
+    @Excel(name = "消防设施")
     private String fireEquipments;
 
     /** 安全通道数量 */
+    @Excel(name = "安全通道数量")
     private String numberOfSafeChannels;
 
     /** 是否水下隧道 */
+    @Excel(name = "是否水下隧道")
     private String underwaterTunnelOrNot;
 
     /** 管养单位性质 */
+    @Excel(name = "管养单位性质")
     private String natureOfCustodialUnit;
 
     /** 隧道评定等级 */
+    @Excel(name = "隧道评定等级")
     private String tunnelRating;
 
     /** 评定日期 */
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Excel(name = "评定日期", width = 30, dateFormat = "yyyy-MM-dd")
     private Date dateOfAssessment;
 
     /** 评定单位 */
+    @Excel(name = "评定单位")
     private String ratingUnit;
 
     /** 隧道评定等级_土建 */
+    @Excel(name = "隧道评定等级_土建")
     private String tunnelRatingCivilConstruction;
 
     /** 评定日期土建 */
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Excel(name = "评定日期土建", width = 30, dateFormat = "yyyy-MM-dd")
     private Date ratingDateCivilConstruction;
 
     /** 评定单位土建 */
+    @Excel(name = "评定单位土建")
     private String evaluateTheCivilConstruction;
 
     /** 隧道评定等级_机电 */
+    @Excel(name = "隧道评定等级_机电")
     private String tunnelRatingGrade;
 
     /** 评定单位_机电 */
+    @Excel(name = "评定单位_机电")
     private String ratingUnitMechanical;
 
     /** 评定日期_机电 */
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Excel(name = "评定日期_机电", width = 30, dateFormat = "yyyy-MM-dd")
     private Date dateOfEvaluation;
 
     /** 隧道评定等级_其他 */
+    @Excel(name = "隧道评定等级_其他")
     private String tunnelRatingOther;
 
     /** 评定单位_其他 */
+    @Excel(name = "评定单位_其他")
     private String ratingUnitOther;
 
     /** 原隧道编码 */
+    @Excel(name = "原隧道编码")
     private String originalTunnelCoding;
 
     /** 路面面层类型 */
+    @Excel(name = "路面面层类型")
     private String typeOfPavementLayer;
 
     /** 隧道照明 */
+    @Excel(name = "隧道照明")
     private String tunnelLighting;
 
     /** 隧道通风 */
+    @Excel(name = "隧道通风")
     private String tunnelVentilation;
 
     /** 隧道高程（米） */
+    @Excel(name = "隧道高程", readConverterExp = "米=")
     private String tunnelElevation;
 
     /** 隧道养护等级 */
+    @Excel(name = "隧道养护等级")
     private String tunnelMaintenanceGrade;
 
     /** 隧道排水类型 */
+    @Excel(name = "隧道排水类型")
     private String tunnelDrainageType;
 
     /** 隧道所在地点 */
+    @Excel(name = "隧道所在地点")
     private String tunnelLocation;
 
     /** 建成时间(年份) */
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Excel(name = "建成时间(年份)", width = 30, dateFormat = "yyyy-MM-dd")
     private Date completionTime;
 
     /** 通车日期 */
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Excel(name = "通车日期", width = 30, dateFormat = "yyyy-MM-dd")
     private Date openingDate;
 
     /** 变更原因 */
+    @Excel(name = "变更原因")
     private String reasonForChange;
 
     /** 隧道电子设备 */
+    @Excel(name = "隧道电子设备")
     private String tunnelElectronics;
 
     /** 设计单位名称 */
+    @Excel(name = "设计单位名称")
     private String nameOfDesignCompany;
 
     /** 监管单位名称 */
+    @Excel(name = "监管单位名称")
     private String nameOfSupervisoryUnit;
 
     /** 施工单位名称 */
+    @Excel(name = "施工单位名称")
     private String nameOfConstructionUnit;
 
     /** 监理单位名称 */
+    @Excel(name = "监理单位名称")
     private String nameOfSupervisionUnit;
 
     /** 建设单位名称 */
+    @Excel(name = "建设单位名称")
     private String nameOfConstruction;
 
     /** 管养单位代码 */
+    @Excel(name = "管养单位代码")
     private String custodialUnitCode;
 
     /** 管养单位名称 */
+    @Excel(name = "管养单位名称")
     private String nameOfCustodialUnit;
 
     /** 改建年度 */
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Excel(name = "改建年度", width = 30, dateFormat = "yyyy-MM-dd")
     private Date conversionYear;
 
     /** 隧道改造部位 */
+    @Excel(name = "隧道改造部位")
     private String tunnelReconstructionSite;
 
     /** 最近改造工程性质 */
+    @Excel(name = "最近改造工程性质")
     private String recentRenovationProject;
 
     /** 改造完工日期 */
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Excel(name = "改造完工日期", width = 30, dateFormat = "yyyy-MM-dd")
     private Date dateOfCompletion;
 
     /** 隧道病害位置 */
+    @Excel(name = "隧道病害位置")
     private String tunnelTroubleLocation;
 
     /** 隧道病害描述 */
+    @Excel(name = "隧道病害描述")
     private String tunnelDamageDescription;
 
     /** 入口位置经度/隧道经度 */
+    @Excel(name = "入口位置经度/隧道经度")
     private String tunnelLongitude;
 
     /** 入口位置纬度/隧道纬度 */
+    @Excel(name = "入口位置纬度/隧道纬度")
     private String tunnelLatitude;
 
     /** 填报单位 */
+    @Excel(name = "填报单位")
     private String reportingUnit;
 
     /** 填报单位代码 */
+    @Excel(name = "填报单位代码")
     private String reportingUnitCode;
 
     /** 填报单位负责人 */
+    @Excel(name = "填报单位负责人")
     private String reportingUnitPrincipal;
 
     /** 填表人 */
+    @Excel(name = "填表人")
     private String reportingPerson;
 
     /** 填表人电话 */
+    @Excel(name = "填表人电话")
     private String reportingPersonTelephone;
 
     /** 审核人 */
+    @Excel(name = "审核人")
     private String auditor;
 
     /** 审核人电话 */
+    @Excel(name = "审核人电话")
     private String auditorTelephone;
 
     /** 采集时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Excel(name = "采集时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date acquisitionTime;
 
     /** 修改时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Excel(name = "修改时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date modificationTime;
 
     /** 备注 */
+    @Excel(name = "备注")
     private String remarks;
 
     /** 路线ID */
+    @Excel(name = "路线ID")
     private Long routeId;
 
     /** 是否在长大隧道目录 */
+    @Excel(name = "是否在长大隧道目录")
     private String longTunnelDirectory;
 
     public void setTunnelId(Long tunnelId) 
