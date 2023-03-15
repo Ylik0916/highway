@@ -7,7 +7,7 @@ import com.hg.common.core.domain.BaseEntity;
 
 /**
  * 标识标牌对象 hw_signage_information
- * 
+ *
  * @author ruoyi
  * @date 2023-03-14
  */
@@ -16,9 +16,11 @@ public class HwSignageInformation extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 标识标牌ID */
+    /** 标识标牌ID */
     private Long identificationTagId;
 
     /** 路线ID */
+    @Excel(name = "路线ID")
     private Long routeid;
 
     /** 标识标牌名称 */
@@ -30,6 +32,7 @@ public class HwSignageInformation extends BaseEntity
     private String administrativeRegion;
 
     /** 所属路线 */
+    @Excel(name = "所属路线")
     private String route;
 
     /** 标识标牌经度 */
@@ -45,98 +48,100 @@ public class HwSignageInformation extends BaseEntity
     private String nameOfPriorityRoute;
 
     /** 优先通达路线编码 */
+    @Excel(name = "优先通达路线编码")
     private Long priorityAccessRouteCode;
 
     /** 介绍 */
+    @Excel(name = "介绍")
     private String introduce;
 
-    public void setIdentificationTagId(Long identificationTagId) 
+    public void setIdentificationTagId(Long identificationTagId)
     {
         this.identificationTagId = identificationTagId;
     }
 
-    public Long getIdentificationTagId() 
+    public Long getIdentificationTagId()
     {
         return identificationTagId;
     }
-    public void setRouteid(Long routeid) 
+    public void setRouteid(Long routeid)
     {
         this.routeid = routeid;
     }
 
-    public Long getRouteid() 
+    public Long getRouteid()
     {
         return routeid;
     }
-    public void setLabelName(String labelName) 
+    public void setLabelName(String labelName)
     {
         this.labelName = labelName;
     }
 
-    public String getLabelName() 
+    public String getLabelName()
     {
         return labelName;
     }
-    public void setAdministrativeRegion(String administrativeRegion) 
+    public void setAdministrativeRegion(String administrativeRegion)
     {
         this.administrativeRegion = administrativeRegion;
     }
 
-    public String getAdministrativeRegion() 
+    public String getAdministrativeRegion()
     {
         return administrativeRegion;
     }
-    public void setRoute(String route) 
+    public void setRoute(String route)
     {
         this.route = route;
     }
 
-    public String getRoute() 
+    public String getRoute()
     {
         return route;
     }
-    public void setMarkTheLongitudeSign(String markTheLongitudeSign) 
+    public void setMarkTheLongitudeSign(String markTheLongitudeSign)
     {
         this.markTheLongitudeSign = markTheLongitudeSign;
     }
 
-    public String getMarkTheLongitudeSign() 
+    public String getMarkTheLongitudeSign()
     {
         return markTheLongitudeSign;
     }
-    public void setLabelLatitude(String labelLatitude) 
+    public void setLabelLatitude(String labelLatitude)
     {
         this.labelLatitude = labelLatitude;
     }
 
-    public String getLabelLatitude() 
+    public String getLabelLatitude()
     {
         return labelLatitude;
     }
-    public void setNameOfPriorityRoute(String nameOfPriorityRoute) 
+    public void setNameOfPriorityRoute(String nameOfPriorityRoute)
     {
         this.nameOfPriorityRoute = nameOfPriorityRoute;
     }
 
-    public String getNameOfPriorityRoute() 
+    public String getNameOfPriorityRoute()
     {
         return nameOfPriorityRoute;
     }
-    public void setPriorityAccessRouteCode(Long priorityAccessRouteCode) 
+    public void setPriorityAccessRouteCode(Long priorityAccessRouteCode)
     {
         this.priorityAccessRouteCode = priorityAccessRouteCode;
     }
 
-    public Long getPriorityAccessRouteCode() 
+    public Long getPriorityAccessRouteCode()
     {
         return priorityAccessRouteCode;
     }
-    public void setIntroduce(String introduce) 
+    public void setIntroduce(String introduce)
     {
         this.introduce = introduce;
     }
 
-    public String getIntroduce() 
+    public String getIntroduce()
     {
         return introduce;
     }

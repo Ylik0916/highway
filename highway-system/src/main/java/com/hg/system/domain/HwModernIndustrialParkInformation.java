@@ -7,7 +7,7 @@ import com.hg.common.core.domain.BaseEntity;
 
 /**
  * 现代产业园对象 hw_modern_industrial_park_information
- * 
+ *
  * @author ruoyi
  * @date 2023-03-14
  */
@@ -16,6 +16,7 @@ public class HwModernIndustrialParkInformation extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 产业园ID */
+    /** 产业园ID */
     private Long industrialParkId;
 
     /** 产业园名称 */
@@ -23,6 +24,7 @@ public class HwModernIndustrialParkInformation extends BaseEntity
     private String nameOfIndustrialPark;
 
     /** 行政区域 */
+    @Excel(name = "行政区域")
     private String administrativeRegion;
 
     /** 产业园经度 */
@@ -38,80 +40,82 @@ public class HwModernIndustrialParkInformation extends BaseEntity
     private String nameOfPriorityRoute;
 
     /** 优先通达路线编码 */
+    @Excel(name = "优先通达路线编码")
     private Long priorityAccessRouteCode;
 
     /** 介绍 */
+    @Excel(name = "介绍")
     private String introduce;
 
-    public void setIndustrialParkId(Long industrialParkId) 
+    public void setIndustrialParkId(Long industrialParkId)
     {
         this.industrialParkId = industrialParkId;
     }
 
-    public Long getIndustrialParkId() 
+    public Long getIndustrialParkId()
     {
         return industrialParkId;
     }
-    public void setNameOfIndustrialPark(String nameOfIndustrialPark) 
+    public void setNameOfIndustrialPark(String nameOfIndustrialPark)
     {
         this.nameOfIndustrialPark = nameOfIndustrialPark;
     }
 
-    public String getNameOfIndustrialPark() 
+    public String getNameOfIndustrialPark()
     {
         return nameOfIndustrialPark;
     }
-    public void setAdministrativeRegion(String administrativeRegion) 
+    public void setAdministrativeRegion(String administrativeRegion)
     {
         this.administrativeRegion = administrativeRegion;
     }
 
-    public String getAdministrativeRegion() 
+    public String getAdministrativeRegion()
     {
         return administrativeRegion;
     }
-    public void setLongitudeOfIndustrialPark(String longitudeOfIndustrialPark) 
+    public void setLongitudeOfIndustrialPark(String longitudeOfIndustrialPark)
     {
         this.longitudeOfIndustrialPark = longitudeOfIndustrialPark;
     }
 
-    public String getLongitudeOfIndustrialPark() 
+    public String getLongitudeOfIndustrialPark()
     {
         return longitudeOfIndustrialPark;
     }
-    public void setLatitudeOfIndustrialPark(String latitudeOfIndustrialPark) 
+    public void setLatitudeOfIndustrialPark(String latitudeOfIndustrialPark)
     {
         this.latitudeOfIndustrialPark = latitudeOfIndustrialPark;
     }
 
-    public String getLatitudeOfIndustrialPark() 
+    public String getLatitudeOfIndustrialPark()
     {
         return latitudeOfIndustrialPark;
     }
-    public void setNameOfPriorityRoute(String nameOfPriorityRoute) 
+    public void setNameOfPriorityRoute(String nameOfPriorityRoute)
     {
         this.nameOfPriorityRoute = nameOfPriorityRoute;
     }
 
-    public String getNameOfPriorityRoute() 
+    public String getNameOfPriorityRoute()
     {
         return nameOfPriorityRoute;
     }
-    public void setPriorityAccessRouteCode(Long priorityAccessRouteCode) 
+    public void setPriorityAccessRouteCode(Long priorityAccessRouteCode)
     {
         this.priorityAccessRouteCode = priorityAccessRouteCode;
     }
 
-    public Long getPriorityAccessRouteCode() 
+    public Long getPriorityAccessRouteCode()
     {
         return priorityAccessRouteCode;
     }
-    public void setIntroduce(String introduce) 
+    public void setIntroduce(String introduce)
     {
         this.introduce = introduce;
     }
 
-    public String getIntroduce() 
+    public String getIntroduce()
     {
         return introduce;
     }

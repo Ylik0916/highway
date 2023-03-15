@@ -71,7 +71,6 @@
 
     <el-table v-loading="loading" :data="signageList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="标识标牌ID" align="center" prop="identificationTagId" />
       <el-table-column label="标识标牌名称" align="center" prop="labelName" />
       <el-table-column label="行政区域" align="center" prop="administrativeRegion" />
       <el-table-column label="标识标牌经度" align="center" prop="markTheLongitudeSign" />
@@ -238,6 +237,7 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
+      /** 查找路线列表的路线名称并展示*/
       this.title = "添加标识标牌";
     },
     /** 修改按钮操作 */
