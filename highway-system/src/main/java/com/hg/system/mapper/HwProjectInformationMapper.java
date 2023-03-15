@@ -2,6 +2,7 @@ package com.hg.system.mapper;
 
 import java.util.List;
 import com.hg.system.domain.HwProjectInformation;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 项目信息管理Mapper接口
@@ -58,4 +59,12 @@ public interface HwProjectInformationMapper
      * @return 结果
      */
     public int deleteHwProjectInformationByProjectIds(Long[] projectIds);
+
+    /**
+     * 新版查询，包含两个标段
+     *
+     * @param hwProjectInformation 项目信息管理
+     * @return 结果
+     */
+    List<HwProjectInformation> selectAllProjectInformationList(HwProjectInformation hwProjectInformation);
 }

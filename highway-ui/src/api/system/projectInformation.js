@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询项目信息管理列表
 export function listProjectInformation(query) {
   return request({
-    url: '/system/projectInformation/list',
+    url: '/system/projectInformation/allInformationList',
     method: 'get',
     params: query
   })

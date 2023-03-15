@@ -4,6 +4,7 @@ import java.util.List;
 import com.hg.system.domain.HwProjectInformation;
 import com.hg.system.mapper.HwProjectInformationMapper;
 import com.hg.system.service.impl.HwProjectInformationServiceImpl;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -62,4 +63,12 @@ public interface IHwProjectInformationService
      * @return 结果
      */
     public int deleteHwProjectInformationByProjectId(Long projectId);
+
+    /**
+     * 新版查询，包含两个标段
+     *
+     * @param hwProjectInformation 项目信息管理
+     * @return 结果
+     */
+    List<HwProjectInformation> selectAllProjectInformationList(HwProjectInformation hwProjectInformation);
 }

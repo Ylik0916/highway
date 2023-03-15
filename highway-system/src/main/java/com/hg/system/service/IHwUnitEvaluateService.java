@@ -7,7 +7,7 @@ import com.hg.system.domain.HwUnitEvaluate;
  * 从业单位评价Service接口
  * 
  * @author W-yf
- * @date 2023-03-07
+ * @date 2023-03-15
  */
 public interface IHwUnitEvaluateService 
 {

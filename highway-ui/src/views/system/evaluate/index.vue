@@ -9,13 +9,25 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+      <el-form-item label="单位类型" prop="unitName">
+        <el-select v-model="queryParams.unitType" @keyup.enter.native="handleQuery" clearable placeholder="请选择单位类型">
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item label="评价年度" prop="evaluateYears">
-        <el-input
-          v-model="queryParams.evaluateYears"
-          placeholder="请输入评价年度"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+        <div class="block">
+          <el-date-picker
+            v-model="queryParams.evaluateYears"
+            type="year"
+            @keyup.enter.native="handleQuery"
+            placeholder="请输入评价年度">
+          </el-date-picker>
+        </div>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -32,7 +44,8 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['system:evaluate:add']"
-        >新增</el-button>
+        >新增
+        </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -43,7 +56,8 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['system:evaluate:edit']"
-        >修改</el-button>
+        >修改
+        </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -54,7 +68,8 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['system:evaluate:remove']"
-        >删除</el-button>
+        >删除
+        </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -64,37 +79,49 @@
           size="mini"
           @click="handleExport"
           v-hasPermi="['system:evaluate:export']"
-        >导出</el-button>
+        >导出
+        </el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="evaluateList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="单位id" align="center" prop="unitId" />
-      <el-table-column label="单位名称" align="center" prop="unitName" />
-      <el-table-column label="单位类型" align="center" prop="unitType" />
-      <el-table-column label="评价年度" align="center" prop="evaluateYears" />
+      <el-table-column type="selection" width="55" align="center"/>
+      <!--      <el-table-column label="单位id" align="center" prop="unitId" />-->
+      <el-table-column label="单位名称" align="center" prop="unitName" :show-overflow-tooltip='true'/>
+      <el-table-column label="单位类型" align="center" prop="unitType"/>
+      <el-table-column label="评价年度" align="center" prop="evaluateYears"/>
+      <el-table-column label="评价年度" align="center" prop="evaluateYears"/>
+      <el-table-column label="评价分数" align="center" prop="evaluateYears"/>
+      <el-table-column label="评价等级" align="center" prop="evaluateYears"/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:evaluate:edit']"
-          >修改</el-button>
+            type="success"
+            style="width: 60px"
+          >历史评价
+          </el-button>
           <el-button
             size="mini"
-            type="text"
-            icon="el-icon-delete"
+            type="primary"
+            style="width: 45px"
+            @click="handleUpdate(scope.row)"
+            v-hasPermi="['system:evaluate:edit']"
+          >编辑
+          </el-button>
+          <el-button
+            size="mini"
+            type="danger"
+            style="width: 45px"
             @click="handleDelete(scope.row)"
             v-hasPermi="['system:evaluate:remove']"
-          >删除</el-button>
+          >删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -106,11 +133,28 @@
     <!-- 添加或修改从业单位评价对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="单位名称" prop="unitName">
-          <el-input v-model="form.unitName" placeholder="请输入单位名称" />
-        </el-form-item>
         <el-form-item label="评价年度" prop="evaluateYears">
-          <el-input v-model="form.evaluateYears" placeholder="请输入评价年度" />
+          <div class="block">
+            <el-date-picker
+              v-model="value3"
+              type="year"
+              style="width: 300px"
+              placeholder="请选择年度">
+            </el-date-picker>
+          </div>
+        </el-form-item>
+        <el-form-item label="单位名称" prop="unitName" style="width: 380px">
+          <el-input v-model="form.unitName" placeholder="请输入单位名称"/>
+        </el-form-item>
+        <el-form-item label="单位类型" prop="unitName">
+          <el-select v-model="form.unitType" style="width: 300px" clearable placeholder="请选择单位类型">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -122,12 +166,29 @@
 </template>
 
 <script>
-import { listEvaluate, getEvaluate, delEvaluate, addEvaluate, updateEvaluate } from "@/api/system/evaluate";
+import {listEvaluate, getEvaluate, delEvaluate, addEvaluate, updateEvaluate} from "@/api/system/evaluate";
 
 export default {
   name: "Evaluate",
   data() {
     return {
+      options: [{
+        value: '建设单位',
+        label: '建设单位'
+      }, {
+        value: '勘察设计单位',
+        label: '勘察设计单位'
+      }, {
+        value: '施工单位',
+        label: '施工单位'
+      }, {
+        value: '监理单位',
+        label: '监理单位'
+      }, {
+        value: '其他单位',
+        label: '其他单位'
+      }],
+      value: '',
       // 遮罩层
       loading: true,
       // 选中数组
@@ -159,13 +220,13 @@ export default {
       // 表单校验
       rules: {
         unitName: [
-          { required: true, message: "单位名称不能为空", trigger: "blur" }
+          {required: true, message: "单位名称不能为空", trigger: "blur"}
         ],
         unitType: [
-          { required: true, message: "单位类型不能为空", trigger: "change" }
+          {required: true, message: "单位类型不能为空", trigger: "change"}
         ],
         evaluateYears: [
-          { required: true, message: "评价年度不能为空", trigger: "blur" }
+          {required: true, message: "评价年度不能为空", trigger: "blur"}
         ]
       }
     };
@@ -211,7 +272,7 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.unitId)
-      this.single = selection.length!==1
+      this.single = selection.length !== 1
       this.multiple = !selection.length
     },
     /** 新增按钮操作 */
@@ -253,12 +314,13 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const unitIds = row.unitId || this.ids;
-      this.$modal.confirm('是否确认删除从业单位评价编号为"' + unitIds + '"的数据项？').then(function() {
+      this.$modal.confirm('是否确认删除从业单位评价编号为"' + unitIds + '"的数据项？').then(function () {
         return delEvaluate(unitIds);
       }).then(() => {
         this.getList();
         this.$modal.msgSuccess("删除成功");
-      }).catch(() => {});
+      }).catch(() => {
+      });
     },
     /** 导出按钮操作 */
     handleExport() {

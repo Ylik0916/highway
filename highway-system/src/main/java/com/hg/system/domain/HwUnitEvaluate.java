@@ -9,7 +9,7 @@ import com.hg.common.core.domain.BaseEntity;
  * 从业单位评价对象 hw_unit_evaluate
  * 
  * @author W-yf
- * @date 2023-03-07
+ * @date 2023-03-15
  */
 public class HwUnitEvaluate extends BaseEntity
 {

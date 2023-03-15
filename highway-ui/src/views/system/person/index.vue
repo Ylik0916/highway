@@ -1,18 +1,18 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="从业人员名称" prop="personName">
+      <el-form-item label="人员姓名" prop="personName">
         <el-input
           v-model="queryParams.personName"
-          placeholder="请输入从业人员名称"
+          placeholder="请输入从业人员姓名"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="所属单位id" prop="personUnit">
+      <el-form-item label="所属单位" prop="personUnit">
         <el-input
           v-model="queryParams.personUnit"
-          placeholder="请输入所属单位id"
+          placeholder="请输入所属单位"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -24,6 +24,14 @@
           clearable
           @keyup.enter.native="handleQuery"
         />
+        <div class="block">
+          <el-date-picker
+            v-model="queryParams.evaluateYears"
+            type="year"
+            @keyup.enter.native="handleQuery"
+            placeholder="请输入评价年度">
+          </el-date-picker>
+        </div>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -103,7 +111,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"

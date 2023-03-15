@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询路线列表列表
 export function listInformation(query) {
   return request({
-    url: '/system/information/list',
+    url: '/system/information/allInformationList',
     method: 'get',
     params: query
   })
