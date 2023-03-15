@@ -20,6 +20,16 @@ public class HwBridgeInfdormation extends BaseEntity
     /** 桥梁id */
     private Long routeId;
 
+    private int luId;
+
+    public int getLuId() {
+        return luId;
+    }
+
+    public void setLuId(int luId) {
+        this.luId = luId;
+    }
+
     /** 桥梁编码 */
     @Excel(name = "桥梁编码")
     private String routeCode;
@@ -301,6 +311,7 @@ public class HwBridgeInfdormation extends BaseEntity
     /** 路线编码 */
     @Excel(name = "路线编码")
     private String luCode;
+
 
     /** 评定单位 */
     @Excel(name = "评定单位")

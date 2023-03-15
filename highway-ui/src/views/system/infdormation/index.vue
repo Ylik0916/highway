@@ -1,63 +1,65 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="桥梁编码" prop="routeCode">
-        <el-input
-          v-model="queryParams.routeCode"
-          placeholder="请输入桥梁编码"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="桥梁名称" prop="routeName">
-        <el-input
-          v-model="queryParams.routeName"
-          placeholder="请输入桥梁名称"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="是否危桥" prop="routeDanger">
-        <el-select v-model="queryParams.routeDanger" placeholder="请选择是否危桥" clearable>
-          <el-option
-            v-for="dict in dict.type.underwater_tunnel_or_not"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
+    <div :style="{display:this.flag}">
+      <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px" >
+        <el-form-item label="桥梁编码" prop="routeCode">
+          <el-input
+            v-model="queryParams.routeCode"
+            placeholder="请输入桥梁编码"
+            clearable
+            @keyup.enter.native="handleQuery"
           />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="行政区划" prop="routeAdministrativeArea">
-        <el-select v-model="queryParams.routeAdministrativeArea" placeholder="请选择行政区划" clearable>
-          <el-option
-            v-for="dict in dict.type.bridge_zoning"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
+        </el-form-item>
+        <el-form-item label="桥梁名称" prop="routeName">
+          <el-input
+            v-model="queryParams.routeName"
+            placeholder="请输入桥梁名称"
+            clearable
+            @keyup.enter.native="handleQuery"
           />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="路线" prop="selectRoute">
-        <el-input
-          v-model="queryParams.selectRoute"
-          placeholder="选择路线"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="路线编码" prop="luCode">
-        <el-input
-          v-model="queryParams.luCode"
-          placeholder="请输入路线编码"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </el-form>
+        </el-form-item>
+        <el-form-item label="是否危桥" prop="routeDanger">
+          <el-select v-model="queryParams.routeDanger" placeholder="请选择是否危桥" clearable>
+            <el-option
+              v-for="dict in dict.type.underwater_tunnel_or_not"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="行政区划" prop="routeAdministrativeArea">
+          <el-select v-model="queryParams.routeAdministrativeArea" placeholder="请选择行政区划" clearable>
+            <el-option
+              v-for="dict in dict.type.bridge_zoning"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="选择路线" prop="selectRoute">
+          <el-input
+            v-model="queryParams.selectRoute"
+            placeholder="选择路线"
+            clearable
+            @keyup.enter.native="handleQuery"
+          />
+        </el-form-item>
+        <el-form-item label="路线编码" prop="luCode">
+          <el-input
+            v-model="queryParams.luCode"
+            placeholder="请输入路线编码"
+            clearable
+            @keyup.enter.native="handleQuery"
+          />
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+          <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
@@ -112,7 +114,7 @@
     <el-table v-loading="loading" :data="infdormationList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center"/>
       <el-table-column label="路线编码" align="center" prop="luCode"/>
-      <el-table-column label="名称路线" align="center" prop="selectRoute"/>
+      <el-table-column label="路线名称" align="center" prop="selectRoute"/>
       <el-table-column label="桥梁编码" align="center" prop="routeCode"/>
       <el-table-column label="桥梁名称" align="center" prop="routeName"/>
       <el-table-column label="桥梁长度" align="center" prop="routeLong"/>
@@ -715,11 +717,14 @@ import {
   updateInfdormation
 } from "@/api/system/infdormation";
 
-export default {
+export default
+{
+  props:["vis","routeId"],
   name: "Infdormation",
   dicts: ['seismic_grade', 'top_shap', 'bottom_shap', 'disease_location', 'transform', 'bearing_type', 'bridge_sort', 'bridge_load', 'sys_yes_no', 'navigation_level', 'management_maintenance', 'technical_evaluation', 'bridge_location', 'change_reason', 'abutment_type', 'bridge_zoning', 'bridge_cross', 'anti_collision_type', 'bridge_age_limit', 'top_material', 'species', 'pier_sort', 'collect_fees', 'reconstruction_part', 'underwater_tunnel_or_not'],
   data() {
     return {
+      flag :this.vis,
       labelPosition: 'top',
       //标签页
       activeName: 'first',
@@ -746,6 +751,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
+        luId: this.routeId,
         routeCode: null,
         routeName: null,
         routeLongitude: null,
@@ -1028,6 +1034,7 @@ export default {
               this.getList();
             });
           } else {
+            this.form.luId=this.routeId
             addInfdormation(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;

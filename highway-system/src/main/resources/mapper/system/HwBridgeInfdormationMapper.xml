@@ -80,12 +80,14 @@
     </resultMap>
 
     <sql id="selectHwBridgeInfdormationVo">
-        select route_id, route_code, route_name, route_longitude, route_latitude, route_high, route_long, route_cross_long, route_single_long, route_span_combination, route_wide, route_overall_length, route_clear_width, route_load, route_cross, route_year, route_danger, route_grade, route_evaluation_date, route_top_shape, route_top_material, route_type, route_pier_type, route_charge, route_before_code, route_completion_time, route_cross_figure, route_cross_name, route_disease_place, route_disease_describe, route_anticollision_type, route_antiseismic, route_flight, route_rebuild, route_rebuild_end, route_rebuild_place, route_rebuild_nature, route_subsidy, route_method, route_position, route_wroad_nbridge, route_long_bridges, route_bottom_shape, route_result, route_reason, route_support, route_traffic_date, route_renovation_unit, route_abutment_type, route_designer, route_construction_unit, route_inspection_unit, route_build_unit, route_supervise, route_curing, route_curing_code, route_curing_name, filling_unit, filling_unit_code, filling_unit_leader, preparer, preparer_tel, process, process_tel, acquisition_time, update_time, remarks, route_administrative_area, select_route, center_stake, lu_code, evaluation_unit from hw_bridge_infdormation
+        SELECT route_id, route_code, `hw_bridge_infdormation`.`route_name`, route_longitude, route_latitude, route_high, route_long, route_cross_long, route_single_long, route_span_combination, route_wide, route_overall_length, route_clear_width, route_load, route_cross, route_year, route_danger, route_grade, route_evaluation_date, route_top_shape, route_top_material, `hw_bridge_infdormation`.`route_type`, route_pier_type, route_charge, route_before_code, route_completion_time, route_cross_figure, route_cross_name, route_disease_place, route_disease_describe, route_anticollision_type, route_antiseismic, route_flight, route_rebuild, route_rebuild_end, route_rebuild_place, route_rebuild_nature, route_subsidy, route_method, route_position, route_wroad_nbridge, route_long_bridges, route_bottom_shape, route_result, route_reason, route_support, route_traffic_date, route_renovation_unit, route_abutment_type, route_designer, route_construction_unit, route_inspection_unit, route_build_unit, route_supervise, route_curing, route_curing_code, route_curing_name, filling_unit, filling_unit_code, filling_unit_leader, preparer, preparer_tel, PROCESS, process_tel, acquisition_time, update_time, remarks, route_administrative_area, `hw_route_information`.`route_name` select_route, center_stake, route_coding lu_code, evaluation_unit FROM hw_bridge_infdormation,hw_route_information
     </sql>
 
     <select id="selectHwBridgeInfdormationList" parameterType="HwBridgeInfdormation" resultMap="HwBridgeInfdormationResult">
         <include refid="selectHwBridgeInfdormationVo"/>
         <where>
+            id = lu_id
+            <if test="luId != null  and luId != ''"> and lu_id= #{luId}</if>
             <if test="routeCode != null  and routeCode != ''"> and route_code = #{routeCode}</if>
             <if test="routeName != null  and routeName != ''"> and route_name like concat('%', #{routeName}, '%')</if>
             <if test="routeLongitude != null  and routeLongitude != ''"> and route_longitude = #{routeLongitude}</if>
@@ -152,7 +154,7 @@
             <if test="acquisitionTime != null "> and acquisition_time = #{acquisitionTime}</if>
             <if test="remarks != null  and remarks != ''"> and remarks = #{remarks}</if>
             <if test="routeAdministrativeArea != null  and routeAdministrativeArea != ''"> and route_administrative_area = #{routeAdministrativeArea}</if>
-            <if test="selectRoute != null  and selectRoute != ''"> and select_route = #{selectRoute}</if>
+            <if test="selectRoute != null  and selectRoute != ''"> and select_route like concat('%', #{selectRoute}, '%')</if>
             <if test="centerStake != null  and centerStake != ''"> and center_stake = #{centerStake}</if>
             <if test="luCode != null  and luCode != ''"> and lu_code = #{luCode}</if>
             <if test="evaluationUnit != null  and evaluationUnit != ''"> and evaluation_unit = #{evaluationUnit}</if>
@@ -161,7 +163,7 @@
 
     <select id="selectHwBridgeInfdormationByRouteId" parameterType="Long" resultMap="HwBridgeInfdormationResult">
         <include refid="selectHwBridgeInfdormationVo"/>
-        where route_id = #{routeId}
+        where route_id = #{routeId} and id=lu_id
     </select>
 
     <insert id="insertHwBridgeInfdormation" parameterType="HwBridgeInfdormation" useGeneratedKeys="true" keyProperty="routeId">
@@ -237,6 +239,7 @@
             <if test="selectRoute != null">select_route,</if>
             <if test="centerStake != null">center_stake,</if>
             <if test="luCode != null">lu_code,</if>
+            <if test="luId != null">lu_id,</if>
             <if test="evaluationUnit != null">evaluation_unit,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -310,7 +313,9 @@
             <if test="selectRoute != null">#{selectRoute},</if>
             <if test="centerStake != null">#{centerStake},</if>
             <if test="luCode != null">#{luCode},</if>
+            <if test="luId != null">#{luId},</if>
             <if test="evaluationUnit != null">#{evaluationUnit},</if>
+
         </trim>
     </insert>
 
@@ -384,9 +389,9 @@
             <if test="updateTime != null">update_time = #{updateTime},</if>
             <if test="remarks != null">remarks = #{remarks},</if>
             <if test="routeAdministrativeArea != null">route_administrative_area = #{routeAdministrativeArea},</if>
-            <if test="selectRoute != null">select_route = #{selectRoute},</if>
+
             <if test="centerStake != null">center_stake = #{centerStake},</if>
-            <if test="luCode != null">lu_code = #{luCode},</if>
+
             <if test="evaluationUnit != null">evaluation_unit = #{evaluationUnit},</if>
         </trim>
         where route_id = #{routeId}
