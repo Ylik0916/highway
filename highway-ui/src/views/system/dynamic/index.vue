@@ -70,6 +70,8 @@
     </el-row>
 
     <el-table v-loading="loading" :data="dynamicList" @selection-change="handleSelectionChange">
+      <el-table-column type="selection" width="55" align="center" />
+      <el-table-column label="" align="center" prop="mdid" />
       <el-table-column label="养护人" align="center" prop="maintainPeople" />
       <el-table-column label="养护单位" align="center" prop="maintainUnit" />
       <el-table-column label="养护路线名称" align="center" prop="pathName" />
@@ -117,44 +119,87 @@
     />
 
     <!-- 添加或修改动态养护管理对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="路线编号" prop="pathCode">
-          <el-select v-model="form.pathCode" filterable placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="养护人" prop="maintainPeople">
-          <el-input v-model="form.maintainPeople" placeholder="请输入养护人" />
-        </el-form-item>
-        <el-form-item label="养护时间" prop="maintainTime">
-          <el-date-picker clearable
-            v-model="form.maintainTime"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="请选择养护时间">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="车牌号" prop="licensePlate">
-          <el-input v-model="form.licensePlate" placeholder="请输入车牌号" />
-        </el-form-item>
-        <el-form-item label="开始桩号" prop="beginStake">
-          <el-input v-model="form.beginStake" placeholder="请输入开始桩号" />
-        </el-form-item>
-        <el-form-item label="结束桩号" prop="overStake">
-          <el-input v-model="form.overStake" placeholder="请输入结束桩号" />
-        </el-form-item>
-        <el-form-item label="养护内容">
-          <el-input v-model="form.maintainContent" type="textarea" placeholder="请输入养护内容"/>
-        </el-form-item>
-        <el-form-item label="养护附件" prop="maintainAccessory">
-          <file-upload v-model="form.maintainAccessory"/>
-        </el-form-item>
+    <el-dialog :title="title" :visible.sync="open" width="1100px" append-to-body>
+      <el-form ref="form" :model="form" :rules="rules" label-width="90px">
+        <el-row>
+          <el-col :span="8">
+            <div class="grid-content">
+              <el-form-item label="路线编号" prop="pathCode">
+                <el-select v-model="form.pathCode" style="width: 263px" placeholder="请选择">
+                  <el-option
+                    v-for="item in cities"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                    <span style="float: left">{{ item.label }}</span>
+                    <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="grid-content">
+              <el-form-item label="养护人" prop="maintainPeople">
+                <el-input v-model="form.maintainPeople" autosize placeholder="请输入养护人" />
+              </el-form-item>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="grid-content">
+              <el-form-item label="养护时间" prop="maintainTime">
+                <el-date-picker style="width: 263px"
+                  clearable
+                  v-model="form.maintainTime"
+                  type="date"
+                  value-format="yyyy-MM-dd"
+                  placeholder="请选择养护时间">
+                </el-date-picker>
+              </el-form-item>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="8">
+            <div class="grid-content ">
+              <el-form-item label="车牌号" prop="licensePlate">
+                <el-input v-model="form.licensePlate" placeholder="请输入车牌号" />
+              </el-form-item>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="grid-content ">
+              <el-form-item label="开始桩号" prop="beginStake">
+                <el-input v-model="form.beginStake" placeholder="请输入开始桩号" />
+              </el-form-item>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="grid-content ">
+              <el-form-item label="结束桩号" prop="overStake">
+                <el-input v-model="form.overStake" placeholder="请输入结束桩号" />
+              </el-form-item>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <div class="grid-content ">
+              <el-form-item label="养护内容">
+                <el-input v-model="form.maintainContent" type="textarea" placeholder="请输入养护内容"/>
+              </el-form-item>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <div class="grid-content ">
+              <el-form-item label="养护附件" prop="maintainAccessory">
+                <file-upload v-model="form.maintainAccessory"/>
+              </el-form-item>
+            </div>
+          </el-col>
+        </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>

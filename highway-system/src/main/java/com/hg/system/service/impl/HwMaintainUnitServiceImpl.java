@@ -85,6 +85,17 @@ public class HwMaintainUnitServiceImpl implements IHwMaintainUnitService
     @Override
     public int updateHwMaintainUnit(HwMaintainUnit hwMaintainUnit)
     {
+        //批量删除权限
+        hwMaintainRegionMapper.deleteHwMaintainRegionByMuid(hwMaintainUnit.getMuid());
+        //批量添加权限
+        List<HwMaintainRegion> regionList = new ArrayList<>();
+        for (Integer integer : hwMaintainUnit.getAdministrative()) {
+            HwMaintainRegion hwMaintainRegion = new HwMaintainRegion();
+            hwMaintainRegion.setMuid(hwMaintainUnit.getMuid());
+            hwMaintainRegion.setRegionid(Long.valueOf(integer));
+            regionList.add(hwMaintainRegion);
+        }
+        hwMaintainRegionMapper.insertHwMaintainRegionList(regionList);
         return hwMaintainUnitMapper.updateHwMaintainUnit(hwMaintainUnit);
     }
 

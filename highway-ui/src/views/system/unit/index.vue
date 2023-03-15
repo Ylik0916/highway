@@ -180,9 +180,25 @@
           <el-col :span="8"><div class="grid-content"></div></el-col>
           <el-col :span="8"><div class="grid-content"></div></el-col>
         </el-row>
-        <el-form-item label="行政区划权限">
-          <treeselect :show-count="true" :multiple="true" v-model="form.administrative" :options="options" :normalizer="normalizer" placeholder="请选择行政区" />
-        </el-form-item>
+        <el-row>
+          <el-col :span="24">
+            <div class="grid-content">
+              <el-form-item label="行政区划权限">
+                <treeselect
+                  :show-count="true"
+                  :multiple="true"
+                  value-consists-of="LEAF_PRIORITY"
+                  :default-checked-keys="form.administrative"
+                  v-model="form.administrative"
+                  :options="options"
+                  :normalizer="normalizer"
+                  placeholder="请选择行政区" />
+              </el-form-item>
+            </div>
+          </el-col>
+        </el-row>
+
+<!--   :flat="true" :disable-branch-nodes="true"      -->
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -207,14 +223,30 @@
       </el-row>
       <el-row>
         <el-col :span="24"><div class="grid-content"><span>行政区划权限:</span><span>
+<!--          <el-tree-->
+<!--            class="tree-border"-->
+<!--            :data="options"-->
+<!--            node-key="deptId"-->
+<!--            :props="defaultProps"-->
+<!--            default-expand-all-->
+<!--            show-checkbox-->
+<!--            ref="dept"-->
+<!--            :default-checked-keys="form.administrative">-->
+<!--          </el-tree>-->
           <el-tree
             :data="options"
             show-checkbox
             node-key="deptId"
             :props="defaultProps"
             default-expand-all
-            :highlight-current = "true"
-            :default-checked-keys="form.administrative">
+            :readonly="true"
+            :default-checked-keys="form.administrative"
+            :expand-on-click-node="false">
+            <span class="custom-tree-node" slot-scope="{ node, data }">
+              <span>{{ node.data.deptName }}</span>
+              <span>
+              </span>
+            </span>
           </el-tree>
         </span></div></el-col>
       </el-row>
@@ -276,7 +308,7 @@ export default {
       //详情默认配置
       defaultProps: {
         label: 'deptName',
-        disabled: 'disableStatus'
+        disabled: this.changeDisabled
       },
     };
   },
@@ -298,6 +330,12 @@ export default {
       this.open = false;
       this.reset();
     },
+    // renderContent(h, { node, data, store }) {
+    //   return (
+    //     <span class="custom-tree-node">
+    //         <span>{node.data.deptName}</span>
+    //       </span>);
+    // },
     // 表单重置
     reset() {
       this.form = {
@@ -314,13 +352,8 @@ export default {
       this.resetForm("form");
     },
     /** 详情按钮禁用 */
-    disabledDetails(list) {
-      let res = [];
-      list.forEach((i)=>{
-          i['disableStatus'] = true;
-          res.push(i);
-      });
-      return res;
+    changeDisabled(){
+      return true;
     },
     /** 转换一般养护数据结构 */
     normalizer(node) {
@@ -337,7 +370,7 @@ export default {
     getTreeselect() {
       listDept().then(response => {
         // const data = { deptId: 0, deptName: '大陆', children: [] };
-        this.options = this.handleTree(this.disabledDetails(response.data), "deptId", "parentId");
+        this.options = this.handleTree(response.data, "deptId", "parentId");
       });
     },
     /** 搜索按钮操作 */
@@ -377,6 +410,7 @@ export default {
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
+      this.getTreeselect();
       const muid = row.muid || this.ids
       getUnit(muid).then(response => {
         this.form = response.data;
@@ -395,7 +429,6 @@ export default {
               this.getList();
             });
           } else {
-            console.log(this.form)
             addUnit(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
@@ -439,5 +472,14 @@ export default {
 }
 .row-bg {
   padding: 10px 0;
+}
+
+.custom-tree-node {
+   flex: 1;
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   font-size: 14px;
+   padding-right: 8px;
 }
 </style>
