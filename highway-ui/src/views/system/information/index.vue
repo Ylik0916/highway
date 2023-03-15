@@ -1,19 +1,11 @@
 <template>
-  <div class="body2">
-  <div class="app-container body3">
+  <div class="bigBox">
+  <div class="app-container smallBox">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="路线名称" prop="routeName">
         <el-input
           v-model="queryParams.routeName"
           placeholder="请输入路线名称"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="路线编码" prop="routeCoding">
-        <el-input
-          v-model="queryParams.routeCoding"
-          placeholder="请输入路线编码"
           clearable
           @keyup.enter.native="handleQuery"
         />

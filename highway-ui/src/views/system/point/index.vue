@@ -1,6 +1,6 @@
 <template>
-  <div class="body2">
-  <div class="body3">
+  <div class="bigBox">
+  <div class="smallBox">
     <el-tabs v-model="activeName" type="card" style="width: 100%" @tab-click="handleClick" tab-position="top">
       <el-tab-pane label="乡镇" name="first"><Township></Township></el-tab-pane>
       <el-tab-pane label="建制村" name="second">桥梁信息</el-tab-pane>
@@ -12,7 +12,6 @@
 </template>
 
 <script>
-import {getInformation} from "@/api/system/information";
 import Township from "@/views/system/township"
 
 export default {

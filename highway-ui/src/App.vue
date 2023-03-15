@@ -25,7 +25,7 @@ export default {
 #app .theme-picker {
   display: none;
 }
-.body2{
+.bigBox{
   background-color: #ededf7;
   box-shadow: #97a8be;
   border-radius: 10px;
@@ -33,7 +33,7 @@ export default {
   font-size: 18px;
   border: 1px #ededf7 ridge;
 }
-.body3{
+.smallBox{
   background-color: white;
   margin: 30px auto auto;
   font-size: 18px;

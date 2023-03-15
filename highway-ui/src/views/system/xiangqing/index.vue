@@ -1,6 +1,6 @@
 <template>
 <div class="body_">
-  <div style="display: flex" class="body2">
+  <div style="display: flex" class="bigBox">
     <ul style="list-style: none;" >
       <li>路线编码 : {{this.form.routeCoding}}</li>
       <li>行政区域 : {{this.form.adminiStrative}}</li>
@@ -23,7 +23,7 @@
       <li>路段数量 : {{this.form.numberRoadSegments}}</li>
     </ul>
   </div>
-  <div class="body3">
+  <div class="smallBox">
   <el-tabs v-model="activeName" type="card" style="width: 100%" @tab-click="handleClick" tab-position="top">
     <el-tab-pane label="路段信息" name="first"><section-information :routeId="routeId"></section-information></el-tab-pane>
     <el-tab-pane label="桥梁信息" name="second">桥梁信息</el-tab-pane>
@@ -74,10 +74,10 @@ export default {
 }
 </script>
 <style scoped>
-.body2 .ul23{
+.bigBox .ul23{
   margin-left: 150px;
 }
-.body2{
+.bigBox{
   background-color: white;
   box-shadow: #97a8be;
   border-radius: 10px;
@@ -86,7 +86,7 @@ export default {
   margin: 30px auto auto;
   font-size: 18px;
 }
-.body3{
+.smallBox{
   background-color: white;
   margin: 30px auto auto;
   font-size: 18px;
