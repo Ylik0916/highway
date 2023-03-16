@@ -80,7 +80,6 @@
 
     <el-table v-loading="loading" :data="industrialList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="产业园ID" align="center" prop="industrialParkId" />
       <el-table-column label="产业园名称" align="center" prop="nameOfIndustrialPark" />
       <el-table-column label="产业园经度" align="center" prop="longitudeOfIndustrialPark" />
       <el-table-column label="产业园纬度" align="center" prop="latitudeOfIndustrialPark" />

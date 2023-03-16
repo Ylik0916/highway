@@ -3,13 +3,12 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hg.system.mapper.HwSignageInformationMapper">
-    
+
     <resultMap type="HwSignageInformation" id="HwSignageInformationResult">
         <result property="identificationTagId"    column="identification_tag_ID"    />
         <result property="routeid"    column="routeId"    />
         <result property="labelName"    column="label_name"    />
         <result property="administrativeRegion"    column="administrative_region"    />
-        <result property="route"    column="route"    />
         <result property="markTheLongitudeSign"    column="mark_the_longitude_sign"    />
         <result property="labelLatitude"    column="label_latitude"    />
         <result property="nameOfPriorityRoute"    column="name_of_priority_route"    />
@@ -18,18 +17,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectHwSignageInformationVo">
-        select identification_tag_ID, routeId, label_name, administrative_region, route, mark_the_longitude_sign, label_latitude, name_of_priority_route, priority_access_route_code, introduce from hw_signage_information
+        select identification_tag_ID, routeId, label_name, administrative_region, mark_the_longitude_sign, label_latitude, name_of_priority_route, priority_access_route_code, introduce from hw_signage_information
     </sql>
 
     <select id="selectHwSignageInformationList" parameterType="HwSignageInformation" resultMap="HwSignageInformationResult">
         <include refid="selectHwSignageInformationVo"/>
-        <where>  
+        <where>
+            <if test="routeid != null  and routeid != ''"> and routeid like concat('%', #{routeid}, '%')</if>
             <if test="labelName != null  and labelName != ''"> and label_name like concat('%', #{labelName}, '%')</if>
             <if test="administrativeRegion != null  and administrativeRegion != ''"> and administrative_region = #{administrativeRegion}</if>
             <if test="priorityAccessRouteCode != null "> and priority_access_route_code = #{priorityAccessRouteCode}</if>
         </where>
     </select>
-    
+
     <select id="selectHwSignageInformationByIdentificationTagId" parameterType="Long" resultMap="HwSignageInformationResult">
         <include refid="selectHwSignageInformationVo"/>
         where identification_tag_ID = #{identificationTagId}
@@ -47,7 +47,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="routeid != null">routeId,</if>
             <if test="labelName != null">label_name,</if>
             <if test="administrativeRegion != null">administrative_region,</if>
-            <if test="route != null">route,</if>
             <if test="markTheLongitudeSign != null">mark_the_longitude_sign,</if>
             <if test="labelLatitude != null">label_latitude,</if>
             <if test="nameOfPriorityRoute != null">name_of_priority_route,</if>
@@ -58,7 +57,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="routeid != null">#{routeid},</if>
             <if test="labelName != null">#{labelName},</if>
             <if test="administrativeRegion != null">#{administrativeRegion},</if>
-            <if test="route != null">#{route},</if>
             <if test="markTheLongitudeSign != null">#{markTheLongitudeSign},</if>
             <if test="labelLatitude != null">#{labelLatitude},</if>
             <if test="nameOfPriorityRoute != null">#{nameOfPriorityRoute},</if>
@@ -73,7 +71,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="routeid != null">routeId = #{routeid},</if>
             <if test="labelName != null">label_name = #{labelName},</if>
             <if test="administrativeRegion != null">administrative_region = #{administrativeRegion},</if>
-            <if test="route != null">route = #{route},</if>
             <if test="markTheLongitudeSign != null">mark_the_longitude_sign = #{markTheLongitudeSign},</if>
             <if test="labelLatitude != null">label_latitude = #{labelLatitude},</if>
             <if test="nameOfPriorityRoute != null">name_of_priority_route = #{nameOfPriorityRoute},</if>
@@ -88,7 +85,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteHwSignageInformationByIdentificationTagIds" parameterType="String">
-        delete from hw_signage_information where identification_tag_ID in 
+        delete from hw_signage_information where identification_tag_ID in
         <foreach item="identificationTagId" collection="array" open="(" separator="," close=")">
             #{identificationTagId}
         </foreach>

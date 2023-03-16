@@ -28,7 +28,8 @@
     <el-tab-pane label="路段信息" name="first"><section-information :routeId="routeId"></section-information></el-tab-pane>
     <el-tab-pane label="桥梁信息" name="second"><Infdormation :vis="flag" :routeId="routeId"></Infdormation></el-tab-pane>
     <el-tab-pane label="隧道信息" name="fourth"><Tunnel :rou="routeId"></Tunnel></el-tab-pane>
-    <el-tab-pane label="病害信息" name="firth">病害信息</el-tab-pane>
+    <el-tab-pane label="标识标牌" name="firth"><Signage :vis="flag" :routeId="routeId"></Signage></el-tab-pane>
+    <el-tab-pane label="病害信息" name="sixth">病害信息</el-tab-pane>
   </el-tabs>
   </div>
 </div>
@@ -40,9 +41,10 @@ import {getInformation} from "@/api/system/information";
 import SectionInformation from "@/views/system/sectionInformation";
 import Tunnel from "@/views/system/tunnel";
 import Infdormation from "@/views/system/infdormation";
+import Signage from "@/views/system/signage";
 export default {
   name: "index_",
-  components: {SectionInformation,Tunnel,Infdormation},
+  components: {Signage, SectionInformation,Tunnel,Infdormation},
   dicts: ['construction_type', 'route_type'],
   data(){
     return {
