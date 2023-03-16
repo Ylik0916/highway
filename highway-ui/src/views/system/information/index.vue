@@ -1,7 +1,8 @@
 <template>
   <div class="bigBox">
-  <div class="app-container smallBox">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+    <div class="smallBox">
+  <div class="app-container ">
+    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="80px">
       <el-form-item label="路线名称" prop="routeName">
         <el-input
           v-model="queryParams.routeName"
@@ -213,6 +214,7 @@
       </div>
     </el-dialog>
   </div>
+    </div>
   </div>
 </template>
 

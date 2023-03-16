@@ -31,9 +31,6 @@ public class HwSignageInformation extends BaseEntity
     @Excel(name = "行政区域")
     private String administrativeRegion;
 
-    /** 所属路线 */
-    @Excel(name = "所属路线")
-    private String route;
 
     /** 标识标牌经度 */
     @Excel(name = "标识标牌经度")
@@ -49,7 +46,7 @@ public class HwSignageInformation extends BaseEntity
 
     /** 优先通达路线编码 */
     @Excel(name = "优先通达路线编码")
-    private Long priorityAccessRouteCode;
+    private String priorityAccessRouteCode;
 
     /** 介绍 */
     @Excel(name = "介绍")
@@ -91,15 +88,7 @@ public class HwSignageInformation extends BaseEntity
     {
         return administrativeRegion;
     }
-    public void setRoute(String route)
-    {
-        this.route = route;
-    }
 
-    public String getRoute()
-    {
-        return route;
-    }
     public void setMarkTheLongitudeSign(String markTheLongitudeSign)
     {
         this.markTheLongitudeSign = markTheLongitudeSign;
@@ -127,12 +116,12 @@ public class HwSignageInformation extends BaseEntity
     {
         return nameOfPriorityRoute;
     }
-    public void setPriorityAccessRouteCode(Long priorityAccessRouteCode)
+    public void setPriorityAccessRouteCode(String priorityAccessRouteCode)
     {
         this.priorityAccessRouteCode = priorityAccessRouteCode;
     }
 
-    public Long getPriorityAccessRouteCode()
+    public String getPriorityAccessRouteCode()
     {
         return priorityAccessRouteCode;
     }
@@ -153,7 +142,6 @@ public class HwSignageInformation extends BaseEntity
             .append("routeid", getRouteid())
             .append("labelName", getLabelName())
             .append("administrativeRegion", getAdministrativeRegion())
-            .append("route", getRoute())
             .append("markTheLongitudeSign", getMarkTheLongitudeSign())
             .append("labelLatitude", getLabelLatitude())
             .append("nameOfPriorityRoute", getNameOfPriorityRoute())

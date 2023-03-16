@@ -41,7 +41,7 @@ public class HwModernIndustrialParkInformation extends BaseEntity
 
     /** 优先通达路线编码 */
     @Excel(name = "优先通达路线编码")
-    private Long priorityAccessRouteCode;
+    private String priorityAccessRouteCode;
 
     /** 介绍 */
     @Excel(name = "介绍")
@@ -101,12 +101,12 @@ public class HwModernIndustrialParkInformation extends BaseEntity
     {
         return nameOfPriorityRoute;
     }
-    public void setPriorityAccessRouteCode(Long priorityAccessRouteCode)
+    public void setPriorityAccessRouteCode(String priorityAccessRouteCode)
     {
         this.priorityAccessRouteCode = priorityAccessRouteCode;
     }
 
-    public Long getPriorityAccessRouteCode()
+    public String getPriorityAccessRouteCode()
     {
         return priorityAccessRouteCode;
     }
