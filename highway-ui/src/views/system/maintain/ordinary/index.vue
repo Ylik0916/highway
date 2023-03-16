@@ -104,7 +104,15 @@
             type="text"
             icon="el-icon-edit"
             @click="handleOne(scope.row)"
+            v-hasPermi="['system:ordinary:query']"
           >详情</el-button>
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-edit"
+            @click="handleUpdate(scope.row)"
+            v-hasPermi="['system:ordinary:edit']"
+          >审核</el-button>
           <el-button
             size="mini"
             type="text"
