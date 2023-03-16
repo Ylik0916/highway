@@ -1,4 +1,13 @@
 <template>
+  <!--<div class="body3">-->
+  <!--  <el-tabs v-model="activeName" type="card" style="width: 100%" @tab-click="handleClick" tab-position="top">-->
+  <!--    <el-tab-pane label="路段信息" name="first"><section-information :routeId="routeId"></section-information></el-tab-pane>-->
+  <!--    <el-tab-pane label="桥梁信息" name="second">桥梁信息</el-tab-pane>-->
+  <!--    <el-tab-pane label="隧道信息" name="fourth"><Tunnel :rou="routeId"></Tunnel></el-tab-pane>-->
+  <!--    <el-tab-pane label="病害信息" name="firth">病害信息</el-tab-pane>-->
+  <!--  </el-tabs>-->
+  <!--</div>-->
+
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="计划名称" prop="name">
@@ -19,26 +28,19 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="计划归属" prop="affiliation">
-        <el-select v-model="queryParams.affiliation" placeholder="请选择计划归属" clearable>
+
+      <el-form-item label="计划年度" prop="planYear">
+        <el-select v-model="queryParams.planYear" placeholder="请选择计划年度" clearable>
           <el-option
-            v-for="dict in dict.type.affiliation"
+            v-for="dict in dict.type.plan_year"
             :key="dict.value"
             :label="dict.label"
             :value="dict.value"
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="填报周期" prop="fillPeriod">
-        <el-select v-model="queryParams.fillPeriod" placeholder="请选择填报周期" clearable>
-          <el-option
-            v-for="dict in dict.type.fill_period"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          />
-        </el-select>
-      </el-form-item>
+
+
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -55,17 +57,6 @@
           @click="handleAdd"
           v-hasPermi="['system:plan:add']"
         >新增</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:plan:edit']"
-        >修改</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -105,15 +96,32 @@
           <dict-tag :options="dict.type.affiliation" :value="scope.row.affiliation"/>
         </template>
       </el-table-column>
-      <el-table-column label="计划年度" align="center" prop="planYear" />
+      <el-table-column label="计划年度" align="center" prop="planYear">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.plan_year" :value="scope.row.planYear"/>
+        </template>
+      </el-table-column>
       <el-table-column label="填报周期" align="center" prop="fillPeriod">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.fill_period" :value="scope.row.fillPeriod"/>
         </template>
       </el-table-column>
-      <el-table-column label="批复角色" align="center" prop="replyCharacter" />
+      <el-table-column label="批复角色" align="center" prop="replyCharacter">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.reply_character" :value="scope.row.replyCharacter"/>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
+
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-finished"
+            @click="planDetails(scope.row)"
+            v-hasPermi="['system:information:edit']"
+          >详情</el-button>
+
           <el-button
             size="mini"
             type="text"
@@ -121,6 +129,7 @@
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:plan:edit']"
           >修改</el-button>
+
           <el-button
             size="mini"
             type="text"
@@ -166,6 +175,16 @@
             ></el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="计划年度" prop="planYear">
+          <el-select v-model="form.planYear" placeholder="请选择计划年度">
+            <el-option
+              v-for="dict in dict.type.plan_year"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
+            ></el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="填报周期" prop="fillPeriod">
           <el-select v-model="form.fillPeriod" placeholder="请选择填报周期">
             <el-option
@@ -173,6 +192,16 @@
               :key="dict.value"
               :label="dict.label"
               :value="parseInt(dict.value)"
+            ></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="批复角色" prop="replyCharacter">
+          <el-select v-model="form.replyCharacter" placeholder="请选择批复角色">
+            <el-option
+              v-for="dict in dict.type.reply_character"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -190,7 +219,7 @@ import { listPlan, getPlan, delPlan, addPlan, updatePlan } from "@/api/system/pl
 
 export default {
   name: "Plan",
-  dicts: ['plan_type', 'fill_period', 'affiliation'],
+  dicts: ['plan_type', 'plan_year', 'fill_period', 'reply_character', 'affiliation'],
   data() {
     return {
       // 遮罩层
@@ -242,7 +271,7 @@ export default {
           { required: true, message: "填报周期不能为空", trigger: "change" }
         ],
         replyCharacter: [
-          { required: true, message: "批复角色不能为空", trigger: "blur" }
+          { required: true, message: "批复角色不能为空", trigger: "change" }
         ]
       }
     };
@@ -251,6 +280,10 @@ export default {
     this.getList();
   },
   methods: {
+    /**  */
+    planDetails(row){
+      this.$router.push({path:'/plan/item',query: {id:row.id}})
+    },
     /** 查询年度计划列表 */
     getList() {
       this.loading = true;
@@ -274,7 +307,7 @@ export default {
         affiliation: null,
         planYear: null,
         fillPeriod: null,
-        replyCharacter: []
+        replyCharacter: null
       };
       this.resetForm("form");
     },
@@ -306,7 +339,6 @@ export default {
       const id = row.id || this.ids
       getPlan(id).then(response => {
         this.form = response.data;
-        this.form.replyCharacter = this.form.replyCharacter.split(",");
         this.open = true;
         this.title = "修改年度计划";
       });
@@ -315,7 +347,6 @@ export default {
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
-          this.form.replyCharacter = this.form.replyCharacter.join(",");
           if (this.form.id != null) {
             updatePlan(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");

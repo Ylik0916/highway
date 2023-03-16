@@ -22,20 +22,20 @@ public class HwPlan extends BaseEntity
     @Excel(name = "计划名称")
     private String name;
 
-    /** 计划类型     0 路网  1  危桥改造  2  生命安全防护  3  撤并建制村 */
-    @Excel(name = "计划类型     0 路网  1  危桥改造  2  生命安全防护  3  撤并建制村")
+    /** 计划类型 */
+    @Excel(name = "计划类型")
     private Integer type;
 
-    /** 计划归属     0  省级项目  1 市级项目 */
-    @Excel(name = "计划归属     0  省级项目  1 市级项目")
+    /** 计划归属 */
+    @Excel(name = "计划归属")
     private Integer affiliation;
 
     /** 计划年度 */
     @Excel(name = "计划年度")
     private String planYear;
 
-    /** 填报周期   0 每周  1  每月 */
-    @Excel(name = "填报周期   0 每周  1  每月")
+    /** 填报周期 */
+    @Excel(name = "填报周期")
     private Integer fillPeriod;
 
     /** 批复角色 */
