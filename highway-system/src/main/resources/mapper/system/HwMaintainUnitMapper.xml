@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hg.system.mapper.HwMaintainUnitMapper">
+    
+    <resultMap type="HwMaintainUnit" id="HwMaintainUnitResult">
+        <result property="muid"    column="muid"    />
+        <result property="unitCode"    column="unit_code"    />
+        <result property="unitDesignation"    column="unit_designation"    />
+        <result property="unitName"    column="unit_name"    />
+        <result property="loginName"    column="login_name"    />
+        <result property="unitSite"    column="unit_site"    />
+        <result property="uniyPhone"    column="uniy_phone"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectHwMaintainUnitVo">
+        select muid, unit_code, unit_designation, unit_name, login_name, unit_site, uniy_phone, remark from hw_maintain_unit
+    </sql>
+
+    <select id="selectHwMaintainUnitList" parameterType="HwMaintainUnit" resultMap="HwMaintainUnitResult">
+        <include refid="selectHwMaintainUnitVo"/>
+        <where>  
+            <if test="unitCode != null  and unitCode != ''"> and unit_code = #{unitCode}</if>
+            <if test="unitDesignation != null  and unitDesignation != ''"> and unit_designation = #{unitDesignation}</if>
+            <if test="unitName != null  and unitName != ''"> and unit_name like concat('%', #{unitName}, '%')</if>
+            <if test="loginName != null  and loginName != ''"> and login_name like concat('%', #{loginName}, '%')</if>
+            <if test="unitSite != null  and unitSite != ''"> and unit_site like concat('%', #{unitSite}, '%')</if>
+            <if test="uniyPhone != null "> and uniy_phone = #{uniyPhone}</if>
+        </where>
+    </select>
+    
+    <select id="selectHwMaintainUnitByMuid" parameterType="Long" resultMap="HwMaintainUnitResult">
+        <include refid="selectHwMaintainUnitVo"/>
+        where muid = #{muid}
+    </select>
+        
+    <insert id="insertHwMaintainUnit" parameterType="HwMaintainUnit" useGeneratedKeys="true" keyProperty="muid">
+        insert into hw_maintain_unit
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="unitCode != null">unit_code,</if>
+            <if test="unitDesignation != null">unit_designation,</if>
+            <if test="unitName != null">unit_name,</if>
+            <if test="loginName != null">login_name,</if>
+            <if test="unitSite != null">unit_site,</if>
+            <if test="uniyPhone != null">uniy_phone,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="unitCode != null">#{unitCode},</if>
+            <if test="unitDesignation != null">#{unitDesignation},</if>
+            <if test="unitName != null">#{unitName},</if>
+            <if test="loginName != null">#{loginName},</if>
+            <if test="unitSite != null">#{unitSite},</if>
+            <if test="uniyPhone != null">#{uniyPhone},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateHwMaintainUnit" parameterType="HwMaintainUnit">
+        update hw_maintain_unit
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="unitCode != null">unit_code = #{unitCode},</if>
+            <if test="unitDesignation != null">unit_designation = #{unitDesignation},</if>
+            <if test="unitName != null">unit_name = #{unitName},</if>
+            <if test="loginName != null">login_name = #{loginName},</if>
+            <if test="unitSite != null">unit_site = #{unitSite},</if>
+            <if test="uniyPhone != null">uniy_phone = #{uniyPhone},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where muid = #{muid}
+    </update>
+
+    <delete id="deleteHwMaintainUnitByMuid" parameterType="Long">
+        delete from hw_maintain_unit where muid = #{muid}
+    </delete>
+
+    <delete id="deleteHwMaintainUnitByMuids" parameterType="String">
+        delete from hw_maintain_unit where muid in 
+        <foreach item="muid" collection="array" open="(" separator="," close=")">
+            #{muid}
+        </foreach>
+    </delete>
+</mapper>
