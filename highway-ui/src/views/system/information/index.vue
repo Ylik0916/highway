@@ -145,8 +145,8 @@
     />
 
     <!-- 添加或修改路线列表对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+    <el-dialog :title="title" :visible.sync="open" width="650px" append-to-body>
+      <el-form ref="form" :model="form" :rules="rules" label-width="80px" style="display: flex;flex-wrap: wrap;justify-content: space-between">
         <el-form-item label="路线名称" prop="routeName">
           <el-input v-model="form.routeName" placeholder="请输入路线名称" />
         </el-form-item>
