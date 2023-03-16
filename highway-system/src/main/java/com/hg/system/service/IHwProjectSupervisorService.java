@@ -58,4 +58,12 @@ public interface IHwProjectSupervisorService
      * @return 结果
      */
     public int deleteHwProjectSupervisorBySupervisorId(Long supervisorId);
+
+    /**
+     * 根据项目id查询其全部标段
+     *
+     * @param projectId 项目信息管理id
+     * @return 项目信息管理==》监理标段
+     */
+    public List<HwProjectSupervisor> selectHwProjectSupervisorByProjectId(Integer projectId);
 }

@@ -307,6 +307,9 @@
             </div>
           </div>
         </div>
+        <el-form-item label="附件" prop="documentUpload">
+          <file-upload v-model="form.documentUpload"/>
+        </el-form-item>
       </el-form>
 
       <div slot="footer" class="dialog-footer">
@@ -315,33 +318,117 @@
       </div>
     </el-dialog>
 
+    <!-- 监理标段对话框 -->
     <el-dialog :title="bdTitle" :visible.sync="startOpen" width="500px" append-to-body>
-      <el-table v-loading="loading" :data="supervisorList" @selection-change="handleSelectionChange">
-        <el-table-column type="selection" width="55" align="center"/>
-        <el-table-column label="监理标段id" align="center" prop="supervisorId"/>
-        <el-table-column label="监理标段名称" align="center" prop="supervisorName"/>
-        <el-table-column label="关联==》项目信息管理表==》监理标id" align="center" prop="supervisorProjectId"/>
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-          <template slot-scope="scope">
-            <el-button
-              size="mini"
-              type="text"
-              icon="el-icon-edit"
-              @click="handleUpdate(scope.row)"
-              v-hasPermi="['system:supervisor:edit']"
-            >修改
-            </el-button>
-            <el-button
-              size="mini"
-              type="text"
-              icon="el-icon-delete"
-              @click="handleDelete(scope.row)"
-              v-hasPermi="['system:supervisor:remove']"
-            >删除
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+      <el-tabs type="border-card">
+        <el-tab-pane :lazy="true">
+          <span slot="label"><i class="el-icon-date"></i> 监理标段</span>
+          <el-row :gutter="10" class="mb8">
+            <el-col :span="1.5">
+              <el-button
+                type="primary"
+                plain
+                icon="el-icon-plus"
+                size="mini"
+                @click="handleJlAdd"
+                v-hasPermi="['system:projectInformation:add']"
+              >新增
+              </el-button>
+            </el-col>
+          </el-row>
+          <el-table v-loading="loading" :data="supervisorList">
+            <el-table-column label="监理标名称" align="center" prop="supervisorName" :show-overflow-tooltip='true'/>
+            <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+              <template slot-scope="scope">
+                <el-button
+                  size="mini"
+                  type="primary"
+                  style="width: 45px"
+                  @click="handleBdUpdate(scope.row)"
+                  v-hasPermi="['system:supervisor:edit']"
+                >修改
+                </el-button>
+                <el-button
+                  size="mini"
+                  type="danger"
+                  style="width: 45px"
+                  @click="handleBdDelete(scope.row)"
+                  v-hasPermi="['system:supervisor:remove']"
+                >删除
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-tab-pane>
+        <el-tab-pane :lazy="true">
+          <span slot="label"><i class="el-icon-date"></i> 施工标段</span>
+          <el-row :gutter="10" class="mb8">
+            <el-col :span="1.5">
+              <el-button
+                type="primary"
+                plain
+                icon="el-icon-plus"
+                size="mini"
+                @click="handleJlAdd"
+                v-hasPermi="['system:projectInformation:add']"
+              >新增
+              </el-button>
+            </el-col>
+          </el-row>
+          <el-table v-loading="loading" :data="constructionList">
+            <el-table-column label="施工标名称" align="center" prop="constructionName" :show-overflow-tooltip='true'/>
+            <el-table-column label="监理标名称" align="center" prop="hwProjectSupervisor.supervisorName"
+                             :show-overflow-tooltip='true'/>
+            <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+              <template slot-scope="scope">
+                <el-button
+                  size="mini"
+                  type="primary"
+                  style="width: 45px"
+                  @click="handleBdUpdate(scope.row)"
+                  v-hasPermi="['system:construction:edit']"
+                >修改
+                </el-button>
+                <el-button
+                  size="mini"
+                  type="danger"
+                  style="width: 45px"
+                  @click="handleSgDelete(scope.row)"
+                  v-hasPermi="['system:construction:remove']"
+                >删除
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-tab-pane>
+      </el-tabs>
+    </el-dialog>
+    <!-- 添加或修改监理标段对话框 -->
+    <el-dialog :title="bdTitleAddJl" :visible.sync="startOpenJl" width="500px" append-to-body>
+      <el-form ref="jlForm" label-position="top" :model="jlForm" :rules="jlRules" label-width="80px">
+        <el-form-item label="监理标名称" prop="supervisorName" style="width: 300px;margin-left: 70px">
+          <el-input v-model="jlForm.supervisorName" placeholder="请输入监理标名称"/>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitJlForm">确 定</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
+    <!-- 添加或修改施工标段对话框 -->
+    <el-dialog :title="bdTitleAddSg" :visible.sync="startOpenSg" width="500px" append-to-body>
+      <el-form ref="sgForm" label-position="top" :model="sgForm" :rules="sgRules" label-width="80px">
+        <el-form-item label="施工标名称" prop="constructionName" style="width: 300px;margin-left: 70px">
+          <el-input v-model="sgForm.constructionName" placeholder="请输入施工标名称"/>
+        </el-form-item>
+        <el-form-item label="监理标名称" prop="constructionSupervisorId" style="width: 300px;margin-left: 70px">
+          <el-input v-model="sgForm.hwProjectSupervisor.supervisorName" placeholder="请选择监理标"/>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitSgForm">确 定</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -352,7 +439,14 @@ import {
   getProjectInformation,
   delProjectInformation,
   addProjectInformation,
-  updateProjectInformation
+  updateProjectInformation,
+  getBdInformation,
+  delSupervisor,
+  addSupervisor,
+  getSupervisor,
+  updateSupervisor,
+  getConstruction,
+  delConstruction
 } from "@/api/system/projectInformation";
 
 export default {
@@ -404,14 +498,28 @@ export default {
       projectInformationList: [],
       // 监理标段表格数据
       supervisorList: [],
+      // 施工标段表格数据
+      constructionList: [],
+      // 用于监理添加的项目id
+      supervisorProjectId: 0,
+      // 用于施工添加的项目id
+      constructionProjectId: 0,
       // 弹出层标题
       title: "",
       // 标段弹出层标题
       bdTitle: "",
+      // 施工弹出层标题
+      bdTitleAddSg: "",
+      // 监理标段添加修改弹出层标题
+      bdTitleAddJl: "",
       // 是否显示弹出层
       open: false,
       // 是否显示标段弹出层
       startOpen: false,
+      // 是否显示监理标段添加修改
+      startOpenJl: false,
+      // 是否显示施工标段添加修改
+      startOpenSg: false,
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -434,10 +542,15 @@ export default {
         constructionEquipmentCost: null,
         constructionEngineeringCost: null,
         contractCost: null,
-        provisionalPayment: null
+        provisionalPayment: null,
+        documentUpload: null
       },
       // 表单参数
       form: {},
+      // 监理表单参数
+      jlForm: {},
+      // 施工表单参数
+      sgForm: {},
       // 表单校验
       rules: {
         projectName: [
@@ -452,6 +565,21 @@ export default {
         routeName: [
           {required: true, message: "路线名称不能为空", trigger: "blur"}
         ],
+      },
+      // 监理表单校验
+      jlRules: {
+        supervisorName: [
+          {required: true, message: "监理标名称不能为空", trigger: "blur"}
+        ]
+      },
+      // 施工表单校验
+      sgRules: {
+        constructionName: [
+          {required: true, message: "施工标名称不能为空", trigger: "blur"}
+        ],
+        constructionSupervisorId: [
+          {required: true, message: "监理标不能为空", trigger: "blur"}
+        ]
       }
     };
   },
@@ -468,7 +596,6 @@ export default {
       this.loading = true;
       listProjectInformation(this.queryParams).then(response => {
         this.projectInformationList = response.rows;
-        console.log(this.projectInformationList);
         this.total = response.total;
         this.loading = false;
       });
@@ -477,6 +604,9 @@ export default {
     cancel() {
       this.open = false;
       this.reset();
+      this.startOpenJl = false;
+      this.startOpen = false;
+      this.jlReset();
     },
     // 表单重置
     reset() {
@@ -500,9 +630,30 @@ export default {
         constructionEquipmentCost: null,
         constructionEngineeringCost: null,
         contractCost: null,
-        provisionalPayment: null
+        provisionalPayment: null,
+        documentUpload: null
       };
       this.resetForm("form");
+    },
+    // 监理表单重置
+    jlReset() {
+      this.jlForm = {
+        supervisorId: null,
+        supervisorName: null,
+        supervisorProjectId: null
+      };
+      this.resetForm("jlForm")
+    },
+    // 施工表单重置
+    sgReset() {
+      this.sgForm = {
+        constructionId: null,
+        constructionName: null,
+        constructionProjectId: null,
+        constructionSupervisorId: null,
+        hwProjectSupervisor: null
+      };
+      this.resetForm("sgForm")
     },
     /** 搜索按钮操作 */
     handleQuery() {
@@ -520,10 +671,112 @@ export default {
       this.single = selection.length !== 1
       this.multiple = !selection.length
     },
-    /** 标段按钮操作 */
+    /** 标段按钮查询操作 */
     handleBdQuery(row) {
-      this.reset();
-      this.startOpen = true;
+      const projectId = row.projectId || this.ids
+      getBdInformation(projectId).then(response => {
+          this.supervisorList = response.rows;
+          this.startOpen = true;
+          this.bdTitle = "标段列表";
+          this.supervisorProjectId = projectId;
+        }
+      )
+      getConstruction(projectId).then(response => {
+        this.constructionList = response.rows;
+        console.log(this.constructionList);
+        this.startOpen = true;
+        this.bdTitle = "标段列表";
+        this.supervisorProjectId = projectId;
+      })
+    },
+    /** 标段删除按钮操作 */
+    handleBdDelete(row) {
+      const supervisorId = row.supervisorId || this.ids;
+      this.$modal.confirm('是否确认删除监理标段编号为"' + supervisorId + '"的数据项？').then(function () {
+        return delSupervisor(supervisorId);
+      }).then(() => {
+        this.startOpen = false;
+        this.$modal.msgSuccess("删除成功");
+        this.getList();
+      }).catch(() => {
+      });
+    },
+    /** 标段新增按钮操作 */
+    handleJlAdd() {
+      this.jlReset();
+      this.startOpenJl = true;
+      this.bdTitleAddJl = "监理标新增";
+      this.disabled = false;
+    },
+    /** 监理修改按钮操作 */
+    handleBdUpdate(row) {
+      this.jlReset();
+      const supervisorId = row.supervisorId
+      getSupervisor(supervisorId).then(response => {
+        this.jlForm = response.data;
+        this.startOpenJl = true;
+        this.title = "监理标修改";
+      });
+    },
+    /** 监理提交按钮 */
+    submitJlForm() {
+      this.$refs["jlForm"].validate(valid => {
+        if (valid) {
+          if (this.jlForm.supervisorId != null) {
+            this.jlForm.supervisorProjectId = this.supervisorProjectId;
+            updateSupervisor(this.jlForm).then(response => {
+              this.$modal.msgSuccess("修改成功");
+              this.startOpenJl = false;
+              this.startOpen = false;
+              this.getList();
+            });
+          } else {
+            this.jlForm.supervisorProjectId = this.supervisorProjectId;
+            addSupervisor(this.jlForm).then(response => {
+              this.$modal.msgSuccess("新增成功");
+              this.startOpenJl = false;
+              this.startOpen = false;
+              this.getList();
+            });
+          }
+        }
+      });
+    },
+    /** 施工提交按钮 */
+    submitSgForm() {
+      this.$refs["sgForm"].validate(valid => {
+        if (valid) {
+          if (this.sgForm.constructionId != null) {
+            this.jlForm.constructionProjectId = this.constructionProjectId;
+            updateSupervisor(this.sgForm).then(response => {
+              this.$modal.msgSuccess("修改成功");
+              this.startOpenJl = false;
+              this.startOpen = false;
+              this.getList();
+            });
+          } else {
+            this.jlForm.constructionProjectId = this.constructionProjectId;
+            addSupervisor(this.sgForm).then(response => {
+              this.$modal.msgSuccess("新增成功");
+              this.startOpenJl = false;
+              this.startOpen = false;
+              this.getList();
+            });
+          }
+        }
+      });
+    },
+    /** 施工标段删除按钮操作 */
+    handleSgDelete(row) {
+      const constructionId = row.constructionId || this.ids;
+      this.$modal.confirm('是否确认删除监理标段编号为"' + constructionId + '"的数据项？').then(function () {
+        return delConstruction(constructionId);
+      }).then(() => {
+        this.startOpen = false;
+        this.$modal.msgSuccess("删除成功");
+        this.getList();
+      }).catch(() => {
+      });
     },
     /** 详情按钮操作 */
     handleDetails(row) {
@@ -542,7 +795,6 @@ export default {
       this.reset();
       this.open = true;
       this.title = "添加项目信息管理";
-      this.active = 0;
       this.disabled = false;
     },
     /** 修改按钮操作 */

@@ -1,46 +1,74 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hg.system.mapper.HwProjectConstructionMapper">
-    
+
     <resultMap type="HwProjectConstruction" id="HwProjectConstructionResult">
-        <result property="constructionId"    column="construction_id"    />
-        <result property="constructionName"    column="construction_name"    />
-        <result property="constructionProjectId"    column="construction_project_id"    />
-        <result property="constructionSupervisorId"    column="construction_supervisor_id"    />
+        <result property="constructionId" column="construction_id"/>
+        <result property="constructionName" column="construction_name"/>
+        <result property="constructionProjectId" column="construction_project_id"/>
+        <result property="constructionSupervisorId" column="construction_supervisor_id"/>
+    </resultMap>
+
+    <resultMap type="HwProjectConstruction" id="HwProjectConstructionSupervisor">
+        <result property="constructionId" column="construction_id"/>
+        <result property="constructionName" column="construction_name"/>
+        <result property="constructionProjectId" column="construction_project_id"/>
+        <result property="constructionSupervisorId" column="construction_supervisor_id"/>
+        <association property="hwProjectSupervisor" javaType="hwProjectSupervisor">
+            <id property="supervisorId" column="supervisor_id"/>
+            <result property="supervisorName" column="supervisor_name"/>
+        </association>
     </resultMap>
 
     <sql id="selectHwProjectConstructionVo">
-        select construction_id, construction_name, construction_project_id, construction_supervisor_id from hw_project_construction
+        select construction_id, construction_name, construction_project_id, construction_supervisor_id
+        from hw_project_construction
     </sql>
 
-    <select id="selectHwProjectConstructionList" parameterType="HwProjectConstruction" resultMap="HwProjectConstructionResult">
+    <select id="selectHwProjectConstructionList" parameterType="HwProjectConstruction"
+            resultMap="HwProjectConstructionResult">
         <include refid="selectHwProjectConstructionVo"/>
-        <where>  
-            <if test="constructionName != null  and constructionName != ''"> and construction_name like concat('%', #{constructionName}, '%')</if>
-            <if test="constructionProjectId != null "> and construction_project_id = #{constructionProjectId}</if>
-            <if test="constructionSupervisorId != null "> and construction_supervisor_id = #{constructionSupervisorId}</if>
+        <where>
+            <if test="constructionName != null  and constructionName != ''">and construction_name like concat('%',
+                #{constructionName}, '%')
+            </if>
+            <if test="constructionProjectId != null ">and construction_project_id = #{constructionProjectId}</if>
+            <if test="constructionSupervisorId != null ">and construction_supervisor_id = #{constructionSupervisorId}
+            </if>
         </where>
     </select>
-    
-    <select id="selectHwProjectConstructionByConstructionId" parameterType="Long" resultMap="HwProjectConstructionResult">
+
+    <select id="selectHwProjectConstructionByConstructionId" parameterType="Long"
+            resultMap="HwProjectConstructionResult">
         <include refid="selectHwProjectConstructionVo"/>
         where construction_id = #{constructionId}
     </select>
-        
-    <insert id="insertHwProjectConstruction" parameterType="HwProjectConstruction" useGeneratedKeys="true" keyProperty="constructionId">
+
+    <!-- 新版查询施工 -->
+    <select id="selectHwProjectConstructionSupervisor" parameterType="integer"
+            resultMap="HwProjectConstructionSupervisor">
+        SELECT *
+        FROM `hw_project_construction` hpc,
+             `hw_project_supervisor` hps
+        WHERE hpc.`construction_supervisor_id` = hps.`supervisor_id`
+          AND hpc.`construction_project_id` = #{constructionProjectId}
+    </select>
+
+    <insert id="insertHwProjectConstruction" parameterType="HwProjectConstruction" useGeneratedKeys="true"
+            keyProperty="constructionId">
         insert into hw_project_construction
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="constructionName != null and constructionName != ''">construction_name,</if>
             <if test="constructionProjectId != null">construction_project_id,</if>
             <if test="constructionSupervisorId != null">construction_supervisor_id,</if>
-         </trim>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="constructionName != null and constructionName != ''">#{constructionName},</if>
             <if test="constructionProjectId != null">#{constructionProjectId},</if>
             <if test="constructionSupervisorId != null">#{constructionSupervisorId},</if>
-         </trim>
+        </trim>
     </insert>
 
     <update id="updateHwProjectConstruction" parameterType="HwProjectConstruction">
@@ -54,11 +82,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteHwProjectConstructionByConstructionId" parameterType="Long">
-        delete from hw_project_construction where construction_id = #{constructionId}
+        delete
+        from hw_project_construction
+        where construction_id = #{constructionId}
     </delete>
 
     <delete id="deleteHwProjectConstructionByConstructionIds" parameterType="String">
-        delete from hw_project_construction where construction_id in 
+        delete from hw_project_construction where construction_id in
         <foreach item="constructionId" collection="array" open="(" separator="," close=")">
             #{constructionId}
         </foreach>

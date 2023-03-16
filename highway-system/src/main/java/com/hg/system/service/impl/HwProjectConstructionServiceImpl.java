@@ -14,7 +14,7 @@ import com.hg.system.service.IHwProjectConstructionService;
  * @date 2023-03-15
  */
 @Service
-public class HwProjectConstructionServiceImpl implements IHwProjectConstructionService 
+public class HwProjectConstructionServiceImpl implements IHwProjectConstructionService
 {
     @Autowired
     private HwProjectConstructionMapper hwProjectConstructionMapper;
@@ -89,5 +89,16 @@ public class HwProjectConstructionServiceImpl implements IHwProjectConstructionS
     public int deleteHwProjectConstructionByConstructionId(Long constructionId)
     {
         return hwProjectConstructionMapper.deleteHwProjectConstructionByConstructionId(constructionId);
+    }
+
+    /**
+     * 新版查询施工
+     *
+     * @param constructionProjectId 项目id
+     * @return W-yf集合
+     */
+    @Override
+    public List<HwProjectConstruction> selectHwProjectConstructionSupervisor(Integer constructionProjectId) {
+        return hwProjectConstructionMapper.selectHwProjectConstructionSupervisor(constructionProjectId);
     }
 }

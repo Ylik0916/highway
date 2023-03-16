@@ -58,4 +58,12 @@ public interface IHwProjectConstructionService
      * @return 结果
      */
     public int deleteHwProjectConstructionByConstructionId(Long constructionId);
+
+    /**
+     * 新版查询施工
+     *
+     * @param constructionProjectId 项目id
+     * @return W-yf集合
+     */
+    public List<HwProjectConstruction> selectHwProjectConstructionSupervisor(Integer constructionProjectId);
 }

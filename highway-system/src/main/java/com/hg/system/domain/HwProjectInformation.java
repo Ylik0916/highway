@@ -139,6 +139,10 @@ public class HwProjectInformation extends BaseEntity {
     @Excel(name = "招标费用==》暂定金，单位：万元")
     private Long provisionalPayment;
 
+    /** 附件 */
+    @Excel(name = "附件")
+    private String documentUpload;
+
     /**
      * 关联监理标段实体
      */
@@ -309,6 +313,16 @@ public class HwProjectInformation extends BaseEntity {
         return provisionalPayment;
     }
 
+    public void setDocumentUpload(String documentUpload)
+    {
+        this.documentUpload = documentUpload;
+    }
+
+    public String getDocumentUpload()
+    {
+        return documentUpload;
+    }
+
     public HwProjectSupervisor getHwProjectSupervisor() {
         return hwProjectSupervisor;
     }
@@ -348,6 +362,7 @@ public class HwProjectInformation extends BaseEntity {
                 ", constructionEngineeringCost=" + constructionEngineeringCost +
                 ", contractCost=" + contractCost +
                 ", provisionalPayment=" + provisionalPayment +
+                ", documentUpload='" + documentUpload + '\'' +
                 ", hwProjectSupervisor=" + hwProjectSupervisor +
                 ", hwProjectConstruction=" + hwProjectConstruction +
                 '}';

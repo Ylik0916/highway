@@ -2,6 +2,7 @@ package com.hg.web.controller.system;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,14 +24,13 @@ import com.hg.common.core.page.TableDataInfo;
 
 /**
  * 项目信息管理==》监理标段Controller
- * 
+ *
  * @author W-yf
  * @date 2023-03-14
  */
 @RestController
 @RequestMapping("/system/supervisor")
-public class HwProjectSupervisorController extends BaseController
-{
+public class HwProjectSupervisorController extends BaseController {
     @Autowired
     private IHwProjectSupervisorService hwProjectSupervisorService;
 
@@ -39,8 +39,7 @@ public class HwProjectSupervisorController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:supervisor:list')")
     @GetMapping("/list")
-    public TableDataInfo list(HwProjectSupervisor hwProjectSupervisor)
-    {
+    public TableDataInfo list(HwProjectSupervisor hwProjectSupervisor) {
         startPage();
         List<HwProjectSupervisor> list = hwProjectSupervisorService.selectHwProjectSupervisorList(hwProjectSupervisor);
         return getDataTable(list);
@@ -52,8 +51,7 @@ public class HwProjectSupervisorController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:supervisor:export')")
     @Log(title = "项目信息管理==》监理标段", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, HwProjectSupervisor hwProjectSupervisor)
-    {
+    public void export(HttpServletResponse response, HwProjectSupervisor hwProjectSupervisor) {
         List<HwProjectSupervisor> list = hwProjectSupervisorService.selectHwProjectSupervisorList(hwProjectSupervisor);
         ExcelUtil<HwProjectSupervisor> util = new ExcelUtil<HwProjectSupervisor>(HwProjectSupervisor.class);
         util.exportExcel(response, list, "项目信息管理==》监理标段数据");
@@ -64,8 +62,7 @@ public class HwProjectSupervisorController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:supervisor:query')")
     @GetMapping(value = "/{supervisorId}")
-    public AjaxResult getInfo(@PathVariable("supervisorId") Long supervisorId)
-    {
+    public AjaxResult getInfo(@PathVariable("supervisorId") Long supervisorId) {
         return success(hwProjectSupervisorService.selectHwProjectSupervisorBySupervisorId(supervisorId));
     }
 
@@ -75,8 +72,7 @@ public class HwProjectSupervisorController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:supervisor:add')")
     @Log(title = "项目信息管理==》监理标段", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody HwProjectSupervisor hwProjectSupervisor)
-    {
+    public AjaxResult add(@RequestBody HwProjectSupervisor hwProjectSupervisor) {
         return toAjax(hwProjectSupervisorService.insertHwProjectSupervisor(hwProjectSupervisor));
     }
 
@@ -86,8 +82,7 @@ public class HwProjectSupervisorController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:supervisor:edit')")
     @Log(title = "项目信息管理==》监理标段", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody HwProjectSupervisor hwProjectSupervisor)
-    {
+    public AjaxResult edit(@RequestBody HwProjectSupervisor hwProjectSupervisor) {
         return toAjax(hwProjectSupervisorService.updateHwProjectSupervisor(hwProjectSupervisor));
     }
 
@@ -96,9 +91,21 @@ public class HwProjectSupervisorController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:supervisor:remove')")
     @Log(title = "项目信息管理==》监理标段", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{supervisorIds}")
-    public AjaxResult remove(@PathVariable Long[] supervisorIds)
-    {
+    @DeleteMapping("/{supervisorIds}")
+    public AjaxResult remove(@PathVariable Long[] supervisorIds) {
         return toAjax(hwProjectSupervisorService.deleteHwProjectSupervisorBySupervisorIds(supervisorIds));
+    }
+
+    /**
+     * 根据项目id查询其全部标段
+     *
+     * @param projectId 项目信息管理id
+     * @return 项目信息管理==》监理标段
+     */
+    @PreAuthorize("@ss.hasPermi('system:supervisor:query')")
+    @GetMapping(value = "/bd/{projectId}")
+    public TableDataInfo getProjectBd(@PathVariable("projectId") Integer projectId) {
+        List<HwProjectSupervisor> list = hwProjectSupervisorService.selectHwProjectSupervisorByProjectId(projectId);
+        return getDataTable(list);
     }
 }

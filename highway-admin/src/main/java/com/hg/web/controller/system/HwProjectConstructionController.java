@@ -2,6 +2,7 @@ package com.hg.web.controller.system;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,14 +24,13 @@ import com.hg.common.core.page.TableDataInfo;
 
 /**
  * W-yfController
- * 
+ *
  * @author W-yf
  * @date 2023-03-15
  */
 @RestController
 @RequestMapping("/system/construction")
-public class HwProjectConstructionController extends BaseController
-{
+public class HwProjectConstructionController extends BaseController {
     @Autowired
     private IHwProjectConstructionService hwProjectConstructionService;
 
@@ -39,8 +39,7 @@ public class HwProjectConstructionController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:construction:list')")
     @GetMapping("/list")
-    public TableDataInfo list(HwProjectConstruction hwProjectConstruction)
-    {
+    public TableDataInfo list(HwProjectConstruction hwProjectConstruction) {
         startPage();
         List<HwProjectConstruction> list = hwProjectConstructionService.selectHwProjectConstructionList(hwProjectConstruction);
         return getDataTable(list);
@@ -52,8 +51,7 @@ public class HwProjectConstructionController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:construction:export')")
     @Log(title = "W-yf", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, HwProjectConstruction hwProjectConstruction)
-    {
+    public void export(HttpServletResponse response, HwProjectConstruction hwProjectConstruction) {
         List<HwProjectConstruction> list = hwProjectConstructionService.selectHwProjectConstructionList(hwProjectConstruction);
         ExcelUtil<HwProjectConstruction> util = new ExcelUtil<HwProjectConstruction>(HwProjectConstruction.class);
         util.exportExcel(response, list, "W-yf数据");
@@ -64,8 +62,7 @@ public class HwProjectConstructionController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:construction:query')")
     @GetMapping(value = "/{constructionId}")
-    public AjaxResult getInfo(@PathVariable("constructionId") Long constructionId)
-    {
+    public AjaxResult getInfo(@PathVariable("constructionId") Long constructionId) {
         return success(hwProjectConstructionService.selectHwProjectConstructionByConstructionId(constructionId));
     }
 
@@ -75,8 +72,7 @@ public class HwProjectConstructionController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:construction:add')")
     @Log(title = "W-yf", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody HwProjectConstruction hwProjectConstruction)
-    {
+    public AjaxResult add(@RequestBody HwProjectConstruction hwProjectConstruction) {
         return toAjax(hwProjectConstructionService.insertHwProjectConstruction(hwProjectConstruction));
     }
 
@@ -86,8 +82,7 @@ public class HwProjectConstructionController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:construction:edit')")
     @Log(title = "W-yf", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody HwProjectConstruction hwProjectConstruction)
-    {
+    public AjaxResult edit(@RequestBody HwProjectConstruction hwProjectConstruction) {
         return toAjax(hwProjectConstructionService.updateHwProjectConstruction(hwProjectConstruction));
     }
 
@@ -96,9 +91,22 @@ public class HwProjectConstructionController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:construction:remove')")
     @Log(title = "W-yf", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{constructionIds}")
-    public AjaxResult remove(@PathVariable Long[] constructionIds)
-    {
+    @DeleteMapping("/{constructionIds}")
+    public AjaxResult remove(@PathVariable Long[] constructionIds) {
         return toAjax(hwProjectConstructionService.deleteHwProjectConstructionByConstructionIds(constructionIds));
+    }
+
+    /**
+     * 新版查询施工
+     *
+     * @param constructionProjectId 项目id
+     * @return W-yf集合
+     */
+    @PreAuthorize("@ss.hasPermi('system:construction:list')")
+    @GetMapping("/constructionList/{constructionProjectId}")
+    public TableDataInfo selectHwProjectConstructionList(@PathVariable("constructionProjectId") Integer constructionProjectId) {
+        startPage();
+        List<HwProjectConstruction> list = hwProjectConstructionService.selectHwProjectConstructionSupervisor(constructionProjectId);
+        return getDataTable(list);
     }
 }

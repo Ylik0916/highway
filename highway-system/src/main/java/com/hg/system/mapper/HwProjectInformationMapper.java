@@ -1,17 +1,17 @@
 package com.hg.system.mapper;
 
 import java.util.List;
+
 import com.hg.system.domain.HwProjectInformation;
 import org.apache.ibatis.annotations.Param;
 
 /**
  * 项目信息管理Mapper接口
- * 
+ *
  * @author W-yf
  * @date 2023-03-07
  */
-public interface HwProjectInformationMapper
-{
+public interface HwProjectInformationMapper {
     /**
      * 查询项目信息管理
      *

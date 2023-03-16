@@ -1,6 +1,7 @@
 package com.hg.system.service;
 
 import java.util.List;
+
 import com.hg.system.domain.HwProjectInformation;
 import com.hg.system.mapper.HwProjectInformationMapper;
 import com.hg.system.service.impl.HwProjectInformationServiceImpl;
@@ -10,12 +11,11 @@ import org.springframework.stereotype.Service;
 
 /**
  * 项目信息管理Service接口
- * 
+ *
  * @author W-yf
  * @date 2023-03-07
  */
-public interface IHwProjectInformationService
-{
+public interface IHwProjectInformationService {
     /**
      * 查询项目信息管理
      *

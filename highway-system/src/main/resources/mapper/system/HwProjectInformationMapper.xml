@@ -25,6 +25,7 @@
         <result property="constructionEngineeringCost" column="construction_engineering_cost"/>
         <result property="contractCost" column="contract_cost"/>
         <result property="provisionalPayment" column="provisional_payment"/>
+        <result property="documentUpload" column="document_upload"/>
     </resultMap>
 
     <resultMap id="allInformation" type="hwProjectInformation">
@@ -48,6 +49,7 @@
         <result property="constructionEngineeringCost" column="construction_engineering_cost"/>
         <result property="contractCost" column="contract_cost"/>
         <result property="provisionalPayment" column="provisional_payment"/>
+        <result property="documentUpload" column="document_upload"/>
         <association property="hwProjectSupervisor" javaType="hwProjectSupervisor">
             <id property="supervisorId" column="supervisor_id"/>
             <result property="supervisorName" column="supervisor_name"/>
@@ -78,9 +80,11 @@
                construction_equipment_cost,
                construction_engineering_cost,
                contract_cost,
-               provisional_payment
+               provisional_payment,
+               document_upload
         from hw_project_information
     </sql>
+
 
     <select id="selectHwProjectInformationList" parameterType="HwProjectInformation"
             resultMap="HwProjectInformationResult">
@@ -92,7 +96,7 @@
             <if test="administrativeRegion != null ">and administrative_region = #{administrativeRegion}</if>
             <if test="routeCoding != null ">and route_coding = #{routeCoding}</if>
             <if test="routeName != null  and routeName != ''">and route_name like concat('%', #{routeName}, '%')</if>
-            <if test="projectPhase != null  and projectPhase != ''">and project_phase = #{projectPhase}</if>
+            <if test="projectPhase != null ">and project_phase = #{projectPhase}</if>
             <if test="startTime != null ">and start_time = #{startTime}</if>
             <if test="submitTime != null ">and submit_time = #{submitTime}</if>
             <if test="endTime != null ">and end_time = #{endTime}</if>
@@ -111,8 +115,10 @@
             </if>
             <if test="contractCost != null ">and contract_cost = #{contractCost}</if>
             <if test="provisionalPayment != null ">and provisional_payment = #{provisionalPayment}</if>
+            <if test="documentUpload != null  and documentUpload != ''">and document_upload = #{documentUpload}</if>
         </where>
     </select>
+
 
     <select id="selectHwProjectInformationByProjectId" parameterType="Long" resultMap="HwProjectInformationResult">
         <include refid="selectHwProjectInformationVo"/>
@@ -177,6 +183,7 @@
             <if test="constructionEngineeringCost != null">construction_engineering_cost,</if>
             <if test="contractCost != null">contract_cost,</if>
             <if test="provisionalPayment != null">provisional_payment,</if>
+            <if test="documentUpload != null">document_upload,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="projectName != null and projectName != ''">#{projectName},</if>
@@ -198,6 +205,7 @@
             <if test="constructionEngineeringCost != null">#{constructionEngineeringCost},</if>
             <if test="contractCost != null">#{contractCost},</if>
             <if test="provisionalPayment != null">#{provisionalPayment},</if>
+            <if test="documentUpload != null">#{documentUpload},</if>
         </trim>
     </insert>
 
@@ -226,6 +234,7 @@
             </if>
             <if test="contractCost != null">contract_cost = #{contractCost},</if>
             <if test="provisionalPayment != null">provisional_payment = #{provisionalPayment},</if>
+            <if test="documentUpload != null">document_upload = #{documentUpload},</if>
         </trim>
         where project_id = #{projectId}
     </update>

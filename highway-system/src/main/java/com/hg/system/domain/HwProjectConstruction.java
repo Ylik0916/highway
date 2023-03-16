@@ -30,6 +30,11 @@ public class HwProjectConstruction extends BaseEntity
     @Excel(name = "监理标段名称")
     private Long constructionSupervisorId;
 
+    /**
+     * 关联监理标段实体
+     */
+    private HwProjectSupervisor hwProjectSupervisor;
+
     public void setConstructionId(Long constructionId) 
     {
         this.constructionId = constructionId;
@@ -67,13 +72,22 @@ public class HwProjectConstruction extends BaseEntity
         return constructionSupervisorId;
     }
 
+    public HwProjectSupervisor getHwProjectSupervisor() {
+        return hwProjectSupervisor;
+    }
+
+    public void setHwProjectSupervisor(HwProjectSupervisor hwProjectSupervisor) {
+        this.hwProjectSupervisor = hwProjectSupervisor;
+    }
+
     @Override
     public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("constructionId", getConstructionId())
-            .append("constructionName", getConstructionName())
-            .append("constructionProjectId", getConstructionProjectId())
-            .append("constructionSupervisorId", getConstructionSupervisorId())
-            .toString();
+        return "HwProjectConstruction{" +
+                "constructionId=" + constructionId +
+                ", constructionName='" + constructionName + '\'' +
+                ", constructionProjectId=" + constructionProjectId +
+                ", constructionSupervisorId=" + constructionSupervisorId +
+                ", hwProjectSupervisor=" + hwProjectSupervisor +
+                '}';
     }
 }

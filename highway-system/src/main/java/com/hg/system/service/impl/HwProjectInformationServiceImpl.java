@@ -50,6 +50,11 @@ public class HwProjectInformationServiceImpl implements IHwProjectInformationSer
      */
     @Override
     public int insertHwProjectInformation(HwProjectInformation hwProjectInformation) {
+        Integer phase = hwProjectInformation.getProjectPhase();
+        if (phase == 0){
+            phase = 1;
+        }
+        hwProjectInformation.setProjectPhase(phase);
         return hwProjectInformationMapper.insertHwProjectInformation(hwProjectInformation);
     }
 
