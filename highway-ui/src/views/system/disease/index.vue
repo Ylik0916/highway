@@ -1,14 +1,16 @@
 <template>
-  <div>
-    <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="病害详情" name="Info"/>
-      <el-tab-pane label="待上报" name="Reported"/>
-      <el-tab-pane label="待处置" name="Dispose"/>
-      <el-tab-pane label="待养护" name="Conserve"/>
-    </el-tabs>
-    <transition>
-      <component :is="activeName"></component>
-    </transition>
+  <div class="bigBox">
+    <div class="smallBox">
+      <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+        <el-tab-pane label="病害详情" name="Info"/>
+        <el-tab-pane label="待上报" name="Reported"/>
+        <el-tab-pane label="待处置" name="Dispose"/>
+        <el-tab-pane label="待养护" name="Conserve"/>
+      </el-tabs>
+      <transition>
+        <component :is="activeName"></component>
+      </transition>
+    </div>
   </div>
 </template>
 <script>

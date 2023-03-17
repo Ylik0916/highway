@@ -33,31 +33,6 @@
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:disease:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['system:disease:remove']"
-        >删除</el-button>
-      </el-col>
-      <el-col :span="1.5">
         <el-button
           type="warning"
           plain
@@ -90,23 +65,23 @@
             size="mini"
             type="text"
             icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
+            @click="getDinfo(scope.row)"
             v-hasPermi="['system:disease:edit']"
           >详情</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-plus"
-            @click="handleAdd"
-            v-hasPermi="['system:disease:add']"
+            @click="handleUpdate(scope.row)"
+            v-hasPermi="['system:disease:edit']"
           >处置</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
+            @click="handleDelete(4)"
             v-hasPermi="['system:disease:remove']"
-          >删除</el-button>
+          >关闭</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -121,7 +96,8 @@
 
     <!-- 添加或修改道路病害管理对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="1100px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-position="top" label-width="80px">
+      <el-form ref="form" :model="form" label-position="top" label-width="80px">
+<!--   :rules="rules"     -->
         <el-row :gutter="20">
           <el-col :span="8">
             <div class="grid-content">
@@ -183,7 +159,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button type="primary" @click="submitForm(2)">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
@@ -360,12 +336,17 @@ export default {
   methods: {
     /** 查询道路病害管理列表 */
     getList() {
+      this.queryParams.statusid=1;
       this.loading = true;
       listDisease(this.queryParams).then(response => {
         this.diseaseList = response.rows;
         this.total = response.total;
         this.loading = false;
       });
+    },
+    //跳转详情页面
+    getDinfo(row){
+      this.$router.push({path:'/conserve/dinfo',query: {id:row.wdid,compentList:["Dinfomatio"]}})
     },
     // 取消按钮
     cancel() {
@@ -445,8 +426,9 @@ export default {
       });
     },
     /** 提交按钮 */
-    submitForm() {
+    submitForm(statusId) {
       this.$refs["form"].validate(valid => {
+        this.form.statusid=statusId;
         if (valid) {
           if (this.form.wdid != null) {
             updateDisease(this.form).then(response => {

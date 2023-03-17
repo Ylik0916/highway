@@ -75,7 +75,7 @@
             size="mini"
             type="text"
             icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
+            @click="getDinfo(scope.row)"
             v-hasPermi="['system:disease:edit']"
           >详情</el-button>
         </template>
@@ -146,6 +146,10 @@ export default {
     cancel() {
       this.open = false;
       this.reset();
+    },
+    //跳转详情页面
+    getDinfo(row){
+      this.$router.push({path:'/conserve/dinfo',query: {id:row.wdid,compentList:["Dinfomatio","Ddispose","Dconserve"]}})
     },
     // 表单重置
     reset() {

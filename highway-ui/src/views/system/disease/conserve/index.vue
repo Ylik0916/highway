@@ -34,38 +34,6 @@
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['system:disease:add']"
-        >新增</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:disease:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['system:disease:remove']"
-        >删除</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
           type="warning"
           plain
           icon="el-icon-download"
@@ -99,14 +67,21 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:disease:edit']"
-          >修改</el-button>
+          >养护</el-button>
           <el-button
-            size="mini"
             type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['system:disease:remove']"
-          >删除</el-button>
+            icon="el-icon-plus"
+            size="mini"
+            @click="getDinfo(scope.row)"
+            v-hasPermi="['system:disease:add']"
+          >详情</el-button>
+<!--          <el-button-->
+<!--            size="mini"-->
+<!--            type="text"-->
+<!--            icon="el-icon-delete"-->
+<!--            @click="handleDelete(scope.row)"-->
+<!--            v-hasPermi="['system:disease:remove']"-->
+<!--          >删除</el-button>-->
         </template>
       </el-table-column>
     </el-table>
@@ -120,148 +95,87 @@
     />
 
     <!-- 添加或修改道路病害管理对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="病害名称" prop="diseaseName">
-          <el-input v-model="form.diseaseName" placeholder="请输入病害名称" />
-        </el-form-item>
-        <el-form-item label="路线名称" prop="pathName">
-          <el-input v-model="form.pathName" placeholder="请输入路线名称" />
-        </el-form-item>
-        <el-form-item label="路段编号" prop="sectionCode">
-          <el-input v-model="form.sectionCode" placeholder="请输入路段编号" />
-        </el-form-item>
-        <el-form-item label="路段名称" prop="sectionName">
-          <el-input v-model="form.sectionName" placeholder="请输入路段名称" />
-        </el-form-item>
-        <el-form-item label="上报人" prop="reporter">
-          <el-input v-model="form.reporter" placeholder="请输入上报人" />
-        </el-form-item>
-        <el-form-item label="上报日期" prop="reportDate">
-          <el-date-picker clearable
-            v-model="form.reportDate"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="请选择上报日期">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="上报类型" prop="reportType">
-          <el-select v-model="form.reportType" placeholder="请选择上报类型">
-            <el-option
-              v-for="dict in dict.type.reporting_type"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="状态" prop="statusid">
-          <el-select v-model="form.statusid" placeholder="请选择状态">
-            <el-option
-              v-for="dict in dict.type.disease_state"
-              :key="dict.value"
-              :label="dict.label"
-              :value="parseInt(dict.value)"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="所属路线" prop="wherePath">
-          <el-input v-model="form.wherePath" placeholder="请输入所属路线" />
-        </el-form-item>
-        <el-form-item label="病害中心桩号" prop="diseaseStake">
-          <el-input v-model="form.diseaseStake" placeholder="请输入病害中心桩号" />
-        </el-form-item>
-        <el-form-item label="病害纬度" prop="diseaseLatitude">
-          <el-input v-model="form.diseaseLatitude" placeholder="请输入病害纬度" />
-        </el-form-item>
-        <el-form-item label="病害经度" prop="diseaseLongitude">
-          <el-input v-model="form.diseaseLongitude" placeholder="请输入病害经度" />
-        </el-form-item>
-        <el-form-item label="病害信息" prop="diseaseMessage">
-          <el-input v-model="form.diseaseMessage" placeholder="请输入病害信息" />
-        </el-form-item>
-        <el-form-item label="病害图片" prop="diseaseImg">
-          <image-upload v-model="form.diseaseImg"/>
-        </el-form-item>
-        <el-form-item label="养护地点" prop="maintainSite">
-          <el-input v-model="form.maintainSite" placeholder="请输入养护地点" />
-        </el-form-item>
-        <el-form-item label="养护情况" prop="maintainCase">
-          <el-input v-model="form.maintainCase" placeholder="请输入养护情况" />
-        </el-form-item>
-        <el-form-item label="养护人" prop="maintainPeople">
-          <el-input v-model="form.maintainPeople" placeholder="请输入养护人" />
-        </el-form-item>
-        <el-form-item label="养护经费" prop="maintainFund">
-          <el-input v-model="form.maintainFund" placeholder="请输入养护经费" />
-        </el-form-item>
-        <el-form-item label="开始时间" prop="beginTime">
-          <el-date-picker clearable
-            v-model="form.beginTime"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="请选择开始时间">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="结束时间" prop="overTime">
-          <el-date-picker clearable
-            v-model="form.overTime"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="请选择结束时间">
-          </el-date-picker>
-        </el-form-item>
+    <el-dialog :title="title" :visible.sync="open" width="750px" append-to-body>
+      <el-form ref="form" :model="form" label-position="top" label-width="80px">
+<!--     :rules="rules"   -->
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <div class="grid-content">
+              <el-form-item label="病害名称" prop="diseaseName">
+                <el-input v-model="form.diseaseName" :disabled="true" placeholder="请输入病害名称" />
+              </el-form-item>
+            </div>
+          </el-col>
+          <el-col :span="12">
+            <div class="grid-content">
+              <el-form-item label="养护地点" prop="maintainSite">
+                <el-input v-model="form.maintainSite" placeholder="请输入养护地点" />
+              </el-form-item>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <div class="grid-content">
+              <el-form-item label="养护情况" prop="maintainCase">
+                <el-input v-model="form.maintainCase" placeholder="请输入养护情况" />
+              </el-form-item>
+            </div>
+          </el-col>
+          <el-col :span="12">
+            <div class="grid-content">
+              <el-form-item label="养护时间" prop="beginTime">
+                <el-date-picker
+                  style="width: 100%"
+                  v-model="form.beginTime"
+                  type="daterange"
+                  range-separator="至"
+                  start-placeholder="开始日期"
+                  end-placeholder="结束日期">
+                </el-date-picker>
+              </el-form-item>
+<!--              <el-form-item label="结束时间" prop="overTime">-->
+<!--                <el-date-picker clearable-->
+<!--                                v-model="form.beginTime"-->
+<!--                                type="date"-->
+<!--                                value-format="yyyy-MM-dd"-->
+<!--                                placeholder="请选择开始时间">-->
+<!--                </el-date-picker>-->
+<!--                <el-date-picker clearable-->
+<!--                                v-model="form.overTime"-->
+<!--                                type="date"-->
+<!--                                value-format="yyyy-MM-dd"-->
+<!--                                placeholder="请选择结束时间">-->
+<!--                </el-date-picker>-->
+<!--              </el-form-item>-->
+            </div>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <div class="grid-content">
+              <el-form-item label="养护人" prop="maintainPeople">
+                <el-input v-model="form.maintainPeople" placeholder="请输入养护人" />
+              </el-form-item>
+            </div>
+          </el-col>
+          <el-col :span="12">
+            <div class="grid-content">
+              <el-form-item label="养护费用(万元)" prop="maintainFund">
+                <el-input v-model="form.maintainFund" placeholder="请输入养护费用" />
+              </el-form-item>
+            </div>
+          </el-col>
+        </el-row>
         <el-form-item label="养护备注" prop="maintainRemark">
           <el-input v-model="form.maintainRemark" type="textarea" placeholder="请输入内容" />
         </el-form-item>
         <el-form-item label="养护图片" prop="maintainImg">
           <image-upload v-model="form.maintainImg"/>
         </el-form-item>
-        <el-form-item label="管养单位" prop="maintainUnit">
-          <el-input v-model="form.maintainUnit" placeholder="请输入管养单位" />
-        </el-form-item>
-        <el-form-item label="损坏情况" prop="damageCase">
-          <el-input v-model="form.damageCase" placeholder="请输入损坏情况" />
-        </el-form-item>
-        <el-form-item label="横向位置" prop="horizontalPositions">
-          <el-input v-model="form.horizontalPositions" placeholder="请输入横向位置" />
-        </el-form-item>
-        <el-form-item label="预估信息" prop="forecastCase">
-          <el-input v-model="form.forecastCase" placeholder="请输入预估信息" />
-        </el-form-item>
-        <el-form-item label="处置措施" prop="disposeMeasure">
-          <el-input v-model="form.disposeMeasure" placeholder="请输入处置措施" />
-        </el-form-item>
-        <el-form-item label="行驶方向" prop="drivingDirection">
-          <el-select v-model="form.drivingDirection" placeholder="请选择行驶方向">
-            <el-option
-              v-for="dict in dict.type.driving_direction"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="处置中心桩号" prop="disposeStake">
-          <el-input v-model="form.disposeStake" placeholder="请输入处置中心桩号" />
-        </el-form-item>
-        <el-form-item label="处置备注" prop="disposeRemark">
-          <el-input v-model="form.disposeRemark" type="textarea" placeholder="请输入内容" />
-        </el-form-item>
-        <el-form-item label="处置时间" prop="disposeTime">
-          <el-date-picker clearable
-            v-model="form.disposeTime"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="请选择处置时间">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="处置图片" prop="disposeImg">
-          <image-upload v-model="form.disposeImg"/>
-        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button type="primary" @click="submitForm(3)">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
@@ -438,6 +352,7 @@ export default {
   methods: {
     /** 查询道路病害管理列表 */
     getList() {
+      this.queryParams.statusid=2;
       this.loading = true;
       listDisease(this.queryParams).then(response => {
         this.diseaseList = response.rows;
@@ -449,6 +364,10 @@ export default {
     cancel() {
       this.open = false;
       this.reset();
+    },
+    //跳转详情页面
+    getDinfo(row){
+      this.$router.push({path:'/conserve/dinfo',query: {id:row.wdid,compentList:["Dinfomatio","Ddispose"]}})
     },
     // 表单重置
     reset() {
@@ -523,8 +442,12 @@ export default {
       });
     },
     /** 提交按钮 */
-    submitForm() {
+    submitForm(statusId) {
       this.$refs["form"].validate(valid => {
+        this.form.statusid=statusId;
+        let time = this.form.beginTime;
+        this.form.beginTime = time[0];
+        this.form.overTime = time[1];
         if (valid) {
           if (this.form.wdid != null) {
             updateDisease(this.form).then(response => {

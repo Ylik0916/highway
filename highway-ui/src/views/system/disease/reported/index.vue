@@ -44,17 +44,6 @@
       </el-col>
       <el-col :span="1.5">
         <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:disease:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
           type="danger"
           plain
           icon="el-icon-delete"
@@ -104,13 +93,6 @@
           <el-button
             size="mini"
             type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:disease:edit']"
-          >修改</el-button>
-          <el-button
-            size="mini"
-            type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['system:disease:remove']"
@@ -140,8 +122,8 @@
           </el-col>
           <el-col :span="8">
             <div class="grid-content">
-              <el-form-item label="行政区域" prop="pathName">
-                <el-input v-model="form.pathName" placeholder="请输入路线名称" />
+              <el-form-item label="行政区" prop="administrative">
+                <treeselect v-model="form.administrative" :options="ordinaryOptions" :normalizer="normalizer" placeholder="请选择行政区" />
               </el-form-item>
             </div>
           </el-col>
@@ -156,25 +138,55 @@
         <el-row :gutter="20">
           <el-col :span="8">
             <div class="grid-content">
-              <el-form-item label="病害纬度" prop="diseaseLatitude">
-                <el-input v-model="form.diseaseLatitude" placeholder="请输入病害纬度" />
-              </el-form-item>
-              <el-form-item label="病害经度" prop="diseaseLongitude">
-                <el-input v-model="form.diseaseLongitude" placeholder="请输入病害经度" />
+              <el-row>
+                <el-col :span="12">
+                  <div class="grid-content">
+                    <el-form-item label="病害纬度" prop="diseaseLatitude">
+                      <el-input v-model="form.diseaseLatitude" placeholder="请输入病害纬度" />
+                    </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="12">
+                  <div class="grid-content">
+                    <el-form-item label="病害经度" prop="diseaseLongitude">
+                      <el-input v-model="form.diseaseLongitude" placeholder="请输入病害经度" />
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-row>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="grid-content">
+              <el-form-item label="所属路线" prop="pathName">
+<!--        sectionCoding        -->
+                <el-select v-model="form.pathName" value-key="id" @change="pathChange($event)" placeholder="请输入所属路线" style="width: 100%">
+                  <el-option
+                    v-for="item in listInformation"
+                    :key="item.id"
+                    :label="item.routeName"
+                    :value="item"
+                  >
+<!--                    -->
+<!--                    <span style="float: left">{{ item.routeName }}</span>-->
+<!--                    <span style="float: left; color: #8492a6; font-size: 13px">{{ item.routeCoding }}</span>-->
+                  </el-option>
+                </el-select>
               </el-form-item>
             </div>
           </el-col>
           <el-col :span="8">
             <div class="grid-content">
-              <el-form-item label="所属路线" prop="wherePath">
-                <el-input v-model="form.wherePath" placeholder="请输入所属路线" />
-              </el-form-item>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <div class="grid-content">
-              <el-form-item label="所属路段" prop="wherePath">
-                <el-input v-model="form.wherePath" placeholder="请输入所属路线" />
+              <el-form-item label="所属路段" prop="sectionCode">
+                <el-select v-model="form.sectionCode" value-key="sectionCoding" :disabled="sectionDisabled" placeholder="请输入所属路段" style="width: 100%">
+                  <el-option
+                    v-for="item in sectionList"
+                    :key="item.sectionCoding"
+                    :label="item.sectionCoding"
+                    :value="item"
+                  >
+                  </el-option>
+                </el-select>
               </el-form-item>
             </div>
           </el-col>
@@ -197,8 +209,9 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
+        <el-button type="primary" @click="submitForm(1)">病害上报</el-button>
+        <el-button type="primary" @click="submitForm(0)">保存病害</el-button>
+<!--        <el-button @click="cancel">保存病害</el-button>-->
       </div>
     </el-dialog>
   </div>
@@ -206,14 +219,25 @@
 
 <script>
 import { listDisease, getDisease, delDisease, addDisease, updateDisease } from "@/api/system/disease";
+import Treeselect from "@riophae/vue-treeselect";
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
+import { listDept } from "@/api/system/dept";
+import {listInformation} from "@/api/system/information";
+import {listSectionInformation} from "@/api/system/sectionInformation";
+import store from '@/store'
+
 
 export default {
   name: "Reported",
   dicts: ['reporting_type', 'disease_state', 'driving_direction'],
+  components: {
+    Treeselect
+  },
   data() {
     return {
       // 遮罩层
       loading: true,
+
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -224,8 +248,16 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
+      //路段禁用
+      sectionDisabled: true,
       // 道路病害管理表格数据
       diseaseList: [],
+      //行政下拉
+      ordinaryOptions: [],
+      //路线下拉
+      listInformation: [],
+      //路段下拉
+      sectionList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -374,6 +406,7 @@ export default {
   methods: {
     /** 查询道路病害管理列表 */
     getList() {
+      this.queryParams.statusid=0;
       this.loading = true;
       listDisease(this.queryParams).then(response => {
         this.diseaseList = response.rows;
@@ -426,10 +459,46 @@ export default {
       };
       this.resetForm("form");
     },
+    /** 选中路线可用路段 */
+    pathChange(item){
+      console.log(item.id);
+      this.getSectionList(item.id);
+      this.sectionDisabled=false;
+    },
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;
       this.getList();
+    },
+    getSectionList(id){
+      listSectionInformation({routeid:id}).then(response=>{
+        this.sectionList=response.rows;
+      });
+    },
+    /** 下拉查询路线 */
+    getListInformation(){
+      listInformation(null).then(response=>{
+        this.listInformation=response.rows;
+      });
+    },
+    /** 转换一般养护数据结构 */
+    normalizer(node) {
+      if (node.children && !node.children.length) {
+        delete node.children;
+      }
+      return {
+        id: node.deptId,
+        label: node.deptName,
+        children: node.children
+      };
+    },
+    /** 查询一般养护下拉树结构 */
+    getTreeselect() {
+      listDept().then(response => {
+        this.ordinaryOptions = [];
+        // const data = { deptId: 0, deptName: '大陆', children: [] };
+        this.ordinaryOptions = this.handleTree(response.data, "deptId", "parentId");
+      });
     },
     /** 重置按钮操作 */
     resetQuery() {
@@ -445,22 +514,36 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
+      this.getTreeselect();
+      this.getListInformation();
       this.open = true;
       this.title = "添加道路病害管理";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
+      this.getTreeselect();
+      this.getListInformation();
       const wdid = row.wdid || this.ids
       getDisease(wdid).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改道路病害管理";
+        this.title = "上报";
       });
     },
     /** 提交按钮 */
-    submitForm() {
+    submitForm(statusId) {
       this.$refs["form"].validate(valid => {
+        var userName = this.$store.state.user.name;
+        this.form.reporter = userName;
+        let routeItem = this.form.pathName;
+        this.form.pathName=routeItem.routeName;
+        this.form.pathCode=routeItem.routeCoding;
+        this.form.statusid=statusId;
+        let sectionItem = this.form.sectionCode;
+        this.form.sectionName=sectionItem.originName;
+        this.form.sectionCode=sectionItem.sectionCoding;
+        this.form.reportDate = new Date();
         if (valid) {
           if (this.form.wdid != null) {
             updateDisease(this.form).then(response => {
