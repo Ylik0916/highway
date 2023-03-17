@@ -1,6 +1,6 @@
 <template>
 <div class="body_">
-  <div style="display: flex" class="body2">
+  <div style="display: flex" class="bigBox">
     <ul style="list-style: none;" >
       <li>路线编码 : {{this.form.routeCoding}}</li>
       <li>行政区域 : {{this.form.adminiStrative}}</li>
@@ -23,12 +23,13 @@
       <li>路段数量 : {{this.form.numberRoadSegments}}</li>
     </ul>
   </div>
-  <div class="body3">
+  <div class="smallBox">
   <el-tabs v-model="activeName" type="card" style="width: 100%" @tab-click="handleClick" tab-position="top">
     <el-tab-pane label="路段信息" name="first"><section-information :routeId="routeId"></section-information></el-tab-pane>
     <el-tab-pane label="桥梁信息" name="second"><Infdormation :vis="flag" :routeId="routeId"></Infdormation></el-tab-pane>
     <el-tab-pane label="隧道信息" name="fourth"><Tunnel :rou="routeId"></Tunnel></el-tab-pane>
-    <el-tab-pane label="病害信息" name="firth">病害信息</el-tab-pane>
+    <el-tab-pane label="标识标牌" name="firth"><Signage :vis="flag" :routeId="routeId"></Signage></el-tab-pane>
+    <el-tab-pane label="病害信息" name="sixth">病害信息</el-tab-pane>
   </el-tabs>
   </div>
 </div>
@@ -39,10 +40,11 @@
 import {getInformation} from "@/api/system/information";
 import SectionInformation from "@/views/system/sectionInformation";
 import Tunnel from "@/views/system/tunnel";
-import Infdormation from "@/views/system/infdormations";
+import Infdormation from "@/views/system/infdormation";
+import Signage from "@/views/system/signage";
 export default {
   name: "index_",
-  components: {SectionInformation,Tunnel,Infdormation},
+  components: {Signage, SectionInformation,Tunnel,Infdormation},
   dicts: ['construction_type', 'route_type'],
   data(){
     return {
@@ -76,18 +78,19 @@ export default {
 }
 </script>
 <style scoped>
-.body2 .ul23{
+.bigBox .ul23{
   margin-left: 150px;
 }
-.body2{
+.bigBox{
   background-color: white;
   box-shadow: #97a8be;
   border-radius: 10px;
   width: 91%;
+  height: 250px;
   margin: 30px auto auto;
   font-size: 18px;
 }
-.body3{
+.smallBox{
   background-color: white;
   margin: 30px auto auto;
   font-size: 18px;

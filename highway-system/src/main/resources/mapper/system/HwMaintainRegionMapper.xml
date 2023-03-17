@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hg.system.mapper.HwMaintainRegionMapper">
+    
+    <resultMap type="HwMaintainRegion" id="HwMaintainRegionResult">
+        <result property="mrid"    column="mrid"    />
+        <result property="muid"    column="muid"    />
+        <result property="regionid"    column="regionid"    />
+    </resultMap>
+
+    <sql id="selectHwMaintainRegionVo">
+        select mrid, muid, regionid from hw_maintain_region
+    </sql>
+
+    <select id="selectHwMaintainRegionList" parameterType="HwMaintainRegion" resultMap="HwMaintainRegionResult">
+        <include refid="selectHwMaintainRegionVo"/>
+        <where>  
+            <if test="muid != null "> and muid = #{muid}</if>
+            <if test="regionid != null "> and regionid = #{regionid}</if>
+        </where>
+    </select>
+    
+    <select id="selectHwMaintainRegionByMrid" parameterType="Long" resultMap="HwMaintainRegionResult">
+        <include refid="selectHwMaintainRegionVo"/>
+        where mrid = #{mrid}
+    </select>
+    <select id="selectHwMaintainRegionByMuid" resultType="java.lang.Integer">
+        select regionid from hw_maintain_region where muid = #{muid}
+    </select>
+
+    <insert id="insertHwMaintainRegion" parameterType="HwMaintainRegion" useGeneratedKeys="true" keyProperty="mrid">
+        insert into hw_maintain_region
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="muid != null">muid,</if>
+            <if test="regionid != null">regionid,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="muid != null">#{muid},</if>
+            <if test="regionid != null">#{regionid},</if>
+         </trim>
+    </insert>
+    <insert id="insertHwMaintainRegionList" keyProperty="mrid">
+        insert into hw_maintain_region (muid,regionid)
+        VALUES
+        <foreach item="data" collection="list" separator=",">
+            (#{data.muid},#{data.regionid})
+        </foreach>
+    </insert>
+
+    <update id="updateHwMaintainRegion" parameterType="HwMaintainRegion">
+        update hw_maintain_region
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="muid != null">muid = #{muid},</if>
+            <if test="regionid != null">regionid = #{regionid},</if>
+        </trim>
+        where mrid = #{mrid}
+    </update>
+
+    <delete id="deleteHwMaintainRegionByMrid" parameterType="Long">
+        delete from hw_maintain_region where mrid = #{mrid}
+    </delete>
+
+    <delete id="deleteHwMaintainRegionByMrids" parameterType="String">
+        delete from hw_maintain_region where mrid in 
+        <foreach item="mrid" collection="array" open="(" separator="," close=")">
+            #{mrid}
+        </foreach>
+    </delete>
+    <delete id="deleteHwMaintainRegionByMuid" parameterType="Long">
+        delete from hw_maintain_region where muid = #{muid}
+    </delete>
+</mapper>

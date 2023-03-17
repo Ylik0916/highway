@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hg.system.mapper.HwModernIndustrialParkInformationMapper">
+    
+    <resultMap type="HwModernIndustrialParkInformation" id="HwModernIndustrialParkInformationResult">
+        <result property="industrialParkId"    column="industrial_park_ID"    />
+        <result property="nameOfIndustrialPark"    column="name_of_industrial_park"    />
+        <result property="administrativeRegion"    column="administrative_region"    />
+        <result property="longitudeOfIndustrialPark"    column="longitude_of_industrial_park"    />
+        <result property="latitudeOfIndustrialPark"    column="latitude_of_industrial_park"    />
+        <result property="nameOfPriorityRoute"    column="name_of_priority_route"    />
+        <result property="priorityAccessRouteCode"    column="priority_access_route_code"    />
+        <result property="introduce"    column="introduce"    />
+    </resultMap>
+
+    <sql id="selectHwModernIndustrialParkInformationVo">
+        select industrial_park_ID, name_of_industrial_park, administrative_region, longitude_of_industrial_park, latitude_of_industrial_park, name_of_priority_route, priority_access_route_code, introduce from hw_modern_industrial_park_information
+    </sql>
+
+    <select id="selectHwModernIndustrialParkInformationList" parameterType="HwModernIndustrialParkInformation" resultMap="HwModernIndustrialParkInformationResult">
+        <include refid="selectHwModernIndustrialParkInformationVo"/>
+        <where>  
+            <if test="nameOfIndustrialPark != null  and nameOfIndustrialPark != ''"> and name_of_industrial_park like concat('%', #{nameOfIndustrialPark}, '%')</if>
+            <if test="administrativeRegion != null  and administrativeRegion != ''"> and administrative_region = #{administrativeRegion}</if>
+            <if test="longitudeOfIndustrialPark != null  and longitudeOfIndustrialPark != ''"> and longitude_of_industrial_park = #{longitudeOfIndustrialPark}</if>
+            <if test="latitudeOfIndustrialPark != null  and latitudeOfIndustrialPark != ''"> and latitude_of_industrial_park = #{latitudeOfIndustrialPark}</if>
+            <if test="priorityAccessRouteCode != null "> and priority_access_route_code = #{priorityAccessRouteCode}</if>
+        </where>
+    </select>
+    
+    <select id="selectHwModernIndustrialParkInformationByIndustrialParkId" parameterType="Long" resultMap="HwModernIndustrialParkInformationResult">
+        <include refid="selectHwModernIndustrialParkInformationVo"/>
+        where industrial_park_ID = #{industrialParkId}
+    </select>
+        
+    <insert id="insertHwModernIndustrialParkInformation" parameterType="HwModernIndustrialParkInformation" useGeneratedKeys="true" keyProperty="industrialParkId">
+        insert into hw_modern_industrial_park_information
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="nameOfIndustrialPark != null">name_of_industrial_park,</if>
+            <if test="administrativeRegion != null">administrative_region,</if>
+            <if test="longitudeOfIndustrialPark != null">longitude_of_industrial_park,</if>
+            <if test="latitudeOfIndustrialPark != null">latitude_of_industrial_park,</if>
+            <if test="nameOfPriorityRoute != null">name_of_priority_route,</if>
+            <if test="priorityAccessRouteCode != null">priority_access_route_code,</if>
+            <if test="introduce != null">introduce,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="nameOfIndustrialPark != null">#{nameOfIndustrialPark},</if>
+            <if test="administrativeRegion != null">#{administrativeRegion},</if>
+            <if test="longitudeOfIndustrialPark != null">#{longitudeOfIndustrialPark},</if>
+            <if test="latitudeOfIndustrialPark != null">#{latitudeOfIndustrialPark},</if>
+            <if test="nameOfPriorityRoute != null">#{nameOfPriorityRoute},</if>
+            <if test="priorityAccessRouteCode != null">#{priorityAccessRouteCode},</if>
+            <if test="introduce != null">#{introduce},</if>
+         </trim>
+    </insert>
+
+    <update id="updateHwModernIndustrialParkInformation" parameterType="HwModernIndustrialParkInformation">
+        update hw_modern_industrial_park_information
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="nameOfIndustrialPark != null">name_of_industrial_park = #{nameOfIndustrialPark},</if>
+            <if test="administrativeRegion != null">administrative_region = #{administrativeRegion},</if>
+            <if test="longitudeOfIndustrialPark != null">longitude_of_industrial_park = #{longitudeOfIndustrialPark},</if>
+            <if test="latitudeOfIndustrialPark != null">latitude_of_industrial_park = #{latitudeOfIndustrialPark},</if>
+            <if test="nameOfPriorityRoute != null">name_of_priority_route = #{nameOfPriorityRoute},</if>
+            <if test="priorityAccessRouteCode != null">priority_access_route_code = #{priorityAccessRouteCode},</if>
+            <if test="introduce != null">introduce = #{introduce},</if>
+        </trim>
+        where industrial_park_ID = #{industrialParkId}
+    </update>
+
+    <delete id="deleteHwModernIndustrialParkInformationByIndustrialParkId" parameterType="Long">
+        delete from hw_modern_industrial_park_information where industrial_park_ID = #{industrialParkId}
+    </delete>
+
+    <delete id="deleteHwModernIndustrialParkInformationByIndustrialParkIds" parameterType="String">
+        delete from hw_modern_industrial_park_information where industrial_park_ID in 
+        <foreach item="industrialParkId" collection="array" open="(" separator="," close=")">
+            #{industrialParkId}
+        </foreach>
+    </delete>
+</mapper>

@@ -13,6 +13,18 @@
       </el-col>
       <el-col :span="1.5">
         <el-button
+          type="danger"
+          plain
+          icon="el-icon-delete"
+          size="mini"
+          :disabled="multiple"
+          @click="handleDelete"
+          v-hasPermi="['system:sectionInformation:remove']"
+        >删除
+        </el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button
           type="warning"
           plain
           icon="el-icon-download"
@@ -24,7 +36,8 @@
     </el-row>
 
     <el-table v-loading="loading" :data="sectionInformationList" @selection-change="handleSelectionChange">
-<!--      <el-table-column label="路线编码" align="center" prop="routecoding" />-->
+      <el-table-column type="selection" width="55" align="center"/>
+      <!--      <el-table-column label="路线编码" align="center" prop="routecoding" />-->
       <el-table-column label="路段编码" align="center" prop="sectionCoding" />
       <el-table-column label="路段序列号" align="center" prop="sectionSerialNumber" />
 <!--      <el-table-column label="起点名称" align="center" prop="originName" />-->
@@ -126,7 +139,7 @@
 <!--      <el-table-column label="采集时间" align="center" prop="acquisitionTime" />-->
 <!--      <el-table-column label="修改时间" align="center" prop="modificationTime" />-->
 <!--      <el-table-column label="备注" align="center" prop="remarks" />-->
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column width="150px" label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -160,534 +173,362 @@
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
     />
-    <el-dialog  :title="title" :visible.sync="openXq" width="800px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" style="display: flex;flex-wrap: wrap;justify-content: space-between">
-        <!--        <el-form-item label="路线ID" prop="routeid">-->
-        <!--          <el-input v-model="form.routeid" placeholder="请输入路线ID" />-->
-        <!--        </el-form-item>-->
-        <el-form-item label="路线编码" prop="routecoding">
-          <el-input v-model="form.routecoding" placeholder="请输入路编码" disabled="true" />
-        </el-form-item>
-        <el-form-item label="路段编码" prop="sectionCoding">
-          <el-input v-model="form.sectionCoding" placeholder="请输入路段编码" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="路段序列号" prop="sectionSerialNumber">
-          <el-input v-model="form.sectionSerialNumber" placeholder="请输入路段序列号" disabled="true"  />
-        </el-form-item>
-        <el-form-item label="起点名称" prop="originName">
-          <el-input v-model="form.originName" placeholder="请输入起点名称" disabled="true"  />
-        </el-form-item>
-        <el-form-item label="起点经度" prop="startingLongitude">
-          <el-input v-model="form.startingLongitude" placeholder="请输入起点经度" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="起点纬度" prop="startingLatitude">
-          <el-input v-model="form.startingLatitude" placeholder="请输入起点纬度"  disabled="true" />
-        </el-form-item>
-        <el-form-item label="起点桩号" prop="startingPileNumber">
-          <el-input v-model="form.startingPileNumber" placeholder="请输入起点桩号"  disabled="true" />
-        </el-form-item>
-        <el-form-item label="起点高程" prop="startingElevation">
-          <el-input v-model="form.startingElevation" placeholder="请输入起点高程"  disabled="true" />
-        </el-form-item>
-        <el-form-item label="起点是否为分界点" prop="cutoffPoint">
-          <el-select v-model="form.cutoffPoint" placeholder="请选择起点是否为分界点"  disabled="disabled" >
-            <el-option
-              v-for="dict in dict.type.true_false"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="讫点名称" prop="destinationName">
-          <el-input v-model="form.destinationName" placeholder="请输入讫点名称" disabled="true" />
-        </el-form-item>
-        <el-form-item label="讫点桩号" prop="finishingPost">
-          <el-input v-model="form.finishingPost" placeholder="请输入讫点桩号" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="讫点经度" prop="longitudepoint">
-          <el-input v-model="form.longitudepoint" placeholder="请输入讫点经度" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="讫点纬度" prop="latitudedestination">
-          <el-input v-model="form.latitudedestination" placeholder="请输入讫点纬度" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="讫点高程" prop="elevationdestinationpoint">
-          <el-input v-model="form.elevationdestinationpoint" placeholder="请输入讫点高程" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="讫点是否为分界点" prop="endpointdemarcationpoint">
-          <el-select v-model="form.endpointdemarcationpoint" placeholder="请选择讫点是否为分界点" disabled="true">
-            <el-option
-              v-for="dict in dict.type.true_false"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="路段技术等级" prop="technicalGradeRoadSection">
-          <el-input v-model="form.technicalGradeRoadSection" placeholder="请输入路段技术等级" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="路段里程(公里)" prop="roadLength">
-          <el-input v-model="form.roadLength" placeholder="请输入路段里程(公里)" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="实际里程(公里)" prop="actualMileage">
-          <el-input v-model="form.actualMileage" placeholder="请输入实际里程(公里)" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="路面宽度" prop="pavementWidth">
-          <el-input v-model="form.pavementWidth" placeholder="请输入路面宽度" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="路基宽度" prop="widthSubgrade">
-          <el-input v-model="form.widthSubgrade" placeholder="请输入路基宽度" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="是否为重复路段" prop="repeatedSection">
-          <el-select v-model="form.repeatedSection" placeholder="请选择是否为重复路段" disabled="true">
-            <el-option
-              v-for="dict in dict.type.true_false"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="重复路线编码" prop="repeatRouteCoding">
-          <el-input v-model="form.repeatRouteCoding" placeholder="请输入重复路线编码" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="所重复路段序列" prop="sequenceRepeatedSections">
-          <el-input v-model="form.sequenceRepeatedSections" placeholder="请输入所重复路段序列" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="重复路段起点桩号" prop="repeatStartingPostNumber">
-          <el-input v-model="form.repeatStartingPostNumber" placeholder="请输入重复路段起点桩号" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="重复路段止点桩号" prop="repeatStopPostNumber">
-          <el-input v-model="form.repeatStopPostNumber" placeholder="请输入重复路段止点桩号" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="已绿化里程(公里)" prop="okgreenMileage">
-          <el-input v-model="form.okgreenMileage" placeholder="请输入已绿化里程(公里)" disabled="true" />
-        </el-form-item>
-        <el-form-item label="养护里程(公里)" prop="maintenanceMileage">
-          <el-input v-model="form.maintenanceMileage" placeholder="请输入养护里程(公里)" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="是否为城管路段" prop="chengguanSection">
-          <el-select v-model="form.chengguanSection" placeholder="请选择是否为城管路段" disabled="true">
-            <el-option
-              v-for="dict in dict.type.true_false"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="是否晴雨通车" prop="trafficFineRain">
-          <el-select v-model="form.trafficFineRain" placeholder="请选择是否晴雨通车" disabled="true">
-            <el-option
-              v-for="dict in dict.type.true_false"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="是否一幅高速" prop="highSpeed">
-          <el-select v-model="form.highSpeed" placeholder="请选择是否一幅高速" disabled="true">
-            <el-option
-              v-for="dict in dict.type.true_false"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="晴雨通车里程(公里)" prop="fairRainMileage">
-          <el-input v-model="form.fairRainMileage" placeholder="请输入晴雨通车里程(公里)" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="路面评定结果" prop="pavementEvaluationResult">
-          <el-input v-model="form.pavementEvaluationResult" placeholder="请输入路面评定结果" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="纳入列养年份" prop="yearInclusion">
-          <el-input v-model="form.yearInclusion" placeholder="请输入纳入列养年份" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="涵洞数量" prop="numberCulverts">
-          <el-input v-model="form.numberCulverts" placeholder="请输入涵洞数量" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="收费性质" prop="natureCharge">
-          <el-input v-model="form.natureCharge" placeholder="请输入收费性质" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="是否断头路" prop="roadBroken">
-          <el-select v-model="form.roadBroken" placeholder="请选择是否断头路" disabled="true">
-            <el-option
-              v-for="dict in dict.type.true_false"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="最近改建时间(年份)" prop="lastModificationTime">
-          <el-input v-model="form.lastModificationTime" placeholder="请输入最近改建时间(年份)" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="建成时间(年份)" prop="completionTime">
-          <el-input v-model="form.completionTime" placeholder="请输入建成时间(年份)" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="管养单位代码" prop="custodialUnitCode">
-          <el-input v-model="form.custodialUnitCode" placeholder="请输入管养单位代码" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="管养单位名称" prop="nameCustodialUnit">
-          <el-input v-model="form.nameCustodialUnit" placeholder="请输入管养单位名称" disabled="true" />
-        </el-form-item>
-        <el-form-item label="养护类型(按资金来源分)" prop="typeConservation">
-          <el-input v-model="form.typeConservation" placeholder="请输入养护类型(按资金来源分)" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="变更原因" prop="reasonChange">
-          <el-input v-model="form.reasonChange" placeholder="请输入变更原因" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="地貌" prop="landform">
-          <el-input v-model="form.landform" placeholder="请输入地貌" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="通车日期" prop="openingDate">
-          <el-input v-model="form.openingDate" placeholder="请输入通车日期" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="车道数量" prop="numberLanes">
-          <el-input v-model="form.numberLanes" placeholder="请输入车道数量" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="断链类型" prop="typeBrokenChain">
-          <el-input v-model="form.typeBrokenChain" placeholder="请输入断链类型" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="原路线编码" prop="originalRouteCoding">
-          <el-input v-model="form.originalRouteCoding" placeholder="请输入原路线编码" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="原路线名称" prop="originalRouteName">
-          <el-input v-model="form.originalRouteName" placeholder="请输入原路线名称" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="原路段起点桩号" prop="ofTheOriginalSection">
-          <el-input v-model="form.ofTheOriginalSection" placeholder="请输入原路段起点桩号" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="原路段讫点桩号" prop="theOriginalSection">
-          <el-input v-model="form.theOriginalSection" placeholder="请输入原路段讫点桩号" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="原路段里程(公里)" prop="originalRoadLength">
-          <el-input v-model="form.originalRoadLength" placeholder="请输入原路段里程(公里)" disabled="true" />
-        </el-form-item>
-        <el-form-item label="设计时速" prop="designSpeed">
-          <el-input v-model="form.designSpeed" placeholder="请输入设计时速" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="省际出入口" prop="interprovincialentrancesexits">
-          <el-input v-model="form.interprovincialentrancesexits" placeholder="请输入省际出入口" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="面层厚度(厘米)" prop="surfaceThickness">
-          <el-input v-model="form.surfaceThickness" placeholder="请输入面层厚度(厘米)" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="国道桩号传递预留里程(公里)" prop="nationalHighwayNumber">
-          <el-input v-model="form.nationalHighwayNumber" placeholder="请输入国道桩号传递预留里程(公里)" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="是否按干线公路接养" prop="adoptTrunkRoad">
-          <el-select v-model="form.adoptTrunkRoad" placeholder="请选择是否按干线公路接养" disabled="true">
-            <el-option
-              v-for="dict in dict.type.true_false"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="最近一次修复养护年度" prop="lastyearrepairmaintenance">
-          <el-input v-model="form.lastyearrepairmaintenance" placeholder="请输入最近一次修复养护年度" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="填报单位" prop="reportingUnit">
-          <el-input v-model="form.reportingUnit" placeholder="请输入填报单位" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="填报单位代码" prop="fillUnitCode">
-          <el-input v-model="form.fillUnitCode" placeholder="请输入填报单位代码" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="填报单位负责人" prop="personchargereportingUnit">
-          <el-input v-model="form.personchargereportingUnit" placeholder="请输入填报单位负责人" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="填表人" prop="formfiller">
-          <el-input v-model="form.formfiller" placeholder="请输入填表人" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="填表人电话" prop="telephonenumberperson">
-          <el-input v-model="form.telephonenumberperson" placeholder="请输入填表人电话" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="审核人" prop="auditor">
-          <el-input v-model="form.auditor" placeholder="请输入审核人" disabled="true" />
-        </el-form-item>
-        <el-form-item label="审核人电话" prop="auditorTelephone">
-          <el-input v-model="form.auditorTelephone" placeholder="请输入审核人电话" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="采集时间" prop="acquisitionTime">
-          <el-input v-model="form.acquisitionTime" placeholder="请输入采集时间" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="修改时间" prop="modificationTime">
-          <el-input v-model="form.modificationTime" placeholder="请输入修改时间" disabled="true"/>
-        </el-form-item>
-        <el-form-item label="备注" prop="remarks">
-          <el-input v-model="form.remarks" placeholder="请输入备注" disabled="true"/>
-        </el-form-item>
-      </el-form>
-    </el-dialog>
 
-    <!-- 添加或修改路段信息对话框 -->
-    <el-dialog  :title="title" :visible.sync="open" width="800px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" style="display: flex;flex-wrap: wrap;justify-content: space-between">
-<!--        <el-form-item label="路线ID" prop="routeid">-->
-<!--          <el-input v-model="form.routeid" placeholder="请输入路线ID" />-->
-<!--        </el-form-item>-->
-        <el-form-item label="路线编码" prop="routecoding">
-          <el-input v-model="form.routecoding" placeholder="请输入路线编码" />
-        </el-form-item>
-        <el-form-item label="路段编码" prop="sectionCoding">
-          <el-input v-model="form.sectionCoding" placeholder="请输入路段编码" />
-        </el-form-item>
-        <el-form-item label="路段序列号" prop="sectionSerialNumber">
-          <el-input v-model="form.sectionSerialNumber" placeholder="请输入路段序列号" />
-        </el-form-item>
-        <el-form-item label="起点名称" prop="originName">
-          <el-input v-model="form.originName" placeholder="请输入起点名称" />
-        </el-form-item>
-        <el-form-item label="起点经度" prop="startingLongitude">
-          <el-input v-model="form.startingLongitude" placeholder="请输入起点经度" />
-        </el-form-item>
-        <el-form-item label="起点纬度" prop="startingLatitude">
-          <el-input v-model="form.startingLatitude" placeholder="请输入起点纬度" />
-        </el-form-item>
-        <el-form-item label="起点桩号" prop="startingPileNumber">
-          <el-input v-model="form.startingPileNumber" placeholder="请输入起点桩号" />
-        </el-form-item>
-        <el-form-item label="起点高程" prop="startingElevation">
-          <el-input v-model="form.startingElevation" placeholder="请输入起点高程" />
-        </el-form-item>
-        <el-form-item label="起点是否为分界点" prop="cutoffPoint">
-          <el-select v-model="form.cutoffPoint" placeholder="请选择起点是否为分界点">
-            <el-option
-              v-for="dict in dict.type.true_false"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="讫点名称" prop="destinationName">
-          <el-input v-model="form.destinationName" placeholder="请输入讫点名称" />
-        </el-form-item>
-        <el-form-item label="讫点桩号" prop="finishingPost">
-          <el-input v-model="form.finishingPost" placeholder="请输入讫点桩号" />
-        </el-form-item>
-        <el-form-item label="讫点经度" prop="longitudepoint">
-          <el-input v-model="form.longitudepoint" placeholder="请输入讫点经度" />
-        </el-form-item>
-        <el-form-item label="讫点纬度" prop="latitudedestination">
-          <el-input v-model="form.latitudedestination" placeholder="请输入讫点纬度" />
-        </el-form-item>
-        <el-form-item label="讫点高程" prop="elevationdestinationpoint">
-          <el-input v-model="form.elevationdestinationpoint" placeholder="请输入讫点高程" />
-        </el-form-item>
-        <el-form-item label="讫点是否为分界点" prop="endpointdemarcationpoint">
-          <el-select v-model="form.endpointdemarcationpoint" placeholder="请选择讫点是否为分界点">
-            <el-option
-              v-for="dict in dict.type.true_false"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="路段技术等级" prop="technicalGradeRoadSection">
-          <el-input v-model="form.technicalGradeRoadSection" placeholder="请输入路段技术等级" />
-        </el-form-item>
-        <el-form-item label="路段里程(公里)" prop="roadLength">
-          <el-input v-model="form.roadLength" placeholder="请输入路段里程(公里)" />
-        </el-form-item>
-        <el-form-item label="实际里程(公里)" prop="actualMileage">
-          <el-input v-model="form.actualMileage" placeholder="请输入实际里程(公里)" />
-        </el-form-item>
-        <el-form-item label="路面宽度" prop="pavementWidth">
-          <el-input v-model="form.pavementWidth" placeholder="请输入路面宽度" />
-        </el-form-item>
-        <el-form-item label="路基宽度" prop="widthSubgrade">
-          <el-input v-model="form.widthSubgrade" placeholder="请输入路基宽度" />
-        </el-form-item>
-        <el-form-item label="是否为重复路段" prop="repeatedSection">
-          <el-select v-model="form.repeatedSection" placeholder="请选择是否为重复路段">
-            <el-option
-              v-for="dict in dict.type.true_false"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="重复路线编码" prop="repeatRouteCoding">
-          <el-input v-model="form.repeatRouteCoding" placeholder="请输入重复路线编码" />
-        </el-form-item>
-        <el-form-item label="所重复路段序列" prop="sequenceRepeatedSections">
-          <el-input v-model="form.sequenceRepeatedSections" placeholder="请输入所重复路段序列" />
-        </el-form-item>
-        <el-form-item label="重复路段起点桩号" prop="repeatStartingPostNumber">
-          <el-input v-model="form.repeatStartingPostNumber" placeholder="请输入重复路段起点桩号" />
-        </el-form-item>
-        <el-form-item label="重复路段止点桩号" prop="repeatStopPostNumber">
-          <el-input v-model="form.repeatStopPostNumber" placeholder="请输入重复路段止点桩号" />
-        </el-form-item>
-        <el-form-item label="已绿化里程(公里)" prop="okgreenMileage">
-          <el-input v-model="form.okgreenMileage" placeholder="请输入已绿化里程(公里)" />
-        </el-form-item>
-        <el-form-item label="养护里程(公里)" prop="maintenanceMileage">
-          <el-input v-model="form.maintenanceMileage" placeholder="请输入养护里程(公里)" />
-        </el-form-item>
-        <el-form-item label="是否为城管路段" prop="chengguanSection">
-          <el-select v-model="form.chengguanSection" placeholder="请选择是否为城管路段">
-            <el-option
-              v-for="dict in dict.type.true_false"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="是否晴雨通车" prop="trafficFineRain">
-          <el-select v-model="form.trafficFineRain" placeholder="请选择是否晴雨通车">
-            <el-option
-              v-for="dict in dict.type.true_false"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="是否一幅高速" prop="highSpeed">
-          <el-select v-model="form.highSpeed" placeholder="请选择是否一幅高速">
-            <el-option
-              v-for="dict in dict.type.true_false"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="晴雨通车里程(公里)" prop="fairRainMileage">
-          <el-input v-model="form.fairRainMileage" placeholder="请输入晴雨通车里程(公里)" />
-        </el-form-item>
-        <el-form-item label="路面评定结果" prop="pavementEvaluationResult">
-          <el-input v-model="form.pavementEvaluationResult" placeholder="请输入路面评定结果" />
-        </el-form-item>
-        <el-form-item label="纳入列养年份" prop="yearInclusion">
-          <el-input v-model="form.yearInclusion" placeholder="请输入纳入列养年份" />
-        </el-form-item>
-        <el-form-item label="涵洞数量" prop="numberCulverts">
-          <el-input v-model="form.numberCulverts" placeholder="请输入涵洞数量" />
-        </el-form-item>
-        <el-form-item label="收费性质" prop="natureCharge">
-          <el-input v-model="form.natureCharge" placeholder="请输入收费性质" />
-        </el-form-item>
-        <el-form-item label="是否断头路" prop="roadBroken">
-          <el-select v-model="form.roadBroken" placeholder="请选择是否断头路">
-            <el-option
-              v-for="dict in dict.type.true_false"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="最近改建时间(年份)" prop="lastModificationTime">
-          <el-input v-model="form.lastModificationTime" placeholder="请输入最近改建时间(年份)" />
-        </el-form-item>
-        <el-form-item label="建成时间(年份)" prop="completionTime">
-          <el-input v-model="form.completionTime" placeholder="请输入建成时间(年份)" />
-        </el-form-item>
-        <el-form-item label="管养单位代码" prop="custodialUnitCode">
-          <el-input v-model="form.custodialUnitCode" placeholder="请输入管养单位代码" />
-        </el-form-item>
-        <el-form-item label="管养单位名称" prop="nameCustodialUnit">
-          <el-input v-model="form.nameCustodialUnit" placeholder="请输入管养单位名称" />
-        </el-form-item>
-        <el-form-item label="养护类型(按资金来源分)" prop="typeConservation">
-          <el-input v-model="form.typeConservation" placeholder="请输入养护类型(按资金来源分)" />
-        </el-form-item>
-        <el-form-item label="变更原因" prop="reasonChange">
-          <el-input v-model="form.reasonChange" placeholder="请输入变更原因" />
-        </el-form-item>
-        <el-form-item label="地貌" prop="landform">
-          <el-input v-model="form.landform" placeholder="请输入地貌" />
-        </el-form-item>
-        <el-form-item label="通车日期" prop="openingDate">
-          <el-input v-model="form.openingDate" placeholder="请输入通车日期" />
-        </el-form-item>
-        <el-form-item label="车道数量" prop="numberLanes">
-          <el-input v-model="form.numberLanes" placeholder="请输入车道数量" />
-        </el-form-item>
-        <el-form-item label="断链类型" prop="typeBrokenChain">
-          <el-input v-model="form.typeBrokenChain" placeholder="请输入断链类型" />
-        </el-form-item>
-        <el-form-item label="原路线编码" prop="originalRouteCoding">
-          <el-input v-model="form.originalRouteCoding" placeholder="请输入原路线编码" />
-        </el-form-item>
-        <el-form-item label="原路线名称" prop="originalRouteName">
-          <el-input v-model="form.originalRouteName" placeholder="请输入原路线名称" />
-        </el-form-item>
-        <el-form-item label="原路段起点桩号" prop="ofTheOriginalSection">
-          <el-input v-model="form.ofTheOriginalSection" placeholder="请输入原路段起点桩号" />
-        </el-form-item>
-        <el-form-item label="原路段讫点桩号" prop="theOriginalSection">
-          <el-input v-model="form.theOriginalSection" placeholder="请输入原路段讫点桩号" />
-        </el-form-item>
-        <el-form-item label="原路段里程(公里)" prop="originalRoadLength">
-          <el-input v-model="form.originalRoadLength" placeholder="请输入原路段里程(公里)" />
-        </el-form-item>
-        <el-form-item label="设计时速" prop="designSpeed">
-          <el-input v-model="form.designSpeed" placeholder="请输入设计时速" />
-        </el-form-item>
-        <el-form-item label="省际出入口" prop="interprovincialentrancesexits">
-          <el-input v-model="form.interprovincialentrancesexits" placeholder="请输入省际出入口" />
-        </el-form-item>
-        <el-form-item label="面层厚度(厘米)" prop="surfaceThickness">
-          <el-input v-model="form.surfaceThickness" placeholder="请输入面层厚度(厘米)" />
-        </el-form-item>
-        <el-form-item label="国道桩号传递预留里程(公里)" prop="nationalHighwayNumber">
-          <el-input v-model="form.nationalHighwayNumber" placeholder="请输入国道桩号传递预留里程(公里)" />
-        </el-form-item>
-        <el-form-item label="是否按干线公路接养" prop="adoptTrunkRoad">
-          <el-select v-model="form.adoptTrunkRoad" placeholder="请选择是否按干线公路接养">
-            <el-option
-              v-for="dict in dict.type.true_false"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="最近一次修复养护年度" prop="lastyearrepairmaintenance">
-          <el-input v-model="form.lastyearrepairmaintenance" placeholder="请输入最近一次修复养护年度" />
-        </el-form-item>
-        <el-form-item label="填报单位" prop="reportingUnit">
-          <el-input v-model="form.reportingUnit" placeholder="请输入填报单位" />
-        </el-form-item>
-        <el-form-item label="填报单位代码" prop="fillUnitCode">
-          <el-input v-model="form.fillUnitCode" placeholder="请输入填报单位代码" />
-        </el-form-item>
-        <el-form-item label="填报单位负责人" prop="personchargereportingUnit">
-          <el-input v-model="form.personchargereportingUnit" placeholder="请输入填报单位负责人" />
-        </el-form-item>
-        <el-form-item label="填表人" prop="formfiller">
-          <el-input v-model="form.formfiller" placeholder="请输入填表人" />
-        </el-form-item>
-        <el-form-item label="填表人电话" prop="telephonenumberperson">
-          <el-input v-model="form.telephonenumberperson" placeholder="请输入填表人电话" />
-        </el-form-item>
-        <el-form-item label="审核人" prop="auditor">
-          <el-input v-model="form.auditor" placeholder="请输入审核人" />
-        </el-form-item>
-        <el-form-item label="审核人电话" prop="auditorTelephone">
-          <el-input v-model="form.auditorTelephone" placeholder="请输入审核人电话" />
-        </el-form-item>
-        <el-form-item label="采集时间" prop="acquisitionTime">
-          <el-input v-model="form.acquisitionTime" placeholder="请输入采集时间" />
-        </el-form-item>
-        <el-form-item label="修改时间" prop="modificationTime">
-          <el-input v-model="form.modificationTime" placeholder="请输入修改时间" />
-        </el-form-item>
-        <el-form-item label="备注" prop="remarks">
-          <el-input v-model="form.remarks" placeholder="请输入备注" />
-        </el-form-item>
+    <el-dialog :title="title" :visible.sync="openXq" width="1000px" append-to-body>
+      <el-tabs v-model="activeName" type="card">
+        <el-tab-pane label="基本信息" name="first">
+          <el-descriptions :model="form">
+            <el-descriptions-item label="路线编码">{{ form.routecoding }}</el-descriptions-item>
+            <el-descriptions-item label="路段序列号">{{ form.sectionSerialNumber }}</el-descriptions-item>
+            <el-descriptions-item label="起点名称">{{ form.originName }}</el-descriptions-item>
+            <el-descriptions-item label="起点经度">{{ form.startingLongitude }}</el-descriptions-item>
+            <el-descriptions-item label="起点纬度">{{ form.routeAdministrativeArea }}</el-descriptions-item>
+            <el-descriptions-item label="起点桩号">{{ form.startingPileNumber }}</el-descriptions-item>
+            <el-descriptions-item label="起点高程">{{ form.startingElevation }}</el-descriptions-item>
+            <el-descriptions-item label="起点是否为分界点">{{ form.cutoffPoint }}</el-descriptions-item>
+            <el-descriptions-item label="讫点名称">{{ form.destinationName }}</el-descriptions-item>
+            <el-descriptions-item label="讫点桩号">{{ form.finishingPost }}</el-descriptions-item>
+            <el-descriptions-item label="讫点经度">{{ form.longitudepoint }}</el-descriptions-item>
+            <el-descriptions-item label="讫点纬度">{{ form.latitudedestination }}</el-descriptions-item>
+            <el-descriptions-item label="讫点高程">{{ form.elevationdestinationpoint }}</el-descriptions-item>
+            <el-descriptions-item label="讫点是否为分界点">{{ form.endpointdemarcationpoint }}</el-descriptions-item>
+            <el-descriptions-item label="路段技术等级">{{ form.technicalGradeRoadSection }}</el-descriptions-item>
+            <el-descriptions-item label="路段里程(公里)">{{ form.roadLength }}</el-descriptions-item>
+            <el-descriptions-item label="实际里程(公里)">{{ form.actualMileage }}</el-descriptions-item>
+            <el-descriptions-item label="路面宽度">{{ form.pavementWidth }}</el-descriptions-item>
+            <el-descriptions-item label="路基宽度">{{ form.widthSubgrade }}</el-descriptions-item>
+            <el-descriptions-item label="是否为重复路段">{{ form.repeatedSection }}</el-descriptions-item>
+            <el-descriptions-item label="重复路线编码">{{ form.repeatRouteCoding }}</el-descriptions-item>
+            <el-descriptions-item label="所重复路段序列">{{ form.sequenceRepeatedSections }}</el-descriptions-item>
+            <el-descriptions-item label="重复路段起点桩号">{{ form.repeatStartingPostNumber }}</el-descriptions-item>
+            <el-descriptions-item label="重复路段止点桩号">{{ form.repeatStopPostNumber }}</el-descriptions-item>
+            <el-descriptions-item label="已绿化里程(公里)">{{ form.okgreenMileage }}</el-descriptions-item>
+            <el-descriptions-item label="养护里程(公里)">{{ form.maintenanceMileage }}</el-descriptions-item>
+            <el-descriptions-item label="是否为城管路段">{{ form.chengguanSection }}</el-descriptions-item>
+            <el-descriptions-item label="是否晴雨通车">{{ form.trafficFineRain }}</el-descriptions-item>
+            <el-descriptions-item label="是否一幅高速">{{ form.highSpeed }}</el-descriptions-item>
+            <el-descriptions-item label="晴雨通车里程(公里)">{{ form.fairRainMileage }}</el-descriptions-item>
+            <el-descriptions-item label="路面评定结果">{{ form.pavementEvaluationResult }}</el-descriptions-item>
+            <el-descriptions-item label="纳入列养年份">{{ form.yearInclusion }}</el-descriptions-item>
+            <el-descriptions-item label="涵洞数量">{{ form.numberCulverts }}</el-descriptions-item>
+            <el-descriptions-item label="收费性质">{{ form.natureCharge }}</el-descriptions-item>
+            <el-descriptions-item label="是否断头路">{{ form.roadBroken }}</el-descriptions-item>
+            <el-descriptions-item label="最近改建时间(年份)">{{ form.lastModificationTime }}</el-descriptions-item>
+            <el-descriptions-item label="建成时间(年份)">{{ form.completionTime }}</el-descriptions-item>
+            <el-descriptions-item label="管养单位代码">{{ form.custodialUnitCode }}</el-descriptions-item>
+            <el-descriptions-item label="管养单位名称">{{ form.nameCustodialUnit }}</el-descriptions-item>
+            <el-descriptions-item label="养护类型(按资金来源分)">{{ form.typeConservation }}</el-descriptions-item>
+            <el-descriptions-item label="变更原因">{{ form.reasonChange }}</el-descriptions-item>
+            <el-descriptions-item label="地貌">{{ form.landform }}</el-descriptions-item>
+          </el-descriptions>
+        </el-tab-pane>
+        <el-tab-pane label="养护信息" name="second">
+          <el-descriptions :model="form">
+            <el-descriptions-item label="通车日期">{{ form.openingDate }}</el-descriptions-item>
+            <el-descriptions-item label="车道数量">{{ form.numberLanes }}</el-descriptions-item>
+            <el-descriptions-item label="断链类型">{{ form.typeBrokenChain }}</el-descriptions-item>
+            <el-descriptions-item label="原路线编码">{{ form.originalRouteCoding }}</el-descriptions-item>
+            <el-descriptions-item label="原路线名称">{{ form.originalRouteName }}</el-descriptions-item>
+            <el-descriptions-item label="原路段起点桩号">{{ form.ofTheOriginalSection }}</el-descriptions-item>
+            <el-descriptions-item label="原路段讫点桩号">{{ form.theOriginalSection }}</el-descriptions-item>
+            <el-descriptions-item label="原路段里程(公里)">{{ form.originalRoadLength }}</el-descriptions-item>
+            <el-descriptions-item label="设计时速">{{ form.designSpeed }}</el-descriptions-item>
+            <el-descriptions-item label="省际出入口">{{ form.interprovincialentrancesexits }}</el-descriptions-item>
+            <el-descriptions-item label="面层厚度(厘米)">{{ form.surfaceThickness }}</el-descriptions-item>
+            <el-descriptions-item label="国道桩号传递预留里程(公里)">{{ form.nationalHighwayNumber }}</el-descriptions-item>
+            <el-descriptions-item label="是否按干线公路接养">{{ form.adoptTrunkRoad }}</el-descriptions-item>
+            <el-descriptions-item label="最近一次修复养护年度">{{ form.lastyearrepairmaintenance }}</el-descriptions-item>
+            <el-descriptions-item label="填报单位">{{ form.reportingUnit }}</el-descriptions-item>
+            <el-descriptions-item label="填报单位代码">{{ form.fillUnitCode }}</el-descriptions-item>
+          </el-descriptions>
+        </el-tab-pane>
+        <el-tab-pane label="其他信息" name="third">
+          <el-descriptions :model="form">
+            <el-descriptions-item label="填报单位负责人">{{ form.personchargereportingUnit }}</el-descriptions-item>
+            <el-descriptions-item label="填表人">{{ form.formfiller }}</el-descriptions-item>
+            <el-descriptions-item label="填表人电话">{{ form.telephonenumberperson }}</el-descriptions-item>
+            <el-descriptions-item label="审核人">{{ form.auditor }}</el-descriptions-item>
+            <el-descriptions-item label="审核人电话">{{ form.auditorTelephone }}</el-descriptions-item>
+            <el-descriptions-item label="采集时间">{{ form.acquisitionTime }}</el-descriptions-item>
+            <el-descriptions-item label="修改时间">{{ form.modificationTime }}</el-descriptions-item>
+            <el-descriptions-item label="备注">{{ form.remarks }}</el-descriptions-item>
+          </el-descriptions>
+        </el-tab-pane>
+      </el-tabs>
+    </el-dialog>
+        <!-- 添加或修改桥梁信息对话框 -->
+        <el-dialog :title="title" :visible.sync="open" width="1000px" append-to-body>
+          <el-form ref="form" :inline="true" :model="form" style="display: flex"  :rules="rules" :label-position="labelPosition"
+                   label-width="200px">
+          <el-tabs v-model="activeName" type="card" >
+        <el-tab-pane label="基本信息" name="first">
+          <!--        <el-form-item label="路线ID" prop="routeid">-->
+          <!--          <el-input v-model="form.routeid" placeholder="请输入路线ID" />-->
+          <!--        </el-form-item>-->
+          <el-form-item label="路线编码" prop="routecoding">
+            <el-input v-model="form.routecoding" placeholder="请输入路线编码" />
+          </el-form-item>
+          <el-form-item label="路段编码" prop="sectionCoding">
+            <el-input v-model="form.sectionCoding" placeholder="请输入路段编码" />
+          </el-form-item>
+          <el-form-item label="路段序列号" prop="sectionSerialNumber">
+            <el-input v-model="form.sectionSerialNumber" placeholder="请输入路段序列号" />
+          </el-form-item>
+          <el-form-item label="起点名称" prop="originName">
+            <el-input v-model="form.originName" placeholder="请输入起点名称" />
+          </el-form-item>
+          <el-form-item label="起点经度" prop="startingLongitude">
+            <el-input v-model="form.startingLongitude" placeholder="请输入起点经度" />
+          </el-form-item>
+          <el-form-item label="起点纬度" prop="startingLatitude">
+            <el-input v-model="form.startingLatitude" placeholder="请输入起点纬度" />
+          </el-form-item>
+          <el-form-item label="起点桩号" prop="startingPileNumber">
+            <el-input v-model="form.startingPileNumber" placeholder="请输入起点桩号" />
+          </el-form-item>
+          <el-form-item label="起点高程" prop="startingElevation">
+            <el-input v-model="form.startingElevation" placeholder="请输入起点高程" />
+          </el-form-item>
+          <el-form-item label="起点是否为分界点" prop="cutoffPoint">
+            <el-select v-model="form.cutoffPoint" placeholder="请选择起点是否为分界点">
+              <el-option
+                v-for="dict in dict.type.true_false"
+                :key="dict.value"
+                :label="dict.label"
+                :value="dict.value"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="讫点名称" prop="destinationName">
+            <el-input v-model="form.destinationName" placeholder="请输入讫点名称" />
+          </el-form-item>
+          <el-form-item label="讫点桩号" prop="finishingPost">
+            <el-input v-model="form.finishingPost" placeholder="请输入讫点桩号" />
+          </el-form-item>
+          <el-form-item label="讫点经度" prop="longitudepoint">
+            <el-input v-model="form.longitudepoint" placeholder="请输入讫点经度" />
+          </el-form-item>
+          <el-form-item label="讫点纬度" prop="latitudedestination">
+            <el-input v-model="form.latitudedestination" placeholder="请输入讫点纬度" />
+          </el-form-item>
+          <el-form-item label="讫点高程" prop="elevationdestinationpoint">
+            <el-input v-model="form.elevationdestinationpoint" placeholder="请输入讫点高程" />
+          </el-form-item>
+          <el-form-item label="讫点是否为分界点" prop="endpointdemarcationpoint">
+            <el-select v-model="form.endpointdemarcationpoint" placeholder="请选择讫点是否为分界点">
+              <el-option
+                v-for="dict in dict.type.true_false"
+                :key="dict.value"
+                :label="dict.label"
+                :value="dict.value"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="路段技术等级" prop="technicalGradeRoadSection">
+            <el-input v-model="form.technicalGradeRoadSection" placeholder="请输入路段技术等级" />
+          </el-form-item>
+          <el-form-item label="路段里程(公里)" prop="roadLength">
+            <el-input v-model="form.roadLength" placeholder="请输入路段里程(公里)" />
+          </el-form-item>
+          <el-form-item label="实际里程(公里)" prop="actualMileage">
+            <el-input v-model="form.actualMileage" placeholder="请输入实际里程(公里)" />
+          </el-form-item>
+          <el-form-item label="路面宽度" prop="pavementWidth">
+            <el-input v-model="form.pavementWidth" placeholder="请输入路面宽度" />
+          </el-form-item>
+          <el-form-item label="路基宽度" prop="widthSubgrade">
+            <el-input v-model="form.widthSubgrade" placeholder="请输入路基宽度" />
+          </el-form-item>
+          <el-form-item label="是否为重复路段" prop="repeatedSection">
+            <el-select v-model="form.repeatedSection" placeholder="请选择是否为重复路段">
+              <el-option
+                v-for="dict in dict.type.true_false"
+                :key="dict.value"
+                :label="dict.label"
+                :value="dict.value"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="重复路线编码" prop="repeatRouteCoding">
+            <el-input v-model="form.repeatRouteCoding" placeholder="请输入重复路线编码" />
+          </el-form-item>
+          <el-form-item label="所重复路段序列" prop="sequenceRepeatedSections">
+            <el-input v-model="form.sequenceRepeatedSections" placeholder="请输入所重复路段序列" />
+          </el-form-item>
+          <el-form-item label="重复路段起点桩号" prop="repeatStartingPostNumber">
+            <el-input v-model="form.repeatStartingPostNumber" placeholder="请输入重复路段起点桩号" />
+          </el-form-item>
+          <el-form-item label="重复路段止点桩号" prop="repeatStopPostNumber">
+            <el-input v-model="form.repeatStopPostNumber" placeholder="请输入重复路段止点桩号" />
+          </el-form-item>
+          <el-form-item label="已绿化里程(公里)" prop="okgreenMileage">
+            <el-input v-model="form.okgreenMileage" placeholder="请输入已绿化里程(公里)" />
+          </el-form-item>
+          <el-form-item label="养护里程(公里)" prop="maintenanceMileage">
+            <el-input v-model="form.maintenanceMileage" placeholder="请输入养护里程(公里)" />
+          </el-form-item>
+          <el-form-item label="是否为城管路段" prop="chengguanSection">
+            <el-select v-model="form.chengguanSection" placeholder="请选择是否为城管路段">
+              <el-option
+                v-for="dict in dict.type.true_false"
+                :key="dict.value"
+                :label="dict.label"
+                :value="dict.value"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="是否晴雨通车" prop="trafficFineRain">
+            <el-select v-model="form.trafficFineRain" placeholder="请选择是否晴雨通车">
+              <el-option
+                v-for="dict in dict.type.true_false"
+                :key="dict.value"
+                :label="dict.label"
+                :value="dict.value"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="是否一幅高速" prop="highSpeed">
+            <el-select v-model="form.highSpeed" placeholder="请选择是否一幅高速">
+              <el-option
+                v-for="dict in dict.type.true_false"
+                :key="dict.value"
+                :label="dict.label"
+                :value="dict.value"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="晴雨通车里程(公里)" prop="fairRainMileage">
+            <el-input v-model="form.fairRainMileage" placeholder="请输入晴雨通车里程(公里)" />
+          </el-form-item>
+          <el-form-item label="路面评定结果" prop="pavementEvaluationResult">
+            <el-input v-model="form.pavementEvaluationResult" placeholder="请输入路面评定结果" />
+          </el-form-item>
+          <el-form-item label="纳入列养年份" prop="yearInclusion">
+            <el-input v-model="form.yearInclusion" placeholder="请输入纳入列养年份" />
+          </el-form-item>
+          <el-form-item label="涵洞数量" prop="numberCulverts">
+            <el-input v-model="form.numberCulverts" placeholder="请输入涵洞数量" />
+          </el-form-item>
+          <el-form-item label="收费性质" prop="natureCharge">
+            <el-input v-model="form.natureCharge" placeholder="请输入收费性质" />
+          </el-form-item>
+          <el-form-item label="是否断头路" prop="roadBroken">
+            <el-select v-model="form.roadBroken" placeholder="请选择是否断头路">
+              <el-option
+                v-for="dict in dict.type.true_false"
+                :key="dict.value"
+                :label="dict.label"
+                :value="dict.value"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="最近改建时间(年份)" prop="lastModificationTime">
+            <el-input v-model="form.lastModificationTime" placeholder="请输入最近改建时间(年份)" />
+          </el-form-item>
+          <el-form-item label="建成时间(年份)" prop="completionTime">
+            <el-input v-model="form.completionTime" placeholder="请输入建成时间(年份)" />
+          </el-form-item>
+          <el-form-item label="管养单位代码" prop="custodialUnitCode">
+            <el-input v-model="form.custodialUnitCode" placeholder="请输入管养单位代码" />
+          </el-form-item>
+          <el-form-item label="管养单位名称" prop="nameCustodialUnit">
+            <el-input v-model="form.nameCustodialUnit" placeholder="请输入管养单位名称" />
+          </el-form-item>
+          <el-form-item label="养护类型(按资金来源分)" prop="typeConservation">
+            <el-input v-model="form.typeConservation" placeholder="请输入养护类型(按资金来源分)" />
+          </el-form-item>
+          <el-form-item label="变更原因" prop="reasonChange">
+            <el-input v-model="form.reasonChange" placeholder="请输入变更原因" />
+          </el-form-item>
+
+        </el-tab-pane>
+        <el-tab-pane label="养护信息" name="second">
+          <el-form-item label="地貌" prop="landform">
+            <el-input v-model="form.landform" placeholder="请输入地貌" />
+          </el-form-item>
+          <el-form-item label="通车日期" prop="openingDate">
+            <el-input v-model="form.openingDate" placeholder="请输入通车日期" />
+          </el-form-item>
+          <el-form-item label="车道数量" prop="numberLanes">
+            <el-input v-model="form.numberLanes" placeholder="请输入车道数量" />
+          </el-form-item>
+          <el-form-item label="断链类型" prop="typeBrokenChain">
+            <el-input v-model="form.typeBrokenChain" placeholder="请输入断链类型" />
+          </el-form-item>
+          <el-form-item label="原路线编码" prop="originalRouteCoding">
+            <el-input v-model="form.originalRouteCoding" placeholder="请输入原路线编码" />
+          </el-form-item>
+          <el-form-item label="原路线名称" prop="originalRouteName">
+            <el-input v-model="form.originalRouteName" placeholder="请输入原路线名称" />
+          </el-form-item>
+          <el-form-item label="原路段起点桩号" prop="ofTheOriginalSection">
+            <el-input v-model="form.ofTheOriginalSection" placeholder="请输入原路段起点桩号" />
+          </el-form-item>
+          <el-form-item label="原路段讫点桩号" prop="theOriginalSection">
+            <el-input v-model="form.theOriginalSection" placeholder="请输入原路段讫点桩号" />
+          </el-form-item>
+          <el-form-item label="原路段里程(公里)" prop="originalRoadLength">
+            <el-input v-model="form.originalRoadLength" placeholder="请输入原路段里程(公里)" />
+          </el-form-item>
+          <el-form-item label="设计时速" prop="designSpeed">
+            <el-input v-model="form.designSpeed" placeholder="请输入设计时速" />
+          </el-form-item>
+          <el-form-item label="省际出入口" prop="interprovincialentrancesexits">
+            <el-input v-model="form.interprovincialentrancesexits" placeholder="请输入省际出入口" />
+          </el-form-item>
+          <el-form-item label="面层厚度(厘米)" prop="surfaceThickness">
+            <el-input v-model="form.surfaceThickness" placeholder="请输入面层厚度(厘米)" />
+          </el-form-item>
+          <el-form-item label="国道桩号传递预留里程(公里)" prop="nationalHighwayNumber">
+            <el-input v-model="form.nationalHighwayNumber" placeholder="请输入国道桩号传递预留里程(公里)" />
+          </el-form-item>
+          <el-form-item label="是否按干线公路接养" prop="adoptTrunkRoad">
+            <el-select v-model="form.adoptTrunkRoad" placeholder="请选择是否按干线公路接养">
+              <el-option
+                v-for="dict in dict.type.true_false"
+                :key="dict.value"
+                :label="dict.label"
+                :value="dict.value"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="最近一次修复养护年度" prop="lastyearrepairmaintenance">
+            <el-input v-model="form.lastyearrepairmaintenance" placeholder="请输入最近一次修复养护年度" />
+          </el-form-item>
+          <el-form-item label="填报单位" prop="reportingUnit">
+            <el-input v-model="form.reportingUnit" placeholder="请输入填报单位" />
+          </el-form-item>
+          <el-form-item label="填报单位代码" prop="fillUnitCode">
+            <el-input v-model="form.fillUnitCode" placeholder="请输入填报单位代码" />
+          </el-form-item>
+        </el-tab-pane>
+        <el-tab-pane label="其他信息" name="third">
+          <el-form-item label="填报单位负责人" prop="personchargereportingUnit">
+            <el-input v-model="form.personchargereportingUnit" placeholder="请输入填报单位负责人" />
+          </el-form-item>
+          <el-form-item label="填表人" prop="formfiller">
+            <el-input v-model="form.formfiller" placeholder="请输入填表人" />
+          </el-form-item>
+          <el-form-item label="填表人电话" prop="telephonenumberperson">
+            <el-input v-model="form.telephonenumberperson" placeholder="请输入填表人电话" />
+          </el-form-item>
+          <el-form-item label="审核人" prop="auditor">
+            <el-input v-model="form.auditor" placeholder="请输入审核人" />
+          </el-form-item>
+          <el-form-item label="审核人电话" prop="auditorTelephone">
+            <el-input v-model="form.auditorTelephone" placeholder="请输入审核人电话" />
+          </el-form-item>
+          <el-form-item label="采集时间" prop="acquisitionTime">
+            <el-input v-model="form.acquisitionTime" placeholder="请输入采集时间" />
+          </el-form-item>
+          <el-form-item label="修改时间" prop="modificationTime">
+            <el-input v-model="form.modificationTime" placeholder="请输入修改时间" />
+          </el-form-item>
+          <el-form-item label="备注" prop="remarks">
+            <el-input v-model="form.remarks" placeholder="请输入备注" />
+          </el-form-item>
+        </el-tab-pane>
+      </el-tabs>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -707,6 +548,7 @@ export default {
   data() {
     return {
       // routeId:this.routeId,
+      activeName:'first',
       // 遮罩层
       loading: true,
       // 选中数组
@@ -802,16 +644,11 @@ export default {
         modificationTime: null,
         remarks: null
       },
+      labelPosition: 'top',
       // 表单参数
       form: {},
       // 表单校验
       rules: {
-        roadLength: [
-          { required: true, message: "路段里程(公里)不能为空", trigger: "blur" }
-        ],
-        actualMileage: [
-          { required: true, message: "实际里程(公里)不能为空", trigger: "blur" }
-        ],
         destinationName: [
           { required: true, message: "讫点名称不能为空", trigger: "blur" }
         ],
@@ -820,9 +657,6 @@ export default {
         ],
         startingPileNumber: [
           { required: true, message: "起点桩号不能为空", trigger: "blur" }
-        ],
-        startingElevation: [
-          { required: true, message: "起点高程不能为空", trigger: "blur" }
         ],
         routecoding: [
           { required: true, message: "路线编码不能为空", trigger: "blur" }

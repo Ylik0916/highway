@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hg.system.mapper.HwVillageInformationMapper">
+    
+    <resultMap type="HwVillageInformation" id="HwVillageInformationResult">
+        <result property="villageId"    column="village_id"    />
+        <result property="nameOfVillage"    column="name_of_village"    />
+        <result property="regionalPopulation"    column="regional_population"    />
+        <result property="numberOfIncorporatedVillages"    column="number_of_incorporated_villages"    />
+        <result property="administrativeDivisionNumber"    column="administrative_division_number"    />
+        <result property="latitudeAndLongitudeType"    column="latitude_and_longitude_type"    />
+        <result property="longitude"    column="longitude"    />
+        <result property="latitude"    column="latitude"    />
+        <result property="distanceFromPierToLand"    column="distance_from_pier_to_land"    />
+        <result property="landform"    column="landform"    />
+        <result property="roadsOnTheIsland"    column="roads_on_the_island"    />
+        <result property="suitableForRoadAccess"    column="suitable_for_road_access"    />
+        <result property="elevationOfTownshipGovernment"    column="elevation_of_township_government"    />
+        <result property="causeOfUnsuitability"    column="cause_of_unsuitability"    />
+        <result property="accessStatusQuo"    column="access_status_quo"    />
+        <result property="locationOfTownshipAccess"    column="location_of_township_access"    />
+        <result property="administrativeLevelAccessRoute"    column="administrative_level_access_route"    />
+        <result property="optimalAccessRouteCoding"    column="optimal_access_route_coding"    />
+        <result property="accessRouteIsPreferred"    column="access_route_is_preferred"    />
+        <result property="directionOfAccess"    column="direction_of_access"    />
+        <result property="lengthOfRoadToBeBuilt"    column="length_of_road_to_be_built"    />
+        <result property="pointOfTheRoadSection"    column="point_of_the_road_section"    />
+        <result property="endPointOfTheRoadToBeBuilt"    column="end_point_of_the_road_to_be_built"    />
+        <result property="fillInTheUnitCode"    column="fill_in_the_unit_code"    />
+        <result property="reportingUnit"    column="reporting_unit"    />
+        <result property="personInCharge"    column="person_in_charge"    />
+        <result property="formFiller"    column="form_filler"    />
+        <result property="personFillingInTheForm"    column="person_filling_in_the_form"    />
+        <result property="auditor"    column="auditor"    />
+        <result property="auditorTelephone"    column="auditor_telephone"    />
+        <result property="degreeOfChange"    column="degree_of_change"    />
+        <result property="acquisitionMark"    column="acquisition_mark"    />
+        <result property="includedInStatistics"    column="included_in_statistics"    />
+        <result property="acquisitionTime"    column="acquisition_time"    />
+        <result property="modificationTime"    column="modification_time"    />
+        <result property="remarks"    column="remarks"    />
+    </resultMap>
+
+    <sql id="selectHwVillageInformationVo">
+        select village_id, name_of_village, regional_population, number_of_incorporated_villages, administrative_division_number, latitude_and_longitude_type, longitude, latitude, distance_from_pier_to_land, landform, roads_on_the_island, suitable_for_road_access, elevation_of_township_government, cause_of_unsuitability, access_status_quo, location_of_township_access, administrative_level_access_route, optimal_access_route_coding, access_route_is_preferred, direction_of_access, length_of_road_to_be_built, point_of_the_road_section, end_point_of_the_road_to_be_built, fill_in_the_unit_code, reporting_unit, person_in_charge, form_filler, person_filling_in_the_form, auditor, auditor_telephone, degree_of_change, acquisition_mark, included_in_statistics, acquisition_time, modification_time, remarks from hw_village_information
+    </sql>
+
+    <select id="selectHwVillageInformationList" parameterType="HwVillageInformation" resultMap="HwVillageInformationResult">
+        <include refid="selectHwVillageInformationVo"/>
+        <where>  
+            <if test="nameOfVillage != null  and nameOfVillage != ''"> and name_of_village like concat('%', #{nameOfVillage}, '%')</if>
+            <if test="administrativeDivisionNumber != null "> and administrative_division_number = #{administrativeDivisionNumber}</if>
+        </where>
+    </select>
+    
+    <select id="selectHwVillageInformationByVillageId" parameterType="Long" resultMap="HwVillageInformationResult">
+        <include refid="selectHwVillageInformationVo"/>
+        where village_id = #{villageId}
+    </select>
+        
+    <insert id="insertHwVillageInformation" parameterType="HwVillageInformation" useGeneratedKeys="true" keyProperty="villageId">
+        insert into hw_village_information
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="nameOfVillage != null">name_of_village,</if>
+            <if test="regionalPopulation != null">regional_population,</if>
+            <if test="numberOfIncorporatedVillages != null">number_of_incorporated_villages,</if>
+            <if test="administrativeDivisionNumber != null">administrative_division_number,</if>
+            <if test="latitudeAndLongitudeType != null">latitude_and_longitude_type,</if>
+            <if test="longitude != null">longitude,</if>
+            <if test="latitude != null">latitude,</if>
+            <if test="distanceFromPierToLand != null">distance_from_pier_to_land,</if>
+            <if test="landform != null">landform,</if>
+            <if test="roadsOnTheIsland != null">roads_on_the_island,</if>
+            <if test="suitableForRoadAccess != null">suitable_for_road_access,</if>
+            <if test="elevationOfTownshipGovernment != null">elevation_of_township_government,</if>
+            <if test="causeOfUnsuitability != null">cause_of_unsuitability,</if>
+            <if test="accessStatusQuo != null">access_status_quo,</if>
+            <if test="locationOfTownshipAccess != null">location_of_township_access,</if>
+            <if test="administrativeLevelAccessRoute != null">administrative_level_access_route,</if>
+            <if test="optimalAccessRouteCoding != null">optimal_access_route_coding,</if>
+            <if test="accessRouteIsPreferred != null">access_route_is_preferred,</if>
+            <if test="directionOfAccess != null">direction_of_access,</if>
+            <if test="lengthOfRoadToBeBuilt != null">length_of_road_to_be_built,</if>
+            <if test="pointOfTheRoadSection != null">point_of_the_road_section,</if>
+            <if test="endPointOfTheRoadToBeBuilt != null">end_point_of_the_road_to_be_built,</if>
+            <if test="fillInTheUnitCode != null">fill_in_the_unit_code,</if>
+            <if test="reportingUnit != null">reporting_unit,</if>
+            <if test="personInCharge != null">person_in_charge,</if>
+            <if test="formFiller != null">form_filler,</if>
+            <if test="personFillingInTheForm != null">person_filling_in_the_form,</if>
+            <if test="auditor != null">auditor,</if>
+            <if test="auditorTelephone != null">auditor_telephone,</if>
+            <if test="degreeOfChange != null">degree_of_change,</if>
+            <if test="acquisitionMark != null">acquisition_mark,</if>
+            <if test="includedInStatistics != null">included_in_statistics,</if>
+            <if test="acquisitionTime != null">acquisition_time,</if>
+            <if test="modificationTime != null">modification_time,</if>
+            <if test="remarks != null">remarks,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="nameOfVillage != null">#{nameOfVillage},</if>
+            <if test="regionalPopulation != null">#{regionalPopulation},</if>
+            <if test="numberOfIncorporatedVillages != null">#{numberOfIncorporatedVillages},</if>
+            <if test="administrativeDivisionNumber != null">#{administrativeDivisionNumber},</if>
+            <if test="latitudeAndLongitudeType != null">#{latitudeAndLongitudeType},</if>
+            <if test="longitude != null">#{longitude},</if>
+            <if test="latitude != null">#{latitude},</if>
+            <if test="distanceFromPierToLand != null">#{distanceFromPierToLand},</if>
+            <if test="landform != null">#{landform},</if>
+            <if test="roadsOnTheIsland != null">#{roadsOnTheIsland},</if>
+            <if test="suitableForRoadAccess != null">#{suitableForRoadAccess},</if>
+            <if test="elevationOfTownshipGovernment != null">#{elevationOfTownshipGovernment},</if>
+            <if test="causeOfUnsuitability != null">#{causeOfUnsuitability},</if>
+            <if test="accessStatusQuo != null">#{accessStatusQuo},</if>
+            <if test="locationOfTownshipAccess != null">#{locationOfTownshipAccess},</if>
+            <if test="administrativeLevelAccessRoute != null">#{administrativeLevelAccessRoute},</if>
+            <if test="optimalAccessRouteCoding != null">#{optimalAccessRouteCoding},</if>
+            <if test="accessRouteIsPreferred != null">#{accessRouteIsPreferred},</if>
+            <if test="directionOfAccess != null">#{directionOfAccess},</if>
+            <if test="lengthOfRoadToBeBuilt != null">#{lengthOfRoadToBeBuilt},</if>
+            <if test="pointOfTheRoadSection != null">#{pointOfTheRoadSection},</if>
+            <if test="endPointOfTheRoadToBeBuilt != null">#{endPointOfTheRoadToBeBuilt},</if>
+            <if test="fillInTheUnitCode != null">#{fillInTheUnitCode},</if>
+            <if test="reportingUnit != null">#{reportingUnit},</if>
+            <if test="personInCharge != null">#{personInCharge},</if>
+            <if test="formFiller != null">#{formFiller},</if>
+            <if test="personFillingInTheForm != null">#{personFillingInTheForm},</if>
+            <if test="auditor != null">#{auditor},</if>
+            <if test="auditorTelephone != null">#{auditorTelephone},</if>
+            <if test="degreeOfChange != null">#{degreeOfChange},</if>
+            <if test="acquisitionMark != null">#{acquisitionMark},</if>
+            <if test="includedInStatistics != null">#{includedInStatistics},</if>
+            <if test="acquisitionTime != null">#{acquisitionTime},</if>
+            <if test="modificationTime != null">#{modificationTime},</if>
+            <if test="remarks != null">#{remarks},</if>
+         </trim>
+    </insert>
+
+    <update id="updateHwVillageInformation" parameterType="HwVillageInformation">
+        update hw_village_information
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="nameOfVillage != null">name_of_village = #{nameOfVillage},</if>
+            <if test="regionalPopulation != null">regional_population = #{regionalPopulation},</if>
+            <if test="numberOfIncorporatedVillages != null">number_of_incorporated_villages = #{numberOfIncorporatedVillages},</if>
+            <if test="administrativeDivisionNumber != null">administrative_division_number = #{administrativeDivisionNumber},</if>
+            <if test="latitudeAndLongitudeType != null">latitude_and_longitude_type = #{latitudeAndLongitudeType},</if>
+            <if test="longitude != null">longitude = #{longitude},</if>
+            <if test="latitude != null">latitude = #{latitude},</if>
+            <if test="distanceFromPierToLand != null">distance_from_pier_to_land = #{distanceFromPierToLand},</if>
+            <if test="landform != null">landform = #{landform},</if>
+            <if test="roadsOnTheIsland != null">roads_on_the_island = #{roadsOnTheIsland},</if>
+            <if test="suitableForRoadAccess != null">suitable_for_road_access = #{suitableForRoadAccess},</if>
+            <if test="elevationOfTownshipGovernment != null">elevation_of_township_government = #{elevationOfTownshipGovernment},</if>
+            <if test="causeOfUnsuitability != null">cause_of_unsuitability = #{causeOfUnsuitability},</if>
+            <if test="accessStatusQuo != null">access_status_quo = #{accessStatusQuo},</if>
+            <if test="locationOfTownshipAccess != null">location_of_township_access = #{locationOfTownshipAccess},</if>
+            <if test="administrativeLevelAccessRoute != null">administrative_level_access_route = #{administrativeLevelAccessRoute},</if>
+            <if test="optimalAccessRouteCoding != null">optimal_access_route_coding = #{optimalAccessRouteCoding},</if>
+            <if test="accessRouteIsPreferred != null">access_route_is_preferred = #{accessRouteIsPreferred},</if>
+            <if test="directionOfAccess != null">direction_of_access = #{directionOfAccess},</if>
+            <if test="lengthOfRoadToBeBuilt != null">length_of_road_to_be_built = #{lengthOfRoadToBeBuilt},</if>
+            <if test="pointOfTheRoadSection != null">point_of_the_road_section = #{pointOfTheRoadSection},</if>
+            <if test="endPointOfTheRoadToBeBuilt != null">end_point_of_the_road_to_be_built = #{endPointOfTheRoadToBeBuilt},</if>
+            <if test="fillInTheUnitCode != null">fill_in_the_unit_code = #{fillInTheUnitCode},</if>
+            <if test="reportingUnit != null">reporting_unit = #{reportingUnit},</if>
+            <if test="personInCharge != null">person_in_charge = #{personInCharge},</if>
+            <if test="formFiller != null">form_filler = #{formFiller},</if>
+            <if test="personFillingInTheForm != null">person_filling_in_the_form = #{personFillingInTheForm},</if>
+            <if test="auditor != null">auditor = #{auditor},</if>
+            <if test="auditorTelephone != null">auditor_telephone = #{auditorTelephone},</if>
+            <if test="degreeOfChange != null">degree_of_change = #{degreeOfChange},</if>
+            <if test="acquisitionMark != null">acquisition_mark = #{acquisitionMark},</if>
+            <if test="includedInStatistics != null">included_in_statistics = #{includedInStatistics},</if>
+            <if test="acquisitionTime != null">acquisition_time = #{acquisitionTime},</if>
+            <if test="modificationTime != null">modification_time = #{modificationTime},</if>
+            <if test="remarks != null">remarks = #{remarks},</if>
+        </trim>
+        where village_id = #{villageId}
+    </update>
+
+    <delete id="deleteHwVillageInformationByVillageId" parameterType="Long">
+        delete from hw_village_information where village_id = #{villageId}
+    </delete>
+
+    <delete id="deleteHwVillageInformationByVillageIds" parameterType="String">
+        delete from hw_village_information where village_id in 
+        <foreach item="villageId" collection="array" open="(" separator="," close=")">
+            #{villageId}
+        </foreach>
+    </delete>
+</mapper>
