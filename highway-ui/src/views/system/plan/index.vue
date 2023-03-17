@@ -1,14 +1,16 @@
 <template>
-  <!--<div class="body3">-->
-  <!--  <el-tabs v-model="activeName" type="card" style="width: 100%" @tab-click="handleClick" tab-position="top">-->
-  <!--    <el-tab-pane label="路段信息" name="first"><section-information :routeId="routeId"></section-information></el-tab-pane>-->
-  <!--    <el-tab-pane label="桥梁信息" name="second">桥梁信息</el-tab-pane>-->
-  <!--    <el-tab-pane label="隧道信息" name="fourth"><Tunnel :rou="routeId"></Tunnel></el-tab-pane>-->
-  <!--    <el-tab-pane label="病害信息" name="firth">病害信息</el-tab-pane>-->
-  <!--  </el-tabs>-->
-  <!--</div>-->
+  <div class="bigBox">
 
-  <div class="app-container">
+    <div class="app-container smallBox">
+
+    <div>
+      <el-tabs v-model="activeName" type="card" style="width: 100%" @tab-click="handleClick" tab-position="top">
+        <el-tab-pane label="年度计划" name="first"></el-tab-pane>
+        <el-tab-pane label="明细上报" name="second"></el-tab-pane>
+        <el-tab-pane label="明细审核" name="thirdly"></el-tab-pane>
+      </el-tabs>
+    </div>
+
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="计划名称" prop="name">
         <el-input
@@ -212,6 +214,7 @@
       </div>
     </el-dialog>
   </div>
+  </div>
 </template>
 
 <script>
@@ -280,10 +283,7 @@ export default {
     this.getList();
   },
   methods: {
-    /**  */
-    planDetails(row){
-      this.$router.push({path:'/plan/item',query: {id:row.id}})
-    },
+
     /** 查询年度计划列表 */
     getList() {
       this.loading = true;
@@ -332,6 +332,10 @@ export default {
       this.reset();
       this.open = true;
       this.title = "添加年度计划";
+    },
+    /** 详情按钮操作 */
+    planDetails(row){
+      this.$router.push({path:'/plan/item',query: {id:row.id}})
     },
     /** 修改按钮操作 */
     handleUpdate(row) {

@@ -37,13 +37,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="postscript"    column="postscript"    />
         <result property="planId"    column="plan_id"    />
         <result property="disease"    column="disease"    />
+        <result property="detailScale"    column="detail_scale"    />
     </resultMap>
 
     <sql id="selectHwPlanItemVo">
-        select id, encoding, name, length, custody_unit, region, unfinished, level, constructed_type, surface_width, roadbed_width, starting_number, terminus_number, national_province_subsidy, municipality_invest, county_self_fund, reply_capital, contract_capital, not_in_service_cause, progress, reply_file_number, accountability_unit, person_in_charge, phone, start_work_year, completion_year, production_drawing, production_drawing_approval, bid_whether_completion, postscript, plan_id, disease from hw_plan_item
+        select id, encoding, name, length, custody_unit, region, unfinished, level, constructed_type, surface_width, roadbed_width, starting_number, terminus_number, national_province_subsidy, municipality_invest, county_self_fund, reply_capital, contract_capital, not_in_service_cause, progress, reply_file_number, accountability_unit, person_in_charge, phone, start_work_year, completion_year, production_drawing, production_drawing_approval, bid_whether_completion, postscript, plan_id, disease, detail_scale from hw_plan_item
     </sql>
 
-    <select id="selectHwPlanItemList" parameterType="HwPlanItem" resultMap="HwPlanItemResult">
+    <select id="selectHwPlanItemList" parameterType="com.hg.system.domain.HwPlanItem" resultMap="HwPlanItemResult">
         <include refid="selectHwPlanItemVo"/>
         <where>  
             <if test="encoding != null  and encoding != ''"> and encoding = #{encoding}</if>
@@ -77,15 +78,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="postscript != null  and postscript != ''"> and postscript = #{postscript}</if>
             <if test="planId != null "> and plan_id = #{planId}</if>
             <if test="disease != null  and disease != ''"> and disease = #{disease}</if>
+            <if test="detailScale != null "> and detail_scale = #{detailScale}</if>
         </where>
     </select>
     
-    <select id="selectHwPlanItemById" parameterType="Long" resultMap="HwPlanItemResult">
+    <select id="selectHwPlanItemById" parameterType="long" resultMap="HwPlanItemResult">
         <include refid="selectHwPlanItemVo"/>
         where id = #{id}
     </select>
         
-    <insert id="insertHwPlanItem" parameterType="HwPlanItem" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertHwPlanItem" parameterType="com.hg.system.domain.HwPlanItem" useGeneratedKeys="true" keyProperty="id">
         insert into hw_plan_item
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="encoding != null and encoding != ''">encoding,</if>
@@ -119,6 +121,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="postscript != null">postscript,</if>
             <if test="planId != null">plan_id,</if>
             <if test="disease != null">disease,</if>
+            <if test="detailScale != null">detail_scale,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="encoding != null and encoding != ''">#{encoding},</if>
@@ -152,10 +155,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="postscript != null">#{postscript},</if>
             <if test="planId != null">#{planId},</if>
             <if test="disease != null">#{disease},</if>
+            <if test="detailScale != null">#{detailScale},</if>
          </trim>
     </insert>
 
-    <update id="updateHwPlanItem" parameterType="HwPlanItem">
+    <update id="updateHwPlanItem" parameterType="com.hg.system.domain.HwPlanItem">
         update hw_plan_item
         <trim prefix="SET" suffixOverrides=",">
             <if test="encoding != null and encoding != ''">encoding = #{encoding},</if>
@@ -189,15 +193,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="postscript != null">postscript = #{postscript},</if>
             <if test="planId != null">plan_id = #{planId},</if>
             <if test="disease != null">disease = #{disease},</if>
+            <if test="detailScale != null">detail_scale = #{detailScale},</if>
         </trim>
         where id = #{id}
     </update>
 
-    <delete id="deleteHwPlanItemById" parameterType="Long">
+    <delete id="deleteHwPlanItemById" parameterType="long">
         delete from hw_plan_item where id = #{id}
     </delete>
 
-    <delete id="deleteHwPlanItemByIds" parameterType="String">
+    <delete id="deleteHwPlanItemByIds" parameterType="string">
         delete from hw_plan_item where id in 
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}

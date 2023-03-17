@@ -9,7 +9,7 @@ import com.hg.common.core.domain.BaseEntity;
  * 进度对象 hw_plan_item
  * 
  * @author Cxh
- * @date 2023-03-16
+ * @date 2023-03-17
  */
 public class HwPlanItem extends BaseEntity
 {
@@ -26,8 +26,8 @@ public class HwPlanItem extends BaseEntity
     @Excel(name = "路线名称")
     private String name;
 
-    /** 路线全长 */
-    @Excel(name = "路线全长")
+    /** 路线全长(公里) */
+    @Excel(name = "路线全长(公里)")
     private String length;
 
     /** 管养单位 */
@@ -135,11 +135,16 @@ public class HwPlanItem extends BaseEntity
     private String postscript;
 
     /** 年度计划ID */
+    @Excel(name = "年度计划ID")
     private Long planId;
 
     /** 病害内容 */
     @Excel(name = "病害内容")
     private String disease;
+
+    /** 明细状态 */
+    @Excel(name = "明细状态")
+    private Integer detailScale;
 
     public void setId(Long id) 
     {
@@ -429,6 +434,15 @@ public class HwPlanItem extends BaseEntity
     {
         return disease;
     }
+    public void setDetailScale(Integer detailScale) 
+    {
+        this.detailScale = detailScale;
+    }
+
+    public Integer getDetailScale() 
+    {
+        return detailScale;
+    }
 
     @Override
     public String toString() {
@@ -465,6 +479,7 @@ public class HwPlanItem extends BaseEntity
             .append("postscript", getPostscript())
             .append("planId", getPlanId())
             .append("disease", getDisease())
+            .append("detailScale", getDetailScale())
             .toString();
     }
 }

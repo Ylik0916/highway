@@ -41,9 +41,9 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="路线名称" align="center" prop="name" />
       <el-table-column label="行政区域" align="center" prop="region" />
-      <el-table-column label="国省补助" align="center" prop="nationalProvinceSubsidy" />
-      <el-table-column label="市州投资" align="center" prop="municipalityInvest" />
-      <el-table-column label="县区自筹" align="center" prop="countySelfFund" />
+      <el-table-column label="国省补助(万元)" align="center" prop="nationalProvinceSubsidy" />
+      <el-table-column label="市州投资(万元)" align="center" prop="municipalityInvest" />
+      <el-table-column label="县区自筹(万元)" align="center" prop="countySelfFund" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -94,7 +94,14 @@
           <el-input v-model="form.unfinished" placeholder="请输入待建里程(公里)" />
         </el-form-item>
         <el-form-item label="技术等级" prop="level">
-          <el-input v-model="form.level" placeholder="请输入技术等级" />
+          <el-select v-model="form.level" placeholder="请选择技术等级">
+            <el-option
+              v-for="dict in dict.type.technical_grade"
+              :key="dict.value"
+              :label="dict.label"
+              :value="parseInt(dict.value)"
+            ></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="计划修建路面类型" prop="constructedType">
           <el-select v-model="form.constructedType" placeholder="请选择计划修建路面类型">
@@ -172,13 +179,31 @@
           </el-select>
         </el-form-item>
         <el-form-item label="施工图设计是否完成" prop="productionDrawing">
-          <el-input v-model="form.productionDrawing" placeholder="请输入施工图设计是否完成" />
+          <el-radio-group v-model="form.productionDrawing">
+            <el-radio
+              v-for="dict in dict.type.true_false"
+              :key="dict.value"
+              :label="parseInt(dict.value)"
+            >{{dict.label}}</el-radio>
+          </el-radio-group>
         </el-form-item>
         <el-form-item label="施工图审批是否完成" prop="productionDrawingApproval">
-          <el-input v-model="form.productionDrawingApproval" placeholder="请输入施工图审批是否完成" />
+          <el-radio-group v-model="form.productionDrawingApproval">
+            <el-radio
+              v-for="dict in dict.type.true_false"
+              :key="dict.value"
+              :label="parseInt(dict.value)"
+            >{{dict.label}}</el-radio>
+          </el-radio-group>
         </el-form-item>
         <el-form-item label="施工招投标是否完成" prop="bidWhetherCompletion">
-          <el-input v-model="form.bidWhetherCompletion" placeholder="请输入施工招投标是否完成" />
+          <el-radio-group v-model="form.bidWhetherCompletion">
+            <el-radio
+              v-for="dict in dict.type.true_false"
+              :key="dict.value"
+              :label="parseInt(dict.value)"
+            >{{dict.label}}</el-radio>
+          </el-radio-group>
         </el-form-item>
         <el-form-item label="备注" prop="postscript">
           <el-input v-model="form.postscript" type="textarea" placeholder="请输入内容" />
@@ -203,7 +228,7 @@ import { listItem, getItem, delItem, addItem, updateItem } from "@/api/system/it
 
 export default {
   name: "Item",
-  dicts: ['plan_year', 'constructed_type'],
+  dicts: ['plan_year', 'constructed_type', 'true_false', 'technical_grade'],
   data() {
     return {
       // 遮罩层
