@@ -369,7 +369,7 @@
                 plain
                 icon="el-icon-plus"
                 size="mini"
-                @click="handleJlAdd"
+                @click="handleSgAdd"
                 v-hasPermi="['system:projectInformation:add']"
               >新增
               </el-button>
@@ -385,7 +385,7 @@
                   size="mini"
                   type="primary"
                   style="width: 45px"
-                  @click="handleBdUpdate(scope.row)"
+                  @click="handleSgUpdate(scope.row)"
                   v-hasPermi="['system:construction:edit']"
                 >修改
                 </el-button>
@@ -422,7 +422,17 @@
           <el-input v-model="sgForm.constructionName" placeholder="请输入施工标名称"/>
         </el-form-item>
         <el-form-item label="监理标名称" prop="constructionSupervisorId" style="width: 300px;margin-left: 70px">
-          <el-input v-model="sgForm.hwProjectSupervisor.supervisorName" placeholder="请选择监理标"/>
+          <template>
+            <el-select v-model="sgForm.constructionSupervisorId" size="medium" style="width: 300px" clearable
+                       placeholder="请选择监理标">
+              <el-option
+                v-for="item in supervisorList"
+                :key="item.supervisorId"
+                :label="item.supervisorName"
+                :value="item.supervisorId">
+              </el-option>
+            </el-select>
+          </template>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -446,7 +456,10 @@ import {
   getSupervisor,
   updateSupervisor,
   getConstruction,
-  delConstruction
+  delConstruction,
+  addConstruction,
+  updateConstruction,
+  getConstructionById,
 } from "@/api/system/projectInformation";
 
 export default {
@@ -543,7 +556,8 @@ export default {
         constructionEngineeringCost: null,
         contractCost: null,
         provisionalPayment: null,
-        documentUpload: null
+        documentUpload: null,
+        supervisorName: null,
       },
       // 表单参数
       form: {},
@@ -605,8 +619,10 @@ export default {
       this.open = false;
       this.reset();
       this.startOpenJl = false;
+      this.startOpenSg = false;
       this.startOpen = false;
       this.jlReset();
+      this.sgReset();
     },
     // 表单重置
     reset() {
@@ -683,10 +699,9 @@ export default {
       )
       getConstruction(projectId).then(response => {
         this.constructionList = response.rows;
-        console.log(this.constructionList);
         this.startOpen = true;
         this.bdTitle = "标段列表";
-        this.supervisorProjectId = projectId;
+        this.constructionProjectId = projectId;
       })
     },
     /** 标段删除按钮操作 */
@@ -747,18 +762,18 @@ export default {
       this.$refs["sgForm"].validate(valid => {
         if (valid) {
           if (this.sgForm.constructionId != null) {
-            this.jlForm.constructionProjectId = this.constructionProjectId;
-            updateSupervisor(this.sgForm).then(response => {
+            this.sgForm.constructionProjectId = this.constructionProjectId;
+            updateConstruction(this.sgForm).then(response => {
               this.$modal.msgSuccess("修改成功");
-              this.startOpenJl = false;
+              this.startOpenSg = false;
               this.startOpen = false;
               this.getList();
             });
           } else {
-            this.jlForm.constructionProjectId = this.constructionProjectId;
-            addSupervisor(this.sgForm).then(response => {
+            this.sgForm.constructionProjectId = this.constructionProjectId;
+            addConstruction(this.sgForm).then(response => {
               this.$modal.msgSuccess("新增成功");
-              this.startOpenJl = false;
+              this.startOpenSg = false;
               this.startOpen = false;
               this.getList();
             });
@@ -776,6 +791,23 @@ export default {
         this.$modal.msgSuccess("删除成功");
         this.getList();
       }).catch(() => {
+      });
+    },
+    /** 施工标段新增按钮操作 */
+    handleSgAdd() {
+      this.sgReset();
+      this.startOpenSg = true;
+      this.bdTitleAddSg = "施工标新增";
+      this.disabled = false;
+    },
+    /** 施工修改按钮操作 */
+    handleSgUpdate(row) {
+      this.sgReset();
+      const constructionId = row.constructionId
+      getConstructionById(constructionId).then(response => {
+        this.sgForm = response.data;
+        this.startOpenSg = true;
+        this.title = "施工标修改";
       });
     },
     /** 详情按钮操作 */
