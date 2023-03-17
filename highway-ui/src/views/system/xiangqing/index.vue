@@ -39,7 +39,7 @@
 import {getInformation} from "@/api/system/information";
 import SectionInformation from "@/views/system/sectionInformation";
 import Tunnel from "@/views/system/tunnel";
-import Infdormation from "@/views/system/infdormation";
+import Infdormation from "@/views/system/infdormations";
 export default {
   name: "index_",
   components: {SectionInformation,Tunnel,Infdormation},
