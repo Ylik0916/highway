@@ -139,7 +139,7 @@
 <!--      <el-table-column label="采集时间" align="center" prop="acquisitionTime" />-->
 <!--      <el-table-column label="修改时间" align="center" prop="modificationTime" />-->
 <!--      <el-table-column label="备注" align="center" prop="remarks" />-->
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column width="150px" label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -649,12 +649,6 @@ export default {
       form: {},
       // 表单校验
       rules: {
-        roadLength: [
-          { required: true, message: "路段里程(公里)不能为空", trigger: "blur" }
-        ],
-        actualMileage: [
-          { required: true, message: "实际里程(公里)不能为空", trigger: "blur" }
-        ],
         destinationName: [
           { required: true, message: "讫点名称不能为空", trigger: "blur" }
         ],
@@ -663,9 +657,6 @@ export default {
         ],
         startingPileNumber: [
           { required: true, message: "起点桩号不能为空", trigger: "blur" }
-        ],
-        startingElevation: [
-          { required: true, message: "起点高程不能为空", trigger: "blur" }
         ],
         routecoding: [
           { required: true, message: "路线编码不能为空", trigger: "blur" }

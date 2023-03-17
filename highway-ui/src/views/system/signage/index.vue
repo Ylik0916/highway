@@ -73,7 +73,7 @@
             type="text"
             icon="el-icon-finished"
             @click="getSignageXq(scope.row)"
-            v-hasPermi="['system:information:edit']"
+            v-hasPermi="['system:signage:edit']"
           >详情</el-button>
           <el-button
             size="mini"
