@@ -1,6 +1,6 @@
 <template>
 <div class="body_">
-  <div style="display: flex" class="body2">
+  <div style="display: flex" class="bigBox">
     <ul style="list-style: none;" >
       <li>路线编码 : {{this.form.routeCoding}}</li>
       <li>行政区域 : {{this.form.adminiStrative}}</li>
@@ -23,12 +23,11 @@
       <li>路段数量 : {{this.form.numberRoadSegments}}</li>
     </ul>
   </div>
-  <div class="body3">
-  <el-tabs v-model="activeName" type="card" @tab-click="handleClick" tab-position="top">
-    <el-tab-pane label="路段信息" name="first">路段信息</el-tab-pane>
-    <el-tab-pane label="桥梁信息" name="second">桥梁信息</el-tab-pane>
-    <el-tab-pane label="路资路产" name="third">路资路产</el-tab-pane>
-    <el-tab-pane label="隧道信息" name="fourth">隧道信息</el-tab-pane>
+  <div class="smallBox">
+  <el-tabs v-model="activeName" type="card" style="width: 100%" @tab-click="handleClick" tab-position="top">
+    <el-tab-pane label="路段信息" name="first"><section-information :routeId="routeId"></section-information></el-tab-pane>
+    <el-tab-pane label="桥梁信息" name="second"><Infdormation :vis="flag" :routeId="routeId"></Infdormation></el-tab-pane>
+    <el-tab-pane label="隧道信息" name="fourth"><Tunnel :rou="routeId"></Tunnel></el-tab-pane>
     <el-tab-pane label="病害信息" name="firth">病害信息</el-tab-pane>
   </el-tabs>
   </div>
@@ -38,16 +37,19 @@
 
 <script>
 import {getInformation} from "@/api/system/information";
-
+import SectionInformation from "@/views/system/sectionInformation";
+import Tunnel from "@/views/system/tunnel";
+import Infdormation from "@/views/system/infdormation";
 export default {
-
   name: "index_",
+  components: {SectionInformation,Tunnel,Infdormation},
   dicts: ['construction_type', 'route_type'],
-
   data(){
     return {
       form:[],
       activeName: 'first',
+      routeId:this.$route.query.id,
+      flag:"none",
       rules: {
       }
     }
@@ -58,8 +60,8 @@ export default {
      * @param tab
      * @param event
      */
-    handleClick(tab, event) {
-      console.log(tab, event);
+    handleClick() {
+        console.log(this.routeId)
     },
     /** 修改按钮操作 */
     handleUpdate(row){
@@ -69,24 +71,24 @@ export default {
     }
   },
   mounted() {
-    console.log(this.$route.query.id)
     this.handleUpdate(this.$route.query.id)
   }
 }
 </script>
 <style scoped>
-.body2 .ul23{
+.bigBox .ul23{
   margin-left: 150px;
 }
-.body2{
+.bigBox{
   background-color: white;
   box-shadow: #97a8be;
   border-radius: 10px;
   width: 91%;
+  height: 250px;
   margin: 30px auto auto;
   font-size: 18px;
 }
-.body3{
+.smallBox{
   background-color: white;
   margin: 30px auto auto;
   font-size: 18px;
@@ -96,7 +98,6 @@ export default {
   border-radius: 10px;
 }
 .body_{
-  height: 750px;
   background-color: #ededf7;
   border: 1px #ededf7 ridge;
 }

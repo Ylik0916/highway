@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hg.system.mapper.HwBridgeInfdormationMapper">
+
+    <resultMap type="HwBridgeInfdormation" id="HwBridgeInfdormationResult">
+        <result property="routeId"    column="route_id"    />
+        <result property="routeCode"    column="route_code"    />
+        <result property="routeName"    column="route_name"    />
+        <result property="routeLongitude"    column="route_longitude"    />
+        <result property="routeLatitude"    column="route_latitude"    />
+        <result property="routeHigh"    column="route_high"    />
+        <result property="routeLong"    column="route_long"    />
+        <result property="routeCrossLong"    column="route_cross_long"    />
+        <result property="routeSingleLong"    column="route_single_long"    />
+        <result property="routeSpanCombination"    column="route_span_combination"    />
+        <result property="routeWide"    column="route_wide"    />
+        <result property="routeOverallLength"    column="route_overall_length"    />
+        <result property="routeClearWidth"    column="route_clear_width"    />
+        <result property="routeLoad"    column="route_load"    />
+        <result property="routeCross"    column="route_cross"    />
+        <result property="routeYear"    column="route_year"    />
+        <result property="routeDanger"    column="route_danger"    />
+        <result property="routeGrade"    column="route_grade"    />
+        <result property="routeEvaluationDate"    column="route_evaluation_date"    />
+        <result property="routeTopShape"    column="route_top_shape"    />
+        <result property="routeTopMaterial"    column="route_top_material"    />
+        <result property="routeType"    column="route_type"    />
+        <result property="routePierType"    column="route_pier_type"    />
+        <result property="routeCharge"    column="route_charge"    />
+        <result property="routeBeforeCode"    column="route_before_code"    />
+        <result property="routeCompletionTime"    column="route_completion_time"    />
+        <result property="routeCrossFigure"    column="route_cross_figure"    />
+        <result property="routeCrossName"    column="route_cross_name"    />
+        <result property="routeDiseasePlace"    column="route_disease_place"    />
+        <result property="routeDiseaseDescribe"    column="route_disease_describe"    />
+        <result property="routeAnticollisionType"    column="route_anticollision_type"    />
+        <result property="routeAntiseismic"    column="route_antiseismic"    />
+        <result property="routeFlight"    column="route_flight"    />
+        <result property="routeRebuild"    column="route_rebuild"    />
+        <result property="routeRebuildEnd"    column="route_rebuild_end"    />
+        <result property="routeRebuildPlace"    column="route_rebuild_place"    />
+        <result property="routeRebuildNature"    column="route_rebuild_nature"    />
+        <result property="routeSubsidy"    column="route_subsidy"    />
+        <result property="routeMethod"    column="route_method"    />
+        <result property="routePosition"    column="route_position"    />
+        <result property="routeWroadNbridge"    column="route_wroad_nbridge"    />
+        <result property="routeLongBridges"    column="route_long_bridges"    />
+        <result property="routeBottomShape"    column="route_bottom_shape"    />
+        <result property="routeResult"    column="route_result"    />
+        <result property="routeReason"    column="route_reason"    />
+        <result property="routeSupport"    column="route_support"    />
+        <result property="routeTrafficDate"    column="route_traffic_date"    />
+        <result property="routeRenovationUnit"    column="route_renovation_unit"    />
+        <result property="routeAbutmentType"    column="route_abutment_type"    />
+        <result property="routeDesigner"    column="route_designer"    />
+        <result property="routeConstructionUnit"    column="route_construction_unit"    />
+        <result property="routeInspectionUnit"    column="route_inspection_unit"    />
+        <result property="routeBuildUnit"    column="route_build_unit"    />
+        <result property="routeSupervise"    column="route_supervise"    />
+        <result property="routeCuring"    column="route_curing"    />
+        <result property="routeCuringCode"    column="route_curing_code"    />
+        <result property="routeCuringName"    column="route_curing_name"    />
+        <result property="fillingUnit"    column="filling_unit"    />
+        <result property="fillingUnitCode"    column="filling_unit_code"    />
+        <result property="fillingUnitLeader"    column="filling_unit_leader"    />
+        <result property="preparer"    column="preparer"    />
+        <result property="preparerTel"    column="preparer_tel"    />
+        <result property="process"    column="process"    />
+        <result property="processTel"    column="process_tel"    />
+        <result property="acquisitionTime"    column="acquisition_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="routeAdministrativeArea"    column="route_administrative_area"    />
+        <result property="selectRoute"    column="select_route"    />
+        <result property="centerStake"    column="center_stake"    />
+        <result property="luCode"    column="lu_code"    />
+        <result property="evaluationUnit"    column="evaluation_unit"    />
+    </resultMap>
+
+    <sql id="selectHwBridgeInfdormationVo">
+        SELECT route_id, route_code, `hw_bridge_infdormation`.`route_name`, route_longitude, route_latitude, route_high, route_long, route_cross_long, route_single_long, route_span_combination, route_wide, route_overall_length, route_clear_width, route_load, route_cross, route_year, route_danger, route_grade, route_evaluation_date, route_top_shape, route_top_material, `hw_bridge_infdormation`.`route_type`, route_pier_type, route_charge, route_before_code, route_completion_time, route_cross_figure, route_cross_name, route_disease_place, route_disease_describe, route_anticollision_type, route_antiseismic, route_flight, route_rebuild, route_rebuild_end, route_rebuild_place, route_rebuild_nature, route_subsidy, route_method, route_position, route_wroad_nbridge, route_long_bridges, route_bottom_shape, route_result, route_reason, route_support, route_traffic_date, route_renovation_unit, route_abutment_type, route_designer, route_construction_unit, route_inspection_unit, route_build_unit, route_supervise, route_curing, route_curing_code, route_curing_name, filling_unit, filling_unit_code, filling_unit_leader, preparer, preparer_tel, PROCESS, process_tel, acquisition_time, update_time, remarks, route_administrative_area, `hw_route_information`.`route_name` select_route, center_stake, route_coding lu_code, evaluation_unit FROM hw_bridge_infdormation,hw_route_information
+    </sql>
+
+    <select id="selectHwBridgeInfdormationList" parameterType="HwBridgeInfdormation" resultMap="HwBridgeInfdormationResult">
+        <include refid="selectHwBridgeInfdormationVo"/>
+        <where>
+            id = lu_id
+            <if test="luId != null  and luId != ''"> and lu_id= #{luId}</if>
+            <if test="routeCode != null  and routeCode != ''"> and route_code = #{routeCode}</if>
+            <if test="routeName != null  and routeName != ''"> and route_name like concat('%', #{routeName}, '%')</if>
+            <if test="routeLongitude != null  and routeLongitude != ''"> and route_longitude = #{routeLongitude}</if>
+            <if test="routeLatitude != null  and routeLatitude != ''"> and route_latitude = #{routeLatitude}</if>
+            <if test="routeHigh != null "> and route_high = #{routeHigh}</if>
+            <if test="routeLong != null "> and route_long = #{routeLong}</if>
+            <if test="routeCrossLong != null "> and route_cross_long = #{routeCrossLong}</if>
+            <if test="routeSingleLong != null "> and route_single_long = #{routeSingleLong}</if>
+            <if test="routeSpanCombination != null  and routeSpanCombination != ''"> and route_span_combination = #{routeSpanCombination}</if>
+            <if test="routeWide != null "> and route_wide = #{routeWide}</if>
+            <if test="routeOverallLength != null "> and route_overall_length = #{routeOverallLength}</if>
+            <if test="routeClearWidth != null "> and route_clear_width = #{routeClearWidth}</if>
+            <if test="routeLoad != null  and routeLoad != ''"> and route_load = #{routeLoad}</if>
+            <if test="routeCross != null  and routeCross != ''"> and route_cross = #{routeCross}</if>
+            <if test="routeYear != null  and routeYear != ''"> and route_year = #{routeYear}</if>
+            <if test="routeDanger != null "> and route_danger = #{routeDanger}</if>
+            <if test="routeGrade != null  and routeGrade != ''"> and route_grade = #{routeGrade}</if>
+            <if test="routeEvaluationDate != null "> and route_evaluation_date = #{routeEvaluationDate}</if>
+            <if test="routeTopShape != null  and routeTopShape != ''"> and route_top_shape = #{routeTopShape}</if>
+            <if test="routeTopMaterial != null  and routeTopMaterial != ''"> and route_top_material = #{routeTopMaterial}</if>
+            <if test="routeType != null  and routeType != ''"> and route_type = #{routeType}</if>
+            <if test="routePierType != null  and routePierType != ''"> and route_pier_type = #{routePierType}</if>
+            <if test="routeCharge != null  and routeCharge != ''"> and route_charge = #{routeCharge}</if>
+            <if test="routeBeforeCode != null  and routeBeforeCode != ''"> and route_before_code = #{routeBeforeCode}</if>
+            <if test="routeCompletionTime != null "> and route_completion_time = #{routeCompletionTime}</if>
+            <if test="routeCrossFigure != null  and routeCrossFigure != ''"> and route_cross_figure = #{routeCrossFigure}</if>
+            <if test="routeCrossName != null  and routeCrossName != ''"> and route_cross_name like concat('%', #{routeCrossName}, '%')</if>
+            <if test="routeDiseasePlace != null  and routeDiseasePlace != ''"> and route_disease_place = #{routeDiseasePlace}</if>
+            <if test="routeDiseaseDescribe != null  and routeDiseaseDescribe != ''"> and route_disease_describe = #{routeDiseaseDescribe}</if>
+            <if test="routeAnticollisionType != null  and routeAnticollisionType != ''"> and route_anticollision_type = #{routeAnticollisionType}</if>
+            <if test="routeAntiseismic != null  and routeAntiseismic != ''"> and route_antiseismic = #{routeAntiseismic}</if>
+            <if test="routeFlight != null  and routeFlight != ''"> and route_flight = #{routeFlight}</if>
+            <if test="routeRebuild != null "> and route_rebuild = #{routeRebuild}</if>
+            <if test="routeRebuildEnd != null "> and route_rebuild_end = #{routeRebuildEnd}</if>
+            <if test="routeRebuildPlace != null  and routeRebuildPlace != ''"> and route_rebuild_place = #{routeRebuildPlace}</if>
+            <if test="routeRebuildNature != null  and routeRebuildNature != ''"> and route_rebuild_nature = #{routeRebuildNature}</if>
+            <if test="routeSubsidy != null "> and route_subsidy = #{routeSubsidy}</if>
+            <if test="routeMethod != null  and routeMethod != ''"> and route_method = #{routeMethod}</if>
+            <if test="routePosition != null "> and route_position = #{routePosition}</if>
+            <if test="routeWroadNbridge != null "> and route_wroad_nbridge = #{routeWroadNbridge}</if>
+            <if test="routeLongBridges != null "> and route_long_bridges = #{routeLongBridges}</if>
+            <if test="routeBottomShape != null  and routeBottomShape != ''"> and route_bottom_shape = #{routeBottomShape}</if>
+            <if test="routeResult != null  and routeResult != ''"> and route_result = #{routeResult}</if>
+            <if test="routeReason != null  and routeReason != ''"> and route_reason = #{routeReason}</if>
+            <if test="routeSupport != null  and routeSupport != ''"> and route_support = #{routeSupport}</if>
+            <if test="routeTrafficDate != null "> and route_traffic_date = #{routeTrafficDate}</if>
+            <if test="routeRenovationUnit != null  and routeRenovationUnit != ''"> and route_renovation_unit = #{routeRenovationUnit}</if>
+            <if test="routeAbutmentType != null  and routeAbutmentType != ''"> and route_abutment_type = #{routeAbutmentType}</if>
+            <if test="routeDesigner != null  and routeDesigner != ''"> and route_designer = #{routeDesigner}</if>
+            <if test="routeConstructionUnit != null  and routeConstructionUnit != ''"> and route_construction_unit = #{routeConstructionUnit}</if>
+            <if test="routeInspectionUnit != null  and routeInspectionUnit != ''"> and route_inspection_unit = #{routeInspectionUnit}</if>
+            <if test="routeBuildUnit != null  and routeBuildUnit != ''"> and route_build_unit = #{routeBuildUnit}</if>
+            <if test="routeSupervise != null  and routeSupervise != ''"> and route_supervise = #{routeSupervise}</if>
+            <if test="routeCuring != null  and routeCuring != ''"> and route_curing = #{routeCuring}</if>
+            <if test="routeCuringCode != null  and routeCuringCode != ''"> and route_curing_code = #{routeCuringCode}</if>
+            <if test="routeCuringName != null  and routeCuringName != ''"> and route_curing_name like concat('%', #{routeCuringName}, '%')</if>
+            <if test="fillingUnit != null  and fillingUnit != ''"> and filling_unit = #{fillingUnit}</if>
+            <if test="fillingUnitCode != null  and fillingUnitCode != ''"> and filling_unit_code = #{fillingUnitCode}</if>
+            <if test="fillingUnitLeader != null  and fillingUnitLeader != ''"> and filling_unit_leader = #{fillingUnitLeader}</if>
+            <if test="preparer != null  and preparer != ''"> and preparer = #{preparer}</if>
+            <if test="preparerTel != null "> and preparer_tel = #{preparerTel}</if>
+            <if test="process != null  and process != ''"> and process = #{process}</if>
+            <if test="processTel != null "> and process_tel = #{processTel}</if>
+            <if test="acquisitionTime != null "> and acquisition_time = #{acquisitionTime}</if>
+            <if test="remarks != null  and remarks != ''"> and remarks = #{remarks}</if>
+            <if test="routeAdministrativeArea != null  and routeAdministrativeArea != ''"> and route_administrative_area = #{routeAdministrativeArea}</if>
+            <if test="selectRoute != null  and selectRoute != ''"> and select_route like concat('%', #{selectRoute}, '%')</if>
+            <if test="centerStake != null  and centerStake != ''"> and center_stake = #{centerStake}</if>
+            <if test="luCode != null  and luCode != ''"> and lu_code = #{luCode}</if>
+            <if test="evaluationUnit != null  and evaluationUnit != ''"> and evaluation_unit = #{evaluationUnit}</if>
+        </where>
+    </select>
+
+    <select id="selectHwBridgeInfdormationByRouteId" parameterType="Long" resultMap="HwBridgeInfdormationResult">
+        <include refid="selectHwBridgeInfdormationVo"/>
+        where route_id = #{routeId} and id=lu_id
+    </select>
+
+    <insert id="insertHwBridgeInfdormation" parameterType="HwBridgeInfdormation" useGeneratedKeys="true" keyProperty="routeId">
+        insert into hw_bridge_infdormation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="routeCode != null and routeCode != ''">route_code,</if>
+            <if test="routeName != null and routeName != ''">route_name,</if>
+            <if test="routeLongitude != null and routeLongitude != ''">route_longitude,</if>
+            <if test="routeLatitude != null and routeLatitude != ''">route_latitude,</if>
+            <if test="routeHigh != null">route_high,</if>
+            <if test="routeLong != null">route_long,</if>
+            <if test="routeCrossLong != null">route_cross_long,</if>
+            <if test="routeSingleLong != null">route_single_long,</if>
+            <if test="routeSpanCombination != null">route_span_combination,</if>
+            <if test="routeWide != null">route_wide,</if>
+            <if test="routeOverallLength != null">route_overall_length,</if>
+            <if test="routeClearWidth != null">route_clear_width,</if>
+            <if test="routeLoad != null">route_load,</if>
+            <if test="routeCross != null and routeCross != ''">route_cross,</if>
+            <if test="routeYear != null and routeYear != ''">route_year,</if>
+            <if test="routeDanger != null">route_danger,</if>
+            <if test="routeGrade != null and routeGrade != ''">route_grade,</if>
+            <if test="routeEvaluationDate != null">route_evaluation_date,</if>
+            <if test="routeTopShape != null and routeTopShape != ''">route_top_shape,</if>
+            <if test="routeTopMaterial != null">route_top_material,</if>
+            <if test="routeType != null and routeType != ''">route_type,</if>
+            <if test="routePierType != null">route_pier_type,</if>
+            <if test="routeCharge != null">route_charge,</if>
+            <if test="routeBeforeCode != null">route_before_code,</if>
+            <if test="routeCompletionTime != null">route_completion_time,</if>
+            <if test="routeCrossFigure != null">route_cross_figure,</if>
+            <if test="routeCrossName != null">route_cross_name,</if>
+            <if test="routeDiseasePlace != null">route_disease_place,</if>
+            <if test="routeDiseaseDescribe != null">route_disease_describe,</if>
+            <if test="routeAnticollisionType != null">route_anticollision_type,</if>
+            <if test="routeAntiseismic != null">route_antiseismic,</if>
+            <if test="routeFlight != null">route_flight,</if>
+            <if test="routeRebuild != null">route_rebuild,</if>
+            <if test="routeRebuildEnd != null">route_rebuild_end,</if>
+            <if test="routeRebuildPlace != null">route_rebuild_place,</if>
+            <if test="routeRebuildNature != null">route_rebuild_nature,</if>
+            <if test="routeSubsidy != null">route_subsidy,</if>
+            <if test="routeMethod != null and routeMethod != ''">route_method,</if>
+            <if test="routePosition != null">route_position,</if>
+            <if test="routeWroadNbridge != null">route_wroad_nbridge,</if>
+            <if test="routeLongBridges != null">route_long_bridges,</if>
+            <if test="routeBottomShape != null">route_bottom_shape,</if>
+            <if test="routeResult != null">route_result,</if>
+            <if test="routeReason != null">route_reason,</if>
+            <if test="routeSupport != null">route_support,</if>
+            <if test="routeTrafficDate != null">route_traffic_date,</if>
+            <if test="routeRenovationUnit != null">route_renovation_unit,</if>
+            <if test="routeAbutmentType != null">route_abutment_type,</if>
+            <if test="routeDesigner != null">route_designer,</if>
+            <if test="routeConstructionUnit != null">route_construction_unit,</if>
+            <if test="routeInspectionUnit != null">route_inspection_unit,</if>
+            <if test="routeBuildUnit != null">route_build_unit,</if>
+            <if test="routeSupervise != null">route_supervise,</if>
+            <if test="routeCuring != null">route_curing,</if>
+            <if test="routeCuringCode != null">route_curing_code,</if>
+            <if test="routeCuringName != null">route_curing_name,</if>
+            <if test="fillingUnit != null">filling_unit,</if>
+            <if test="fillingUnitCode != null">filling_unit_code,</if>
+            <if test="fillingUnitLeader != null">filling_unit_leader,</if>
+            <if test="preparer != null">preparer,</if>
+            <if test="preparerTel != null">preparer_tel,</if>
+            <if test="process != null">process,</if>
+            <if test="processTel != null">process_tel,</if>
+            <if test="acquisitionTime != null">acquisition_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remarks != null">remarks,</if>
+            <if test="routeAdministrativeArea != null">route_administrative_area,</if>
+            <if test="selectRoute != null">select_route,</if>
+            <if test="centerStake != null">center_stake,</if>
+            <if test="luCode != null">lu_code,</if>
+            <if test="luId != null">lu_id,</if>
+            <if test="evaluationUnit != null">evaluation_unit,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="routeCode != null and routeCode != ''">#{routeCode},</if>
+            <if test="routeName != null and routeName != ''">#{routeName},</if>
+            <if test="routeLongitude != null and routeLongitude != ''">#{routeLongitude},</if>
+            <if test="routeLatitude != null and routeLatitude != ''">#{routeLatitude},</if>
+            <if test="routeHigh != null">#{routeHigh},</if>
+            <if test="routeLong != null">#{routeLong},</if>
+            <if test="routeCrossLong != null">#{routeCrossLong},</if>
+            <if test="routeSingleLong != null">#{routeSingleLong},</if>
+            <if test="routeSpanCombination != null">#{routeSpanCombination},</if>
+            <if test="routeWide != null">#{routeWide},</if>
+            <if test="routeOverallLength != null">#{routeOverallLength},</if>
+            <if test="routeClearWidth != null">#{routeClearWidth},</if>
+            <if test="routeLoad != null">#{routeLoad},</if>
+            <if test="routeCross != null and routeCross != ''">#{routeCross},</if>
+            <if test="routeYear != null and routeYear != ''">#{routeYear},</if>
+            <if test="routeDanger != null">#{routeDanger},</if>
+            <if test="routeGrade != null and routeGrade != ''">#{routeGrade},</if>
+            <if test="routeEvaluationDate != null">#{routeEvaluationDate},</if>
+            <if test="routeTopShape != null and routeTopShape != ''">#{routeTopShape},</if>
+            <if test="routeTopMaterial != null">#{routeTopMaterial},</if>
+            <if test="routeType != null and routeType != ''">#{routeType},</if>
+            <if test="routePierType != null">#{routePierType},</if>
+            <if test="routeCharge != null">#{routeCharge},</if>
+            <if test="routeBeforeCode != null">#{routeBeforeCode},</if>
+            <if test="routeCompletionTime != null">#{routeCompletionTime},</if>
+            <if test="routeCrossFigure != null">#{routeCrossFigure},</if>
+            <if test="routeCrossName != null">#{routeCrossName},</if>
+            <if test="routeDiseasePlace != null">#{routeDiseasePlace},</if>
+            <if test="routeDiseaseDescribe != null">#{routeDiseaseDescribe},</if>
+            <if test="routeAnticollisionType != null">#{routeAnticollisionType},</if>
+            <if test="routeAntiseismic != null">#{routeAntiseismic},</if>
+            <if test="routeFlight != null">#{routeFlight},</if>
+            <if test="routeRebuild != null">#{routeRebuild},</if>
+            <if test="routeRebuildEnd != null">#{routeRebuildEnd},</if>
+            <if test="routeRebuildPlace != null">#{routeRebuildPlace},</if>
+            <if test="routeRebuildNature != null">#{routeRebuildNature},</if>
+            <if test="routeSubsidy != null">#{routeSubsidy},</if>
+            <if test="routeMethod != null and routeMethod != ''">#{routeMethod},</if>
+            <if test="routePosition != null">#{routePosition},</if>
+            <if test="routeWroadNbridge != null">#{routeWroadNbridge},</if>
+            <if test="routeLongBridges != null">#{routeLongBridges},</if>
+            <if test="routeBottomShape != null">#{routeBottomShape},</if>
+            <if test="routeResult != null">#{routeResult},</if>
+            <if test="routeReason != null">#{routeReason},</if>
+            <if test="routeSupport != null">#{routeSupport},</if>
+            <if test="routeTrafficDate != null">#{routeTrafficDate},</if>
+            <if test="routeRenovationUnit != null">#{routeRenovationUnit},</if>
+            <if test="routeAbutmentType != null">#{routeAbutmentType},</if>
+            <if test="routeDesigner != null">#{routeDesigner},</if>
+            <if test="routeConstructionUnit != null">#{routeConstructionUnit},</if>
+            <if test="routeInspectionUnit != null">#{routeInspectionUnit},</if>
+            <if test="routeBuildUnit != null">#{routeBuildUnit},</if>
+            <if test="routeSupervise != null">#{routeSupervise},</if>
+            <if test="routeCuring != null">#{routeCuring},</if>
+            <if test="routeCuringCode != null">#{routeCuringCode},</if>
+            <if test="routeCuringName != null">#{routeCuringName},</if>
+            <if test="fillingUnit != null">#{fillingUnit},</if>
+            <if test="fillingUnitCode != null">#{fillingUnitCode},</if>
+            <if test="fillingUnitLeader != null">#{fillingUnitLeader},</if>
+            <if test="preparer != null">#{preparer},</if>
+            <if test="preparerTel != null">#{preparerTel},</if>
+            <if test="process != null">#{process},</if>
+            <if test="processTel != null">#{processTel},</if>
+            <if test="acquisitionTime != null">#{acquisitionTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remarks != null">#{remarks},</if>
+            <if test="routeAdministrativeArea != null">#{routeAdministrativeArea},</if>
+            <if test="selectRoute != null">#{selectRoute},</if>
+            <if test="centerStake != null">#{centerStake},</if>
+            <if test="luCode != null">#{luCode},</if>
+            <if test="luId != null">#{luId},</if>
+            <if test="evaluationUnit != null">#{evaluationUnit},</if>
+
+        </trim>
+    </insert>
+
+    <update id="updateHwBridgeInfdormation" parameterType="HwBridgeInfdormation">
+        update hw_bridge_infdormation
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="routeCode != null and routeCode != ''">route_code = #{routeCode},</if>
+            <if test="routeName != null and routeName != ''">route_name = #{routeName},</if>
+            <if test="routeLongitude != null and routeLongitude != ''">route_longitude = #{routeLongitude},</if>
+            <if test="routeLatitude != null and routeLatitude != ''">route_latitude = #{routeLatitude},</if>
+            <if test="routeHigh != null">route_high = #{routeHigh},</if>
+            <if test="routeLong != null">route_long = #{routeLong},</if>
+            <if test="routeCrossLong != null">route_cross_long = #{routeCrossLong},</if>
+            <if test="routeSingleLong != null">route_single_long = #{routeSingleLong},</if>
+            <if test="routeSpanCombination != null">route_span_combination = #{routeSpanCombination},</if>
+            <if test="routeWide != null">route_wide = #{routeWide},</if>
+            <if test="routeOverallLength != null">route_overall_length = #{routeOverallLength},</if>
+            <if test="routeClearWidth != null">route_clear_width = #{routeClearWidth},</if>
+            <if test="routeLoad != null">route_load = #{routeLoad},</if>
+            <if test="routeCross != null and routeCross != ''">route_cross = #{routeCross},</if>
+            <if test="routeYear != null and routeYear != ''">route_year = #{routeYear},</if>
+            <if test="routeDanger != null">route_danger = #{routeDanger},</if>
+            <if test="routeGrade != null and routeGrade != ''">route_grade = #{routeGrade},</if>
+            <if test="routeEvaluationDate != null">route_evaluation_date = #{routeEvaluationDate},</if>
+            <if test="routeTopShape != null and routeTopShape != ''">route_top_shape = #{routeTopShape},</if>
+            <if test="routeTopMaterial != null">route_top_material = #{routeTopMaterial},</if>
+            <if test="routeType != null and routeType != ''">route_type = #{routeType},</if>
+            <if test="routePierType != null">route_pier_type = #{routePierType},</if>
+            <if test="routeCharge != null">route_charge = #{routeCharge},</if>
+            <if test="routeBeforeCode != null">route_before_code = #{routeBeforeCode},</if>
+            <if test="routeCompletionTime != null">route_completion_time = #{routeCompletionTime},</if>
+            <if test="routeCrossFigure != null">route_cross_figure = #{routeCrossFigure},</if>
+            <if test="routeCrossName != null">route_cross_name = #{routeCrossName},</if>
+            <if test="routeDiseasePlace != null">route_disease_place = #{routeDiseasePlace},</if>
+            <if test="routeDiseaseDescribe != null">route_disease_describe = #{routeDiseaseDescribe},</if>
+            <if test="routeAnticollisionType != null">route_anticollision_type = #{routeAnticollisionType},</if>
+            <if test="routeAntiseismic != null">route_antiseismic = #{routeAntiseismic},</if>
+            <if test="routeFlight != null">route_flight = #{routeFlight},</if>
+            <if test="routeRebuild != null">route_rebuild = #{routeRebuild},</if>
+            <if test="routeRebuildEnd != null">route_rebuild_end = #{routeRebuildEnd},</if>
+            <if test="routeRebuildPlace != null">route_rebuild_place = #{routeRebuildPlace},</if>
+            <if test="routeRebuildNature != null">route_rebuild_nature = #{routeRebuildNature},</if>
+            <if test="routeSubsidy != null">route_subsidy = #{routeSubsidy},</if>
+            <if test="routeMethod != null and routeMethod != ''">route_method = #{routeMethod},</if>
+            <if test="routePosition != null">route_position = #{routePosition},</if>
+            <if test="routeWroadNbridge != null">route_wroad_nbridge = #{routeWroadNbridge},</if>
+            <if test="routeLongBridges != null">route_long_bridges = #{routeLongBridges},</if>
+            <if test="routeBottomShape != null">route_bottom_shape = #{routeBottomShape},</if>
+            <if test="routeResult != null">route_result = #{routeResult},</if>
+            <if test="routeReason != null">route_reason = #{routeReason},</if>
+            <if test="routeSupport != null">route_support = #{routeSupport},</if>
+            <if test="routeTrafficDate != null">route_traffic_date = #{routeTrafficDate},</if>
+            <if test="routeRenovationUnit != null">route_renovation_unit = #{routeRenovationUnit},</if>
+            <if test="routeAbutmentType != null">route_abutment_type = #{routeAbutmentType},</if>
+            <if test="routeDesigner != null">route_designer = #{routeDesigner},</if>
+            <if test="routeConstructionUnit != null">route_construction_unit = #{routeConstructionUnit},</if>
+            <if test="routeInspectionUnit != null">route_inspection_unit = #{routeInspectionUnit},</if>
+            <if test="routeBuildUnit != null">route_build_unit = #{routeBuildUnit},</if>
+            <if test="routeSupervise != null">route_supervise = #{routeSupervise},</if>
+            <if test="routeCuring != null">route_curing = #{routeCuring},</if>
+            <if test="routeCuringCode != null">route_curing_code = #{routeCuringCode},</if>
+            <if test="routeCuringName != null">route_curing_name = #{routeCuringName},</if>
+            <if test="fillingUnit != null">filling_unit = #{fillingUnit},</if>
+            <if test="fillingUnitCode != null">filling_unit_code = #{fillingUnitCode},</if>
+            <if test="fillingUnitLeader != null">filling_unit_leader = #{fillingUnitLeader},</if>
+            <if test="preparer != null">preparer = #{preparer},</if>
+            <if test="preparerTel != null">preparer_tel = #{preparerTel},</if>
+            <if test="process != null">process = #{process},</if>
+            <if test="processTel != null">process_tel = #{processTel},</if>
+            <if test="acquisitionTime != null">acquisition_time = #{acquisitionTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remarks != null">remarks = #{remarks},</if>
+            <if test="routeAdministrativeArea != null">route_administrative_area = #{routeAdministrativeArea},</if>
+
+            <if test="centerStake != null">center_stake = #{centerStake},</if>
+
+            <if test="evaluationUnit != null">evaluation_unit = #{evaluationUnit},</if>
+        </trim>
+        where route_id = #{routeId}
+    </update>
+
+    <delete id="deleteHwBridgeInfdormationByRouteId" parameterType="Long">
+        delete from hw_bridge_infdormation where route_id = #{routeId}
+    </delete>
+
+    <delete id="deleteHwBridgeInfdormationByRouteIds" parameterType="String">
+        delete from hw_bridge_infdormation where route_id in
+        <foreach item="routeId" collection="array" open="(" separator="," close=")">
+            #{routeId}
+        </foreach>
+    </delete>
+</mapper>
