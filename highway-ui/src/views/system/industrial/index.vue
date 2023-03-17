@@ -43,17 +43,7 @@
           v-hasPermi="['system:industrial:add']"
         >新增</el-button>
       </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:industrial:edit']"
-        >修改</el-button>
-      </el-col>
+
       <el-col :span="1.5">
         <el-button
           type="danger"
@@ -80,13 +70,19 @@
 
     <el-table v-loading="loading" :data="industrialList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="产业园ID" align="center" prop="industrialParkId" />
       <el-table-column label="产业园名称" align="center" prop="nameOfIndustrialPark" />
       <el-table-column label="产业园经度" align="center" prop="longitudeOfIndustrialPark" />
       <el-table-column label="产业园纬度" align="center" prop="latitudeOfIndustrialPark" />
       <el-table-column label="优先通达路线名称" align="center" prop="nameOfPriorityRoute" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-finished"
+            @click="getIndustrialXq(scope.row)"
+            v-hasPermi="['system:industrial:edit']"
+          >详情</el-button>
           <el-button
             size="mini"
             type="text"
@@ -104,7 +100,6 @@
         </template>
       </el-table-column>
     </el-table>
-
     <pagination
       v-show="total>0"
       :total="total"
@@ -112,6 +107,21 @@
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
     />
+    <el-dialog :title="title" :visible.sync="openXq" width="1000px" append-to-body>
+      <el-tabs v-model="activeName" type="card">
+        <el-tab-pane label="现代产业园信息详情" name="first">
+          <el-descriptions :model="form">
+            <el-descriptions-item label="产业园名称">{{ form.nameOfIndustrialPark }}</el-descriptions-item>
+            <el-descriptions-item label="行政区域">{{ form.administrativeRegion }}</el-descriptions-item>
+            <el-descriptions-item label="产业园经度">{{ form.longitudeOfIndustrialPark }}</el-descriptions-item>
+            <el-descriptions-item label="产业园纬度">{{ form.latitudeOfIndustrialPark }}</el-descriptions-item>
+            <el-descriptions-item label="优先通达路线名称">{{ form.nameOfPriorityRoute }}</el-descriptions-item>
+            <el-descriptions-item label="优先通达路线编码">{{ form.priorityAccessRouteCode }}</el-descriptions-item>
+            <el-descriptions-item label="介绍">{{ form.introduce }}</el-descriptions-item>
+          </el-descriptions>
+        </el-tab-pane>
+      </el-tabs>
+    </el-dialog>
 
     <!-- 添加或修改现代产业园对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body>
@@ -148,11 +158,14 @@
 
 <script>
 import { listIndustrial, getIndustrial, delIndustrial, addIndustrial, updateIndustrial } from "@/api/system/industrial";
+import {getSignage} from "@/api/system/signage";
 
 export default {
   name: "Industrial",
   data() {
     return {
+      activeName:'first',
+      openXq:false,
       // 遮罩层
       loading: true,
       // 选中数组
@@ -192,6 +205,14 @@ export default {
     this.getList();
   },
   methods: {
+    getIndustrialXq(row){
+      const industrialParkId = row.industrialParkId || this.ids
+      getIndustrial(industrialParkId).then(response => {
+        this.form = response.data;
+        this.openXq = true;
+        this.title = "现代产业园信息详情";
+      });
+    },
     /** 查询现代产业园列表 */
     getList() {
       this.loading = true;

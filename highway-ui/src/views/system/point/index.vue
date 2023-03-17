@@ -31,7 +31,7 @@ export default {
      * @param event
      */
     handleClick() {
-      console.log(123)
+
     },
 
   }

@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+    <div :style="{display:this.flag}">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="100px">
       <el-form-item label="标识标牌名称" prop="labelName">
         <el-input
@@ -22,7 +23,7 @@
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
-
+    </div>
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
@@ -33,17 +34,6 @@
           @click="handleAdd"
           v-hasPermi="['system:signage:add']"
         >新增</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:signage:edit']"
-        >修改</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -71,7 +61,6 @@
 
     <el-table v-loading="loading" :data="signageList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="标识标牌ID" align="center" prop="identificationTagId" />
       <el-table-column label="标识标牌名称" align="center" prop="labelName" />
       <el-table-column label="行政区域" align="center" prop="administrativeRegion" />
       <el-table-column label="标识标牌经度" align="center" prop="markTheLongitudeSign" />
@@ -79,6 +68,13 @@
       <el-table-column label="优先通达路线名称" align="center" prop="nameOfPriorityRoute" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-finished"
+            @click="getSignageXq(scope.row)"
+            v-hasPermi="['system:signage:edit']"
+          >详情</el-button>
           <el-button
             size="mini"
             type="text"
@@ -104,12 +100,34 @@
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
     />
+    <el-dialog :title="title" :visible.sync="openXq" width="1000px" append-to-body>
+      <el-tabs v-model="activeName" type="card">
+        <el-tab-pane label="标识标牌信息详情" name="first">
+          <el-descriptions :model="form">
+            <el-descriptions-item label="标识标牌名称">{{ form.labelName }}</el-descriptions-item>
+            <el-descriptions-item label="行政区域">{{ form.administrativeRegion }}</el-descriptions-item>
+            <el-descriptions-item label="标识标牌经度">{{ form.markTheLongitudeSign }}</el-descriptions-item>
 
+            <el-descriptions-item label="标识标牌纬度">{{ form.labelLatitude }}</el-descriptions-item>
+            <el-descriptions-item label="优先通达路线名称">{{ form.nameOfPriorityRoute }}</el-descriptions-item>
+            <el-descriptions-item label="优先通达路线编码">{{ form.priorityAccessRouteCode }}</el-descriptions-item>
+            <el-descriptions-item label="介绍">{{ form.introduce }}</el-descriptions-item>
+          </el-descriptions>
+        </el-tab-pane>
+      </el-tabs>
+    </el-dialog>
     <!-- 添加或修改标识标牌对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" style="display: flex;flex-wrap: wrap;justify-content: space-between">
-        <el-form-item label="路线ID" prop="routeid">
-          <el-input v-model="form.routeid" placeholder="请输入路线ID" />
+        <el-form-item label="路线名称" prop="routeid" :style="{display:updateDis}">
+          <el-select placeholder="请选择"  v-model="selectValue">
+            <el-option
+              v-for="item in routeList"
+              :key="item.id"
+              :label="item.routeName"
+              :value="item.id">
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="标识标牌名称" prop="labelName">
           <el-input v-model="form.labelName" placeholder="请输入标识标牌名称" />
@@ -117,9 +135,7 @@
         <el-form-item label="行政区域" prop="administrativeRegion">
           <el-input v-model="form.administrativeRegion" placeholder="请输入行政区域" />
         </el-form-item>
-        <el-form-item label="所属路线" prop="route">
-          <el-input v-model="form.route" placeholder="请输入所属路线" />
-        </el-form-item>
+
         <el-form-item label="标识标牌经度" prop="markTheLongitudeSign">
           <el-input v-model="form.markTheLongitudeSign" placeholder="请输入标识标牌经度" />
         </el-form-item>
@@ -146,11 +162,26 @@
 
 <script>
 import { listSignage, getSignage, delSignage, addSignage, updateSignage } from "@/api/system/signage";
+import {listInformation} from "@/api/system/information";
 
 export default {
+  props:["vis","routeId"],
   name: "Signage",
   data() {
     return {
+      activeName:'first',
+      updateDis:'',
+      flag :this.vis,
+      //绑定下拉列表选中数据
+      selectValue:'',
+      //路线列表
+      routeList:[
+        {
+          id:null,
+          routeName:null
+        }
+      ],
+      openXq:false,
       // 遮罩层
       loading: true,
       // 选中数组
@@ -173,6 +204,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
+        routeid:this.$props.routeId,
         labelName: null,
         administrativeRegion: null,
         priorityAccessRouteCode: null,
@@ -188,6 +220,15 @@ export default {
     this.getList();
   },
   methods: {
+    /** 查询标识标牌详情 */
+    getSignageXq(row){
+      const identificationTagId = row.identificationTagId || this.ids
+      getSignage(identificationTagId).then(response => {
+        this.form = response.data;
+        this.openXq = true;
+        this.title = "标识标牌信息详情";
+      });
+    },
     /** 查询标识标牌列表 */
     getList() {
       this.loading = true;
@@ -209,7 +250,6 @@ export default {
         routeid: null,
         labelName: null,
         administrativeRegion: null,
-        route: null,
         markTheLongitudeSign: null,
         labelLatitude: null,
         nameOfPriorityRoute: null,
@@ -236,18 +276,28 @@ export default {
     },
     /** 新增按钮操作 */
     handleAdd() {
+      this.updateDis="block";
       this.reset();
       this.open = true;
+      /** 查找路线列表的路线名称并展示*/
+      this.getRouteList();
       this.title = "添加标识标牌";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
+      this.updateDis="none";
       const identificationTagId = row.identificationTagId || this.ids
       getSignage(identificationTagId).then(response => {
         this.form = response.data;
         this.open = true;
         this.title = "修改标识标牌";
+      });
+    },
+    /** 查询路线列表列表 */
+    getRouteList() {
+      listInformation().then(response => {
+        this.routeList=response.rows
       });
     },
     /** 提交按钮 */
@@ -261,6 +311,7 @@ export default {
               this.getList();
             });
           } else {
+            this.form.routeid=this.selectValue
             addSignage(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
