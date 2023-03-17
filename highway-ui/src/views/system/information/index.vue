@@ -36,7 +36,6 @@
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
-
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
@@ -47,17 +46,6 @@
           @click="handleAdd"
           v-hasPermi="['system:information:add']"
         >新增</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:information:edit']"
-        >修改</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -83,7 +71,7 @@
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="informationList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" fit="fit" :data="informationList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="路线编码" align="center" prop="routeCoding" />
       <el-table-column label="路线名称" align="center" prop="routeName" />
@@ -108,9 +96,8 @@
 <!--      <el-table-column label="起点桩号" align="center" prop="startingPointStation" />-->
 <!--      <el-table-column label="终点桩号" align="center" prop="endPointStation" />-->
 <!--      <el-table-column label="路段数量" align="center" prop="numberRoadSegments" />-->
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column width="150px" label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-
           <el-button
             size="mini"
             type="text"
@@ -118,7 +105,6 @@
             @click="getMenuIs(scope.row)"
             v-hasPermi="['system:information:edit']"
           >详情</el-button>
-
           <el-button
             size="mini"
             type="text"

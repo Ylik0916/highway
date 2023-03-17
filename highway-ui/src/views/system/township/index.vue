@@ -34,17 +34,7 @@
           v-hasPermi="['system:township:add']"
         >新增</el-button>
       </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:township:edit']"
-        >修改</el-button>
-      </el-col>
+
       <el-col :span="1.5">
         <el-button
           type="danger"
@@ -71,17 +61,25 @@
 
     <el-table v-loading="loading" :data="townshipList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="乡镇ID" align="center" prop="townshipId" />
-      <el-table-column label="乡镇名称" align="center" prop="nameOfTownship" />
-      <el-table-column label="区域人口" align="center" prop="regionalPopulation" />
       <el-table-column label="行政区划编号" align="center" prop="administrativeDivisionNumber" />
+      <el-table-column label="行政区名称" align="center" prop="nameOfTownship" />
+      <el-table-column label="乡镇名称" align="center" prop="nameOfTownship" />
       <el-table-column label="通达现状" align="center" prop="accessStatusQuo">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.access" :value="scope.row.accessStatusQuo"/>
         </template>
       </el-table-column>
+
+      <el-table-column label="区域人口" align="center" prop="regionalPopulation" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-finished"
+            @click="getTownshipXq(scope.row)"
+            v-hasPermi="['system:township:edit']"
+          >详情</el-button>
           <el-button
             size="mini"
             type="text"
@@ -107,6 +105,56 @@
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
     />
+    <el-dialog :title="title" :visible.sync="openXq" width="1000px" append-to-body>
+      <el-tabs v-model="activeName" type="card">
+        <el-tab-pane label="标识标牌信息详情" name="first">
+          <el-descriptions :model="form">
+            <el-descriptions-item label="乡镇名称">{{ form.nameOfTownship }}</el-descriptions-item>
+            <el-descriptions-item label="区域人口">{{ form.regionalPopulation }}</el-descriptions-item>
+            <el-descriptions-item label="所属建制村数量">{{ form.numberOfIncorporatedVillages }}</el-descriptions-item>
+            <el-descriptions-item label="行政区划编号">{{ form.administrativeDivisionNumber }}</el-descriptions-item>
+            <el-descriptions-item label="经纬度类型">{{ form.latitudeAndLongitudeType }}</el-descriptions-item>
+            <el-descriptions-item label="经度">{{ form.longitude }}</el-descriptions-item>
+            <el-descriptions-item label="维度">{{ form.latitude }}</el-descriptions-item>
+            <el-descriptions-item label="所属地形">{{ form.landform }}</el-descriptions-item>
+            <el-descriptions-item label="岛屿是否建有陆岛交通码头">{{ form.islandTransportationTerminal }}</el-descriptions-item>
+            <el-descriptions-item label="码头与陆地距离(公里)">{{ form.distanceFromPierToLand }}</el-descriptions-item>            <el-descriptions-item label="所属地形">{{ form.landform }}</el-descriptions-item>
+            <el-descriptions-item label="岛内是否建有公路">{{ form.roadsOnTheIsland }}</el-descriptions-item>
+            <el-descriptions-item label="是否适宜通公路">{{ form.suitableForRoadAccess }}</el-descriptions-item>
+            <el-descriptions-item label="乡镇政府高程">{{ form.elevationOfTownshipGovernment }}</el-descriptions-item>
+            <el-descriptions-item label="不适宜原因">{{ form.causeOfUnsuitability }}</el-descriptions-item>
+            <el-descriptions-item label="通达现状">{{ form.accessStatusQuo }}</el-descriptions-item>
+            <el-descriptions-item label="乡镇通达位置">{{ form.locationOfTownshipAccess }}</el-descriptions-item>
+            <el-descriptions-item label="优选通达路线行政等级">{{ form.administrativeLevelAccessRoute }}</el-descriptions-item>            <el-descriptions-item label="乡镇通达位置">{{ form.locationOfTownshipAccess }}</el-descriptions-item>
+            <el-descriptions-item label="优选通达路线编码">{{ form.optimalAccessRouteCoding }}</el-descriptions-item>
+            <el-descriptions-item label="优选通达路线名称">{{ form.accessRouteIsPreferred }}</el-descriptions-item>
+            <el-descriptions-item label="通达方向">{{ form.directionOfAccess }}</el-descriptions-item>
+            <el-descriptions-item label="待建路段里程(公里)">{{ form.lengthOfRoadToBeBuilt }}</el-descriptions-item>
+            <el-descriptions-item label="待建路段起点桩号">{{ form.pointOfTheRoadSection }}</el-descriptions-item>
+            <el-descriptions-item label="待建路段讫点桩号">{{ form.endPointOfTheRoadToBeBuilt }}</el-descriptions-item>
+
+
+          </el-descriptions>
+        </el-tab-pane>
+        <el-tab-pane label="其他信息" name="second">
+          <el-descriptions :model="form">
+            <el-descriptions-item label="填报单位代码">{{ form.fillInTheUnitCode }}</el-descriptions-item>
+            <el-descriptions-item label="填报单位">{{ form.reportingUnit }}</el-descriptions-item>
+            <el-descriptions-item label="填报单位负责人">{{ form.personInCharge }}</el-descriptions-item>
+            <el-descriptions-item label="填表人">{{ form.formFiller }}</el-descriptions-item>
+            <el-descriptions-item label="填表人电话">{{ form.personFillingInTheForm }}</el-descriptions-item>
+            <el-descriptions-item label="审核人">{{ form.auditor }}</el-descriptions-item>
+            <el-descriptions-item label="审核人电话">{{ form.auditorTelephone }}</el-descriptions-item>
+            <el-descriptions-item label="变化程度">{{ form.degreeOfChange }}</el-descriptions-item>
+            <el-descriptions-item label="采集标记">{{ form.acquisitionMark }}</el-descriptions-item>
+            <el-descriptions-item label="是否纳入统计">{{ form.includedInStatistics }}</el-descriptions-item>
+            <el-descriptions-item label="采集时间">{{ form.acquisitionTime }}</el-descriptions-item>
+            <el-descriptions-item label="修改时间">{{ form.modificationTime }}</el-descriptions-item>
+            <el-descriptions-item label="备注">{{ form.remarks }}</el-descriptions-item>
+          </el-descriptions>
+        </el-tab-pane>
+      </el-tabs>
+    </el-dialog>
 
     <!-- 添加或修改乡镇对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body>
@@ -315,6 +363,8 @@ export default {
   dicts: ['latitude_and_longitude_type', 'access', 'optimization', 'sys_yes_no', 'terrain', 'location_of_township_access', 'direction_of_access'],
   data() {
     return {
+      activeName:'first',
+      openXq:false,
       // 遮罩层
       loading: true,
       // 选中数组
@@ -351,6 +401,14 @@ export default {
     this.getList();
   },
   methods: {
+    getTownshipXq(row){
+      const townshipId = row.townshipId || this.ids
+      getTownship(townshipId).then(response => {
+        this.form = response.data;
+        this.openXq = true;
+        this.title = "乡镇信息";
+      });
+    },
     /** 查询乡镇列表 */
     getList() {
       this.loading = true;

@@ -37,17 +37,6 @@
       </el-col>
       <el-col :span="1.5">
         <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:signage:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
           type="danger"
           plain
           icon="el-icon-delete"
@@ -82,6 +71,13 @@
           <el-button
             size="mini"
             type="text"
+            icon="el-icon-finished"
+            @click="getSignageXq(scope.row)"
+            v-hasPermi="['system:signage:edit']"
+          >详情</el-button>
+          <el-button
+            size="mini"
+            type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:signage:edit']"
@@ -104,7 +100,22 @@
       :limit.sync="queryParams.pageSize"
       @pagination="getList"
     />
+    <el-dialog :title="title" :visible.sync="openXq" width="1000px" append-to-body>
+      <el-tabs v-model="activeName" type="card">
+        <el-tab-pane label="标识标牌信息详情" name="first">
+          <el-descriptions :model="form">
+            <el-descriptions-item label="标识标牌名称">{{ form.labelName }}</el-descriptions-item>
+            <el-descriptions-item label="行政区域">{{ form.administrativeRegion }}</el-descriptions-item>
+            <el-descriptions-item label="标识标牌经度">{{ form.markTheLongitudeSign }}</el-descriptions-item>
 
+            <el-descriptions-item label="标识标牌纬度">{{ form.labelLatitude }}</el-descriptions-item>
+            <el-descriptions-item label="优先通达路线名称">{{ form.nameOfPriorityRoute }}</el-descriptions-item>
+            <el-descriptions-item label="优先通达路线编码">{{ form.priorityAccessRouteCode }}</el-descriptions-item>
+            <el-descriptions-item label="介绍">{{ form.introduce }}</el-descriptions-item>
+          </el-descriptions>
+        </el-tab-pane>
+      </el-tabs>
+    </el-dialog>
     <!-- 添加或修改标识标牌对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" style="display: flex;flex-wrap: wrap;justify-content: space-between">
@@ -158,6 +169,7 @@ export default {
   name: "Signage",
   data() {
     return {
+      activeName:'first',
       updateDis:'',
       flag :this.vis,
       //绑定下拉列表选中数据
@@ -169,6 +181,7 @@ export default {
           routeName:null
         }
       ],
+      openXq:false,
       // 遮罩层
       loading: true,
       // 选中数组
@@ -207,6 +220,15 @@ export default {
     this.getList();
   },
   methods: {
+    /** 查询标识标牌详情 */
+    getSignageXq(row){
+      const identificationTagId = row.identificationTagId || this.ids
+      getSignage(identificationTagId).then(response => {
+        this.form = response.data;
+        this.openXq = true;
+        this.title = "标识标牌信息详情";
+      });
+    },
     /** 查询标识标牌列表 */
     getList() {
       this.loading = true;

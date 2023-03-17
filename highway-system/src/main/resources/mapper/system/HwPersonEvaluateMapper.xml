@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hg.system.mapper.HwPersonEvaluateMapper">
+    
+    <resultMap type="HwPersonEvaluate" id="HwPersonEvaluateResult">
+        <result property="personId"    column="person_id"    />
+        <result property="personName"    column="person_name"    />
+        <result property="personUnit"    column="person_unit"    />
+        <result property="unitType"    column="unit_type"    />
+        <result property="evaluateYears"    column="evaluate_years"    />
+    </resultMap>
+
+    <sql id="selectHwPersonEvaluateVo">
+        select person_id, person_name, person_unit, unit_type, evaluate_years from hw_person_evaluate
+    </sql>
+
+    <select id="selectHwPersonEvaluateList" parameterType="HwPersonEvaluate" resultMap="HwPersonEvaluateResult">
+        <include refid="selectHwPersonEvaluateVo"/>
+        <where>  
+            <if test="personName != null  and personName != ''"> and person_name like concat('%', #{personName}, '%')</if>
+            <if test="personUnit != null "> and person_unit = #{personUnit}</if>
+            <if test="unitType != null  and unitType != ''"> and unit_type = #{unitType}</if>
+            <if test="evaluateYears != null  and evaluateYears != ''"> and evaluate_years = #{evaluateYears}</if>
+        </where>
+    </select>
+    
+    <select id="selectHwPersonEvaluateByPersonId" parameterType="Long" resultMap="HwPersonEvaluateResult">
+        <include refid="selectHwPersonEvaluateVo"/>
+        where person_id = #{personId}
+    </select>
+        
+    <insert id="insertHwPersonEvaluate" parameterType="HwPersonEvaluate" useGeneratedKeys="true" keyProperty="personId">
+        insert into hw_person_evaluate
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="personName != null and personName != ''">person_name,</if>
+            <if test="personUnit != null">person_unit,</if>
+            <if test="unitType != null and unitType != ''">unit_type,</if>
+            <if test="evaluateYears != null and evaluateYears != ''">evaluate_years,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="personName != null and personName != ''">#{personName},</if>
+            <if test="personUnit != null">#{personUnit},</if>
+            <if test="unitType != null and unitType != ''">#{unitType},</if>
+            <if test="evaluateYears != null and evaluateYears != ''">#{evaluateYears},</if>
+         </trim>
+    </insert>
+
+    <update id="updateHwPersonEvaluate" parameterType="HwPersonEvaluate">
+        update hw_person_evaluate
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="personName != null and personName != ''">person_name = #{personName},</if>
+            <if test="personUnit != null">person_unit = #{personUnit},</if>
+            <if test="unitType != null and unitType != ''">unit_type = #{unitType},</if>
+            <if test="evaluateYears != null and evaluateYears != ''">evaluate_years = #{evaluateYears},</if>
+        </trim>
+        where person_id = #{personId}
+    </update>
+
+    <delete id="deleteHwPersonEvaluateByPersonId" parameterType="Long">
+        delete from hw_person_evaluate where person_id = #{personId}
+    </delete>
+
+    <delete id="deleteHwPersonEvaluateByPersonIds" parameterType="String">
+        delete from hw_person_evaluate where person_id in 
+        <foreach item="personId" collection="array" open="(" separator="," close=")">
+            #{personId}
+        </foreach>
+    </delete>
+</mapper>
