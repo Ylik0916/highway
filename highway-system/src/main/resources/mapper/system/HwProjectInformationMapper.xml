@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hg.system.mapper.HwProjectInformationMapper">
+
+    <resultMap type="HwProjectInformation" id="HwProjectInformationResult">
+        <result property="projectId" column="project_id"/>
+        <result property="projectName" column="project_name"/>
+        <result property="administrativeRegion" column="administrative_region"/>
+        <result property="routeCoding" column="route_coding"/>
+        <result property="routeName" column="route_name"/>
+        <result property="projectPhase" column="project_phase"/>
+        <result property="startTime" column="start_time"/>
+        <result property="submitTime" column="submit_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="investCost" column="invest_cost"/>
+        <result property="investEquipmentCost" column="invest_equipment_cost"/>
+        <result property="investEngineeringCost" column="invest_engineering_cost"/>
+        <result property="designCost" column="design_cost"/>
+        <result property="designEquipmentCost" column="design_equipment_cost"/>
+        <result property="designEngineeringCost" column="design_engineering_cost"/>
+        <result property="constructionCost" column="construction_cost"/>
+        <result property="constructionEquipmentCost" column="construction_equipment_cost"/>
+        <result property="constructionEngineeringCost" column="construction_engineering_cost"/>
+        <result property="contractCost" column="contract_cost"/>
+        <result property="provisionalPayment" column="provisional_payment"/>
+        <result property="documentUpload" column="document_upload"/>
+    </resultMap>
+
+    <resultMap id="allInformation" type="hwProjectInformation">
+        <result property="projectId" column="project_id"/>
+        <result property="projectName" column="project_name"/>
+        <result property="administrativeRegion" column="administrative_region"/>
+        <result property="routeCoding" column="route_coding"/>
+        <result property="routeName" column="route_name"/>
+        <result property="projectPhase" column="project_phase"/>
+        <result property="startTime" column="start_time"/>
+        <result property="submitTime" column="submit_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="investCost" column="invest_cost"/>
+        <result property="investEquipmentCost" column="invest_equipment_cost"/>
+        <result property="investEngineeringCost" column="invest_engineering_cost"/>
+        <result property="designCost" column="design_cost"/>
+        <result property="designEquipmentCost" column="design_equipment_cost"/>
+        <result property="designEngineeringCost" column="design_engineering_cost"/>
+        <result property="constructionCost" column="construction_cost"/>
+        <result property="constructionEquipmentCost" column="construction_equipment_cost"/>
+        <result property="constructionEngineeringCost" column="construction_engineering_cost"/>
+        <result property="contractCost" column="contract_cost"/>
+        <result property="provisionalPayment" column="provisional_payment"/>
+        <result property="documentUpload" column="document_upload"/>
+        <association property="hwProjectSupervisor" javaType="hwProjectSupervisor">
+            <id property="supervisorId" column="supervisor_id"/>
+            <result property="supervisorName" column="supervisor_name"/>
+        </association>
+        <association property="hwProjectConstruction" javaType="hwProjectConstruction">
+            <id property="constructionId" column="construction_id"/>
+            <result property="constructionName" column="construction_name"/>
+        </association>
+    </resultMap>
+
+    <sql id="selectHwProjectInformationVo">
+        select project_id,
+               project_name,
+               administrative_region,
+               route_coding,
+               route_name,
+               project_phase,
+               start_time,
+               submit_time,
+               end_time,
+               invest_cost,
+               invest_equipment_cost,
+               invest_engineering_cost,
+               design_cost,
+               design_equipment_cost,
+               design_engineering_cost,
+               construction_cost,
+               construction_equipment_cost,
+               construction_engineering_cost,
+               contract_cost,
+               provisional_payment,
+               document_upload
+        from hw_project_information
+    </sql>
+
+
+    <select id="selectHwProjectInformationList" parameterType="HwProjectInformation"
+            resultMap="HwProjectInformationResult">
+        <include refid="selectHwProjectInformationVo"/>
+        <where>
+            <if test="projectName != null  and projectName != ''">and project_name like concat('%', #{projectName},
+                '%')
+            </if>
+            <if test="administrativeRegion != null ">and administrative_region = #{administrativeRegion}</if>
+            <if test="routeCoding != null ">and route_coding = #{routeCoding}</if>
+            <if test="routeName != null  and routeName != ''">and route_name like concat('%', #{routeName}, '%')</if>
+            <if test="projectPhase != null ">and project_phase = #{projectPhase}</if>
+            <if test="startTime != null ">and start_time = #{startTime}</if>
+            <if test="submitTime != null ">and submit_time = #{submitTime}</if>
+            <if test="endTime != null ">and end_time = #{endTime}</if>
+            <if test="investCost != null ">and invest_cost = #{investCost}</if>
+            <if test="investEquipmentCost != null ">and invest_equipment_cost = #{investEquipmentCost}</if>
+            <if test="investEngineeringCost != null ">and invest_engineering_cost = #{investEngineeringCost}</if>
+            <if test="designCost != null ">and design_cost = #{designCost}</if>
+            <if test="designEquipmentCost != null ">and design_equipment_cost = #{designEquipmentCost}</if>
+            <if test="designEngineeringCost != null ">and design_engineering_cost = #{designEngineeringCost}</if>
+            <if test="constructionCost != null ">and construction_cost = #{constructionCost}</if>
+            <if test="constructionEquipmentCost != null ">and construction_equipment_cost =
+                #{constructionEquipmentCost}
+            </if>
+            <if test="constructionEngineeringCost != null ">and construction_engineering_cost =
+                #{constructionEngineeringCost}
+            </if>
+            <if test="contractCost != null ">and contract_cost = #{contractCost}</if>
+            <if test="provisionalPayment != null ">and provisional_payment = #{provisionalPayment}</if>
+            <if test="documentUpload != null  and documentUpload != ''">and document_upload = #{documentUpload}</if>
+        </where>
+    </select>
+
+
+    <select id="selectHwProjectInformationByProjectId" parameterType="Long" resultMap="HwProjectInformationResult">
+        <include refid="selectHwProjectInformationVo"/>
+        where project_id = #{projectId}
+    </select>
+
+    <!-- 新版查询， -->
+    <select id="selectAllProjectInformationList" resultMap="allInformation">
+        SELECT *
+        FROM `hw_project_information` hpi
+        LEFT JOIN `hw_project_supervisor` hps ON hpi.`project_id` = hps.`supervisor_project_id`
+        LEFT JOIN `hw_project_construction` hpc ON hps.`supervisor_id` = hpc.`construction_supervisor_id`
+        <where>
+            <if test="projectName != null  and projectName != ''">and project_name like concat('%', #{projectName},
+                '%')
+            </if>
+            <if test="administrativeRegion != null ">and administrative_region = #{administrativeRegion}</if>
+            <if test="routeCoding != null ">and route_coding = #{routeCoding}</if>
+            <if test="routeName != null  and routeName != ''">and route_name like concat('%', #{routeName}, '%')</if>
+            <if test="projectPhase != null  and projectPhase != ''">and project_phase = #{projectPhase}</if>
+            <if test="startTime != null ">and start_time = #{startTime}</if>
+            <if test="submitTime != null ">and submit_time = #{submitTime}</if>
+            <if test="endTime != null ">and end_time = #{endTime}</if>
+            <if test="investCost != null ">and invest_cost = #{investCost}</if>
+            <if test="investEquipmentCost != null ">and invest_equipment_cost = #{investEquipmentCost}</if>
+            <if test="investEngineeringCost != null ">and invest_engineering_cost = #{investEngineeringCost}</if>
+            <if test="designCost != null ">and design_cost = #{designCost}</if>
+            <if test="designEquipmentCost != null ">and design_equipment_cost = #{designEquipmentCost}</if>
+            <if test="designEngineeringCost != null ">and design_engineering_cost = #{designEngineeringCost}</if>
+            <if test="constructionCost != null ">and construction_cost = #{constructionCost}</if>
+            <if test="constructionEquipmentCost != null ">and construction_equipment_cost =
+                #{constructionEquipmentCost}
+            </if>
+            <if test="constructionEngineeringCost != null ">and construction_engineering_cost =
+                #{constructionEngineeringCost}
+            </if>
+            <if test="contractCost != null ">and contract_cost = #{contractCost}</if>
+            <if test="provisionalPayment != null ">and provisional_payment = #{provisionalPayment}</if>
+        </where>
+    </select>
+
+    <insert id="insertHwProjectInformation" parameterType="HwProjectInformation" useGeneratedKeys="true"
+            keyProperty="projectId">
+        insert into hw_project_information
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="projectName != null and projectName != ''">project_name,</if>
+            <if test="administrativeRegion != null">administrative_region,</if>
+            <if test="routeCoding != null">route_coding,</if>
+            <if test="routeName != null and routeName != ''">route_name,</if>
+            <if test="projectPhase != null">project_phase,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="submitTime != null">submit_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="investCost != null">invest_cost,</if>
+            <if test="investEquipmentCost != null">invest_equipment_cost,</if>
+            <if test="investEngineeringCost != null">invest_engineering_cost,</if>
+            <if test="designCost != null">design_cost,</if>
+            <if test="designEquipmentCost != null">design_equipment_cost,</if>
+            <if test="designEngineeringCost != null">design_engineering_cost,</if>
+            <if test="constructionCost != null">construction_cost,</if>
+            <if test="constructionEquipmentCost != null">construction_equipment_cost,</if>
+            <if test="constructionEngineeringCost != null">construction_engineering_cost,</if>
+            <if test="contractCost != null">contract_cost,</if>
+            <if test="provisionalPayment != null">provisional_payment,</if>
+            <if test="documentUpload != null">document_upload,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="projectName != null and projectName != ''">#{projectName},</if>
+            <if test="administrativeRegion != null">#{administrativeRegion},</if>
+            <if test="routeCoding != null">#{routeCoding},</if>
+            <if test="routeName != null and routeName != ''">#{routeName},</if>
+            <if test="projectPhase != null">#{projectPhase},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="submitTime != null">#{submitTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="investCost != null">#{investCost},</if>
+            <if test="investEquipmentCost != null">#{investEquipmentCost},</if>
+            <if test="investEngineeringCost != null">#{investEngineeringCost},</if>
+            <if test="designCost != null">#{designCost},</if>
+            <if test="designEquipmentCost != null">#{designEquipmentCost},</if>
+            <if test="designEngineeringCost != null">#{designEngineeringCost},</if>
+            <if test="constructionCost != null">#{constructionCost},</if>
+            <if test="constructionEquipmentCost != null">#{constructionEquipmentCost},</if>
+            <if test="constructionEngineeringCost != null">#{constructionEngineeringCost},</if>
+            <if test="contractCost != null">#{contractCost},</if>
+            <if test="provisionalPayment != null">#{provisionalPayment},</if>
+            <if test="documentUpload != null">#{documentUpload},</if>
+        </trim>
+    </insert>
+
+    <update id="updateHwProjectInformation" parameterType="HwProjectInformation">
+        update hw_project_information
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="projectName != null and projectName != ''">project_name = #{projectName},</if>
+            <if test="administrativeRegion != null">administrative_region = #{administrativeRegion},</if>
+            <if test="routeCoding != null">route_coding = #{routeCoding},</if>
+            <if test="routeName != null and routeName != ''">route_name = #{routeName},</if>
+            <if test="projectPhase != null">project_phase = #{projectPhase},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="submitTime != null">submit_time = #{submitTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="investCost != null">invest_cost = #{investCost},</if>
+            <if test="investEquipmentCost != null">invest_equipment_cost = #{investEquipmentCost},</if>
+            <if test="investEngineeringCost != null">invest_engineering_cost = #{investEngineeringCost},</if>
+            <if test="designCost != null">design_cost = #{designCost},</if>
+            <if test="designEquipmentCost != null">design_equipment_cost = #{designEquipmentCost},</if>
+            <if test="designEngineeringCost != null">design_engineering_cost = #{designEngineeringCost},</if>
+            <if test="constructionCost != null">construction_cost = #{constructionCost},</if>
+            <if test="constructionEquipmentCost != null">construction_equipment_cost = #{constructionEquipmentCost},
+            </if>
+            <if test="constructionEngineeringCost != null">construction_engineering_cost =
+                #{constructionEngineeringCost},
+            </if>
+            <if test="contractCost != null">contract_cost = #{contractCost},</if>
+            <if test="provisionalPayment != null">provisional_payment = #{provisionalPayment},</if>
+            <if test="documentUpload != null">document_upload = #{documentUpload},</if>
+        </trim>
+        where project_id = #{projectId}
+    </update>
+
+    <delete id="deleteHwProjectInformationByProjectId" parameterType="Long">
+        delete
+        from hw_project_information
+        where project_id = #{projectId}
+    </delete>
+
+    <delete id="deleteHwProjectInformationByProjectIds" parameterType="String">
+        delete from hw_project_information where project_id in
+        <foreach item="projectId" collection="array" open="(" separator="," close=")">
+            #{projectId}
+        </foreach>
+    </delete>
+</mapper>
