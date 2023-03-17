@@ -92,8 +92,8 @@
     />
 
     <!-- 添加或修改隧道信息对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="800px" append-to-body >
-      <el-form ref="form" :model="form" :rules="rules"  style="display: flex;flex-wrap: wrap;justify-content: space-between">
+    <el-dialog :title="title" :visible.sync="open" append-to-body width="800px" >
+      <el-form ref="form" :model="form" :rules="rules" style="display: flex;flex-wrap: wrap;justify-content: space-between">
 <!--        <el-form-item label="路线编码" prop="routeCoding">-->
 <!--          <el-input v-model="form.routeCoding" placeholder="请输入路线编码" />-->
 <!--        </el-form-item>-->
