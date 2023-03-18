@@ -2,6 +2,7 @@ package com.hg.web.controller.system;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,14 +24,13 @@ import com.hg.common.core.page.TableDataInfo;
 
 /**
  * 从业单位评价Controller
- * 
+ *
  * @author W-yf
  * @date 2023-03-15
  */
 @RestController
 @RequestMapping("/system/evaluate")
-public class HwUnitEvaluateController extends BaseController
-{
+public class HwUnitEvaluateController extends BaseController {
     @Autowired
     private IHwUnitEvaluateService hwUnitEvaluateService;
 
@@ -39,8 +39,7 @@ public class HwUnitEvaluateController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:evaluate:list')")
     @GetMapping("/list")
-    public TableDataInfo list(HwUnitEvaluate hwUnitEvaluate)
-    {
+    public TableDataInfo list(HwUnitEvaluate hwUnitEvaluate) {
         startPage();
         List<HwUnitEvaluate> list = hwUnitEvaluateService.selectHwUnitEvaluateList(hwUnitEvaluate);
         return getDataTable(list);
@@ -52,8 +51,7 @@ public class HwUnitEvaluateController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:evaluate:export')")
     @Log(title = "从业单位评价", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, HwUnitEvaluate hwUnitEvaluate)
-    {
+    public void export(HttpServletResponse response, HwUnitEvaluate hwUnitEvaluate) {
         List<HwUnitEvaluate> list = hwUnitEvaluateService.selectHwUnitEvaluateList(hwUnitEvaluate);
         ExcelUtil<HwUnitEvaluate> util = new ExcelUtil<HwUnitEvaluate>(HwUnitEvaluate.class);
         util.exportExcel(response, list, "从业单位评价数据");
@@ -64,8 +62,7 @@ public class HwUnitEvaluateController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:evaluate:query')")
     @GetMapping(value = "/{unitId}")
-    public AjaxResult getInfo(@PathVariable("unitId") Long unitId)
-    {
+    public AjaxResult getInfo(@PathVariable("unitId") Long unitId) {
         return success(hwUnitEvaluateService.selectHwUnitEvaluateByUnitId(unitId));
     }
 
@@ -75,8 +72,7 @@ public class HwUnitEvaluateController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:evaluate:add')")
     @Log(title = "从业单位评价", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody HwUnitEvaluate hwUnitEvaluate)
-    {
+    public AjaxResult add(@RequestBody HwUnitEvaluate hwUnitEvaluate) {
         return toAjax(hwUnitEvaluateService.insertHwUnitEvaluate(hwUnitEvaluate));
     }
 
@@ -86,8 +82,7 @@ public class HwUnitEvaluateController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:evaluate:edit')")
     @Log(title = "从业单位评价", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody HwUnitEvaluate hwUnitEvaluate)
-    {
+    public AjaxResult edit(@RequestBody HwUnitEvaluate hwUnitEvaluate) {
         return toAjax(hwUnitEvaluateService.updateHwUnitEvaluate(hwUnitEvaluate));
     }
 
@@ -96,9 +91,22 @@ public class HwUnitEvaluateController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:evaluate:remove')")
     @Log(title = "从业单位评价", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{unitIds}")
-    public AjaxResult remove(@PathVariable Long[] unitIds)
-    {
+    @DeleteMapping("/{unitIds}")
+    public AjaxResult remove(@PathVariable Long[] unitIds) {
         return toAjax(hwUnitEvaluateService.deleteHwUnitEvaluateByUnitIds(unitIds));
+    }
+
+    /**
+     * 查询从业单位评价列表和成绩
+     *
+     * @param hwUnitEvaluate 从业单位评价
+     * @return 从业单位评价集合
+     */
+    @PreAuthorize("@ss.hasPermi('system:evaluate:list')")
+    @GetMapping("/scoreList")
+    public TableDataInfo scoreList(HwUnitEvaluate hwUnitEvaluate) {
+        startPage();
+        List<HwUnitEvaluate> list = hwUnitEvaluateService.selectHwUnitEvaluateAndScoreList(hwUnitEvaluate);
+        return getDataTable(list);
     }
 }

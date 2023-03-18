@@ -23,6 +23,7 @@
         <div class="block">
           <el-date-picker
             v-model="queryParams.evaluateYears"
+            value-format="yyyy"
             type="year"
             @keyup.enter.native="handleQuery"
             placeholder="请输入评价年度">
@@ -87,19 +88,22 @@
 
     <el-table v-loading="loading" :data="evaluateList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center"/>
-      <!--      <el-table-column label="单位id" align="center" prop="unitId" />-->
       <el-table-column label="单位名称" align="center" prop="unitName" :show-overflow-tooltip='true'/>
       <el-table-column label="单位类型" align="center" prop="unitType"/>
-      <el-table-column label="评价年度" align="center" prop="evaluateYears"/>
-      <el-table-column label="评价年度" align="center" prop="evaluateYears"/>
-      <el-table-column label="评价分数" align="center" prop="evaluateYears"/>
-      <el-table-column label="评价等级" align="center" prop="evaluateYears"/>
+      <el-table-column label="评价年度" align="center" prop="evaluateYears">
+        <template slot-scope="scope">
+          {{ scope.row.evaluateYears }}年
+        </template>
+      </el-table-column>
+      <el-table-column label="评价分数" align="center" prop="hwHistoryEvaluate.evaluateScore"/>
+      <el-table-column label="评价等级" align="center" prop="hwHistoryEvaluate.evaluateGrade"/>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
             type="success"
             style="width: 60px"
+            @click="getHistoryList(scope.row)"
           >历史评价
           </el-button>
           <el-button
@@ -136,7 +140,8 @@
         <el-form-item label="评价年度" prop="evaluateYears">
           <div class="block">
             <el-date-picker
-              v-model="value3"
+              v-model="form.evaluateYears"
+              value-format="yyyy"
               type="year"
               style="width: 300px"
               placeholder="请选择年度">
@@ -162,11 +167,75 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+    <!-- 历史评价对话框 -->
+    <el-dialog :title="historyTitle" :visible.sync="historyOpen" width="700px" append-to-body>
+      <el-row :gutter="10" class="mb8">
+        <el-col :span="1.5">
+          <el-button
+            type="primary"
+            plain
+            icon="el-icon-plus"
+            size="mini"
+            @click="handleHistoryAdd"
+            v-hasPermi="['system:evaluate:add']"
+          >新增
+          </el-button>
+        </el-col>
+      </el-row>
+      <el-table v-loading="loading" :data="historyList">
+        <el-table-column label="评价时间" align="center" prop="evaluateTime"/>
+        <el-table-column label="评价分数" align="center" prop="evaluateScore"/>
+        <el-table-column label="评价等级" align="center" prop="evaluateGrade"/>
+        <el-table-column label="评价附件" align="center" prop="evaluateDocumentUpload"/>
+        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+          <template slot-scope="scope">
+            <el-button
+              size="mini"
+              type="primary"
+              style="width: 45px"
+              @click="handleHistoryUpdate(scope.row)"
+              v-hasPermi="['system:evaluate:edit']"
+            >编辑
+            </el-button>
+            <el-button
+              size="mini"
+              type="danger"
+              style="width: 45px"
+              @click="handleHistoryDelete(scope.row)"
+              v-hasPermi="['system:evaluate:remove']"
+            >删除
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
+    <!-- 添加或修改历史评价对话框 -->
+    <el-dialog :title="historyAddTitle" :visible.sync="historyAddOpen" width="500px" append-to-body>
+      <el-form ref="historyForm" :model="historyForm" :rules="historyRules" label-width="80px">
+        <el-form-item label="评分" prop="evaluateScore" style="width: 300px">
+          <el-input v-model="historyForm.evaluateScore" placeholder="请输入评分施工标名称"/>
+        </el-form-item>
+        <el-form-item label="附件" prop="evaluateDocumentUpload">
+          <file-upload v-model="historyForm.evaluateDocumentUpload"/>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="historySubmitForm">确 定</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import {listEvaluate, getEvaluate, delEvaluate, addEvaluate, updateEvaluate} from "@/api/system/evaluate";
+import {
+  listEvaluate,
+  getEvaluate,
+  delEvaluate,
+  addEvaluate,
+  updateEvaluate,
+  getHistoryUnitList, addHistory, getHistory, updateHistory, delHistory
+} from "@/api/system/evaluate";
 
 export default {
   name: "Evaluate",
@@ -189,6 +258,8 @@ export default {
         label: '其他单位'
       }],
       value: '',
+      // 用于历史评价添加
+      unitId: 0,
       // 遮罩层
       loading: true,
       // 选中数组
@@ -203,10 +274,20 @@ export default {
       total: 0,
       // 从业单位评价表格数据
       evaluateList: [],
+      // 历史评价表格数据
+      historyList: [],
       // 弹出层标题
       title: "",
+      // 历史评价弹出层标题
+      historyTitle: "",
+      // 历史评价添加修改弹出层标题
+      historyAddTitle: "",
       // 是否显示弹出层
       open: false,
+      // 是否显示历史评价弹出层
+      historyOpen: false,
+      // 是否显示历史评价添加修改弹出层
+      historyAddOpen: false,
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -217,6 +298,8 @@ export default {
       },
       // 表单参数
       form: {},
+      // 历史评价表单参数
+      historyForm: {},
       // 表单校验
       rules: {
         unitName: [
@@ -228,6 +311,15 @@ export default {
         evaluateYears: [
           {required: true, message: "评价年度不能为空", trigger: "blur"}
         ]
+      },
+      // 历史评价表单校验
+      historyRules: {
+        evaluateScore: [
+          {required: true, message: "评分不能为空", trigger: "blur"}
+        ],
+        evaluateDocumentUpload: [
+          {required: true, message: "附件不能为空", trigger: "blur"}
+        ]
       }
     };
   },
@@ -235,6 +327,16 @@ export default {
     this.getList();
   },
   methods: {
+    /** 查询历史评价列表 */
+    getHistoryList(row) {
+      const unitId = row.unitId || this.ids
+      getHistoryUnitList(unitId).then(response => {
+        this.historyList = response.rows;
+        this.unitId = unitId;
+        this.historyOpen = true;
+        this.historyTitle = "历史评价";
+      });
+    },
     /** 查询从业单位评价列表 */
     getList() {
       this.loading = true;
@@ -259,6 +361,17 @@ export default {
       };
       this.resetForm("form");
     },
+    // 历史评价表单重置
+    historyReset() {
+      this.historyForm = {
+        evaluateId: null,
+        evaluateTime: null,
+        evaluateScore: null,
+        evaluateUnitId: null,
+        evaluateDocumentUpload: null,
+      };
+      this.resetForm("historyForm");
+    },
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;
@@ -275,11 +388,27 @@ export default {
       this.single = selection.length !== 1
       this.multiple = !selection.length
     },
+    /** 新增历史评价按钮操作 */
+    handleHistoryAdd() {
+      this.historyReset();
+      this.historyAddOpen = true;
+      this.historyAddTitle = "评价新增";
+    },
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
       this.open = true;
       this.title = "添加从业单位评价";
+    },
+    /** 修改历史评价按钮操作 */
+    handleHistoryUpdate(row) {
+      this.historyReset();
+      const evaluateId = row.evaluateId || this.ids
+      getHistory(evaluateId).then(response => {
+        this.historyForm = response.data;
+        this.historyAddOpen = true;
+        this.historyAddTitle = "评价修改";
+      });
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -311,12 +440,48 @@ export default {
         }
       });
     },
+    /** 历史评价提交按钮 */
+    historySubmitForm() {
+      this.$refs["historyForm"].validate(valid => {
+        if (valid) {
+          if (this.historyForm.evaluateId != null) {
+            this.historyForm.evaluateUnitId = this.unitId;
+            updateHistory(this.historyForm).then(response => {
+              this.$modal.msgSuccess("修改成功");
+              this.historyAddOpen = false;
+              this.historyOpen = false;
+              this.getList();
+            });
+          } else {
+            this.historyForm.evaluateUnitId = this.unitId;
+            addHistory(this.historyForm).then(response => {
+              this.$modal.msgSuccess("新增成功");
+              this.historyAddOpen = false;
+              this.historyOpen = false;
+              this.getList();
+            });
+          }
+        }
+      });
+    },
     /** 删除按钮操作 */
     handleDelete(row) {
       const unitIds = row.unitId || this.ids;
       this.$modal.confirm('是否确认删除从业单位评价编号为"' + unitIds + '"的数据项？').then(function () {
         return delEvaluate(unitIds);
       }).then(() => {
+        this.getList();
+        this.$modal.msgSuccess("删除成功");
+      }).catch(() => {
+      });
+    },
+    /** 删除按钮操作 */
+    handleHistoryDelete(row) {
+      const evaluateId = row.evaluateId || this.ids;
+      this.$modal.confirm('是否确认删除历史评价编号为"' + evaluateId + '"的数据项？').then(function () {
+        return delHistory(evaluateId);
+      }).then(() => {
+        this.historyOpen = false;
         this.getList();
         this.$modal.msgSuccess("删除成功");
       }).catch(() => {
