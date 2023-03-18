@@ -160,7 +160,7 @@
               <el-col :span="8">
                 <div class="grid-content bg-purple">
                   <el-form-item label="桥梁名称" prop="routeName">
-                    <el-input v-model="form.routeName" placeholder="请输入桥梁名称">
+                    <el-input v-model="form.routeName" placeholder="请输入桥梁名称" :disabled="true">
                       {{bridge}}
                     </el-input>
                   </el-form-item>
@@ -169,7 +169,7 @@
               <el-col :span="8">
                 <div class="grid-content bg-purple">
                   <el-form-item label="桥梁编码" prop="routeCode">
-                    <el-input v-model="form.routeCode" placeholder="请输入桥梁编码">
+                    <el-input v-model="form.routeCode" placeholder="请输入桥梁编码" :disabled="true">
                       {{bridgeCode}}
                     </el-input>
                   </el-form-item>
@@ -194,6 +194,40 @@
               </el-col>
               <el-col :span="8">
                 <div class="grid-content bg-purple">
+                  <el-form-item label="桥面系评分BDCI" prop="routeFaceScore">
+                    <el-input v-model="form.routeFaceScore" placeholder="请输入桥面系评分BDCI"/>
+                  </el-form-item>
+                </div>
+              </el-col>
+              <el-col :span="8">
+                <div class="grid-content bg-purple-light">
+                  <el-form-item label="上部结构评分SPCI" prop="routeTopScore">
+                    <el-input v-model="form.routeTopScore" placeholder="请输入上部结构评分SPCI"/>
+                  </el-form-item>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="8">
+                <div class="grid-content bg-purple-light">
+                  <el-form-item label="行政区划" prop="routeAdministrativeArea">
+                    <el-input v-model="form.routeAdministrativeArea" placeholder="请输入行政区划" :disabled="true">
+                      {{ form.routeAdministrativeArea }}
+                    </el-input>
+                  </el-form-item>
+                </div>
+              </el-col>
+              <el-col :span="8">
+                <div class="grid-content bg-purple">
+                  <el-form-item label="技术状况得分DR" prop="routeDr" >
+                    <el-input v-model="form.routeDr" :disabled="true" placeholder="请输入技术状况得分DR">
+                      {{form.routeDr}}
+                    </el-input>
+                  </el-form-item>
+                </div>
+              </el-col>
+              <el-col :span="8">
+                <div class="grid-content bg-purple">
                   <el-form-item label="评定时间" prop="routeScoreDate">
                     <el-date-picker clearable
                                     v-model="form.routeScoreDate"
@@ -204,41 +238,11 @@
                   </el-form-item>
                 </div>
               </el-col>
-              <el-col :span="8">
-                <div class="grid-content bg-purple-light">
-                  <el-form-item label="评定单位" prop="routeCompany">
-                    <el-input v-model="form.routeCompany" placeholder="请输入评定单位"/>
-                  </el-form-item>
-                </div>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="8">
-                <div class="grid-content bg-purple-light">
-                  <el-form-item label="行政区划" prop="routeAdministrativeArea">
-                    <el-input v-model="form.routeAdministrativeArea" placeholder="请输入行政区划"/>
-                  </el-form-item>
-                </div>
-              </el-col>
-              <el-col :span="8">
-                <div class="grid-content bg-purple">
-                  <el-form-item label="技术状况得分DR" prop="routeDr">
-                    <el-input v-model="form.routeDr" placeholder="请输入技术状况得分DR"/>
-                  </el-form-item>
-                </div>
-              </el-col>
-              <el-col :span="8">
-                <div class="grid-content bg-purple">
-                  <el-form-item label="桥面系评分BDCI" prop="routeFaceScore">
-                    <el-input v-model="form.routeFaceScore" placeholder="请输入桥面系评分BDCI"/>
-                  </el-form-item>
-                </div>
-              </el-col>
             </el-row>
             <el-col :span="8">
               <div class="grid-content bg-purple">
-                <el-form-item label="上部结构评分SPCI" prop="routeTopScore">
-                  <el-input v-model="form.routeTopScore" placeholder="请输入上部结构评分SPCI"/>
+                <el-form-item label="评定单位" prop="routeCompany">
+                  <el-input v-model="form.routeCompany" placeholder="请输入评定单位"/>
                 </el-form-item>
               </div>
             </el-col>
@@ -254,9 +258,10 @@
 </template>
 
 <script>
-import {listQuality, getQuality, delQuality, addQuality, updateQuality} from "@/api/system/quality";
+import {listQuality, getQuality, delQuality, addQuality, updateQuality, you, hao, zhong} from "@/api/system/quality";
 import * as echarts from "echarts";
 import Infdormations from "@/views/system/infdormations";
+import axios from "axios";
 export default {
   props: ["bridge", "bridgeCode"],
   components: {Infdormations},
@@ -264,74 +269,7 @@ export default {
     // echarts仅有一个方法init，执行init时传入一个具备大小
     // （如果没有指定容器的大小将会按照0大小来处理即无法看到图标）的dom节点后即可实例化出图表对象，图标库实现为多实例的，
     // 同一页面可多次init出多个图表
-    var myEcharts = echarts.init(document.getElementById("main"));
-    myEcharts.setOption({
-      title: {
-        text: "北戴河区桥梁质量",
-        textStyle: {
-          color: 'blue',
-
-        },
-        // backgroundColor:'',
-        link: "http://www.baidu.com",
-        target: 'self',
-        // borderColor:'red',
-        // borderWidth:5,
-        x: 'center',
-
-
-      },
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          type: "shadow",
-        },
-        backgroundColor: 'yellow',
-        borderColor: 'black',
-        borderWidth: 2,
-        textStyle: {
-          color: 'blue',
-        },
-        formatter(params) {
-          console.log(params)
-          for (var i = 0; i < params.length; i++) {
-            return params[i].axisValue + "桥的数量：" + params[i].data.value
-          }
-        }
-      },
-
-      legend: {
-        show: true,//设置图例的开启或者关闭
-        // icon:'circle',//设置图例的形状
-        right: '0%', //设置位置
-
-        //设置宽高
-        itemWidth: 20,
-        itemHeight: 20,
-        textStyle: {
-          color: 'blue',
-          fontSize: 15,
-
-        }
-      },
-      xAxis: {
-        data: ["优", "良", "中", "次", "差"],
-      },
-      yAxis: {},
-      series: {
-        name: "数量",
-        type: "bar",
-        data: [
-          {"value": "5"},
-          {"value": "10"},
-          {"value": "15"},
-          {"value": "20"},
-          {"value": "25"},
-
-        ]
-      }
-    })
-
+    this.tu();
   },
   name: "Quality",
   data() {
@@ -370,7 +308,7 @@ export default {
         routeName: null,
         routeCode: null,
         routeAdministrativeArea: null,
-        routeDr: null
+        routeDr: null,
       },
       // 表单参数
       form: {},
@@ -412,11 +350,77 @@ export default {
         console.log(tab, event);
       }
     },
-    shou(bridge,bridgeCode,bi){
+    tu(){
+    var myEcharts = echarts.init(document.getElementById("main"));
+    myEcharts.setOption({
+      title: {
+        text: "北戴河区桥梁质量",
+        textStyle: {
+          color: 'blue',
+        },
+        // backgroundColor:'',
+        link: "http://www.baidu.com",
+        target: 'self',
+        // borderColor:'red',
+        // borderWidth:5,
+        x: 'center',
+      },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: "shadow",
+        },
+        backgroundColor: 'yellow',
+        borderColor: 'black',
+        borderWidth: 2,
+        textStyle: {
+          color: 'blue',
+        },
+        formatter(params) {
+          console.log(params)
+          for (var i = 0; i < params.length; i++) {
+            return params[i].axisValue + "桥的数量：" + params[i].data.value
+          }
+        }
+      },
+
+      legend: {
+        show: true,//设置图例的开启或者关闭
+        // icon:'circle',//设置图例的形状
+        right: '0%', //设置位置
+
+        //设置宽高
+        itemWidth: 20,
+        itemHeight: 20,
+        textStyle: {
+          color: 'blue',
+          fontSize: 15,
+
+        }
+      },
+      xAxis: {
+        data: ["优", "良", "中"],
+      },
+      yAxis: {},
+      series: {
+        name: "数量",
+        type: "bar",
+        data: [
+          {"value":"2"},
+          {"value":"4"},
+          {"value":"6"},
+        ]
+      }
+    })
+    },
+    //选择桥梁信息
+    shou(bridge,bridgeCode,bi,qu){
       this.form.routeName = bridge;
       this.form.routeCode = bridgeCode;
+      this.form.routeAdministrativeArea= qu;
       this.openers = bi;
     },
+
     /** 查询桥梁质量列表 */
     getList() {
       this.loading = true;

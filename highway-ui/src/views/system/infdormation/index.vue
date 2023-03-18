@@ -29,31 +29,8 @@
           </el-select>
         </el-form-item>
         <el-form-item label="行政区划" prop="routeAdministrativeArea">
-          <el-select v-model="queryParams.routeAdministrativeArea" placeholder="请选择行政区划" clearable>
-            <el-option
-              v-for="dict in dict.type.bridge_zoning"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            />
-          </el-select>
+          <treeselect style="width: 200px" v-model="queryParams.routeAdministrativeArea" :options="ordinaryOptions" :normalizer="normalizer" placeholder="请选择行政区" />
         </el-form-item>
-        <!--        <el-form-item label="选择路线" prop="selectRoute">-->
-        <!--          <el-input-->
-        <!--            v-model="queryParams.selectRoute"-->
-        <!--            placeholder="选择路线"-->
-        <!--            clearable-->
-        <!--            @keyup.enter.native="handleQuery"-->
-        <!--          />-->
-        <!--        </el-form-item>-->
-        <!--        <el-form-item label="路线编码" prop="luCode">-->
-        <!--          <el-input-->
-        <!--            v-model="queryParams.luCode"-->
-        <!--            placeholder="请输入路线编码"-->
-        <!--            clearable-->
-        <!--            @keyup.enter.native="handleQuery"-->
-        <!--          />-->
-        <!--        </el-form-item>-->
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
           <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -130,9 +107,6 @@
         </template>
       </el-table-column>
       <el-table-column label="行政区划" align="center" prop="routeAdministrativeArea">
-        <template slot-scope="scope">
-          <dict-tag :options="dict.type.bridge_zoning" :value="scope.row.routeAdministrativeArea"/>
-        </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -287,14 +261,7 @@
               <el-col :span="6">
                 <div class="grid-content bg-purple-light">
                   <el-form-item label="行政区划" prop="routeAdministrativeArea">
-                    <el-select v-model="form.routeAdministrativeArea" placeholder="请选择行政区划">
-                      <el-option
-                        v-for="dict in dict.type.bridge_zoning"
-                        :key="dict.value"
-                        :label="dict.label"
-                        :value="dict.value"
-                      ></el-option>
-                    </el-select>
+                    <treeselect style="width: 200px" v-model="form.routeAdministrativeArea" :options="ordinaryOptions" :normalizer="normalizer" placeholder="请选择行政区" />
                   </el-form-item>
                 </div>
               </el-col>
@@ -1011,13 +978,19 @@ import {
   addInfdormation,
   updateInfdormation
 } from "@/api/system/infdormation";
-
+import {listDept} from "@/api/system/dept";
+import Treeselect from "@riophae/vue-treeselect";
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 export default {
   props: ["vis", "routeId"],
   name: "Infdormation",
   dicts: ['seismic_grade', 'top_shap', 'bottom_shap', 'disease_location', 'transform', 'bearing_type', 'bridge_sort', 'bridge_load', 'sys_yes_no', 'navigation_level', 'management_maintenance', 'technical_evaluation', 'bridge_location', 'change_reason', 'abutment_type', 'bridge_zoning', 'bridge_cross', 'anti_collision_type', 'bridge_age_limit', 'top_material', 'species', 'pier_sort', 'collect_fees', 'reconstruction_part', 'underwater_tunnel_or_not'],
+  components: {
+    Treeselect
+  },
   data() {
     return {
+      ordinaryOptions: [],
       flag: this.vis,
       labelPosition: 'top',
       //标签页
@@ -1176,6 +1149,7 @@ export default {
     };
   },
   created() {
+    this.getTreeselect();
     this.getList();
   },
   methods: {
@@ -1273,6 +1247,25 @@ export default {
         luCode: null
       };
       this.resetForm("form");
+    },
+    /** 转换一般养护数据结构 */
+    normalizer(node) {
+      if (node.children && !node.children.length) {
+        delete node.children;
+      }
+      return {
+        id: node.deptName,
+        label: node.deptName,
+        children: node.children
+      };
+    },
+    /** 查询一般养护下拉树结构 */
+    getTreeselect() {
+      listDept().then(response => {
+        this.ordinaryOptions = [];
+        // const data = { deptId: 0, deptName: '大陆', children: [] };
+        this.ordinaryOptions = this.handleTree(response.data, "deptId", "parentId");
+      });
     },
     /** 搜索按钮操作 */
     handleQuery() {

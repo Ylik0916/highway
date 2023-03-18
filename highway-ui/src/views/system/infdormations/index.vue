@@ -29,14 +29,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="行政区划" prop="routeAdministrativeArea">
-          <el-select v-model="queryParams.routeAdministrativeArea" placeholder="请选择行政区划" clearable>
-            <el-option
-              v-for="dict in dict.type.bridge_zoning"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            />
-          </el-select>
+          <treeselect style="width: 200px" v-model="queryParams.routeAdministrativeArea" :options="ordinaryOptions" :normalizer="normalizer" placeholder="请选择行政区" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -68,9 +61,6 @@
         </template>
       </el-table-column>
       <el-table-column label="行政区划" align="center" prop="routeAdministrativeArea">
-        <template slot-scope="scope">
-          <dict-tag :options="dict.type.bridge_zoning" :value="scope.row.routeAdministrativeArea"/>
-        </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -99,12 +89,18 @@ import {
   getInfdormation,
   listInfdormation,
 } from "@/api/system/infdormation";
-
+import {listDept} from "@/api/system/dept";
+import Treeselect from "@riophae/vue-treeselect";
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 export default {
+  components: {
+    Treeselect
+  },
   name: "Infdormation",
   dicts: ['seismic_grade', 'top_shap', 'bottom_shap', 'disease_location', 'transform', 'bearing_type', 'bridge_sort', 'bridge_load', 'sys_yes_no', 'navigation_level', 'management_maintenance', 'technical_evaluation', 'bridge_location', 'change_reason', 'abutment_type', 'bridge_zoning', 'bridge_cross', 'anti_collision_type', 'bridge_age_limit', 'top_material', 'species', 'pier_sort', 'collect_fees', 'reconstruction_part', 'underwater_tunnel_or_not'],
   data() {
     return {
+      ordinaryOptions: [],
       labelPosition: 'top',
       //标签页
       activeName: 'first',
@@ -204,19 +200,40 @@ export default {
         centerStake: null,
         luCode: null,
         bridge:null,
-        bridgeCode:null
+        bridgeCode:null,
+        qu:null
       },
       // 表单参数
       form: {}
     };
   },
   created() {
+    this.getTreeselect();
     this.getList();
   },
   methods: {
     //标签页
     handleClick(tab, event) {
       console.log(tab, event);
+    },
+    /** 转换一般养护数据结构 */
+    normalizer(node) {
+      if (node.children && !node.children.length) {
+        delete node.children;
+      }
+      return {
+        id: node.deptName,
+        label: node.deptName,
+        children: node.children
+      };
+    },
+    /** 查询一般养护下拉树结构 */
+    getTreeselect() {
+      listDept().then(response => {
+        this.ordinaryOptions = [];
+        // const data = { deptId: 0, deptName: '大陆', children: [] };
+        this.ordinaryOptions = this.handleTree(response.data, "deptId", "parentId");
+      });
     },
     /** 查询桥梁信息列表 */
     getList() {
@@ -235,8 +252,9 @@ export default {
           console.log(response.data)
           this.bridge = response.data.routeName
           this.bridgeCode = response.data.routeCode
+          this.qu = response.data.routeAdministrativeArea
           console.log(this.bridge+this.bridgeCode)
-          this.$emit('chuan',this.bridge,this.bridgeCode,this.openers)
+          this.$emit('chuan',this.bridge,this.bridgeCode,this.openers,this.qu)
     })
     },
     // 取消按钮
