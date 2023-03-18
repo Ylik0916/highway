@@ -43,6 +43,63 @@ public class HwPlanItemServiceImpl implements IHwPlanItemService
         return hwPlanItemMapper.selectHwPlanItemList(hwPlanItem);
     }
 
+
+
+    /**
+     * 查询待上报明细列表
+     *
+     * @param hwPlanItem 进度
+     * @return 进度
+     */
+    @Override
+    public List<HwPlanItem> selectHwPlanItemListAnd0(HwPlanItem hwPlanItem)
+    {
+        return hwPlanItemMapper.selectHwPlanItemListAnd0(hwPlanItem);
+    }
+
+
+    /**
+     * 查询等待审核明细列表
+     *
+     * @param hwPlanItem 进度
+     * @return 进度
+     */
+    @Override
+    public List<HwPlanItem> selectHwPlanItemListAnd1(HwPlanItem hwPlanItem)
+    {
+        return hwPlanItemMapper.selectHwPlanItemListAnd1(hwPlanItem);
+    }
+
+
+
+    /**
+     * 查询已驳回明细上报列表
+     *
+     * @param hwPlanItem 进度
+     * @return 进度
+     */
+    @Override
+    public List<HwPlanItem> selectHwPlanItemListAnd2(HwPlanItem hwPlanItem)
+    {
+        return hwPlanItemMapper.selectHwPlanItemListAnd2(hwPlanItem);
+    }
+
+
+
+    /**
+     * 查询已审核明细上报列表
+     *
+     * @param hwPlanItem 进度
+     * @return 进度
+     */
+    @Override
+    public List<HwPlanItem> selectHwPlanItemListAnd3(HwPlanItem hwPlanItem)
+    {
+        return hwPlanItemMapper.selectHwPlanItemListAnd3(hwPlanItem);
+    }
+
+
+
     /**
      * 新增进度
      * 

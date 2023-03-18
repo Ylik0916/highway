@@ -27,6 +27,45 @@ public interface IHwPlanItemService
      */
     public List<HwPlanItem> selectHwPlanItemList(HwPlanItem hwPlanItem);
 
+
+
+    /**
+     * 查询待上报明细列表
+     *
+     * @param hwPlanItem 进度
+     * @return 进度集合
+     */
+    public List<HwPlanItem> selectHwPlanItemListAnd0(HwPlanItem hwPlanItem);
+
+
+    /**
+     * 查询等待审核明细列表
+     *
+     * @param hwPlanItem 进度
+     * @return 进度集合
+     */
+    public List<HwPlanItem> selectHwPlanItemListAnd1(HwPlanItem hwPlanItem);
+    
+    /**
+     * 查询已驳回明细上报列表
+     *
+     * @param hwPlanItem 进度
+     * @return 进度集合
+     */
+    public List<HwPlanItem> selectHwPlanItemListAnd2(HwPlanItem hwPlanItem);
+
+
+
+    /**
+     * 查询已审核明细上报列表
+     *
+     * @param hwPlanItem 进度
+     * @return 进度集合
+     */
+    public List<HwPlanItem> selectHwPlanItemListAnd3(HwPlanItem hwPlanItem);
+
+
+
     /**
      * 新增进度
      * 

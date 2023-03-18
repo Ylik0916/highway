@@ -46,6 +46,60 @@ public class HwPlanItemController extends BaseController
         return getDataTable(list);
     }
 
+
+    /**
+     * 查询待上报明细列表
+     */
+    @PreAuthorize("@ss.hasPermi('system:item:list')")
+    @GetMapping("/listAnd0")
+    public TableDataInfo listAnd0(HwPlanItem hwPlanItem)
+    {
+        startPage();
+        List<HwPlanItem> list = hwPlanItemService.selectHwPlanItemListAnd0(hwPlanItem);
+        return getDataTable(list);
+    }
+
+
+    /**
+     * 查询等待审核明细列表
+     */
+    @PreAuthorize("@ss.hasPermi('system:item:list')")
+    @GetMapping("/listAnd1")
+    public TableDataInfo listAnd1(HwPlanItem hwPlanItem)
+    {
+        startPage();
+        List<HwPlanItem> list = hwPlanItemService.selectHwPlanItemListAnd1(hwPlanItem);
+        return getDataTable(list);
+    }
+
+
+    /**
+     * 查询已驳回明细上报列表
+     */
+    @PreAuthorize("@ss.hasPermi('system:item:list')")
+    @GetMapping("/listAnd2")
+    public TableDataInfo listAnd2(HwPlanItem hwPlanItem)
+    {
+        startPage();
+        List<HwPlanItem> list = hwPlanItemService.selectHwPlanItemListAnd2(hwPlanItem);
+        return getDataTable(list);
+    }
+
+
+    /**
+     * 查询已审核明细上报列表
+     */
+    @PreAuthorize("@ss.hasPermi('system:item:list')")
+    @GetMapping("/listAnd3")
+    public TableDataInfo listAnd3(HwPlanItem hwPlanItem)
+    {
+        startPage();
+        List<HwPlanItem> list = hwPlanItemService.selectHwPlanItemListAnd3(hwPlanItem);
+        return getDataTable(list);
+    }
+
+
+
     /**
      * 导出进度列表
      */

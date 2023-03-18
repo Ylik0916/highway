@@ -2,16 +2,16 @@
   <div class="app-container">
 
     <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['system:item:add']"
-        >新增</el-button>
-      </el-col>
+      <!--<el-col :span="1.5">-->
+      <!--  <el-button-->
+      <!--    type="primary"-->
+      <!--    plain-->
+      <!--    icon="el-icon-plus"-->
+      <!--    size="mini"-->
+      <!--    @click="handleAdd"-->
+      <!--    v-hasPermi="['system:item:add']"-->
+      <!--  >新增</el-button>-->
+      <!--</el-col>-->
 
       <el-col :span="1.5">
         <el-button
@@ -50,9 +50,9 @@
             size="mini"
             type="text"
             icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
+            @click="itemXq(scope.row)"
             v-hasPermi="['system:item:edit']"
-          >修改</el-button>
+          >详情</el-button>
           <el-button
             size="mini"
             type="text"
@@ -72,8 +72,125 @@
       @pagination="getList"
     />
 
-    <!-- 添加或修改进度对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
+    <!-- 详情进度对话框 -->
+
+    <el-dialog :title="title" :visible.sync="openXq" width="1000px" append-to-body>
+      <el-tabs v-model="activeName" type="card">
+        <el-tab-pane label="路线信息" name="first">
+          <el-descriptions :model="form">
+            <el-descriptions-item label="路线编码">{{ form.encoding }}</el-descriptions-item>
+            <el-descriptions-item label="路线名称">{{ form.name }}</el-descriptions-item>
+            <el-descriptions-item label="路线全长">{{ form.length }}</el-descriptions-item>
+            <el-descriptions-item label="管养单位">{{ form.custodyUnit }}</el-descriptions-item>
+            <el-descriptions-item label="行政区域">{{ form.region }}</el-descriptions-item>
+            <el-descriptions-item label="待建里程(公里)">{{ form.unfinished }}</el-descriptions-item>
+            <el-descriptions-item v-model="form.level" label="技术等级">
+              <el-select v-model="form.level" placeholder="请选择技术等级">
+                <el-option
+                  v-for="dict in dict.type.technical_grade"
+                  :key="dict.value"
+                  :label="dict.label"
+                  :value="parseInt(dict.value)"
+                ></el-option>
+              </el-select>
+            </el-descriptions-item>
+            <el-descriptions-item label="计划修建路面类型">
+              <!--{{ form.cutoffPoint }}-->
+              <el-select v-model="form.constructedType" placeholder="请选择计划修建路面类型">
+                <el-option
+                  v-for="dict in dict.type.constructed_type"
+                  :key="dict.value"
+                  :label="dict.label"
+                  :value="parseInt(dict.value)"
+                ></el-option>
+              </el-select>
+
+            </el-descriptions-item>
+            <el-descriptions-item label="路面宽度">{{ form.surfaceWidth }}</el-descriptions-item>
+            <el-descriptions-item label="路基宽度">{{ form.roadbedWidth }}</el-descriptions-item>
+            <el-descriptions-item label="起点桩号">{{ form.startingNumber }}</el-descriptions-item>
+            <el-descriptions-item label="终点桩号">{{ form.terminusNumber }}</el-descriptions-item>
+          </el-descriptions>
+        </el-tab-pane>
+        <el-tab-pane label="建设资金" name="second">
+          <el-descriptions :model="form">
+            <el-descriptions-item label="国省补助">{{ form.nationalProvinceSubsidy }}  万元</el-descriptions-item>
+            <el-descriptions-item label="市州投资">{{ form.municipalityInvest }}  万元</el-descriptions-item>
+            <el-descriptions-item label="县区自筹">{{ form.countySelfFund }}  万元</el-descriptions-item>
+            <el-descriptions-item label="批复资金">{{ form.replyCapital }}  万元</el-descriptions-item>
+            <el-descriptions-item label="合同资金">{{ form.contractCapital }}  万元</el-descriptions-item>
+          </el-descriptions>
+        </el-tab-pane>
+        <el-tab-pane label="其他信息" name="third">
+          <el-descriptions :model="form">
+            <el-descriptions-item label="未开工原因">{{ form.notInServiceCause }}</el-descriptions-item>
+            <el-descriptions-item label="进展进度">{{ form.progress }}</el-descriptions-item>
+            <el-descriptions-item label="批复/整合文件文号">{{ form.replyFileNumber }}</el-descriptions-item>
+            <el-descriptions-item label="责任单位">{{ form.accountabilityUnit }}</el-descriptions-item>
+            <el-descriptions-item label="负责人">{{ form.personInCharge }}</el-descriptions-item>
+            <el-descriptions-item label="联系电话">{{ form.phone }}</el-descriptions-item>
+            <el-descriptions-item label="开工年限">
+              <!--{{ form.modificationTime }}-->
+              <el-select v-model="form.startWorkYear" placeholder="请选择开工年限">
+                <el-option
+                  v-for="dict in dict.type.plan_year"
+                  :key="dict.value"
+                  :label="dict.label"
+                  :value="parseInt(dict.value)"
+                ></el-option>
+              </el-select>
+            </el-descriptions-item>
+            <el-descriptions-item label="完工年限">
+              <!--{{ form.remarks }}-->
+              <el-select v-model="form.completionYear" placeholder="请选择完工年限">
+                <el-option
+                  v-for="dict in dict.type.plan_year"
+                  :key="dict.value"
+                  :label="dict.label"
+                  :value="parseInt(dict.value)"
+                ></el-option>
+              </el-select>
+            </el-descriptions-item>
+            <el-descriptions-item label="施工图设计是否完成">
+              <!--{{ form.remarks }}-->
+              <el-radio-group v-model="form.productionDrawing">
+                <el-radio
+                  v-for="dict in dict.type.true_false"
+                  :key="dict.value"
+                  :label="parseInt(dict.value)"
+                >{{dict.label}}</el-radio>
+              </el-radio-group>
+            </el-descriptions-item>
+            <el-descriptions-item label="施工图审批是否完成">
+              <!--{{ form.remarks }}-->
+              <el-radio-group v-model="form.productionDrawingApproval">
+                <el-radio
+                  v-for="dict in dict.type.true_false"
+                  :key="dict.value"
+                  :label="parseInt(dict.value)"
+                >{{dict.label}}</el-radio>
+              </el-radio-group>
+            </el-descriptions-item>
+            <el-descriptions-item label="施工图招投标是否完成">
+              {{ form.remarks }}
+              <el-radio-group v-model="form.bidWhetherCompletion">
+                <el-radio
+                  v-for="dict in dict.type.true_false"
+                  :key="dict.value"
+                  :label="parseInt(dict.value)"
+                >{{dict.label}}</el-radio>
+              </el-radio-group>
+            </el-descriptions-item>
+            <el-descriptions-item label="建议(养护内容)">{{ form.disease }}</el-descriptions-item>
+            <el-descriptions-item label="备注">{{ form.postscript }}</el-descriptions-item>
+
+          </el-descriptions>
+        </el-tab-pane>
+      </el-tabs>
+    </el-dialog>
+
+    <!-- 添加和修改进度对话框 -->
+   <!-- <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="路线编码" prop="encoding">
           <el-input v-model="form.encoding" placeholder="请输入路线编码" />
@@ -220,17 +337,21 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+-->
   </div>
 </template>
 
 <script>
 import { listItem, getItem, delItem, addItem, updateItem } from "@/api/system/item";
+import {getSectionInformation} from "@/api/system/sectionInformation";
 
 export default {
   name: "Item",
   dicts: ['plan_year', 'constructed_type', 'true_false', 'technical_grade'],
   data() {
     return {
+      //默认打开的窗口
+      activeName:'first',
       // 遮罩层
       loading: true,
       // 选中数组
@@ -249,6 +370,8 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
+      // 是否显示详情弹出层
+      openXq: false,
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -391,14 +514,13 @@ export default {
       this.open = true;
       this.title = "添加进度";
     },
-    /** 修改按钮操作 */
-    handleUpdate(row) {
-      this.reset();
+    /** 详情按钮操作 */
+    itemXq(row) {
       const id = row.id || this.ids
       getItem(id).then(response => {
         this.form = response.data;
-        this.open = true;
-        this.title = "修改进度";
+        this.openXq = true;
+        this.title = "详细进度";
       });
     },
     /** 提交按钮 */
