@@ -1,4 +1,7 @@
 <template>
+  <div class="bigBox">
+    <div class="smallBox">
+
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="登录名" prop="loginName">
@@ -78,7 +81,6 @@
     </el-row>
     <el-table v-loading="loading" :data="unitList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="" align="center" prop="muid" />
       <el-table-column label="单位编码" :show-overflow-tooltip="true" align="center" prop="unitCode" />
       <el-table-column label="单位全称" :show-overflow-tooltip="true" align="center" prop="unitDesignation" />
       <el-table-column label="单位名称" :show-overflow-tooltip="true" align="center" prop="unitName" />
@@ -122,8 +124,8 @@
 
     <!-- 添加或修改养护单位管理对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="1100px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="110px">
-        <el-row>
+      <el-form ref="form" :model="form" :rules="rules" label-position="top" label-width="110px">
+        <el-row :gutter="20">
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="单位编码" prop="unitCode">
@@ -146,7 +148,7 @@
             </div>
           </el-col>
         </el-row>
-        <el-row>
+        <el-row :gutter="20">
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="养护用户登录名" prop="loginName">
@@ -169,7 +171,7 @@
             </div>
           </el-col>
         </el-row>
-        <el-row>
+        <el-row :gutter="20">
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="备注" prop="remark">
@@ -180,7 +182,7 @@
           <el-col :span="8"><div class="grid-content"></div></el-col>
           <el-col :span="8"><div class="grid-content"></div></el-col>
         </el-row>
-        <el-row>
+        <el-row :gutter="20">
           <el-col :span="24">
             <div class="grid-content">
               <el-form-item label="行政区划权限">
@@ -197,7 +199,6 @@
             </div>
           </el-col>
         </el-row>
-
 <!--   :flat="true" :disable-branch-nodes="true"      -->
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -252,6 +253,9 @@
       </el-row>
     </el-dialog>
   </div>
+
+    </div>
+  </div>
 </template>
 
 <script>
@@ -303,6 +307,27 @@ export default {
       form: {},
       // 表单校验
       rules: {
+        unitCode: [
+          { required: true, message: "单位编码不能为空", trigger: "blur" }
+        ],
+        unitDesignation: [
+          { required: true, message: "单位全称不能为空", trigger: "blur" }
+        ],
+        unitName: [
+          { required: true, message: "单位名称不能为空", trigger: "blur" }
+        ],
+        loginName: [
+          { required: true, message: "养护用户登录名不能为空", trigger: "blur" }
+        ],
+        unitSite: [
+          { required: true, message: "单位地址不能为空", trigger: "blur" }
+        ],
+        uniyPhone: [
+          { required: true, message: "单位电话不能为空", trigger: "blur" }
+        ],
+        administrative: [
+          { required: true, message: "行政区不能为空", trigger: "blur" }
+        ],
       },
       options: [],
       //详情默认配置

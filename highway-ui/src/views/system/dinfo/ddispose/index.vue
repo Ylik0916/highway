@@ -1,5 +1,5 @@
 <template>
-  <div v-if="message" style="border-top: 1px solid darkgray;border-bottom: 1px solid darkgray">
+  <div v-if="message" style="border-top: 1px solid darkgray;">
     <el-row>
       <h3 style="font-weight: bold">处置信息</h3>
     </el-row>

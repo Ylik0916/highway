@@ -66,7 +66,7 @@
             type="text"
             icon="el-icon-edit"
             @click="getDinfo(scope.row)"
-            v-hasPermi="['system:disease:edit']"
+            v-hasPermi="['system:disease:query']"
           >详情</el-button>
           <el-button
             size="mini"
@@ -79,8 +79,8 @@
             size="mini"
             type="text"
             icon="el-icon-delete"
-            @click="handleDelete(4)"
-            v-hasPermi="['system:disease:remove']"
+            @click="handleClose(scope.row)"
+            v-hasPermi="['system:disease:edit']"
           >关闭</el-button>
         </template>
       </el-table-column>
@@ -96,8 +96,7 @@
 
     <!-- 添加或修改道路病害管理对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="1100px" append-to-body>
-      <el-form ref="form" :model="form" label-position="top" label-width="80px">
-<!--   :rules="rules"     -->
+      <el-form ref="form" :rules="rules" :model="form" label-position="top" label-width="80px">
         <el-row :gutter="20">
           <el-col :span="8">
             <div class="grid-content">
@@ -163,6 +162,19 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+
+    <!-- 关闭 -->
+    <el-dialog :title="titleClose" :visible.sync="openClose" width="1100px" append-to-body>
+      <el-form ref="form" :model="form" label-position="top" label-width="80px">
+        <el-form-item label="撤销原因" prop="wherePath">
+          <el-input v-model="form.wherePath" type="textarea" placeholder="请输入内容" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitForm(4)">确 定</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -190,124 +202,27 @@ export default {
       diseaseList: [],
       // 弹出层标题
       title: "",
+      titleClose:"",
       // 是否显示弹出层
       open: false,
+      openClose: false,
       // 查询参数
       queryParams: {
         pageNum: 1,
         pageSize: 10,
         diseaseName: null,
-        pathCode: null,
         pathName: null,
         sectionCode: null,
-        sectionName: null,
-        reporter: null,
-        reportDate: null,
-        reportType: null,
-        statusid: null,
-        wherePath: null,
-        diseaseStake: null,
-        diseaseLatitude: null,
-        diseaseLongitude: null,
-        diseaseMessage: null,
-        diseaseImg: null,
-        maintainSite: null,
-        maintainCase: null,
-        maintainPeople: null,
-        maintainFund: null,
-        beginTime: null,
-        overTime: null,
-        maintainRemark: null,
-        maintainImg: null,
-        maintainUnit: null,
-        damageCase: null,
-        horizontalPositions: null,
-        forecastCase: null,
-        disposeMeasure: null,
-        drivingDirection: null,
-        disposeStake: null,
-        disposeRemark: null,
-        disposeTime: null,
-        disposeImg: null
       },
       // 表单参数
       form: {},
       // 表单校验
       rules: {
-        diseaseName: [
-          { required: true, message: "病害名称不能为空", trigger: "blur" }
-        ],
-        pathCode: [
-          { required: true, message: "路线编号不能为空", trigger: "change" }
-        ],
-        pathName: [
-          { required: true, message: "路线名称不能为空", trigger: "blur" }
-        ],
-        sectionCode: [
-          { required: true, message: "路段编号不能为空", trigger: "blur" }
-        ],
-        sectionName: [
-          { required: true, message: "路段名称不能为空", trigger: "blur" }
-        ],
-        reporter: [
-          { required: true, message: "上报人不能为空", trigger: "blur" }
-        ],
-        reportDate: [
-          { required: true, message: "上报日期不能为空", trigger: "blur" }
-        ],
-        reportType: [
-          { required: true, message: "上报类型不能为空", trigger: "change" }
-        ],
-        statusid: [
-          { required: true, message: "状态不能为空", trigger: "change" }
-        ],
-        wherePath: [
-          { required: true, message: "所属路线不能为空", trigger: "blur" }
-        ],
-        diseaseStake: [
-          { required: true, message: "病害中心桩号不能为空", trigger: "blur" }
-        ],
-        diseaseLatitude: [
-          { required: true, message: "病害纬度不能为空", trigger: "blur" }
-        ],
-        diseaseLongitude: [
-          { required: true, message: "病害经度不能为空", trigger: "blur" }
-        ],
-        diseaseMessage: [
-          { required: true, message: "病害信息不能为空", trigger: "blur" }
-        ],
-        diseaseImg: [
-          { required: true, message: "病害图片不能为空", trigger: "blur" }
-        ],
-        maintainSite: [
-          { required: true, message: "养护地点不能为空", trigger: "blur" }
-        ],
-        maintainCase: [
-          { required: true, message: "养护情况不能为空", trigger: "blur" }
-        ],
-        maintainPeople: [
-          { required: true, message: "养护人不能为空", trigger: "blur" }
-        ],
-        maintainFund: [
-          { required: true, message: "养护经费不能为空", trigger: "blur" }
-        ],
-        beginTime: [
-          { required: true, message: "开始时间不能为空", trigger: "blur" }
-        ],
-        overTime: [
-          { required: true, message: "结束时间不能为空", trigger: "blur" }
-        ],
-        maintainImg: [
-          { required: true, message: "养护图片不能为空", trigger: "blur" }
-        ],
         maintainUnit: [
           { required: true, message: "管养单位不能为空", trigger: "blur" }
         ],
         damageCase: [
           { required: true, message: "损坏情况不能为空", trigger: "blur" }
-        ],
-        horizontalPositions: [
-          { required: true, message: "横向位置不能为空", trigger: "blur" }
         ],
         forecastCase: [
           { required: true, message: "预估信息不能为空", trigger: "blur" }
@@ -320,9 +235,6 @@ export default {
         ],
         disposeStake: [
           { required: true, message: "处置中心桩号不能为空", trigger: "blur" }
-        ],
-        disposeTime: [
-          { required: true, message: "处置时间不能为空", trigger: "blur" }
         ],
         disposeImg: [
           { required: true, message: "处置图片不能为空", trigger: "blur" }
@@ -415,6 +327,16 @@ export default {
       this.open = true;
       this.title = "添加道路病害管理";
     },
+    /** 关闭按钮操作 */
+    handleClose(row){
+      this.reset();
+      const wdid = row.wdid || this.ids
+      getDisease(wdid).then(response => {
+        this.form = response.data;
+        this.openClose = true;
+        this.titleClose = "病害关闭";
+      });
+    },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
@@ -434,6 +356,7 @@ export default {
             updateDisease(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
+              this.openClose = false;
               this.getList();
             });
           } else {

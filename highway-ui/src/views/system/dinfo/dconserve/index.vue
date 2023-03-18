@@ -1,5 +1,5 @@
 <template>
-  <div v-if="message">
+  <div v-if="message" style="border-top: 1px solid darkgray;">
     <el-row>
       <h3 style="font-weight: bold">养护信息</h3>
     </el-row>

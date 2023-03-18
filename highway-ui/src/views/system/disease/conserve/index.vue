@@ -96,8 +96,7 @@
 
     <!-- 添加或修改道路病害管理对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="750px" append-to-body>
-      <el-form ref="form" :model="form" label-position="top" label-width="80px">
-<!--     :rules="rules"   -->
+      <el-form ref="form" :model="form" :rules="rules" label-position="top" label-width="80px">
         <el-row :gutter="20">
           <el-col :span="12">
             <div class="grid-content">
@@ -134,20 +133,6 @@
                   end-placeholder="结束日期">
                 </el-date-picker>
               </el-form-item>
-<!--              <el-form-item label="结束时间" prop="overTime">-->
-<!--                <el-date-picker clearable-->
-<!--                                v-model="form.beginTime"-->
-<!--                                type="date"-->
-<!--                                value-format="yyyy-MM-dd"-->
-<!--                                placeholder="请选择开始时间">-->
-<!--                </el-date-picker>-->
-<!--                <el-date-picker clearable-->
-<!--                                v-model="form.overTime"-->
-<!--                                type="date"-->
-<!--                                value-format="yyyy-MM-dd"-->
-<!--                                placeholder="请选择结束时间">-->
-<!--                </el-date-picker>-->
-<!--              </el-form-item>-->
             </div>
           </el-col>
         </el-row>
@@ -162,7 +147,7 @@
           <el-col :span="12">
             <div class="grid-content">
               <el-form-item label="养护费用(万元)" prop="maintainFund">
-                <el-input v-model="form.maintainFund" placeholder="请输入养护费用" />
+                <el-input v-model.number="form.maintainFund" placeholder="请输入养护费用" />
               </el-form-item>
             </div>
           </el-col>
@@ -213,88 +198,13 @@ export default {
         pageNum: 1,
         pageSize: 10,
         diseaseName: null,
-        pathCode: null,
         pathName: null,
         sectionCode: null,
-        sectionName: null,
-        reporter: null,
-        reportDate: null,
-        reportType: null,
-        statusid: null,
-        wherePath: null,
-        diseaseStake: null,
-        diseaseLatitude: null,
-        diseaseLongitude: null,
-        diseaseMessage: null,
-        diseaseImg: null,
-        maintainSite: null,
-        maintainCase: null,
-        maintainPeople: null,
-        maintainFund: null,
-        beginTime: null,
-        overTime: null,
-        maintainRemark: null,
-        maintainImg: null,
-        maintainUnit: null,
-        damageCase: null,
-        horizontalPositions: null,
-        forecastCase: null,
-        disposeMeasure: null,
-        drivingDirection: null,
-        disposeStake: null,
-        disposeRemark: null,
-        disposeTime: null,
-        disposeImg: null
       },
       // 表单参数
       form: {},
       // 表单校验
       rules: {
-        diseaseName: [
-          { required: true, message: "病害名称不能为空", trigger: "blur" }
-        ],
-        pathCode: [
-          { required: true, message: "路线编号不能为空", trigger: "change" }
-        ],
-        pathName: [
-          { required: true, message: "路线名称不能为空", trigger: "blur" }
-        ],
-        sectionCode: [
-          { required: true, message: "路段编号不能为空", trigger: "blur" }
-        ],
-        sectionName: [
-          { required: true, message: "路段名称不能为空", trigger: "blur" }
-        ],
-        reporter: [
-          { required: true, message: "上报人不能为空", trigger: "blur" }
-        ],
-        reportDate: [
-          { required: true, message: "上报日期不能为空", trigger: "blur" }
-        ],
-        reportType: [
-          { required: true, message: "上报类型不能为空", trigger: "change" }
-        ],
-        statusid: [
-          { required: true, message: "状态不能为空", trigger: "change" }
-        ],
-        wherePath: [
-          { required: true, message: "所属路线不能为空", trigger: "blur" }
-        ],
-        diseaseStake: [
-          { required: true, message: "病害中心桩号不能为空", trigger: "blur" }
-        ],
-        diseaseLatitude: [
-          { required: true, message: "病害纬度不能为空", trigger: "blur" }
-        ],
-        diseaseLongitude: [
-          { required: true, message: "病害经度不能为空", trigger: "blur" }
-        ],
-        diseaseMessage: [
-          { required: true, message: "病害信息不能为空", trigger: "blur" }
-        ],
-        diseaseImg: [
-          { required: true, message: "病害图片不能为空", trigger: "blur" }
-        ],
         maintainSite: [
           { required: true, message: "养护地点不能为空", trigger: "blur" }
         ],
@@ -305,44 +215,15 @@ export default {
           { required: true, message: "养护人不能为空", trigger: "blur" }
         ],
         maintainFund: [
-          { required: true, message: "养护经费不能为空", trigger: "blur" }
+          { required: true, message: "养护经费不能为空", trigger: "blur" },
+          { type: 'number', message: '养护经费必须为数字值', trigger: "blur"}
         ],
         beginTime: [
           { required: true, message: "开始时间不能为空", trigger: "blur" }
         ],
-        overTime: [
-          { required: true, message: "结束时间不能为空", trigger: "blur" }
-        ],
         maintainImg: [
           { required: true, message: "养护图片不能为空", trigger: "blur" }
         ],
-        maintainUnit: [
-          { required: true, message: "管养单位不能为空", trigger: "blur" }
-        ],
-        damageCase: [
-          { required: true, message: "损坏情况不能为空", trigger: "blur" }
-        ],
-        horizontalPositions: [
-          { required: true, message: "横向位置不能为空", trigger: "blur" }
-        ],
-        forecastCase: [
-          { required: true, message: "预估信息不能为空", trigger: "blur" }
-        ],
-        disposeMeasure: [
-          { required: true, message: "处置措施不能为空", trigger: "blur" }
-        ],
-        drivingDirection: [
-          { required: true, message: "行驶方向不能为空", trigger: "change" }
-        ],
-        disposeStake: [
-          { required: true, message: "处置中心桩号不能为空", trigger: "blur" }
-        ],
-        disposeTime: [
-          { required: true, message: "处置时间不能为空", trigger: "blur" }
-        ],
-        disposeImg: [
-          { required: true, message: "处置图片不能为空", trigger: "blur" }
-        ]
       }
     };
   },

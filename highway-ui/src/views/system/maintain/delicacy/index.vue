@@ -81,7 +81,6 @@
 
     <el-table v-loading="loading" :data="delicacyList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="" align="center" prop="mpdid" />
       <el-table-column label="路线名称" align="center" prop="pathName" />
       <el-table-column label="所在乡镇" align="center" prop="whereVillage" />
       <el-table-column label="路面类型" align="center" prop="roadTypeid">
@@ -99,7 +98,17 @@
       <el-table-column label="金额(万元)" align="center" prop="amount" />
       <el-table-column label="审核状态" align="center" prop="auditStatusid">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.audit_status" :value="scope.row.auditStatusid"/>
+          <el-popover trigger="hover" placement="top" v-if="scope.row.auditStatusid !== 0">
+            <p>审核人: {{ scope.row.auditPeople }}</p>
+            <p>审核时间: {{ parseTime(scope.row.time, '{y}-{m}-{d}') }}</p>
+            <p style="display: flex">审核状态:<dict-tag style="margin-left: 3px" :options="dict.type.audit_status" :value="scope.row.auditStatusid"/>
+            </p>
+            <p>审核意见: {{ scope.row.message }}</p>
+            <div slot="reference" class="name-wrapper">
+              <dict-tag :options="dict.type.audit_status" :value="scope.row.auditStatusid"/>
+            </div>
+          </el-popover>
+          <dict-tag v-else :options="dict.type.audit_status" :value="scope.row.auditStatusid"/>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -115,14 +124,16 @@
             size="mini"
             type="text"
             icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:delicacy:edit']"
+            @click="handleAudit(scope.row)"
+            :disabled="scope.row.auditStatusid !== 0"
+            v-hasPermi="['system:ordinary:edit']"
           >审核</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
+            :disabled="scope.row.auditStatusid !== 0"
             v-hasPermi="['system:delicacy:edit']"
           >修改</el-button>
           <el-button
@@ -130,6 +141,7 @@
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
+            :disabled="scope.row.auditStatusid !== 0"
             v-hasPermi="['system:delicacy:remove']"
           >删除</el-button>
         </template>
@@ -158,7 +170,14 @@
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="路线名称" prop="pathName">
-                <el-input v-model="form.pathName" placeholder="请输入路线名称" />
+                <el-select v-model="form.pathName" value-key="id" placeholder="请输入路线名称" style="width: 100%">
+                  <el-option
+                    v-for="item in listInformation"
+                    :key="item.id"
+                    :label="item.routeName"
+                    :value="item.routeName">
+                  </el-option>
+                </el-select>
               </el-form-item>
             </div>
           </el-col>
@@ -202,7 +221,7 @@
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="路面宽度" prop="roadWidth">
-                <el-input v-model="form.roadWidth" placeholder="请输入路面宽度" />
+                <el-input v-model.number="form.roadWidth" placeholder="请输入路面宽度" />
               </el-form-item>
             </div>
           </el-col>
@@ -211,14 +230,14 @@
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="里程" prop="mileage">
-                <el-input v-model="form.mileage" placeholder="请输入里程" />
+                <el-input v-model.number="form.mileage" placeholder="请输入里程" />
               </el-form-item>
             </div>
           </el-col>
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="金额" prop="amount">
-                <el-input v-model="form.amount" placeholder="请输入金额" />
+                <el-input v-model.number="form.amount" placeholder="请输入金额" />
               </el-form-item>
             </div>
           </el-col>
@@ -229,15 +248,34 @@
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button type="primary" @click="submitForm(0)">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
+
+    <!-- 审核 -->
+    <el-dialog :title="auidTitle" :visible.sync="openAuit" width="500px" append-to-body>
+      <el-form ref="form" :model="form" :rules="rules" label-position="top" label-width="140px">
+        <el-row :gutter="20">
+          <el-col :span="24">
+            <div class="grid-content">
+              <el-form-item label="审核意见" prop="message">
+                <el-input type="textarea" v-model="form.message" placeholder="请输入审核意见" />
+              </el-form-item>
+            </div>
+          </el-col>
+        </el-row>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitForm(1)">审 核</el-button>
+        <el-button type="primary" @click="submitForm(2)">驳 回</el-button>
       </div>
     </el-dialog>
 
     <!-- 详情按钮页面 append-to-body-->
     <el-dialog :title="details" :visible.sync="detailsOpen" width="1200px" append-to-body >
       <el-row>
-        <el-col :span="8"><div class="grid-content"><span>行政区:</span><span>{{form.administrative}}</span></div></el-col>
+        <el-col :span="8"><div class="grid-content"><span>行政区:</span><span>{{form.administrativeName}}</span></div></el-col>
         <el-col :span="8"><div class="grid-content"><span>路线名称:</span><span>{{form.pathName}}</span></div></el-col>
         <el-col :span="8"><div class="grid-content"><span>所在乡镇·:</span><span>{{form.whereVillage}}</span></div></el-col>
       </el-row>
@@ -274,6 +312,7 @@ import { listDelicacy, getDelicacy, delDelicacy, addDelicacy, updateDelicacy } f
 import {listDept} from "@/api/system/dept";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
+import {listInformation} from "@/api/system/information";
 
 export default {
   name: "Delicacy",
@@ -299,11 +338,14 @@ export default {
       delicacyList: [],
       //行政下拉
       ordinaryOptions: [],
+      listInformation: [] ,
       // 弹出层标题
       title: "",
       details: "",
+      auidTitle: "",
       // 是否显示弹出层
       open: false,
+      openAuit: false,
       // 详情是否显示弹出层
       detailsOpen: false,
       // 查询参数
@@ -324,6 +366,24 @@ export default {
       form: {},
       // 表单校验
       rules: {
+        administrative: [
+          { required: true, message: "行政区不能为空", trigger: "change" }
+        ],
+        pathName: [
+          { required: true, message: "路线名称不能为空", trigger: "change" }
+        ],
+        whereVillage: [
+          { required: true, message: "所在乡镇不能为空", trigger: "blur" }
+        ],
+        roadWidth: [
+          { type: 'number', message: "路面宽度必须为数字值", trigger: "blur" }
+        ],
+        mileage: [
+          { type: 'number', message: "里程必须为数字值", trigger: "blur" }
+        ],
+        amount: [
+          { type: 'number', message: "金额必须为数字值", trigger: "blur" }
+        ],
       }
     };
   },
@@ -357,7 +417,12 @@ export default {
         roadWidth: null,
         mileage: null,
         amount: null,
-        auditStatusid: null
+        auditStatusid: null,
+        auditPeople: null,
+        time: null,
+        message: null,
+        administrativeName: null,
+        administrativeCode: null
       };
       this.resetForm("form");
     },
@@ -396,6 +461,23 @@ export default {
       this.single = selection.length!==1
       this.multiple = !selection.length
     },
+    /** 审核按钮 */
+    handleAudit(row){
+      this.reset();
+      const mpdid = row.mpdid || this.ids
+      getDelicacy(mpdid).then(response => {
+        this.form = response.data;
+        this.openAuit = true;
+        this.auidTitle = "审核";
+      });
+    },
+    /** 下拉查询路线 */
+    getListInformation(){
+      listInformation(null).then(response=>{
+        this.listInformation=response.rows;
+      });
+    },
+    /** 查询精品示范详情 */
     handleOne(row) {
       this.reset();
       const mpdid = row.mpdid || this.ids
@@ -409,12 +491,15 @@ export default {
     handleAdd() {
       this.reset();
       this.getTreeselect()
+      this.getListInformation()
       this.open = true;
       this.title = "添加精品示范";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
+      this.getTreeselect()
+      this.getListInformation()
       const mpdid = row.mpdid || this.ids
       getDelicacy(mpdid).then(response => {
         this.form = response.data;
@@ -423,13 +508,19 @@ export default {
       });
     },
     /** 提交按钮 */
-    submitForm() {
+    submitForm(statusId) {
       this.$refs["form"].validate(valid => {
+        if (statusId !== 0) {
+          this.form.auditPeople = this.$store.state.user.name;
+          this.form.time = new Date();
+        }
+        this.form.auditStatusid=statusId;
         if (valid) {
           if (this.form.mpdid != null) {
             updateDelicacy(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
+              this.openAuit = false;
               this.getList();
             });
           } else {
