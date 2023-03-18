@@ -5,6 +5,8 @@ import com.hg.common.core.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.util.Date;
+
 
 /**
  * 一般养护对象 hw_maintain_plan_ordinary
@@ -58,6 +60,18 @@ public class HwMaintainPlanOrdinary extends BaseEntity
     /** 审核状态id */
     @Excel(name = "审核状态id")
     private Long auditStatusid;
+
+    /** 审核人 */
+    @Excel(name = "审核人")
+    private String auditPeople;
+
+    /** 审核时间 */
+    @Excel(name = "审核时间")
+    private Date time;
+
+    /** 审核意见 */
+    @Excel(name = "审核意见")
+    private String message;
 
     /** 行政区名 */
     private String administrativeName;
@@ -181,6 +195,30 @@ public class HwMaintainPlanOrdinary extends BaseEntity
         return auditStatusid;
     }
 
+    public String getAuditPeople() {
+        return auditPeople;
+    }
+
+    public void setAuditPeople(String auditPeople) {
+        this.auditPeople = auditPeople;
+    }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -197,6 +235,9 @@ public class HwMaintainPlanOrdinary extends BaseEntity
             .append("auditStatusid", getAuditStatusid())
             .append("administrativeName", getAdministrativeName())
             .append("administrativeCode", getAdministrativeCode())
+            .append("auditPeople", getAuditPeople())
+            .append("time", getTime())
+            .append("message", getMessage())
             .toString();
     }
 }

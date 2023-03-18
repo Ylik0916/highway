@@ -18,10 +18,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="auditStatusid"    column="audit_statusid"    />
         <result property="administrativeName" column="dept_name" />
         <result property="administrativeCode" column="postcode" />
+        <result property="auditPeople"    column="audit_people"    />
+        <result property="time" column="time" />
+        <result property="message" column="message" />
     </resultMap>
 
     <sql id="selectHwMaintainPlanOrdinaryVo">
-        select mpoid, administrative, path_code, village_name, maintain_mileage, pitch_road, gravel_road, all_fund, city_fund, county_fund, audit_statusid,dept_name,postcode
+        select mpoid, administrative, path_code, village_name, maintain_mileage, pitch_road, gravel_road, all_fund, city_fund, county_fund, audit_statusid,dept_name,postcode,audit_people,`time`,message
         from hw_maintain_plan_ordinary left join sys_dept on hw_maintain_plan_ordinary.administrative=sys_dept.dept_id
     </sql>
 
@@ -59,6 +62,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="cityFund != null">city_fund,</if>
             <if test="countyFund != null">county_fund,</if>
             <if test="auditStatusid != null">audit_statusid,</if>
+            <if test="auditPeople != null">audit_people,</if>
+            <if test="time != null">`time`,</if>
+            <if test="message != null">message,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="administrative != null">#{administrative},</if>
@@ -71,6 +77,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="cityFund != null">#{cityFund},</if>
             <if test="countyFund != null">#{countyFund},</if>
             <if test="auditStatusid != null">#{auditStatusid},</if>
+            <if test="auditPeople != null">#{audit_people},</if>
+            <if test="time != null">#{time},</if>
+            <if test="message != null">#{message},</if>
          </trim>
     </insert>
 
@@ -87,6 +96,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="cityFund != null">city_fund = #{cityFund},</if>
             <if test="countyFund != null">county_fund = #{countyFund},</if>
             <if test="auditStatusid != null">audit_statusid = #{auditStatusid},</if>
+            <if test="auditPeople != null">audit_people = #{auditPeople},</if>
+            <if test="time != null">`time` = #{time},</if>
+            <if test="message != null">message = #{message},</if>
         </trim>
         where mpoid = #{mpoid}
     </update>

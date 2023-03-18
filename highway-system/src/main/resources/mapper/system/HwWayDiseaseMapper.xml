@@ -39,10 +39,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="disposeRemark"    column="dispose_remark"    />
         <result property="disposeTime"    column="dispose_time"    />
         <result property="disposeImg"    column="dispose_img"    />
+        <result property="administrative"    column="administrative"    />
     </resultMap>
 
     <sql id="selectHwWayDiseaseVo">
-        select wdid, disease_name, path_code, path_name, section_code, section_name, reporter, report_date, report_type, statusid, where_path, disease_stake, disease_latitude, disease_longitude, disease_message, disease_img, maintain_site, maintain_case, maintain_people, maintain_fund, begin_time, over_time, maintain_remark, maintain_img, maintain_unit, damage_case, horizontal_positions, forecast_case, dispose_measure, driving_direction, dispose_stake, dispose_remark, dispose_time, dispose_img from hw_way_disease
+        select wdid, disease_name, path_code, path_name, section_code, section_name, reporter, report_date, report_type, statusid, where_path, disease_stake, disease_latitude, disease_longitude, disease_message, disease_img, maintain_site, maintain_case, maintain_people, maintain_fund, begin_time, over_time, maintain_remark, maintain_img, maintain_unit, damage_case, horizontal_positions, forecast_case, dispose_measure, driving_direction, dispose_stake, dispose_remark, dispose_time, dispose_img, administrative from hw_way_disease
     </sql>
 
     <select id="selectHwWayDiseaseList" parameterType="HwWayDisease" resultMap="HwWayDiseaseResult">
@@ -125,6 +126,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="disposeRemark != null">dispose_remark,</if>
             <if test="disposeTime != null">dispose_time,</if>
             <if test="disposeImg != null">dispose_img,</if>
+            <if test="administrative != null">administrative,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="diseaseName != null">#{diseaseName},</if>
@@ -160,6 +162,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="disposeRemark != null">#{disposeRemark},</if>
             <if test="disposeTime != null">#{disposeTime},</if>
             <if test="disposeImg != null">#{disposeImg},</if>
+            <if test="administrative != null">#{administrative},</if>
          </trim>
     </insert>
 
@@ -199,6 +202,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="disposeRemark != null">dispose_remark = #{disposeRemark},</if>
             <if test="disposeTime != null">dispose_time = #{disposeTime},</if>
             <if test="disposeImg != null">dispose_img = #{disposeImg},</if>
+            <if test="administrative != null">administrative = #{administrative},</if>
         </trim>
         where wdid = #{wdid}
     </update>
