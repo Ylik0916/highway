@@ -96,7 +96,7 @@ public class HwWayDisease extends BaseEntity
 
     /** 养护经费 */
     @Excel(name = "养护经费")
-    private Long maintainFund;
+    private String maintainFund;
 
     /** 开始时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -157,7 +157,18 @@ public class HwWayDisease extends BaseEntity
     @Excel(name = "处置图片")
     private String disposeImg;
 
-    public void setWdid(Long wdid) 
+    /** 行政区 */
+    private String administrative;
+
+    public String getAdministrative() {
+        return administrative;
+    }
+
+    public void setAdministrative(String administrative) {
+        this.administrative = administrative;
+    }
+
+    public void setWdid(Long wdid)
     {
         this.wdid = wdid;
     }
@@ -328,12 +339,12 @@ public class HwWayDisease extends BaseEntity
     {
         return maintainPeople;
     }
-    public void setMaintainFund(Long maintainFund) 
+    public void setMaintainFund(String maintainFund)
     {
         this.maintainFund = maintainFund;
     }
 
-    public Long getMaintainFund() 
+    public String getMaintainFund()
     {
         return maintainFund;
     }
@@ -501,6 +512,7 @@ public class HwWayDisease extends BaseEntity
             .append("disposeRemark", getDisposeRemark())
             .append("disposeTime", getDisposeTime())
             .append("disposeImg", getDisposeImg())
+            .append("administrative", getAdministrative())
             .toString();
     }
 }

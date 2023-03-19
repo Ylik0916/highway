@@ -1,4 +1,7 @@
 <template>
+  <div class="bigBox">
+    <div class="smallBox">
+
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="110px">
       <el-form-item label="养护路线名称" prop="pathName">
@@ -71,7 +74,7 @@
 
     <el-table v-loading="loading" :data="dynamicList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="" align="center" prop="mdid" />
+<!--      <el-table-column label="" align="center" prop="mdid" />-->
       <el-table-column label="养护人" align="center" prop="maintainPeople" />
       <el-table-column label="养护单位" align="center" prop="maintainUnit" />
       <el-table-column label="养护路线名称" align="center" prop="pathName" />
@@ -120,19 +123,19 @@
 
     <!-- 添加或修改动态养护管理对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="1100px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="90px">
-        <el-row>
+      <el-form ref="form" :model="form" :rules="rules" label-position="top" label-width="90px">
+        <el-row :gutter="20">
           <el-col :span="8">
             <div class="grid-content">
-              <el-form-item label="路线编号" prop="pathCode">
-                <el-select v-model="form.pathCode" style="width: 263px" placeholder="请选择">
+              <el-form-item label="路线编号" prop="pathName">
+                <el-select v-model="form.pathName" value-key="id" style="width: 100%" placeholder="请选择">
                   <el-option
-                    v-for="item in cities"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value">
-                    <span style="float: left">{{ item.label }}</span>
-                    <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+                    v-for="item in listInformation"
+                    :key="item.id"
+                    :label="item.routeName"
+                    :value="item">
+<!--          :label="item.routeName"          -->
+                    <span style="">{{ item.routeName+"("+item.routeCoding+")" }}</span>
                   </el-option>
                 </el-select>
               </el-form-item>
@@ -148,7 +151,7 @@
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="养护时间" prop="maintainTime">
-                <el-date-picker style="width: 263px"
+                <el-date-picker style="width: 100%"
                   clearable
                   v-model="form.maintainTime"
                   type="date"
@@ -159,7 +162,7 @@
             </div>
           </el-col>
         </el-row>
-        <el-row>
+        <el-row :gutter="20">
           <el-col :span="8">
             <div class="grid-content ">
               <el-form-item label="车牌号" prop="licensePlate">
@@ -182,7 +185,7 @@
             </div>
           </el-col>
         </el-row>
-        <el-row>
+        <el-row :gutter="20">
           <el-col :span="24">
             <div class="grid-content ">
               <el-form-item label="养护内容">
@@ -191,7 +194,7 @@
             </div>
           </el-col>
         </el-row>
-        <el-row>
+        <el-row :gutter="20">
           <el-col :span="24">
             <div class="grid-content ">
               <el-form-item label="养护附件" prop="maintainAccessory">
@@ -218,12 +221,7 @@
       <el-row>
         <el-col :span="8"><div class="grid-content"><span>养护时间:</span><span>{{form.maintainTime}}</span></div></el-col>
         <el-col :span="8"><div class="grid-content"><span>养护单位:</span><span>{{form.maintainUnit}}</span></div></el-col>
-        <el-col :span="8"><div class="grid-content"><span>养护路线名称:</span><span>{{form.maintainUnit}}</span></div></el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="8"><div class="grid-content"><span>行政区划:</span><span>{{form.administrative}}</span></div></el-col>
-        <el-col :span="8"><div class="grid-content"><span>行政编码:</span><span>{{form.administrativeCode}}</span></div></el-col>
-        <el-col :span="8"><div class="grid-content"><span>养护人:</span><span>{{form.maintainPeople}}</span></div></el-col>
+        <el-col :span="8"><div class="grid-content"><span>养护路线名称:</span><span>{{form.pathName}}</span></div></el-col>
       </el-row>
       <el-row>
         <el-col :span="8"><div class="grid-content"><span>养护路线编号:</span><span>{{form.pathCode}}</span></div></el-col>
@@ -241,10 +239,14 @@
       </el-row>
     </el-dialog>
   </div>
+
+    </div>
+  </div>
 </template>
 
 <script>
 import { listDynamic, getDynamic, delDynamic, addDynamic, updateDynamic } from "@/api/system/dynamic";
+import {listInformation} from "@/api/system/information";
 
 export default {
   name: "Dynamic",
@@ -264,6 +266,7 @@ export default {
       total: 0,
       // 动态养护管理表格数据
       dynamicList: [],
+      listInformation: [],
       // 弹出层标题
       title: "",
       details: "",
@@ -293,6 +296,18 @@ export default {
       form: {},
       // 表单校验
       rules: {
+        pathName: [
+          { required: true, message: "养护路线不能为空", trigger: "blur" }
+        ],
+        maintainPeople: [
+          { required: true, message: "养护人不能为空", trigger: "blur" }
+        ],
+        maintainTime: [
+          { required: true, message: "养护时间不能为空", trigger: "blur" }
+        ],
+        maintainAccessory: [
+          { required: true, message: "行政区不能为空", trigger: "blur" }
+        ],
       }
     };
   },
@@ -344,6 +359,12 @@ export default {
       this.resetForm("queryForm");
       this.handleQuery();
     },
+    /** 下拉查询路线 */
+    getListInformation(){
+      listInformation(null).then(response=>{
+        this.listInformation=response.rows;
+      });
+    },
     /** 详情按钮操作 */
     handleOne(row) {
       this.reset();
@@ -363,12 +384,14 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
+      this.getListInformation();
       this.open = true;
       this.title = "添加动态养护管理";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
+      this.getListInformation();
       const mdid = row.mdid || this.ids
       getDynamic(mdid).then(response => {
         this.form = response.data;
@@ -379,6 +402,11 @@ export default {
     /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
+        let routeItem = this.form.pathName;
+        this.form.pathCode=routeItem.routeCoding;
+        this.form.pathName=routeItem.routeName;
+        this.form.pathid=routeItem.id;
+        this.form.administrative=routeItem.adminiStrative;
         if (valid) {
           if (this.form.mdid != null) {
             updateDynamic(this.form).then(response => {
