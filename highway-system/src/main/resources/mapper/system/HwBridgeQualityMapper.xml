@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hg.system.mapper.HwBridgeQualityMapper">
+    
+    <resultMap type="HwBridgeQuality" id="HwBridgeQualityResult">
+        <result property="routeQualityId"    column="route_quality_id"    />
+        <result property="routeTopScore"    column="route_top_score"    />
+        <result property="routeBottomScore"    column="route_bottom_score"    />
+        <result property="routeFaceScore"    column="route_face_score"    />
+        <result property="routeScoreDate"    column="route_score_date"    />
+        <result property="routeCompany"    column="route_company"    />
+        <result property="routeName"    column="route_name"    />
+        <result property="routeCode"    column="route_code"    />
+        <result property="routeAdministrativeArea"    column="route_administrative_area"    />
+        <result property="routeDr"    column="route_dr"    />
+    </resultMap>
+
+    <sql id="selectHwBridgeQualityVo">
+        select route_quality_id, route_top_score, route_bottom_score, route_face_score, route_score_date, route_company, route_name, route_code, route_administrative_area, route_dr from hw_bridge_quality
+    </sql>
+
+    <select id="selectHwBridgeQualityList" parameterType="HwBridgeQuality" resultMap="HwBridgeQualityResult">
+        <include refid="selectHwBridgeQualityVo"/>
+        <where>  
+            <if test="routeTopScore != null "> and route_top_score = #{routeTopScore}</if>
+            <if test="routeBottomScore != null "> and route_bottom_score = #{routeBottomScore}</if>
+            <if test="routeFaceScore != null "> and route_face_score = #{routeFaceScore}</if>
+            <if test="routeScoreDate != null "> and route_score_date = #{routeScoreDate}</if>
+            <if test="routeCompany != null  and routeCompany != ''"> and route_company = #{routeCompany}</if>
+            <if test="routeName != null  and routeName != ''"> and route_name like concat('%', #{routeName}, '%')</if>
+            <if test="routeCode != null  and routeCode != ''"> and route_code = #{routeCode}</if>
+            <if test="routeAdministrativeArea != null  and routeAdministrativeArea != ''"> and route_administrative_area = #{routeAdministrativeArea}</if>
+            <if test="routeDr != null "> and route_dr = #{routeDr}</if>
+        </where>
+    </select>
+    
+    <select id="selectHwBridgeQualityByRouteQualityId" parameterType="Long" resultMap="HwBridgeQualityResult">
+        <include refid="selectHwBridgeQualityVo"/>
+        where route_quality_id = #{routeQualityId}
+    </select>
+        
+    <insert id="insertHwBridgeQuality" parameterType="HwBridgeQuality" useGeneratedKeys="true" keyProperty="routeQualityId">
+        insert into hw_bridge_quality
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="routeTopScore != null">route_top_score,</if>
+            <if test="routeBottomScore != null">route_bottom_score,</if>
+            <if test="routeFaceScore != null">route_face_score,</if>
+            <if test="routeScoreDate != null">route_score_date,</if>
+            <if test="routeCompany != null and routeCompany != ''">route_company,</if>
+            <if test="routeName != null and routeName != ''">route_name,</if>
+            <if test="routeCode != null and routeCode != ''">route_code,</if>
+            <if test="routeAdministrativeArea != null and routeAdministrativeArea != ''">route_administrative_area,</if>
+            <if test="routeDr != null">route_dr,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="routeTopScore != null">#{routeTopScore},</if>
+            <if test="routeBottomScore != null">#{routeBottomScore},</if>
+            <if test="routeFaceScore != null">#{routeFaceScore},</if>
+            <if test="routeScoreDate != null">#{routeScoreDate},</if>
+            <if test="routeCompany != null and routeCompany != ''">#{routeCompany},</if>
+            <if test="routeName != null and routeName != ''">#{routeName},</if>
+            <if test="routeCode != null and routeCode != ''">#{routeCode},</if>
+            <if test="routeAdministrativeArea != null and routeAdministrativeArea != ''">#{routeAdministrativeArea},</if>
+            <if test="routeDr != null">#{routeDr},</if>
+         </trim>
+    </insert>
+
+    <update id="updateHwBridgeQuality" parameterType="HwBridgeQuality">
+        update hw_bridge_quality
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="routeTopScore != null">route_top_score = #{routeTopScore},</if>
+            <if test="routeBottomScore != null">route_bottom_score = #{routeBottomScore},</if>
+            <if test="routeFaceScore != null">route_face_score = #{routeFaceScore},</if>
+            <if test="routeScoreDate != null">route_score_date = #{routeScoreDate},</if>
+            <if test="routeCompany != null and routeCompany != ''">route_company = #{routeCompany},</if>
+            <if test="routeName != null and routeName != ''">route_name = #{routeName},</if>
+            <if test="routeCode != null and routeCode != ''">route_code = #{routeCode},</if>
+            <if test="routeAdministrativeArea != null and routeAdministrativeArea != ''">route_administrative_area = #{routeAdministrativeArea},</if>
+            <if test="routeDr != null">route_dr = #{routeDr},</if>
+        </trim>
+        where route_quality_id = #{routeQualityId}
+    </update>
+
+    <delete id="deleteHwBridgeQualityByRouteQualityId" parameterType="Long">
+        delete from hw_bridge_quality where route_quality_id = #{routeQualityId}
+    </delete>
+
+    <delete id="deleteHwBridgeQualityByRouteQualityIds" parameterType="String">
+        delete from hw_bridge_quality where route_quality_id in 
+        <foreach item="routeQualityId" collection="array" open="(" separator="," close=")">
+            #{routeQualityId}
+        </foreach>
+    </delete>
+</mapper>

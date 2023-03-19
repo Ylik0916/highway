@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hg.system.mapper.HwMaintainDynamicMapper">
+    
+    <resultMap type="HwMaintainDynamic" id="HwMaintainDynamicResult">
+        <result property="mdid"    column="mdid"    />
+        <result property="administrative"    column="administrative"    />
+        <result property="administrativeCode"    column="administrative_code"    />
+        <result property="maintainPeople"    column="maintain_people"    />
+        <result property="maintainTime"    column="maintain_time"    />
+        <result property="maintainUnit"    column="maintain_unit"    />
+        <result property="pathid"    column="pathid"    />
+        <result property="pathName"    column="path_name"    />
+        <result property="pathCode"    column="path_code"    />
+        <result property="licensePlate"    column="license_plate"    />
+        <result property="beginStake"    column="begin_stake"    />
+        <result property="overStake"    column="over_stake"    />
+        <result property="maintainContent"    column="maintain_content"    />
+        <result property="maintainAccessory"    column="maintain_accessory"    />
+    </resultMap>
+
+    <sql id="selectHwMaintainDynamicVo">
+        select mdid, administrative, administrative_code, maintain_people, maintain_time, maintain_unit, pathid, path_name, path_code, license_plate, begin_stake, over_stake, maintain_content, maintain_accessory from hw_maintain_dynamic
+    </sql>
+
+    <select id="selectHwMaintainDynamicList" parameterType="HwMaintainDynamic" resultMap="HwMaintainDynamicResult">
+        <include refid="selectHwMaintainDynamicVo"/>
+        <where>  
+            <if test="administrative != null  and administrative != ''"> and administrative = #{administrative}</if>
+            <if test="administrativeCode != null  and administrativeCode != ''"> and administrative_code = #{administrativeCode}</if>
+            <if test="maintainPeople != null  and maintainPeople != ''"> and maintain_people = #{maintainPeople}</if>
+            <if test="maintainTime != null "> and maintain_time = #{maintainTime}</if>
+            <if test="maintainUnit != null  and maintainUnit != ''"> and maintain_unit = #{maintainUnit}</if>
+            <if test="pathid != null "> and pathid = #{pathid}</if>
+            <if test="pathName != null  and pathName != ''"> and path_name like concat('%', #{pathName}, '%')</if>
+            <if test="pathCode != null  and pathCode != ''"> and path_code like concat('%', #{pathCode}, '%')</if>
+            <if test="licensePlate != null  and licensePlate != ''"> and license_plate = #{licensePlate}</if>
+            <if test="beginStake != null  and beginStake != ''"> and begin_stake = #{beginStake}</if>
+            <if test="overStake != null  and overStake != ''"> and over_stake = #{overStake}</if>
+            <if test="maintainContent != null  and maintainContent != ''"> and maintain_content = #{maintainContent}</if>
+            <if test="maintainAccessory != null  and maintainAccessory != ''"> and maintain_accessory = #{maintainAccessory}</if>
+        </where>
+    </select>
+    
+    <select id="selectHwMaintainDynamicByMdid" parameterType="Long" resultMap="HwMaintainDynamicResult">
+        <include refid="selectHwMaintainDynamicVo"/>
+        where mdid = #{mdid}
+    </select>
+        
+    <insert id="insertHwMaintainDynamic" parameterType="HwMaintainDynamic" useGeneratedKeys="true" keyProperty="mdid">
+        insert into hw_maintain_dynamic
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="administrative != null">administrative,</if>
+            <if test="administrativeCode != null">administrative_code,</if>
+            <if test="maintainPeople != null">maintain_people,</if>
+            <if test="maintainTime != null">maintain_time,</if>
+            <if test="maintainUnit != null">maintain_unit,</if>
+            <if test="pathid != null">pathid,</if>
+            <if test="pathName != null">path_name,</if>
+            <if test="pathCode != null">path_code,</if>
+            <if test="licensePlate != null">license_plate,</if>
+            <if test="beginStake != null">begin_stake,</if>
+            <if test="overStake != null">over_stake,</if>
+            <if test="maintainContent != null">maintain_content,</if>
+            <if test="maintainAccessory != null">maintain_accessory,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="administrative != null">#{administrative},</if>
+            <if test="administrativeCode != null">#{administrativeCode},</if>
+            <if test="maintainPeople != null">#{maintainPeople},</if>
+            <if test="maintainTime != null">#{maintainTime},</if>
+            <if test="maintainUnit != null">#{maintainUnit},</if>
+            <if test="pathid != null">#{pathid},</if>
+            <if test="pathName != null">#{pathName},</if>
+            <if test="pathCode != null">#{pathCode},</if>
+            <if test="licensePlate != null">#{licensePlate},</if>
+            <if test="beginStake != null">#{beginStake},</if>
+            <if test="overStake != null">#{overStake},</if>
+            <if test="maintainContent != null">#{maintainContent},</if>
+            <if test="maintainAccessory != null">#{maintainAccessory},</if>
+         </trim>
+    </insert>
+
+    <update id="updateHwMaintainDynamic" parameterType="HwMaintainDynamic">
+        update hw_maintain_dynamic
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="administrative != null">administrative = #{administrative},</if>
+            <if test="administrativeCode != null">administrative_code = #{administrativeCode},</if>
+            <if test="maintainPeople != null">maintain_people = #{maintainPeople},</if>
+            <if test="maintainTime != null">maintain_time = #{maintainTime},</if>
+            <if test="maintainUnit != null">maintain_unit = #{maintainUnit},</if>
+            <if test="pathid != null">pathid = #{pathid},</if>
+            <if test="pathName != null">path_name = #{pathName},</if>
+            <if test="pathCode != null">path_code = #{pathCode},</if>
+            <if test="licensePlate != null">license_plate = #{licensePlate},</if>
+            <if test="beginStake != null">begin_stake = #{beginStake},</if>
+            <if test="overStake != null">over_stake = #{overStake},</if>
+            <if test="maintainContent != null">maintain_content = #{maintainContent},</if>
+            <if test="maintainAccessory != null">maintain_accessory = #{maintainAccessory},</if>
+        </trim>
+        where mdid = #{mdid}
+    </update>
+
+    <delete id="deleteHwMaintainDynamicByMdid" parameterType="Long">
+        delete from hw_maintain_dynamic where mdid = #{mdid}
+    </delete>
+
+    <delete id="deleteHwMaintainDynamicByMdids" parameterType="String">
+        delete from hw_maintain_dynamic where mdid in 
+        <foreach item="mdid" collection="array" open="(" separator="," close=")">
+            #{mdid}
+        </foreach>
+    </delete>
+</mapper>

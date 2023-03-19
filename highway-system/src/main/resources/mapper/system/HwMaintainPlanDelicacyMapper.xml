@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hg.system.mapper.HwMaintainPlanDelicacyMapper">
+    
+    <resultMap type="HwMaintainPlanDelicacy" id="HwMaintainPlanDelicacyResult">
+        <result property="mpdid"    column="mpdid"    />
+        <result property="administrative"    column="administrative"    />
+        <result property="pathName"    column="path_name"    />
+        <result property="whereVillage"    column="where_village"    />
+        <result property="roadTypeid"    column="road_typeid"    />
+        <result property="technicalGradeid"    column="technical_gradeid"    />
+        <result property="roadWidth"    column="road_width"    />
+        <result property="mileage"    column="mileage"    />
+        <result property="amount"    column="amount"    />
+        <result property="auditStatusid"    column="audit_statusid"    />
+    </resultMap>
+
+    <sql id="selectHwMaintainPlanDelicacyVo">
+        select mpdid, administrative, path_name, where_village, road_typeid, technical_gradeid, road_width, mileage, amount, audit_statusid from hw_maintain_plan_delicacy
+    </sql>
+
+    <select id="selectHwMaintainPlanDelicacyList" parameterType="HwMaintainPlanDelicacy" resultMap="HwMaintainPlanDelicacyResult">
+        <include refid="selectHwMaintainPlanDelicacyVo"/>
+        <where>  
+            <if test="administrative != null  and administrative != ''"> and administrative = #{administrative}</if>
+            <if test="pathName != null  and pathName != ''"> and path_name like concat('%', #{pathName}, '%')</if>
+            <if test="whereVillage != null  and whereVillage != ''"> and where_village = #{whereVillage}</if>
+            <if test="roadTypeid != null "> and road_typeid = #{roadTypeid}</if>
+            <if test="technicalGradeid != null "> and technical_gradeid = #{technicalGradeid}</if>
+            <if test="roadWidth != null  and roadWidth != ''"> and road_width = #{roadWidth}</if>
+            <if test="mileage != null  and mileage != ''"> and mileage = #{mileage}</if>
+            <if test="amount != null  and amount != ''"> and amount = #{amount}</if>
+            <if test="auditStatusid != null "> and audit_statusid = #{auditStatusid}</if>
+        </where>
+    </select>
+    
+    <select id="selectHwMaintainPlanDelicacyByMpdid" parameterType="Long" resultMap="HwMaintainPlanDelicacyResult">
+        <include refid="selectHwMaintainPlanDelicacyVo"/>
+        where mpdid = #{mpdid}
+    </select>
+        
+    <insert id="insertHwMaintainPlanDelicacy" parameterType="HwMaintainPlanDelicacy" useGeneratedKeys="true" keyProperty="mpdid">
+        insert into hw_maintain_plan_delicacy
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="administrative != null">administrative,</if>
+            <if test="pathName != null">path_name,</if>
+            <if test="whereVillage != null">where_village,</if>
+            <if test="roadTypeid != null">road_typeid,</if>
+            <if test="technicalGradeid != null">technical_gradeid,</if>
+            <if test="roadWidth != null">road_width,</if>
+            <if test="mileage != null">mileage,</if>
+            <if test="amount != null">amount,</if>
+            <if test="auditStatusid != null">audit_statusid,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="administrative != null">#{administrative},</if>
+            <if test="pathName != null">#{pathName},</if>
+            <if test="whereVillage != null">#{whereVillage},</if>
+            <if test="roadTypeid != null">#{roadTypeid},</if>
+            <if test="technicalGradeid != null">#{technicalGradeid},</if>
+            <if test="roadWidth != null">#{roadWidth},</if>
+            <if test="mileage != null">#{mileage},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="auditStatusid != null">#{auditStatusid},</if>
+         </trim>
+    </insert>
+
+    <update id="updateHwMaintainPlanDelicacy" parameterType="HwMaintainPlanDelicacy">
+        update hw_maintain_plan_delicacy
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="administrative != null">administrative = #{administrative},</if>
+            <if test="pathName != null">path_name = #{pathName},</if>
+            <if test="whereVillage != null">where_village = #{whereVillage},</if>
+            <if test="roadTypeid != null">road_typeid = #{roadTypeid},</if>
+            <if test="technicalGradeid != null">technical_gradeid = #{technicalGradeid},</if>
+            <if test="roadWidth != null">road_width = #{roadWidth},</if>
+            <if test="mileage != null">mileage = #{mileage},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="auditStatusid != null">audit_statusid = #{auditStatusid},</if>
+        </trim>
+        where mpdid = #{mpdid}
+    </update>
+
+    <delete id="deleteHwMaintainPlanDelicacyByMpdid" parameterType="Long">
+        delete from hw_maintain_plan_delicacy where mpdid = #{mpdid}
+    </delete>
+
+    <delete id="deleteHwMaintainPlanDelicacyByMpdids" parameterType="String">
+        delete from hw_maintain_plan_delicacy where mpdid in 
+        <foreach item="mpdid" collection="array" open="(" separator="," close=")">
+            #{mpdid}
+        </foreach>
+    </delete>
+</mapper>
