@@ -1,4 +1,6 @@
 <template>
+  <div class="bigBox">
+    <div class="smallBox">
   <div class="app-container">
     <div :style="{display:this.flag}">
       <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
@@ -46,6 +48,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
+          :disabled="true"
           v-hasPermi="['system:infdormation:add']"
         >新增
         </el-button>
@@ -967,6 +970,8 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+  </div>
+    </div>
   </div>
 </template>
 

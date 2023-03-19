@@ -26,7 +26,7 @@
   <div class="smallBox">
   <el-tabs v-model="activeName" type="card" style="width: 100%" @tab-click="handleClick" tab-position="top">
     <el-tab-pane label="路段信息" name="first"><section-information :routeId="routeId"></section-information></el-tab-pane>
-    <el-tab-pane label="桥梁信息" name="second"><Infdormation :vis="flag" :routeId="routeId"></Infdormation></el-tab-pane>
+    <el-tab-pane label="桥梁信息" name="second"><Show :routeId="routeId"></Show></el-tab-pane>
     <el-tab-pane label="隧道信息" name="fourth"><Tunnel :rou="routeId"></Tunnel></el-tab-pane>
     <el-tab-pane label="标识标牌" name="firth"><Signage :vis="flag" :routeId="routeId"></Signage></el-tab-pane>
     <el-tab-pane label="病害信息" name="sixth">病害信息</el-tab-pane>
@@ -40,11 +40,11 @@
 import {getInformation} from "@/api/system/information";
 import SectionInformation from "@/views/system/sectionInformation";
 import Tunnel from "@/views/system/tunnel";
-import Infdormation from "@/views/system/infdormation";
+import Show from "@/views/system/infdormation/show";
 import Signage from "@/views/system/signage";
 export default {
   name: "index_",
-  components: {Signage, SectionInformation,Tunnel,Infdormation},
+  components: {Signage, SectionInformation,Tunnel,Show},
   dicts: ['construction_type', 'route_type'],
   data(){
     return {
