@@ -2,6 +2,7 @@ package com.hg.system.service;
 
 import java.util.List;
 import com.hg.system.domain.HwBridgeQuality;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * 桥梁质量Service接口
@@ -58,4 +59,14 @@ public interface IHwBridgeQualityService
      * @return 结果
      */
     public int deleteHwBridgeQualityByRouteQualityId(Long routeQualityId);
+
+    /**
+     * 桥梁质量优
+     *
+     * @return 结果
+     */
+    public int you();
+    public int hao();
+    public int zhong();
+
 }

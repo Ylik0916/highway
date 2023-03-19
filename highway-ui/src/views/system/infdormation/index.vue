@@ -1,7 +1,9 @@
 <template>
+  <div class="bigBox">
+    <div class="smallBox">
   <div class="app-container">
     <div :style="{display:this.flag}">
-      <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px" >
+      <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
         <el-form-item label="桥梁编码" prop="routeCode">
           <el-input
             v-model="queryParams.routeCode"
@@ -29,30 +31,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="行政区划" prop="routeAdministrativeArea">
-          <el-select v-model="queryParams.routeAdministrativeArea" placeholder="请选择行政区划" clearable>
-            <el-option
-              v-for="dict in dict.type.bridge_zoning"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="选择路线" prop="selectRoute">
-          <el-input
-            v-model="queryParams.selectRoute"
-            placeholder="选择路线"
-            clearable
-            @keyup.enter.native="handleQuery"
-          />
-        </el-form-item>
-        <el-form-item label="路线编码" prop="luCode">
-          <el-input
-            v-model="queryParams.luCode"
-            placeholder="请输入路线编码"
-            clearable
-            @keyup.enter.native="handleQuery"
-          />
+          <treeselect style="width: 200px" v-model="queryParams.routeAdministrativeArea" :options="ordinaryOptions" :normalizer="normalizer" placeholder="请选择行政区" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -69,6 +48,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
+          :disabled="true"
           v-hasPermi="['system:infdormation:add']"
         >新增
         </el-button>
@@ -130,9 +110,6 @@
         </template>
       </el-table-column>
       <el-table-column label="行政区划" align="center" prop="routeAdministrativeArea">
-        <template slot-scope="scope">
-          <dict-tag :options="dict.type.bridge_zoning" :value="scope.row.routeAdministrativeArea"/>
-        </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -191,7 +168,7 @@
             <el-descriptions-item label="设计荷载">{{ form.routeLoad }}</el-descriptions-item>
             <el-descriptions-item label="按跨径分">{{ form.routeCross }}</el-descriptions-item>
             <el-descriptions-item label="按建筑材料和使用年限分">{{ form.routeYear }}</el-descriptions-item>
-            <el-descriptions-item label="是否危桥">{{ form.routeDanger }}</el-descriptions-item>
+            <el-descriptions-item label="是否危桥">{{ form.routeDanger == '1' ? '是' : '否' }}</el-descriptions-item>
             <el-descriptions-item label="技术状况评定">{{ form.routeGrade }}</el-descriptions-item>
             <el-descriptions-item label="评定日期">{{ form.routeEvaluationDate }}</el-descriptions-item>
             <el-descriptions-item label="主桥上部构造结构形式">{{ form.routeTopShape }}</el-descriptions-item>
@@ -221,22 +198,22 @@
         </el-tab-pane>
         <el-tab-pane label="建养信息" name="second">
           <el-descriptions :model="form">
-           <el-descriptions-item label="下部结构形式">{{ form.routeBottomShape }}</el-descriptions-item>
-          <el-descriptions-item label="导入评定结果">{{ form.routeResult }}</el-descriptions-item>
-          <el-descriptions-item label="变更原因">{{ form.routeReason }}</el-descriptions-item>
-          <el-descriptions-item label="支座类型">{{ form.routeSupport }}</el-descriptions-item>
-          <el-descriptions-item label="通车日期">{{ form.routeTrafficDate }}</el-descriptions-item>
-          <el-descriptions-item label="评定单位">{{ form.evaluationUnit }}</el-descriptions-item>
-          <el-descriptions-item label="改造施工单位">{{ form.routeRenovationUnit }}</el-descriptions-item>
-          <el-descriptions-item label="桥台类型">{{ form.routeAbutmentType }}</el-descriptions-item>
-          <el-descriptions-item label="设计单位名称">{{ form.routeDesigner }}</el-descriptions-item>
-          <el-descriptions-item label="施工单位名称">{{ form.routeConstructionUnit }}</el-descriptions-item>
-          <el-descriptions-item label="监理单位名称">{{ form.routeInspectionUnit }}</el-descriptions-item>
-          <el-descriptions-item label="建设单位名称">{{ form.routeBuildUnit }}</el-descriptions-item>
-          <el-descriptions-item label="监管单位名称">{{ form.routeSupervise }}</el-descriptions-item>
-          <el-descriptions-item label="管养单位性质">{{ form.routeCuring }}</el-descriptions-item>
-          <el-descriptions-item label="管养单位代码">{{ form.routeCuringCode }}</el-descriptions-item>
-          <el-descriptions-item label="管养单位名称">{{ form.routeCuringName }}</el-descriptions-item>
+            <el-descriptions-item label="下部结构形式">{{ form.routeBottomShape }}</el-descriptions-item>
+            <el-descriptions-item label="导入评定结果">{{ form.routeResult }}</el-descriptions-item>
+            <el-descriptions-item label="变更原因">{{ form.routeReason }}</el-descriptions-item>
+            <el-descriptions-item label="支座类型">{{ form.routeSupport }}</el-descriptions-item>
+            <el-descriptions-item label="通车日期">{{ form.routeTrafficDate }}</el-descriptions-item>
+            <el-descriptions-item label="评定单位">{{ form.evaluationUnit }}</el-descriptions-item>
+            <el-descriptions-item label="改造施工单位">{{ form.routeRenovationUnit }}</el-descriptions-item>
+            <el-descriptions-item label="桥台类型">{{ form.routeAbutmentType }}</el-descriptions-item>
+            <el-descriptions-item label="设计单位名称">{{ form.routeDesigner }}</el-descriptions-item>
+            <el-descriptions-item label="施工单位名称">{{ form.routeConstructionUnit }}</el-descriptions-item>
+            <el-descriptions-item label="监理单位名称">{{ form.routeInspectionUnit }}</el-descriptions-item>
+            <el-descriptions-item label="建设单位名称">{{ form.routeBuildUnit }}</el-descriptions-item>
+            <el-descriptions-item label="监管单位名称">{{ form.routeSupervise }}</el-descriptions-item>
+            <el-descriptions-item label="管养单位性质">{{ form.routeCuring }}</el-descriptions-item>
+            <el-descriptions-item label="管养单位代码">{{ form.routeCuringCode }}</el-descriptions-item>
+            <el-descriptions-item label="管养单位名称">{{ form.routeCuringName }}</el-descriptions-item>
           </el-descriptions>
         </el-tab-pane>
         <el-tab-pane label="填报信息" name="third">
@@ -262,441 +239,729 @@
                label-width="200px">
         <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
           <el-tab-pane label="基本信息" name="first">
-            <el-form-item label="选择路线" prop="selectRoute">
-              <el-input v-model="form.selectRoute" placeholder="请输入选择路线"/>
-            </el-form-item>
-            <el-form-item label="桥梁编码" prop="routeCode">
-              <el-input v-model="form.routeCode" placeholder="请输入桥梁编码"/>
-            </el-form-item>
-            <el-form-item label="桥梁名称" prop="routeName">
-              <el-input v-model="form.routeName" placeholder="请输入桥梁名称"/>
-            </el-form-item>
-            <el-form-item label="行政区划" prop="routeAdministrativeArea">
-              <el-select v-model="form.routeAdministrativeArea" placeholder="请选择行政区划">
-                <el-option
-                  v-for="dict in dict.type.bridge_zoning"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="桥梁经度" prop="routeLongitude">
-              <el-input v-model="form.routeLongitude" placeholder="请输入桥梁经度"/>
-            </el-form-item>
-            <el-form-item label="桥梁纬度" prop="routeLatitude">
-              <el-input v-model="form.routeLatitude" placeholder="请输入桥梁纬度"/>
-            </el-form-item>
-            <el-form-item label="桥梁程高" prop="routeHigh">
-              <el-input v-model="form.routeHigh" placeholder="请输入桥梁程高"/>
-            </el-form-item>
-            <el-form-item label="桥梁长度" prop="routeLong">
-              <el-input v-model="form.routeLong" placeholder="请输入桥梁长度"/>
-            </el-form-item>
-            <el-form-item label="跨境总长" prop="routeCrossLong">
-              <el-input v-model="form.routeCrossLong" placeholder="请输入跨境总长"/>
-            </el-form-item>
-            <el-form-item label="单孔最大跨径(米)" prop="routeSingleLong">
-              <el-input v-model="form.routeSingleLong" placeholder="请输入单孔最大跨径(米)"/>
-            </el-form-item>
-            <el-form-item label="桥梁跨境组合" prop="routeSpanCombination">
-              <el-input v-model="form.routeSpanCombination" placeholder="请输入桥梁跨境组合"/>
-            </el-form-item>
-            <el-form-item label="桥面全宽" prop="routeWide">
-              <el-input v-model="form.routeWide" placeholder="请输入桥面全宽"/>
-            </el-form-item>
-            <el-form-item label="桥梁全长" prop="routeOverallLength">
-              <el-input v-model="form.routeOverallLength" placeholder="请输入桥梁全长"/>
-            </el-form-item>
-            <el-form-item label="桥面净宽(米)" prop="routeClearWidth">
-              <el-input v-model="form.routeClearWidth" placeholder="请输入桥面净宽(米)"/>
-            </el-form-item>
-            <el-form-item label="设计荷载" prop="routeLoad">
-              <el-select v-model="form.routeLoad" placeholder="请选择设计荷载">
-                <el-option
-                  v-for="dict in dict.type.bridge_load"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="跨境分类" prop="routeCross">
-              <el-select v-model="form.routeCross" placeholder="请选择跨境分类">
-                <el-option
-                  v-for="dict in dict.type.bridge_cross"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="按建筑材料和使用年限分" prop="routeYear">
-              <el-select v-model="form.routeYear" placeholder="请选择按建筑材料和使用年限分">
-                <el-option
-                  v-for="dict in dict.type.bridge_age_limit"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="是否危桥" prop="routeDanger">
-              <el-select v-model="form.routeDanger" placeholder="请选择是否危桥">
-                <el-option
-                  v-for="dict in dict.type.underwater_tunnel_or_not"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="parseInt(dict.value)"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="评定等级" prop="routeGrade">
-              <el-select v-model="form.routeGrade" placeholder="请选择评定等级">
-                <el-option
-                  v-for="dict in dict.type.technical_evaluation"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="评定日期" prop="routeEvaluationDate">
-              <el-date-picker clearable
-                              v-model="form.routeEvaluationDate"
-                              type="date"
-                              value-format="yyyy-MM-dd"
-                              placeholder="请选择评定日期">
-              </el-date-picker>
-            </el-form-item>
-            <el-form-item label="主桥上部构造结构形式" prop="routeTopShape">
-              <el-select v-model="form.routeTopShape" placeholder="请选择主桥上部构造结构形式">
-                <el-option
-                  v-for="dict in dict.type.top_shap"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="上部结构材料" prop="routeTopMaterial">
-              <el-select v-model="form.routeTopMaterial" placeholder="请选择上部结构材料">
-                <el-option
-                  v-for="dict in dict.type.top_material"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="立交桥类别" prop="routeType">
-              <el-select v-model="form.routeType" placeholder="请选择立交桥类别">
-                <el-option
-                  v-for="dict in dict.type.bridge_sort"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="桥墩类型" prop="routePierType">
-              <el-select v-model="form.routePierType" placeholder="请选择桥墩类型">
-                <el-option
-                  v-for="dict in dict.type.pier_sort"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="收费性质" prop="routeCharge">
-              <el-select v-model="form.routeCharge" placeholder="请选择收费性质">
-                <el-option
-                  v-for="dict in dict.type.collect_fees"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="原桥梁编码" prop="routeBeforeCode">
-              <el-input v-model="form.routeBeforeCode" placeholder="请输入原桥梁编码"/>
-            </el-form-item>
-            <el-form-item label="建成时间(年份)" prop="routeCompletionTime">
-              <el-date-picker clearable
-                              v-model="form.routeCompletionTime"
-                              type="date"
-                              value-format="yyyy-MM-dd"
-                              placeholder="请选择建成时间(年份)">
-              </el-date-picker>
-            </el-form-item>
-            <el-form-item label="跨越地物类型" prop="routeCrossFigure">
-              <el-select v-model="form.routeCrossFigure" placeholder="请选择跨越地物类型">
-                <el-option
-                  v-for="dict in dict.type.species"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="跨越地物名称" prop="routeCrossName">
-              <el-input v-model="form.routeCrossName" placeholder="请输入跨越地物名称"/>
-            </el-form-item>
-            <el-form-item label="主要病害位置" prop="routeDiseasePlace">
-              <el-select v-model="form.routeDiseasePlace" placeholder="请选择主要病害位置">
-                <el-option
-                  v-for="dict in dict.type.disease_location"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="主要病害描述" prop="routeDiseaseDescribe">
-              <el-input v-model="form.routeDiseaseDescribe" type="textarea" placeholder="请输入内容"/>
-            </el-form-item>
-            <el-form-item label="墩台防撞设施类型" prop="routeAnticollisionType">
-              <el-select v-model="form.routeAnticollisionType" placeholder="请选择墩台防撞设施类型">
-                <el-option
-                  v-for="dict in dict.type.anti_collision_type"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="抗震等级" prop="routeAntiseismic">
-              <el-select v-model="form.routeAntiseismic" placeholder="请选择抗震等级">
-                <el-option
-                  v-for="dict in dict.type.seismic_grade"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="通航等级" prop="routeFlight">
-              <el-select v-model="form.routeFlight" placeholder="请选择通航等级">
-                <el-option
-                  v-for="dict in dict.type.navigation_level"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="改建年度" prop="routeRebuild">
-              <el-date-picker clearable
-                              v-model="form.routeRebuild"
-                              type="date"
-                              value-format="yyyy-MM-dd"
-                              placeholder="请选择改建年度">
-              </el-date-picker>
-            </el-form-item>
-            <el-form-item label="改造完工日期" prop="routeRebuildEnd">
-              <el-date-picker clearable
-                              v-model="form.routeRebuildEnd"
-                              type="date"
-                              value-format="yyyy-MM-dd"
-                              placeholder="请选择改造完工日期">
-              </el-date-picker>
-            </el-form-item>
-            <el-form-item label="改造部位" prop="routeRebuildPlace">
-              <el-select v-model="form.routeRebuildPlace" placeholder="请选择改造部位">
-                <el-option
-                  v-for="dict in dict.type.reconstruction_part"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="最近改造工程性质" prop="routeRebuildNature">
-              <el-select v-model="form.routeRebuildNature" placeholder="请选择最近改造工程性质">
-                <el-option
-                  v-for="dict in dict.type.transform"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="是否部补助项目" prop="routeSubsidy">
-              <el-select v-model="form.routeSubsidy" placeholder="请选择是否部补助项目">
-                <el-option
-                  v-for="dict in dict.type.underwater_tunnel_or_not"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="parseInt(dict.value)"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="已采取交通管制措施" prop="routeMethod">
-              <el-input v-model="form.routeMethod" placeholder="请输入已采取交通管制措施"/>
-            </el-form-item>
-            <el-form-item label="桥梁所在位置" prop="routePosition">
-              <el-select v-model="form.routePosition" placeholder="请选择桥梁所在位置">
-                <el-option
-                  v-for="dict in dict.type.bridge_location"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="parseInt(dict.value)"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="是否宽路窄桥" prop="routeWroadNbridge">
-              <el-select v-model="form.routeWroadNbridge" placeholder="请选择是否宽路窄桥">
-                <el-option
-                  v-for="dict in dict.type.underwater_tunnel_or_not"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="parseInt(dict.value)"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="是否在长大桥梁目录" prop="routeLongBridges">
-              <el-select v-model="form.routeLongBridges" placeholder="请选择是否在长大桥梁目录">
-                <el-option
-                  v-for="dict in dict.type.underwater_tunnel_or_not"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="parseInt(dict.value)"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="下部结构形式" prop="routeBottomShape">
-              <el-select v-model="form.routeBottomShape" placeholder="请选择下部结构形式">
-                <el-option
-                  v-for="dict in dict.type.bottom_shap"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="导入评定结果" prop="routeResult">
-              <el-input v-model="form.routeResult" placeholder="请输入导入评定结果"/>
-            </el-form-item>
-            <el-form-item label="变更原因" prop="routeReason">
-              <el-select v-model="form.routeReason" placeholder="请选择变更原因">
-                <el-option
-                  v-for="dict in dict.type.change_reason"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="支座类型" prop="routeSupport">
-              <el-select v-model="form.routeSupport" placeholder="请选择支座类型">
-                <el-option
-                  v-for="dict in dict.type.bearing_type"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="通车日期" prop="routeTrafficDate">
-              <el-date-picker clearable
-                              v-model="form.routeTrafficDate"
-                              type="date"
-                              value-format="yyyy-MM-dd"
-                              placeholder="请选择通车日期">
-              </el-date-picker>
-            </el-form-item>
-            <el-form-item label="改造施工单位" prop="routeRenovationUnit">
-              <el-input v-model="form.routeRenovationUnit" placeholder="请输入改造施工单位"/>
-            </el-form-item>
-            <el-form-item label="桥台类型" prop="routeAbutmentType">
-              <el-select v-model="form.routeAbutmentType" placeholder="请选择桥台类型">
-                <el-option
-                  v-for="dict in dict.type.abutment_type"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                ></el-option>
-              </el-select>
-            </el-form-item>
+            <el-row>
+              <el-col :span="6">
+                <div class="grid-content bg-purple">
+                  <el-form-item label="选择路线" prop="selectRoute">
+                    <el-input v-model="form.selectRoute" placeholder="请输入选择路线"/>
+                  </el-form-item>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <div class="grid-content bg-purple-light">
+                  <el-form-item label="桥梁编码" prop="routeCode">
+                    <el-input v-model="form.routeCode" placeholder="请输入桥梁编码"/>
+                  </el-form-item>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <div class="grid-content bg-purple">
+                  <el-form-item label="桥梁名称" prop="routeName">
+                    <el-input v-model="form.routeName" placeholder="请输入桥梁名称"/>
+                  </el-form-item>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <div class="grid-content bg-purple-light">
+                  <el-form-item label="行政区划" prop="routeAdministrativeArea">
+                    <treeselect style="width: 200px" v-model="form.routeAdministrativeArea" :options="ordinaryOptions" :normalizer="normalizer" placeholder="请选择行政区" />
+                  </el-form-item>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="6">
+                <div class="grid-content bg-purple-light">
+                  <el-form-item label="桥梁经度" prop="routeLongitude">
+                    <el-input v-model="form.routeLongitude" placeholder="请输入桥梁经度"/>
+                  </el-form-item>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <div class="grid-content bg-purple-light">
+                  <el-form-item label="桥梁纬度" prop="routeLatitude">
+                    <el-input v-model="form.routeLatitude" placeholder="请输入桥梁纬度"/>
+                  </el-form-item>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <div class="grid-content bg-purple-light">
+                  <el-form-item label="桥梁程高" prop="routeHigh">
+                    <el-input v-model="form.routeHigh" placeholder="请输入桥梁程高"/>
+                  </el-form-item>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <div class="grid-content bg-purple-light">
+                  <el-form-item label="桥梁长度" prop="routeLong">
+                    <el-input v-model="form.routeLong" placeholder="请输入桥梁长度"/>
+                  </el-form-item>
+                </div>
+              </el-col>
+            </el-row>
+
+            <el-row>
+              <el-col :span="6">
+                <div class="grid-content bg-purple-light">
+                  <el-form-item label="跨境总长" prop="routeCrossLong">
+                    <el-input v-model="form.routeCrossLong" placeholder="请输入跨境总长"/>
+                  </el-form-item>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <div class="grid-content bg-purple-light">
+                  <el-form-item label="单孔最大跨径(米)" prop="routeSingleLong">
+                    <el-input v-model="form.routeSingleLong" placeholder="请输入单孔最大跨径(米)"/>
+                  </el-form-item>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <div class="grid-content bg-purple-light">
+                  <el-form-item label="桥梁跨境组合" prop="routeSpanCombination">
+                    <el-input v-model="form.routeSpanCombination" placeholder="请输入桥梁跨境组合"/>
+                  </el-form-item>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <div class="grid-content bg-purple-light">
+                  <el-form-item label="桥面全宽" prop="routeWide">
+                    <el-input v-model="form.routeWide" placeholder="请输入桥面全宽"/>
+                  </el-form-item>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="6">
+                <div class="grid-content bg-purple-light">
+                  <el-form-item label="桥梁全长" prop="routeOverallLength">
+                    <el-input v-model="form.routeOverallLength" placeholder="请输入桥梁全长"/>
+                  </el-form-item>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <div class="grid-content bg-purple-light">
+                  <el-form-item label="桥面净宽(米)" prop="routeClearWidth">
+                    <el-input v-model="form.routeClearWidth" placeholder="请输入桥面净宽(米)"/>
+                  </el-form-item>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <div class="grid-content bg-purple-light">
+                  <el-form-item label="设计荷载" prop="routeLoad">
+                    <el-select v-model="form.routeLoad" placeholder="请选择设计荷载">
+                      <el-option
+                        v-for="dict in dict.type.bridge_load"
+                        :key="dict.value"
+                        :label="dict.label"
+                        :value="dict.value"
+                      ></el-option>
+                    </el-select>
+                  </el-form-item>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <div class="grid-content bg-purple-light">
+                  <el-form-item label="跨境分类" prop="routeCross">
+                    <el-select v-model="form.routeCross" placeholder="请选择跨境分类">
+                      <el-option
+                        v-for="dict in dict.type.bridge_cross"
+                        :key="dict.value"
+                        :label="dict.label"
+                        :value="dict.value"
+                      ></el-option>
+                    </el-select>
+                  </el-form-item>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="6">
+                <div class="grid-content bg-purple-light">
+                  <el-form-item label="按建筑材料和使用年限分" prop="routeYear">
+                    <el-select v-model="form.routeYear" placeholder="请选择按建筑材料和使用年限分">
+                      <el-option
+                        v-for="dict in dict.type.bridge_age_limit"
+                        :key="dict.value"
+                        :label="dict.label"
+                        :value="dict.value"
+                      ></el-option>
+                    </el-select>
+                  </el-form-item>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <div class="grid-content bg-purple-light">
+                  <el-form-item label="是否危桥" prop="routeDanger">
+                    <el-select v-model="form.routeDanger" placeholder="请选择是否危桥">
+                      <el-option
+                        v-for="dict in dict.type.underwater_tunnel_or_not"
+                        :key="dict.value"
+                        :label="dict.label"
+                        :value="parseInt(dict.value)"
+                      ></el-option>
+                    </el-select>
+                  </el-form-item>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <div class="grid-content bg-purple-light">
+                  <el-form-item label="评定等级" prop="routeGrade">
+                    <el-select v-model="form.routeGrade" placeholder="请选择评定等级">
+                      <el-option
+                        v-for="dict in dict.type.technical_evaluation"
+                        :key="dict.value"
+                        :label="dict.label"
+                        :value="dict.value"
+                      ></el-option>
+                    </el-select>
+                  </el-form-item>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <div class="grid-content bg-purple-light">
+                  <el-form-item label="评定日期" prop="routeEvaluationDate">
+                    <el-date-picker clearable
+                                    v-model="form.routeEvaluationDate"
+                                    type="date"
+                                    value-format="yyyy-MM-dd"
+                                    placeholder="请选择评定日期">
+                    </el-date-picker>
+                  </el-form-item>
+                </div>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="6">
+                <div class="grid-content bg-purple-light">
+                  <el-form-item label="上部结构材料" prop="routeTopMaterial">
+                    <el-select v-model="form.routeTopMaterial" placeholder="请选择上部结构材料">
+                      <el-option
+                        v-for="dict in dict.type.top_material"
+                        :key="dict.value"
+                        :label="dict.label"
+                        :value="dict.value"
+                      ></el-option>
+                    </el-select>
+                  </el-form-item>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <div class="grid-content bg-purple-light">
+                  <el-form-item label="立交桥类别" prop="routeType">
+                    <el-select v-model="form.routeType" placeholder="请选择立交桥类别">
+                      <el-option
+                        v-for="dict in dict.type.bridge_sort"
+                        :key="dict.value"
+                        :label="dict.label"
+                        :value="dict.value"
+                      ></el-option>
+                    </el-select>
+                  </el-form-item>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <div class="grid-content bg-purple-light">
+                  <el-form-item label="桥墩类型" prop="routePierType">
+                    <el-select v-model="form.routePierType" placeholder="请选择桥墩类型">
+                      <el-option
+                        v-for="dict in dict.type.pier_sort"
+                        :key="dict.value"
+                        :label="dict.label"
+                        :value="dict.value"
+                      ></el-option>
+                    </el-select>
+                  </el-form-item>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <div class="grid-content bg-purple-light">
+                  <el-form-item label="收费性质" prop="routeCharge">
+                    <el-select v-model="form.routeCharge" placeholder="请选择收费性质">
+                      <el-option
+                        v-for="dict in dict.type.collect_fees"
+                        :key="dict.value"
+                        :label="dict.label"
+                        :value="dict.value"
+                      ></el-option>
+                    </el-select>
+                  </el-form-item>
+                </div>
+              </el-col>
+            </el-row>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="主桥上部构造结构形式" prop="routeTopShape">
+                  <el-select v-model="form.routeTopShape" placeholder="请选择主桥上部构造结构形式">
+                    <el-option
+                      v-for="dict in dict.type.top_shap"
+                      :key="dict.value"
+                      :label="dict.label"
+                      :value="dict.value"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="原桥梁编码" prop="routeBeforeCode">
+                  <el-input v-model="form.routeBeforeCode" placeholder="请输入原桥梁编码"/>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="建成时间(年份)" prop="routeCompletionTime">
+                  <el-date-picker clearable
+                                  v-model="form.routeCompletionTime"
+                                  type="date"
+                                  value-format="yyyy-MM-dd"
+                                  placeholder="请选择建成时间(年份)">
+                  </el-date-picker>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="跨越地物类型" prop="routeCrossFigure">
+                  <el-select v-model="form.routeCrossFigure" placeholder="请选择跨越地物类型">
+                    <el-option
+                      v-for="dict in dict.type.species"
+                      :key="dict.value"
+                      :label="dict.label"
+                      :value="dict.value"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-row>
+              <el-col :span="6">
+                <div class="grid-content bg-purple-light">
+                  <el-form-item label="跨越地物名称" prop="routeCrossName">
+                    <el-input v-model="form.routeCrossName" placeholder="请输入跨越地物名称"/>
+                  </el-form-item>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <div class="grid-content bg-purple-light">
+                  <el-form-item label="主要病害位置" prop="routeDiseasePlace">
+                    <el-select v-model="form.routeDiseasePlace" placeholder="请选择主要病害位置">
+                      <el-option
+                        v-for="dict in dict.type.disease_location"
+                        :key="dict.value"
+                        :label="dict.label"
+                        :value="dict.value"
+                      ></el-option>
+                    </el-select>
+                  </el-form-item>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <div class="grid-content bg-purple-light">
+                  <el-form-item label="主要病害描述" prop="routeDiseaseDescribe">
+                    <el-input v-model="form.routeDiseaseDescribe" type="textarea" placeholder="请输入内容"/>
+                  </el-form-item>
+                </div>
+              </el-col>
+              <el-col :span="6">
+                <div class="grid-content bg-purple-light">
+                  <el-form-item label="墩台防撞设施类型" prop="routeAnticollisionType">
+                    <el-select v-model="form.routeAnticollisionType" placeholder="请选择墩台防撞设施类型">
+                      <el-option
+                        v-for="dict in dict.type.anti_collision_type"
+                        :key="dict.value"
+                        :label="dict.label"
+                        :value="dict.value"
+                      ></el-option>
+                    </el-select>
+                  </el-form-item>
+                </div>
+              </el-col>
+            </el-row>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="抗震等级" prop="routeAntiseismic">
+                  <el-select v-model="form.routeAntiseismic" placeholder="请选择抗震等级">
+                    <el-option
+                      v-for="dict in dict.type.seismic_grade"
+                      :key="dict.value"
+                      :label="dict.label"
+                      :value="dict.value"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
+            </el-col>
+
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="通航等级" prop="routeFlight">
+                  <el-select v-model="form.routeFlight" placeholder="请选择通航等级">
+                    <el-option
+                      v-for="dict in dict.type.navigation_level"
+                      :key="dict.value"
+                      :label="dict.label"
+                      :value="dict.value"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="改建年度" prop="routeRebuild">
+                  <el-date-picker clearable
+                                  v-model="form.routeRebuild"
+                                  type="date"
+                                  value-format="yyyy-MM-dd"
+                                  placeholder="请选择改建年度">
+                  </el-date-picker>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="改造完工日期" prop="routeRebuildEnd">
+                  <el-date-picker clearable
+                                  v-model="form.routeRebuildEnd"
+                                  type="date"
+                                  value-format="yyyy-MM-dd"
+                                  placeholder="请选择改造完工日期">
+                  </el-date-picker>
+                </el-form-item>
+              </div>
+            </el-col>
+
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="改造部位" prop="routeRebuildPlace">
+                  <el-select v-model="form.routeRebuildPlace" placeholder="请选择改造部位">
+                    <el-option
+                      v-for="dict in dict.type.reconstruction_part"
+                      :key="dict.value"
+                      :label="dict.label"
+                      :value="dict.value"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="最近改造工程性质" prop="routeRebuildNature">
+                  <el-select v-model="form.routeRebuildNature" placeholder="请选择最近改造工程性质">
+                    <el-option
+                      v-for="dict in dict.type.transform"
+                      :key="dict.value"
+                      :label="dict.label"
+                      :value="dict.value"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="是否部补助项目" prop="routeSubsidy">
+                  <el-select v-model="form.routeSubsidy" placeholder="请选择是否部补助项目">
+                    <el-option
+                      v-for="dict in dict.type.underwater_tunnel_or_not"
+                      :key="dict.value"
+                      :label="dict.label"
+                      :value="parseInt(dict.value)"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="已采取交通管制措施" prop="routeMethod">
+                  <el-input v-model="form.routeMethod" placeholder="请输入已采取交通管制措施"/>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="桥梁所在位置" prop="routePosition">
+                  <el-select v-model="form.routePosition" placeholder="请选择桥梁所在位置">
+                    <el-option
+                      v-for="dict in dict.type.bridge_location"
+                      :key="dict.value"
+                      :label="dict.label"
+                      :value="parseInt(dict.value)"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="是否宽路窄桥" prop="routeWroadNbridge">
+                  <el-select v-model="form.routeWroadNbridge" placeholder="请选择是否宽路窄桥">
+                    <el-option
+                      v-for="dict in dict.type.underwater_tunnel_or_not"
+                      :key="dict.value"
+                      :label="dict.label"
+                      :value="parseInt(dict.value)"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="是否在长大桥梁目录" prop="routeLongBridges">
+                  <el-select v-model="form.routeLongBridges" placeholder="请选择是否在长大桥梁目录">
+                    <el-option
+                      v-for="dict in dict.type.underwater_tunnel_or_not"
+                      :key="dict.value"
+                      :label="dict.label"
+                      :value="parseInt(dict.value)"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="下部结构形式" prop="routeBottomShape">
+                  <el-select v-model="form.routeBottomShape" placeholder="请选择下部结构形式">
+                    <el-option
+                      v-for="dict in dict.type.bottom_shap"
+                      :key="dict.value"
+                      :label="dict.label"
+                      :value="dict.value"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="导入评定结果" prop="routeResult">
+                  <el-input v-model="form.routeResult" placeholder="请输入导入评定结果"/>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="变更原因" prop="routeReason">
+                  <el-select v-model="form.routeReason" placeholder="请选择变更原因">
+                    <el-option
+                      v-for="dict in dict.type.change_reason"
+                      :key="dict.value"
+                      :label="dict.label"
+                      :value="dict.value"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="支座类型" prop="routeSupport">
+                  <el-select v-model="form.routeSupport" placeholder="请选择支座类型">
+                    <el-option
+                      v-for="dict in dict.type.bearing_type"
+                      :key="dict.value"
+                      :label="dict.label"
+                      :value="dict.value"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="通车日期" prop="routeTrafficDate">
+                  <el-date-picker clearable
+                                  v-model="form.routeTrafficDate"
+                                  type="date"
+                                  value-format="yyyy-MM-dd"
+                                  placeholder="请选择通车日期">
+                  </el-date-picker>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="改造施工单位" prop="routeRenovationUnit">
+                  <el-input v-model="form.routeRenovationUnit" placeholder="请输入改造施工单位"/>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="桥台类型" prop="routeAbutmentType">
+                  <el-select v-model="form.routeAbutmentType" placeholder="请选择桥台类型">
+                    <el-option
+                      v-for="dict in dict.type.abutment_type"
+                      :key="dict.value"
+                      :label="dict.label"
+                      :value="dict.value"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
+            </el-col>
           </el-tab-pane>
           <el-tab-pane label="建养信息" name="second">
-            <el-form-item label="设计单位名称" prop="routeDesigner">
-              <el-input v-model="form.routeDesigner" placeholder="请输入设计单位名称"/>
-            </el-form-item>
-            <el-form-item label="评定单位" prop="evaluationUnit">
-              <el-input v-model="form.evaluationUnit" placeholder="请输入评定单位"/>
-            </el-form-item>
-            <el-form-item label="施工单位名称" prop="routeConstructionUnit">
-              <el-input v-model="form.routeConstructionUnit" placeholder="请输入施工单位名称"/>
-            </el-form-item>
-            <el-form-item label="监理单位名称" prop="routeInspectionUnit">
-              <el-input v-model="form.routeInspectionUnit" placeholder="请输入监理单位名称"/>
-            </el-form-item>
-            <el-form-item label="建设单位名称" prop="routeBuildUnit">
-              <el-input v-model="form.routeBuildUnit" placeholder="请输入建设单位名称"/>
-            </el-form-item>
-            <el-form-item label="监管单位名称" prop="routeSupervise">
-              <el-input v-model="form.routeSupervise" placeholder="请输入监管单位名称"/>
-            </el-form-item>
-            <el-form-item label="管养单位性质" prop="routeCuring">
-              <el-select v-model="form.routeCuring" placeholder="请选择管养单位性质">
-                <el-option
-                  v-for="dict in dict.type.management_maintenance"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="dict.value"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="管养单位代码" prop="routeCuringCode">
-              <el-input v-model="form.routeCuringCode" placeholder="请输入管养单位代码"/>
-            </el-form-item>
-            <el-form-item label="管养单位名称" prop="routeCuringName">
-              <el-input v-model="form.routeCuringName" placeholder="请输入管养单位名称"/>
-            </el-form-item>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="设计单位名称" prop="routeDesigner">
+                  <el-input v-model="form.routeDesigner" placeholder="请输入设计单位名称"/>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="评定单位" prop="evaluationUnit">
+                  <el-input v-model="form.evaluationUnit" placeholder="请输入评定单位"/>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="施工单位名称" prop="routeConstructionUnit">
+                  <el-input v-model="form.routeConstructionUnit" placeholder="请输入施工单位名称"/>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="监理单位名称" prop="routeInspectionUnit">
+                  <el-input v-model="form.routeInspectionUnit" placeholder="请输入监理单位名称"/>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="建设单位名称" prop="routeBuildUnit">
+                  <el-input v-model="form.routeBuildUnit" placeholder="请输入建设单位名称"/>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="监管单位名称" prop="routeSupervise">
+                  <el-input v-model="form.routeSupervise" placeholder="请输入监管单位名称"/>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="管养单位性质" prop="routeCuring">
+                  <el-select v-model="form.routeCuring" placeholder="请选择管养单位性质">
+                    <el-option
+                      v-for="dict in dict.type.management_maintenance"
+                      :key="dict.value"
+                      :label="dict.label"
+                      :value="dict.value"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="管养单位代码" prop="routeCuringCode">
+                  <el-input v-model="form.routeCuringCode" placeholder="请输入管养单位代码"/>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="管养单位名称" prop="routeCuringName">
+                  <el-input v-model="form.routeCuringName" placeholder="请输入管养单位名称"/>
+                </el-form-item>
+              </div>
+            </el-col>
           </el-tab-pane>
           <el-tab-pane label="填报信息" name="third">
-            <el-form-item label="填报单位" prop="fillingUnit">
-              <el-input v-model="form.fillingUnit" placeholder="请输入填报单位"/>
-            </el-form-item>
-            <el-form-item label="填报单位代码" prop="fillingUnitCode">
-              <el-input v-model="form.fillingUnitCode" placeholder="请输入填报单位代码"/>
-            </el-form-item>
-            <el-form-item label="填报单位负责人" prop="fillingUnitLeader">
-              <el-input v-model="form.fillingUnitLeader" placeholder="请输入填报单位负责人"/>
-            </el-form-item>
-            <el-form-item label="填表人" prop="preparer">
-              <el-input v-model="form.preparer" placeholder="请输入填表人"/>
-            </el-form-item>
-            <el-form-item label="填表人电话" prop="preparerTel">
-              <el-input v-model="form.preparerTel" placeholder="请输入填表人电话"/>
-            </el-form-item>
-            <el-form-item label="审核人" prop="process">
-              <el-input v-model="form.process" placeholder="请输入审核人"/>
-            </el-form-item>
-            <el-form-item label="审核人电话" prop="processTel">
-              <el-input v-model="form.processTel" placeholder="请输入审核人电话"/>
-            </el-form-item>
-            <el-form-item label="采集时间" prop="acquisitionTime">
-              <el-date-picker clearable
-                              v-model="form.acquisitionTime"
-                              type="date"
-                              value-format="yyyy-MM-dd"
-                              placeholder="请选择采集时间">
-              </el-date-picker>
-            </el-form-item>
-            <el-form-item label="备注" prop="remarks">
-              <el-input v-model="form.remarks" type="textarea" placeholder="请输入内容"/>
-            </el-form-item>
-
-
-            <el-form-item label="中心桩号" prop="centerStake">
-              <el-input v-model="form.centerStake" placeholder="请输入中心桩号"/>
-            </el-form-item>
-            <el-form-item label="路线编码" prop="luCode">
-              <el-input v-model="form.luCode" placeholder="请输入路线编码"/>
-            </el-form-item>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="填报单位" prop="fillingUnit">
+                  <el-input v-model="form.fillingUnit" placeholder="请输入填报单位"/>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="填报单位代码" prop="fillingUnitCode">
+                  <el-input v-model="form.fillingUnitCode" placeholder="请输入填报单位代码"/>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="填报单位负责人" prop="fillingUnitLeader">
+                  <el-input v-model="form.fillingUnitLeader" placeholder="请输入填报单位负责人"/>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="填表人" prop="preparer">
+                  <el-input v-model="form.preparer" placeholder="请输入填表人"/>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="填表人电话" prop="preparerTel">
+                  <el-input v-model="form.preparerTel" placeholder="请输入填表人电话"/>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="审核人" prop="process">
+                  <el-input v-model="form.process" placeholder="请输入审核人"/>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="审核人电话" prop="processTel">
+                  <el-input v-model="form.processTel" placeholder="请输入审核人电话"/>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="采集时间" prop="acquisitionTime">
+                  <el-date-picker clearable
+                                  v-model="form.acquisitionTime"
+                                  type="date"
+                                  value-format="yyyy-MM-dd"
+                                  placeholder="请选择采集时间">
+                  </el-date-picker>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="备注" prop="remarks">
+                  <el-input v-model="form.remarks" type="textarea" placeholder="请输入内容"/>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="中心桩号" prop="centerStake">
+                  <el-input v-model="form.centerStake" placeholder="请输入中心桩号"/>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="grid-content bg-purple-light">
+                <el-form-item label="路线编码" prop="luCode">
+                  <el-input v-model="form.luCode" placeholder="请输入路线编码"/>
+                </el-form-item>
+              </div>
+            </el-col>
           </el-tab-pane>
         </el-tabs>
       </el-form>
@@ -705,6 +970,8 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+  </div>
+    </div>
   </div>
 </template>
 
@@ -716,15 +983,20 @@ import {
   addInfdormation,
   updateInfdormation
 } from "@/api/system/infdormation";
-
-export default
-{
-  props:["vis","routeId"],
+import {listDept} from "@/api/system/dept";
+import Treeselect from "@riophae/vue-treeselect";
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
+export default {
+  props: ["vis", "routeId"],
   name: "Infdormation",
   dicts: ['seismic_grade', 'top_shap', 'bottom_shap', 'disease_location', 'transform', 'bearing_type', 'bridge_sort', 'bridge_load', 'sys_yes_no', 'navigation_level', 'management_maintenance', 'technical_evaluation', 'bridge_location', 'change_reason', 'abutment_type', 'bridge_zoning', 'bridge_cross', 'anti_collision_type', 'bridge_age_limit', 'top_material', 'species', 'pier_sort', 'collect_fees', 'reconstruction_part', 'underwater_tunnel_or_not'],
+  components: {
+    Treeselect
+  },
   data() {
     return {
-      flag :this.vis,
+      ordinaryOptions: [],
+      flag: this.vis,
       labelPosition: 'top',
       //标签页
       activeName: 'first',
@@ -882,6 +1154,7 @@ export default
     };
   },
   created() {
+    this.getTreeselect();
     this.getList();
   },
   methods: {
@@ -980,6 +1253,25 @@ export default
       };
       this.resetForm("form");
     },
+    /** 转换一般养护数据结构 */
+    normalizer(node) {
+      if (node.children && !node.children.length) {
+        delete node.children;
+      }
+      return {
+        id: node.deptName,
+        label: node.deptName,
+        children: node.children
+      };
+    },
+    /** 查询一般养护下拉树结构 */
+    getTreeselect() {
+      listDept().then(response => {
+        this.ordinaryOptions = [];
+        // const data = { deptId: 0, deptName: '大陆', children: [] };
+        this.ordinaryOptions = this.handleTree(response.data, "deptId", "parentId");
+      });
+    },
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;
@@ -1034,7 +1326,7 @@ export default
               this.getList();
             });
           } else {
-            this.form.luId=this.routeId
+            this.form.luId = this.routeId
             addInfdormation(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;

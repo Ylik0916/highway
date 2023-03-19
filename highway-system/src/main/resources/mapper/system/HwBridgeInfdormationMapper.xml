@@ -89,7 +89,7 @@
             id = lu_id
             <if test="luId != null  and luId != ''"> and lu_id= #{luId}</if>
             <if test="routeCode != null  and routeCode != ''"> and route_code = #{routeCode}</if>
-            <if test="routeName != null  and routeName != ''"> and route_name like concat('%', #{routeName}, '%')</if>
+            <if test="routeName != null  and routeName != ''"> and `hw_bridge_infdormation`.`route_name` like concat('%', #{routeName}, '%')</if>
             <if test="routeLongitude != null  and routeLongitude != ''"> and route_longitude = #{routeLongitude}</if>
             <if test="routeLatitude != null  and routeLatitude != ''"> and route_latitude = #{routeLatitude}</if>
             <if test="routeHigh != null "> and route_high = #{routeHigh}</if>
@@ -389,18 +389,16 @@
             <if test="updateTime != null">update_time = #{updateTime},</if>
             <if test="remarks != null">remarks = #{remarks},</if>
             <if test="routeAdministrativeArea != null">route_administrative_area = #{routeAdministrativeArea},</if>
-
+            <if test="luCode != null">lu_code = #{luCode},</if>
             <if test="centerStake != null">center_stake = #{centerStake},</if>
-
+            <if test="selectRoute != null">select_route = #{selectRoute},</if>
             <if test="evaluationUnit != null">evaluation_unit = #{evaluationUnit},</if>
         </trim>
         where route_id = #{routeId}
     </update>
-
     <delete id="deleteHwBridgeInfdormationByRouteId" parameterType="Long">
         delete from hw_bridge_infdormation where route_id = #{routeId}
     </delete>
-
     <delete id="deleteHwBridgeInfdormationByRouteIds" parameterType="String">
         delete from hw_bridge_infdormation where route_id in
         <foreach item="routeId" collection="array" open="(" separator="," close=")">

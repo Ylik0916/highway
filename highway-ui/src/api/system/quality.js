@@ -42,3 +42,10 @@ export function delQuality(routeQualityId) {
     method: 'delete'
   })
 }
+export function you() {
+  return request({
+    url: '/system/quality/you',
+    method: 'get'
+  })
+}
+

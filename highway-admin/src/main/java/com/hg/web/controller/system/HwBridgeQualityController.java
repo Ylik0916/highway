@@ -1,5 +1,6 @@
 package com.hg.web.controller.system;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -77,6 +78,11 @@ public class HwBridgeQualityController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody HwBridgeQuality hwBridgeQuality)
     {
+        Long a = hwBridgeQuality.getRouteBottomScore();
+        Long b = hwBridgeQuality.getRouteFaceScore();
+        Long c = hwBridgeQuality.getRouteTopScore();
+        double routeDr = a*0.4 + b*0.2 + c*0.4;
+        hwBridgeQuality.setRouteDr((long) routeDr);
         return toAjax(hwBridgeQualityService.insertHwBridgeQuality(hwBridgeQuality));
     }
 
@@ -88,6 +94,11 @@ public class HwBridgeQualityController extends BaseController
     @PutMapping
     public AjaxResult edit(@RequestBody HwBridgeQuality hwBridgeQuality)
     {
+        Long a = hwBridgeQuality.getRouteBottomScore();
+        Long b = hwBridgeQuality.getRouteFaceScore();
+        Long c = hwBridgeQuality.getRouteTopScore();
+        double routeDr = a*0.4 + b*0.2 + c*0.4;
+        hwBridgeQuality.setRouteDr((long) routeDr);
         return toAjax(hwBridgeQualityService.updateHwBridgeQuality(hwBridgeQuality));
     }
 
@@ -100,5 +111,14 @@ public class HwBridgeQualityController extends BaseController
     public AjaxResult remove(@PathVariable Long[] routeQualityIds)
     {
         return toAjax(hwBridgeQualityService.deleteHwBridgeQualityByRouteQualityIds(routeQualityIds));
+    }
+
+    @GetMapping("/you")
+    public List you(){
+       List list = new ArrayList<>();
+        list.add(hwBridgeQualityService.you());
+        list.add(hwBridgeQualityService.hao());
+        list.add(hwBridgeQualityService.zhong());
+        return list;
     }
 }
