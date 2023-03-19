@@ -66,4 +66,12 @@ public interface HwHistoryEvaluateMapper {
      * @return 从业单位及人员历史评价
      */
     public List<HwHistoryEvaluate> selectHwHistoryEvaluateByUnitId(Integer evaluateUnitId);
+
+    /**
+     * 查询从业单位及人员历史评价根据从业人员id
+     *
+     * @param evaluatePersonId 从业人员历史评价主键
+     * @return 从业单位及人员历史评价
+     */
+    public List<HwHistoryEvaluate> selectHwHistoryEvaluateByPersonId(Integer evaluatePersonId);
 }

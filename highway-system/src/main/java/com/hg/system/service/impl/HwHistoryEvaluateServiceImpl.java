@@ -129,4 +129,15 @@ public class HwHistoryEvaluateServiceImpl implements IHwHistoryEvaluateService {
     public List<HwHistoryEvaluate> selectHwHistoryEvaluateByUnitId(Integer evaluateUnitId) {
         return hwHistoryEvaluateMapper.selectHwHistoryEvaluateByUnitId(evaluateUnitId);
     }
+
+    /**
+     * 查询从业单位及人员历史评价根据从业人员id
+     *
+     * @param evaluatePersonId 从业人员历史评价主键
+     * @return 从业单位及人员历史评价
+     */
+    @Override
+    public List<HwHistoryEvaluate> selectHwHistoryEvaluateByPersonId(Integer evaluatePersonId) {
+        return hwHistoryEvaluateMapper.selectHwHistoryEvaluateByPersonId(evaluatePersonId);
+    }
 }

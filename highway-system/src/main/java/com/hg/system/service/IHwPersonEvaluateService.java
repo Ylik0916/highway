@@ -58,4 +58,12 @@ public interface IHwPersonEvaluateService
      * @return 结果
      */
     public int deleteHwPersonEvaluateByPersonId(Long personId);
+
+    /**
+     * 查询从业人员评价列表新版
+     *
+     * @param hwPersonEvaluate 从业人员评价
+     * @return 从业人员评价集合
+     */
+    public List<HwPersonEvaluate> selectHwPersonEvaluateListNew(HwPersonEvaluate hwPersonEvaluate);
 }

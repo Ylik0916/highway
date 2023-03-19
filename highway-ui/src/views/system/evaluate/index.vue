@@ -144,7 +144,7 @@
               value-format="yyyy"
               type="year"
               style="width: 300px"
-              placeholder="请选择年度">
+              placeholder="请选择评价年度">
             </el-date-picker>
           </div>
         </el-form-item>

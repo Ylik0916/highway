@@ -109,4 +109,18 @@ public class HwHistoryEvaluateController extends BaseController {
         List<HwHistoryEvaluate> list = hwHistoryEvaluateService.selectHwHistoryEvaluateByUnitId(evaluateUnitId);
         return getDataTable(list);
     }
+
+    /**
+     * 查询从业单位及人员历史评价根据单位id
+     *
+     * @param evaluatePersonId 从业单位及人员历史评价主键
+     * @return 从业单位及人员历史评价
+     */
+    @PreAuthorize("@ss.hasPermi('system:evaluate:list')")
+    @GetMapping("/historyPersonList/{evaluatePersonId}")
+    public TableDataInfo historyPersonList(@PathVariable("evaluatePersonId") Integer evaluatePersonId) {
+        startPage();
+        List<HwHistoryEvaluate> list = hwHistoryEvaluateService.selectHwHistoryEvaluateByPersonId(evaluatePersonId);
+        return getDataTable(list);
+    }
 }
