@@ -3,15 +3,15 @@
 
     <div class="app-container">
       <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-        <el-form-item label="计划名称" prop="name">
+        <el-form-item label="项目名称" prop="name">
           <el-input
             v-model="queryParams.name"
-            placeholder="请输入计划名称"
+            placeholder="请输入项目名称"
             clearable
             @keyup.enter.native="handleQuery"
           />
         </el-form-item>
-        <el-form-item label="计划类型" prop="type">
+        <el-form-item label="行政区域" prop="type">
           <el-select v-model="queryParams.type" placeholder="请选择计划类型" clearable>
             <el-option
               v-for="dict in dict.type.plan_type"
@@ -21,7 +21,16 @@
             />
           </el-select>
         </el-form-item>
+        <!--<el-form-item label="行政区划" prop="routeAdministrativeArea">-->
+        <!--  <treeselect-->
+        <!--    style="width: 200px"-->
+        <!--    v-model="queryParams.routeAdministrativeArea"-->
+        <!--    :options="ordinaryOptions"-->
+        <!--    :normalizer="normalizer"-->
+        <!--    placeholder="请选择行政区" />-->
+        <!--</el-form-item>-->
 
+<!--
         <el-form-item label="计划年度" prop="planYear">
           <el-select v-model="queryParams.planYear" placeholder="请选择计划年度" clearable>
             <el-option
@@ -31,7 +40,7 @@
               :value="dict.value"
             />
           </el-select>
-        </el-form-item>
+        </el-form-item>-->
 
 
         <el-form-item>
@@ -41,7 +50,7 @@
       </el-form>
 
       <el-row :gutter="10" class="mb8">
-        <el-col :span="1.5">
+        <!--<el-col :span="1.5">
           <el-button
             type="primary"
             plain
@@ -50,7 +59,7 @@
             @click="handleAdd"
             v-hasPermi="['system:plan:add']"
           >新增</el-button>
-        </el-col>
+        </el-col>-->
         <el-col :span="1.5">
           <el-button
             type="warning"
@@ -240,150 +249,150 @@
       <el-dialog :title="title" :visible.sync="open" width="1000px" append-to-body>
         <!--<el-form ref="form" :model="form" :rules="rules" label-width="80px" >-->
         <el-form ref="form" :model="form" :rules="rules" label-width="80px" style="display: flex;flex-wrap: wrap;justify-content: space-between" >
-            <el-form-item label="路线编码" prop="encoding">
-              <el-input v-model="form.encoding" placeholder="请输入路线编码" />
-            </el-form-item>
-            <el-form-item label="路线名称" prop="name">
-              <el-input v-model="form.name" placeholder="请输入路线名称" />
-            </el-form-item>
-            <el-form-item label="路线全长" prop="length">
-              <el-input v-model="form.length" placeholder="请输入路线全长" />
-            </el-form-item>
-            <el-form-item label="管养单位" prop="custodyUnit">
-              <el-input v-model="form.custodyUnit" placeholder="请输入管养单位" />
-            </el-form-item>
-            <el-form-item label="行政区域" prop="region">
-              <el-input v-model="form.region" placeholder="请输入行政区域" />
-            </el-form-item>
-            <el-form-item label="待建里程(公里)" prop="unfinished">
-              <el-input v-model="form.unfinished" placeholder="请输入待建里程(公里)" />
-            </el-form-item>
-            <el-form-item label="技术等级" prop="level">
-              <el-select v-model="form.level" placeholder="请选择技术等级">
-                <el-option
-                  v-for="dict in dict.type.technical_grade"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="parseInt(dict.value)"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="计划修建路面类型" prop="constructedType">
-              <el-select v-model="form.constructedType" placeholder="请选择计划修建路面类型">
-                <el-option
-                  v-for="dict in dict.type.constructed_type"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="parseInt(dict.value)"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="路面宽度" prop="surfaceWidth">
-              <el-input v-model="form.surfaceWidth" placeholder="请输入路面宽度" />
-            </el-form-item>
-            <el-form-item label="路基宽度" prop="roadbedWidth">
-              <el-input v-model="form.roadbedWidth" placeholder="请输入路基宽度" />
-            </el-form-item>
-            <el-form-item label="起点桩号" prop="startingNumber">
-              <el-input v-model="form.startingNumber" placeholder="请输入起点桩号" />
-            </el-form-item>
-            <el-form-item label="终点桩号" prop="terminusNumber">
-              <el-input v-model="form.terminusNumber" placeholder="请输入终点桩号" />
-            </el-form-item>
-            <el-form-item label="国省补助" prop="nationalProvinceSubsidy">
-              <el-input v-model="form.nationalProvinceSubsidy" placeholder="请输入国省补助" />
-            </el-form-item>
-            <el-form-item label="市州投资" prop="municipalityInvest">
-              <el-input v-model="form.municipalityInvest" placeholder="请输入市州投资" />
-            </el-form-item>
-            <el-form-item label="县区自筹" prop="countySelfFund">
-              <el-input v-model="form.countySelfFund" placeholder="请输入县区自筹" />
-            </el-form-item>
-            <el-form-item label="批复资金" prop="replyCapital">
-              <el-input v-model="form.replyCapital" placeholder="请输入批复资金" />
-            </el-form-item>
-            <el-form-item label="合同资金" prop="contractCapital">
-              <el-input v-model="form.contractCapital" placeholder="请输入合同资金" />
-            </el-form-item>
-            <el-form-item label="未开工原因" prop="notInServiceCause">
-              <el-input v-model="form.notInServiceCause" placeholder="请输入未开工原因" />
-            </el-form-item>
-            <el-form-item label="进展进度" prop="progress">
-              <el-input v-model="form.progress" placeholder="请输入进展进度" />
-            </el-form-item>
-            <el-form-item label="批复/整合文件文号" prop="replyFileNumber">
-              <el-input v-model="form.replyFileNumber" placeholder="请输入批复/整合文件文号" />
-            </el-form-item>
-            <el-form-item label="责任单位" prop="accountabilityUnit">
-              <el-input v-model="form.accountabilityUnit" placeholder="请输入责任单位" />
-            </el-form-item>
-            <el-form-item label="责任人" prop="personInCharge">
-              <el-input v-model="form.personInCharge" placeholder="请输入责任人" />
-            </el-form-item>
-            <el-form-item label="电话" prop="phone">
-              <el-input v-model="form.phone" placeholder="请输入电话" />
-            </el-form-item>
-            <el-form-item label="开工年限" prop="startWorkYear">
-              <el-select v-model="form.startWorkYear" placeholder="请选择开工年限">
-                <el-option
-                  v-for="dict in dict.type.plan_year"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="parseInt(dict.value)"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="完工年限" prop="completionYear">
-              <el-select v-model="form.completionYear" placeholder="请选择完工年限">
-                <el-option
-                  v-for="dict in dict.type.plan_year"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="parseInt(dict.value)"
-                ></el-option>
-              </el-select>
-            </el-form-item>
+          <el-form-item label="路线编码" prop="encoding">
+            <el-input v-model="form.encoding" placeholder="请输入路线编码" />
+          </el-form-item>
+          <el-form-item label="路线名称" prop="name">
+            <el-input v-model="form.name" placeholder="请输入路线名称" />
+          </el-form-item>
+          <el-form-item label="路线全长" prop="length">
+            <el-input v-model="form.length" placeholder="请输入路线全长" />
+          </el-form-item>
+          <el-form-item label="管养单位" prop="custodyUnit">
+            <el-input v-model="form.custodyUnit" placeholder="请输入管养单位" />
+          </el-form-item>
+          <el-form-item label="行政区域" prop="region">
+            <el-input v-model="form.region" placeholder="请输入行政区域" />
+          </el-form-item>
+          <el-form-item label="待建里程(公里)" prop="unfinished">
+            <el-input v-model="form.unfinished" placeholder="请输入待建里程(公里)" />
+          </el-form-item>
+          <el-form-item label="技术等级" prop="level">
+            <el-select v-model="form.level" placeholder="请选择技术等级">
+              <el-option
+                v-for="dict in dict.type.technical_grade"
+                :key="dict.value"
+                :label="dict.label"
+                :value="parseInt(dict.value)"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="计划修建路面类型" prop="constructedType">
+            <el-select v-model="form.constructedType" placeholder="请选择计划修建路面类型">
+              <el-option
+                v-for="dict in dict.type.constructed_type"
+                :key="dict.value"
+                :label="dict.label"
+                :value="parseInt(dict.value)"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="路面宽度" prop="surfaceWidth">
+            <el-input v-model="form.surfaceWidth" placeholder="请输入路面宽度" />
+          </el-form-item>
+          <el-form-item label="路基宽度" prop="roadbedWidth">
+            <el-input v-model="form.roadbedWidth" placeholder="请输入路基宽度" />
+          </el-form-item>
+          <el-form-item label="起点桩号" prop="startingNumber">
+            <el-input v-model="form.startingNumber" placeholder="请输入起点桩号" />
+          </el-form-item>
+          <el-form-item label="终点桩号" prop="terminusNumber">
+            <el-input v-model="form.terminusNumber" placeholder="请输入终点桩号" />
+          </el-form-item>
+          <el-form-item label="国省补助" prop="nationalProvinceSubsidy">
+            <el-input v-model="form.nationalProvinceSubsidy" placeholder="请输入国省补助" />
+          </el-form-item>
+          <el-form-item label="市州投资" prop="municipalityInvest">
+            <el-input v-model="form.municipalityInvest" placeholder="请输入市州投资" />
+          </el-form-item>
+          <el-form-item label="县区自筹" prop="countySelfFund">
+            <el-input v-model="form.countySelfFund" placeholder="请输入县区自筹" />
+          </el-form-item>
+          <el-form-item label="批复资金" prop="replyCapital">
+            <el-input v-model="form.replyCapital" placeholder="请输入批复资金" />
+          </el-form-item>
+          <el-form-item label="合同资金" prop="contractCapital">
+            <el-input v-model="form.contractCapital" placeholder="请输入合同资金" />
+          </el-form-item>
+          <el-form-item label="未开工原因" prop="notInServiceCause">
+            <el-input v-model="form.notInServiceCause" placeholder="请输入未开工原因" />
+          </el-form-item>
+          <el-form-item label="进展进度" prop="progress">
+            <el-input v-model="form.progress" placeholder="请输入进展进度" />
+          </el-form-item>
+          <el-form-item label="批复/整合文件文号" prop="replyFileNumber">
+            <el-input v-model="form.replyFileNumber" placeholder="请输入批复/整合文件文号" />
+          </el-form-item>
+          <el-form-item label="责任单位" prop="accountabilityUnit">
+            <el-input v-model="form.accountabilityUnit" placeholder="请输入责任单位" />
+          </el-form-item>
+          <el-form-item label="责任人" prop="personInCharge">
+            <el-input v-model="form.personInCharge" placeholder="请输入责任人" />
+          </el-form-item>
+          <el-form-item label="电话" prop="phone">
+            <el-input v-model="form.phone" placeholder="请输入电话" />
+          </el-form-item>
+          <el-form-item label="开工年限" prop="startWorkYear">
+            <el-select v-model="form.startWorkYear" placeholder="请选择开工年限">
+              <el-option
+                v-for="dict in dict.type.plan_year"
+                :key="dict.value"
+                :label="dict.label"
+                :value="parseInt(dict.value)"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="完工年限" prop="completionYear">
+            <el-select v-model="form.completionYear" placeholder="请选择完工年限">
+              <el-option
+                v-for="dict in dict.type.plan_year"
+                :key="dict.value"
+                :label="dict.label"
+                :value="parseInt(dict.value)"
+              ></el-option>
+            </el-select>
+          </el-form-item>
 
 
-            <el-form-item label="施工图设计是否完成"  style="width: 100%" prop="productionDrawing">
-              <!--<el-radio-group v-model="form.productionDrawing">
-                <el-radio
-                  v-for="dict in dict.type.true_false"
-                  :key="dict.value"
-                  :label="parseInt(dict.value)"
-                >{{dict.label}}</el-radio>
-              </el-radio-group>-->
-              <el-switch v-model="form.productionDrawing"></el-switch>
-            </el-form-item>
-            <el-form-item label="施工图审批是否完成" style="width: 100%" prop="productionDrawingApproval">
-              <!--<el-radio-group v-model="form.productionDrawingApproval">
-                <el-radio
-                  v-for="dict in dict.type.true_false"
-                  :key="dict.value"
-                  :label="parseInt(dict.value)"
-                >{{dict.label}}</el-radio>
-              </el-radio-group>-->
-              <el-switch v-model="form.productionDrawingApproval"></el-switch>
-            </el-form-item>
-            <el-form-item label="施工招投标是否完成" style="width: 100%" prop="bidWhetherCompletion">
-              <!--<el-radio-group v-model="form.bidWhetherCompletion">
-                <el-radio
-                  v-for="dict in dict.type.true_false"
-                  :key="dict.value"
-                  :label="parseInt(dict.value)"
-                >{{dict.label}}</el-radio>
-              </el-radio-group>-->
-              <el-switch v-model="form.bidWhetherCompletion"></el-switch>
-            </el-form-item>
-            <el-form-item label="备注" style="width: 100%" prop="postscript">
-              <el-input v-model="form.postscript" type="textarea" placeholder="请输入内容" />
-            </el-form-item>
-            <!--<el-form-item label="年度计划ID"  prop="planId">-->
-            <!--  <el-input v-model="form.planId" placeholder="请输入年度计划ID" />-->
-            <!--</el-form-item>-->
-            <el-form-item label="病害内容" style="width: 100%" prop="disease">
-              <el-input v-model="form.disease" type="textarea" placeholder="请输入内容" />
-            </el-form-item>
+          <el-form-item label="施工图设计是否完成"  style="width: 100%" prop="productionDrawing">
+            <!--<el-radio-group v-model="form.productionDrawing">
+              <el-radio
+                v-for="dict in dict.type.true_false"
+                :key="dict.value"
+                :label="parseInt(dict.value)"
+              >{{dict.label}}</el-radio>
+            </el-radio-group>-->
+            <el-switch v-model="form.productionDrawing"></el-switch>
+          </el-form-item>
+          <el-form-item label="施工图审批是否完成" style="width: 100%" prop="productionDrawingApproval">
+            <!--<el-radio-group v-model="form.productionDrawingApproval">
+              <el-radio
+                v-for="dict in dict.type.true_false"
+                :key="dict.value"
+                :label="parseInt(dict.value)"
+              >{{dict.label}}</el-radio>
+            </el-radio-group>-->
+            <el-switch v-model="form.productionDrawingApproval"></el-switch>
+          </el-form-item>
+          <el-form-item label="施工招投标是否完成" style="width: 100%" prop="bidWhetherCompletion">
+            <!--<el-radio-group v-model="form.bidWhetherCompletion">
+              <el-radio
+                v-for="dict in dict.type.true_false"
+                :key="dict.value"
+                :label="parseInt(dict.value)"
+              >{{dict.label}}</el-radio>
+            </el-radio-group>-->
+            <el-switch v-model="form.bidWhetherCompletion"></el-switch>
+          </el-form-item>
+          <el-form-item label="备注" style="width: 100%" prop="postscript">
+            <el-input v-model="form.postscript" type="textarea" placeholder="请输入内容" />
+          </el-form-item>
+          <!--<el-form-item label="年度计划ID"  prop="planId">-->
+          <!--  <el-input v-model="form.planId" placeholder="请输入年度计划ID" />-->
+          <!--</el-form-item>-->
+          <el-form-item label="病害内容" style="width: 100%" prop="disease">
+            <el-input v-model="form.disease" type="textarea" placeholder="请输入内容" />
+          </el-form-item>
 
 
 
@@ -406,7 +415,7 @@ import {listPlan, getPlan, delPlan, addPlan, updatePlan, listItemAnd2} from "@/a
 import {getItem} from "@/api/system/item";
 
 export default {
-  name: "DetailedReporting",
+  name: "ProgressReport",
   dicts: ['plan_type', 'plan_year', 'fill_period', 'reply_character', 'affiliation'],
   data() {
     return {
