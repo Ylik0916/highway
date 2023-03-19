@@ -32,7 +32,7 @@ public class HwProjectInformation extends BaseEntity {
      * 行政区域
      */
     @Excel(name = "行政区域")
-    private Integer administrativeRegion;
+    private String administrativeRegion;
 
     /**
      * 路线信息==》路线编号（路线编码）
@@ -139,7 +139,9 @@ public class HwProjectInformation extends BaseEntity {
     @Excel(name = "招标费用==》暂定金，单位：万元")
     private Long provisionalPayment;
 
-    /** 附件 */
+    /**
+     * 附件
+     */
     @Excel(name = "附件")
     private String documentUpload;
 
@@ -169,11 +171,11 @@ public class HwProjectInformation extends BaseEntity {
         return projectName;
     }
 
-    public void setAdministrativeRegion(Integer administrativeRegion) {
+    public void setAdministrativeRegion(String administrativeRegion) {
         this.administrativeRegion = administrativeRegion;
     }
 
-    public Integer getAdministrativeRegion() {
+    public String getAdministrativeRegion() {
         return administrativeRegion;
     }
 
@@ -313,13 +315,11 @@ public class HwProjectInformation extends BaseEntity {
         return provisionalPayment;
     }
 
-    public void setDocumentUpload(String documentUpload)
-    {
+    public void setDocumentUpload(String documentUpload) {
         this.documentUpload = documentUpload;
     }
 
-    public String getDocumentUpload()
-    {
+    public String getDocumentUpload() {
         return documentUpload;
     }
 

@@ -1,248 +1,253 @@
 <template>
-  <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="人员姓名" prop="personName">
-        <el-input
-          v-model="queryParams.personName"
-          placeholder="请输入从业人员姓名"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="所属单位" prop="unitName">
-        <el-input
-          v-model="queryParams.unitName"
-          placeholder="请输入所属单位"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="单位类型" prop="unitName">
-        <el-select v-model="queryParams.unitType" @keyup.enter.native="handleQuery" clearable placeholder="请选择单位类型">
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="评价年度" prop="evaluateYears">
-        <div class="block">
-          <el-date-picker
-            v-model="queryParams.evaluateYears"
-            value-format="yyyy"
-            type="year"
-            @keyup.enter.native="handleQuery"
-            placeholder="请输入评价年度">
-          </el-date-picker>
-        </div>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </el-form>
+  <div class="bigBox">
+    <div class="smallBox">
+      <div class="app-container">
+        <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch"
+                 label-width="68px">
+          <el-form-item label="人员姓名" prop="personName">
+            <el-input
+              v-model="queryParams.personName"
+              placeholder="请输入从业人员姓名"
+              clearable
+              @keyup.enter.native="handleQuery"
+            />
+          </el-form-item>
+          <el-form-item label="所属单位" prop="unitName">
+            <el-input
+              v-model="queryParams.unitName"
+              placeholder="请输入所属单位"
+              clearable
+              @keyup.enter.native="handleQuery"
+            />
+          </el-form-item>
+          <el-form-item label="单位类型" prop="unitName">
+            <el-select v-model="queryParams.unitType" @keyup.enter.native="handleQuery" clearable placeholder="请选择单位类型">
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="评价年度" prop="evaluateYears">
+            <div class="block">
+              <el-date-picker
+                v-model="queryParams.evaluateYears"
+                value-format="yyyy"
+                type="year"
+                @keyup.enter.native="handleQuery"
+                placeholder="请输入评价年度">
+              </el-date-picker>
+            </div>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+          </el-form-item>
+        </el-form>
 
-    <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['system:person:add']"
-        >新增
-        </el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:person:edit']"
-        >修改
-        </el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['system:person:remove']"
-        >删除
-        </el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['system:person:export']"
-        >导出
-        </el-button>
-      </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
-    </el-row>
-
-    <el-table v-loading="loading" :data="personList" @selection-change="handleSelectionChange">
-      <el-table-column label="从业人员名称" align="center" prop="personName"/>
-      <el-table-column label="所属单位" align="center" prop="hwUnitEvaluate.unitName" :show-overflow-tooltip='true'/>
-      <el-table-column label="单位类型" align="center" prop="unitType"/>
-      <el-table-column label="评价年度" align="center" prop="evaluateYears">
-        <template slot-scope="scope">
-          {{ scope.row.evaluateYears }}年
-        </template>
-      </el-table-column>
-      <el-table-column label="评价分数" align="center" prop="hwHistoryEvaluate.evaluateScore"/>
-      <el-table-column label="评价等级" align="center" prop="hwHistoryEvaluate.evaluateGrade"/>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="success"
-            style="width: 60px"
-            @click="getHistoryList(scope.row)"
-          >历史评价
-          </el-button>
-          <el-button
-            size="mini"
-            type="primary"
-            style="width: 45px"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:person:edit']"
-          >编辑
-          </el-button>
-          <el-button
-            size="mini"
-            type="danger"
-            style="width: 45px"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['system:person:remove']"
-          >删除
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-
-    <pagination
-      v-show="total>0"
-      :total="total"
-      :page.sync="queryParams.pageNum"
-      :limit.sync="queryParams.pageSize"
-      @pagination="getList"
-    />
-
-    <!-- 添加或修改从业人员评价对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px" label-position="top"
-               style="margin-left: 80px">
-        <el-form-item label="评价年度" prop="evaluateYears">
-          <div class="block">
-            <el-date-picker
-              v-model="form.evaluateYears"
-              value-format="yyyy"
-              type="year"
-              style="width: 300px"
-              placeholder="请选择评价年度">
-            </el-date-picker>
-          </div>
-        </el-form-item>
-        <el-form-item label="从业人员姓名" prop="personName">
-          <el-input v-model="form.personName" placeholder="请输入从业人员姓名" style="width: 300px"/>
-        </el-form-item>
-        <el-form-item label="所属单位" prop="personUnit">
-          <el-select v-model="form.personUnit" clearable placeholder="请输入所属单位" style="width: 300px">
-            <el-option
-              v-for="item in unitList"
-              :key="item.unitId"
-              :label="item.unitName"
-              :value="item.unitId">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="单位类型" prop="unitType">
-          <el-select v-model="form.unitType" clearable placeholder="请选择单位类型" style="width: 300px">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
-      </div>
-    </el-dialog>
-    <!-- 历史评价对话框 -->
-    <el-dialog :title="historyTitle" :visible.sync="historyOpen" width="700px" append-to-body>
-      <el-row :gutter="10" class="mb8">
-        <el-col :span="1.5">
-          <el-button
-            type="primary"
-            plain
-            icon="el-icon-plus"
-            size="mini"
-            @click="handleHistoryAdd"
-            v-hasPermi="['system:evaluate:add']"
-          >新增
-          </el-button>
-        </el-col>
-      </el-row>
-      <el-table v-loading="loading" :data="historyList">
-        <el-table-column label="评价时间" align="center" prop="evaluateTime"/>
-        <el-table-column label="评价分数" align="center" prop="evaluateScore"/>
-        <el-table-column label="评价等级" align="center" prop="evaluateGrade"/>
-        <el-table-column label="评价附件" align="center" prop="evaluateDocumentUpload"/>
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-          <template slot-scope="scope">
+        <el-row :gutter="10" class="mb8">
+          <el-col :span="1.5">
             <el-button
-              size="mini"
               type="primary"
-              style="width: 45px"
-              @click="handleHistoryUpdate(scope.row)"
-              v-hasPermi="['system:evaluate:edit']"
-            >编辑
-            </el-button>
-            <el-button
+              plain
+              icon="el-icon-plus"
               size="mini"
+              @click="handleAdd"
+              v-hasPermi="['system:person:add']"
+            >新增
+            </el-button>
+          </el-col>
+          <el-col :span="1.5">
+            <el-button
+              type="success"
+              plain
+              icon="el-icon-edit"
+              size="mini"
+              :disabled="single"
+              @click="handleUpdate"
+              v-hasPermi="['system:person:edit']"
+            >修改
+            </el-button>
+          </el-col>
+          <el-col :span="1.5">
+            <el-button
               type="danger"
-              style="width: 45px"
-              @click="handleHistoryDelete(scope.row)"
-              v-hasPermi="['system:evaluate:remove']"
+              plain
+              icon="el-icon-delete"
+              size="mini"
+              :disabled="multiple"
+              @click="handleDelete"
+              v-hasPermi="['system:person:remove']"
             >删除
             </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-    </el-dialog>
-    <!-- 添加或修改历史评价对话框 -->
-    <el-dialog :title="historyAddTitle" :visible.sync="historyAddOpen" width="500px" append-to-body>
-      <el-form ref="historyForm" :model="historyForm" :rules="historyRules" label-width="80px">
-        <el-form-item label="评分" prop="evaluateScore" style="width: 300px">
-          <el-input v-model="historyForm.evaluateScore" placeholder="请输入评分施工标名称"/>
-        </el-form-item>
-        <el-form-item label="附件" prop="evaluateDocumentUpload">
-          <file-upload v-model="historyForm.evaluateDocumentUpload"/>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="historySubmitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
+          </el-col>
+          <el-col :span="1.5">
+            <el-button
+              type="warning"
+              plain
+              icon="el-icon-download"
+              size="mini"
+              @click="handleExport"
+              v-hasPermi="['system:person:export']"
+            >导出
+            </el-button>
+          </el-col>
+          <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+        </el-row>
+
+        <el-table v-loading="loading" :data="personList" @selection-change="handleSelectionChange">
+          <el-table-column label="从业人员名称" align="center" prop="personName"/>
+          <el-table-column label="所属单位" align="center" prop="hwUnitEvaluate.unitName" :show-overflow-tooltip='true'/>
+          <el-table-column label="单位类型" align="center" prop="unitType"/>
+          <el-table-column label="评价年度" align="center" prop="evaluateYears">
+            <template slot-scope="scope">
+              {{ scope.row.evaluateYears }}年
+            </template>
+          </el-table-column>
+          <el-table-column label="评价分数" align="center" prop="hwHistoryEvaluate.evaluateScore"/>
+          <el-table-column label="评价等级" align="center" prop="hwHistoryEvaluate.evaluateGrade"/>
+          <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+            <template slot-scope="scope">
+              <el-button
+                size="mini"
+                type="success"
+                style="width: 60px"
+                @click="getHistoryList(scope.row)"
+              >历史评价
+              </el-button>
+              <el-button
+                size="mini"
+                type="primary"
+                style="width: 45px"
+                @click="handleUpdate(scope.row)"
+                v-hasPermi="['system:person:edit']"
+              >编辑
+              </el-button>
+              <el-button
+                size="mini"
+                type="danger"
+                style="width: 45px"
+                @click="handleDelete(scope.row)"
+                v-hasPermi="['system:person:remove']"
+              >删除
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+
+        <pagination
+          v-show="total>0"
+          :total="total"
+          :page.sync="queryParams.pageNum"
+          :limit.sync="queryParams.pageSize"
+          @pagination="getList"
+        />
+
+        <!-- 添加或修改从业人员评价对话框 -->
+        <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
+          <el-form ref="form" :model="form" :rules="rules" label-width="80px" label-position="top"
+                   style="margin-left: 80px">
+            <el-form-item label="评价年度" prop="evaluateYears">
+              <div class="block">
+                <el-date-picker
+                  v-model="form.evaluateYears"
+                  value-format="yyyy"
+                  type="year"
+                  style="width: 300px"
+                  placeholder="请选择评价年度">
+                </el-date-picker>
+              </div>
+            </el-form-item>
+            <el-form-item label="从业人员姓名" prop="personName">
+              <el-input v-model="form.personName" placeholder="请输入从业人员姓名" style="width: 300px"/>
+            </el-form-item>
+            <el-form-item label="所属单位" prop="personUnit">
+              <el-select v-model="form.personUnit" clearable placeholder="请输入所属单位" style="width: 300px">
+                <el-option
+                  v-for="item in unitList"
+                  :key="item.unitId"
+                  :label="item.unitName"
+                  :value="item.unitId">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="单位类型" prop="unitType">
+              <el-select v-model="form.unitType" clearable placeholder="请选择单位类型" style="width: 300px">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="submitForm">确 定</el-button>
+            <el-button @click="cancel">取 消</el-button>
+          </div>
+        </el-dialog>
+        <!-- 历史评价对话框 -->
+        <el-dialog :title="historyTitle" :visible.sync="historyOpen" width="700px" append-to-body>
+          <el-row :gutter="10" class="mb8">
+            <el-col :span="1.5">
+              <el-button
+                type="primary"
+                plain
+                icon="el-icon-plus"
+                size="mini"
+                @click="handleHistoryAdd"
+                v-hasPermi="['system:evaluate:add']"
+              >新增
+              </el-button>
+            </el-col>
+          </el-row>
+          <el-table v-loading="loading" :data="historyList">
+            <el-table-column label="评价时间" align="center" prop="evaluateTime"/>
+            <el-table-column label="评价分数" align="center" prop="evaluateScore"/>
+            <el-table-column label="评价等级" align="center" prop="evaluateGrade"/>
+            <el-table-column label="评价附件" align="center" prop="evaluateDocumentUpload"/>
+            <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+              <template slot-scope="scope">
+                <el-button
+                  size="mini"
+                  type="primary"
+                  style="width: 45px"
+                  @click="handleHistoryUpdate(scope.row)"
+                  v-hasPermi="['system:evaluate:edit']"
+                >编辑
+                </el-button>
+                <el-button
+                  size="mini"
+                  type="danger"
+                  style="width: 45px"
+                  @click="handleHistoryDelete(scope.row)"
+                  v-hasPermi="['system:evaluate:remove']"
+                >删除
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-dialog>
+        <!-- 添加或修改历史评价对话框 -->
+        <el-dialog :title="historyAddTitle" :visible.sync="historyAddOpen" width="500px" append-to-body>
+          <el-form ref="historyForm" :model="historyForm" :rules="historyRules" label-width="80px">
+            <el-form-item label="评分" prop="evaluateScore" style="width: 300px">
+              <el-input v-model="historyForm.evaluateScore" placeholder="请输入评分施工标名称"/>
+            </el-form-item>
+            <el-form-item label="附件" prop="evaluateDocumentUpload">
+              <file-upload v-model="historyForm.evaluateDocumentUpload"/>
+            </el-form-item>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="historySubmitForm">确 定</el-button>
+            <el-button @click="cancel">取 消</el-button>
+          </div>
+        </el-dialog>
       </div>
-    </el-dialog>
+    </div>
   </div>
 </template>
 
