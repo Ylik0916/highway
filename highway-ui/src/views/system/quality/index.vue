@@ -1,259 +1,268 @@
 <template>
-  <div class="app-container">
-    <div id="one">
-      <div id="main"></div>
-    </div>
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="桥梁名称" prop="routeName">
-        <el-input
-          v-model="queryParams.routeName"
-          placeholder="请输入桥梁名称"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="桥梁编码" prop="routeCode">
-        <el-input
-          v-model="queryParams.routeCode"
-          placeholder="请输入桥梁编码"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </el-form>
-    <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="handleAdd"
-          v-hasPermi="['system:quality:add']"
-        >新增
-        </el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:quality:edit']"
-        >修改
-        </el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['system:quality:remove']"
-        >删除
-        </el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          @click="handleExport"
-          v-hasPermi="['system:quality:export']"
-        >导出
-        </el-button>
-      </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
-    </el-row>
-
-    <el-table v-loading="loading" :data="qualityList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center"/>
-      <el-table-column label="桥梁名称" align="center" prop="routeName"/>
-      <el-table-column label="桥梁编码" align="center" prop="routeCode"/>
-      <el-table-column label="DR" align="center" prop="routeDr"/>
-      <el-table-column label="桥梁技术状况指数评定" align="center">
-        <!--      <el-table-column label="桥梁质量id" align="center" prop="routeQualityId" />-->
-        <el-table-column label="SPCI" align="center" prop="routeTopScore"/>
-        <el-table-column label="SBCI" align="center" prop="routeBottomScore"/>
-        <el-table-column label="BDCI" align="center" prop="routeFaceScore"/>
-      </el-table-column>
-      <el-table-column label="评定时间" align="center" prop="routeScoreDate" width="180">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.routeScoreDate, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handlexq(scope.row)"
-            v-hasPermi="['system:quality:edit']"
-          >详情
-          </el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-edit"
-            @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:quality:edit']"
-          >修改
-          </el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['system:quality:remove']"
-          >删除
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-
-    <pagination
-      v-show="total>0"
-      :total="total"
-      :page.sync="queryParams.pageNum"
-      :limit.sync="queryParams.pageSize"
-      @pagination="getList"
-    />
-    <!--详情页面-->
-    <el-dialog :title="title" :visible.sync="opener" width="1000px" append-to-body>
-      <el-tabs v-model="activeName" type="card" @tab-click="handlexq">
-        <el-tab-pane label="桥梁质量" name="first">
-          <el-descriptions :model="form">
-            <el-descriptions-item label="桥梁名称">{{ form.routeName }}</el-descriptions-item>
-            <el-descriptions-item label="桥梁编码">{{ form.routeCode }}</el-descriptions-item>
-            <el-descriptions-item label="行政区划">{{ form.routeAdministrativeArea }}</el-descriptions-item>
-            <el-descriptions-item label="上部结构评分SPCI">{{ form.routeTopScore }}</el-descriptions-item>
-            <el-descriptions-item label="下部结构评分SBCI">{{ form.routeBottomScore }}</el-descriptions-item>
-            <el-descriptions-item label="桥面系评分BDCI">{{ form.routeFaceScore }}</el-descriptions-item>
-            <el-descriptions-item label="技术状况得分DR">{{ form.routeDr }}</el-descriptions-item>
-            <el-descriptions-item label="评定时间">{{ form.routeScoreDate }}</el-descriptions-item>
-            <el-descriptions-item label="评定单位">{{ form.routeCompany }}</el-descriptions-item>
-          </el-descriptions>
-        </el-tab-pane>
-      </el-tabs>
-    </el-dialog>
-    <!--选择桥梁-->
-    <el-dialog :title="title" :visible.sync="openers" width="1500px" append-to-body>
-      <Infdormations @chuan="shou"></Infdormations>
-    </el-dialog>
-    <!-- 添加或修改桥梁质量对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="700px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="200px" :label-position="labelPosition">
-        <el-tabs v-model="activeName" type="card" @tab-click="handleAdd">
-          <el-tab-pane label="基本信息" name="first">
-            <el-row>
-              <el-col :span="8">
-                <div class="grid-content bg-purple">
-                  <el-form-item label="桥梁名称" prop="routeName">
-                    <el-input v-model="form.routeName" placeholder="请输入桥梁名称" :disabled="true">
-                      {{bridge}}
-                    </el-input>
-                  </el-form-item>
-                </div>
-              </el-col>
-              <el-col :span="8">
-                <div class="grid-content bg-purple">
-                  <el-form-item label="桥梁编码" prop="routeCode">
-                    <el-input v-model="form.routeCode" placeholder="请输入桥梁编码" :disabled="true">
-                      {{bridgeCode}}
-                    </el-input>
-                  </el-form-item>
-                </div>
-              </el-col>
-              <el-col :span="8">
-                <div class="grid-content bg-purple">
-                  <el-form-item label="点击选择桥梁">
-                    <el-button type="primary" @click="selectRout">选择桥梁</el-button>
-                  </el-form-item>
-
-                </div>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="8">
-                <div class="grid-content bg-purple-light">
-                  <el-form-item label="下部结构评分SBCI" prop="routeBottomScore">
-                    <el-input v-model="form.routeBottomScore" placeholder="请输入下部结构评分SBCI"/>
-                  </el-form-item>
-                </div>
-              </el-col>
-              <el-col :span="8">
-                <div class="grid-content bg-purple">
-                  <el-form-item label="桥面系评分BDCI" prop="routeFaceScore">
-                    <el-input v-model="form.routeFaceScore" placeholder="请输入桥面系评分BDCI"/>
-                  </el-form-item>
-                </div>
-              </el-col>
-              <el-col :span="8">
-                <div class="grid-content bg-purple-light">
-                  <el-form-item label="上部结构评分SPCI" prop="routeTopScore">
-                    <el-input v-model="form.routeTopScore" placeholder="请输入上部结构评分SPCI"/>
-                  </el-form-item>
-                </div>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="8">
-                <div class="grid-content bg-purple-light">
-                  <el-form-item label="行政区划" prop="routeAdministrativeArea">
-                    <el-input v-model="form.routeAdministrativeArea" placeholder="请输入行政区划" :disabled="true">
-                      {{ form.routeAdministrativeArea }}
-                    </el-input>
-                  </el-form-item>
-                </div>
-              </el-col>
-              <el-col :span="8">
-                <div class="grid-content bg-purple">
-                  <el-form-item label="技术状况得分DR" prop="routeDr" >
-                    <el-input v-model="form.routeDr" :disabled="true" placeholder="请输入技术状况得分DR">
-                      {{form.routeDr}}
-                    </el-input>
-                  </el-form-item>
-                </div>
-              </el-col>
-              <el-col :span="8">
-                <div class="grid-content bg-purple">
-                  <el-form-item label="评定时间" prop="routeScoreDate">
-                    <el-date-picker clearable
-                                    v-model="form.routeScoreDate"
-                                    type="date"
-                                    value-format="yyyy-MM-dd"
-                                    placeholder="请选择评定时间">
-                    </el-date-picker>
-                  </el-form-item>
-                </div>
-              </el-col>
-            </el-row>
-            <el-col :span="8">
-              <div class="grid-content bg-purple">
-                <el-form-item label="评定单位" prop="routeCompany">
-                  <el-input v-model="form.routeCompany" placeholder="请输入评定单位"/>
-                </el-form-item>
-              </div>
-            </el-col>
-          </el-tab-pane>
-        </el-tabs>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
+  <div class="bigBox">
+    <div class="smallBox">
+      <div class="app-container">
+        <div id="one">
+          <div id="main"></div>
+        </div>
       </div>
-    </el-dialog>
+    </div>
+    <div class="bigBox">
+      <div class="smallBox" style="padding: 25px;height: 2000px" >
+        <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch"
+                 label-width="68px">
+          <el-form-item label="桥梁名称" prop="routeName">
+            <el-input
+              v-model="queryParams.routeName"
+              placeholder="请输入桥梁名称"
+              clearable
+              @keyup.enter.native="handleQuery"
+            />
+          </el-form-item>
+          <el-form-item label="桥梁编码" prop="routeCode">
+            <el-input
+              v-model="queryParams.routeCode"
+              placeholder="请输入桥梁编码"
+              clearable
+              @keyup.enter.native="handleQuery"
+            />
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+          </el-form-item>
+        </el-form>
+        <el-row :gutter="10" class="mb8">
+          <el-col :span="1.5">
+            <el-button
+              type="primary"
+              plain
+              icon="el-icon-plus"
+              size="mini"
+              @click="handleAdd"
+              v-hasPermi="['system:quality:add']"
+            >新增
+            </el-button>
+          </el-col>
+          <el-col :span="1.5">
+            <el-button
+              type="success"
+              plain
+              icon="el-icon-edit"
+              size="mini"
+              :disabled="single"
+              @click="handleUpdate"
+              v-hasPermi="['system:quality:edit']"
+            >修改
+            </el-button>
+          </el-col>
+          <el-col :span="1.5">
+            <el-button
+              type="danger"
+              plain
+              icon="el-icon-delete"
+              size="mini"
+              :disabled="multiple"
+              @click="handleDelete"
+              v-hasPermi="['system:quality:remove']"
+            >删除
+            </el-button>
+          </el-col>
+          <el-col :span="1.5">
+            <el-button
+              type="warning"
+              plain
+              icon="el-icon-download"
+              size="mini"
+              @click="handleExport"
+              v-hasPermi="['system:quality:export']"
+            >导出
+            </el-button>
+          </el-col>
+          <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+        </el-row>
+
+        <el-table v-loading="loading" :data="qualityList" @selection-change="handleSelectionChange">
+          <el-table-column type="selection" width="55" align="center"/>
+          <el-table-column label="桥梁名称" align="center" prop="routeName"/>
+          <el-table-column label="桥梁编码" align="center" prop="routeCode"/>
+          <el-table-column label="DR" align="center" prop="routeDr"/>
+          <el-table-column label="桥梁技术状况指数评定" align="center">
+            <!--      <el-table-column label="桥梁质量id" align="center" prop="routeQualityId" />-->
+            <el-table-column label="SPCI" align="center" prop="routeTopScore"/>
+            <el-table-column label="SBCI" align="center" prop="routeBottomScore"/>
+            <el-table-column label="BDCI" align="center" prop="routeFaceScore"/>
+          </el-table-column>
+          <el-table-column label="评定时间" align="center" prop="routeScoreDate" width="180">
+            <template slot-scope="scope">
+              <span>{{ parseTime(scope.row.routeScoreDate, '{y}-{m}-{d}') }}</span>
+            </template>
+          </el-table-column>
+
+          <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+            <template slot-scope="scope">
+              <el-button
+                size="mini"
+                type="text"
+                icon="el-icon-edit"
+                @click="handlexq(scope.row)"
+                v-hasPermi="['system:quality:edit']"
+              >详情
+              </el-button>
+              <el-button
+                size="mini"
+                type="text"
+                icon="el-icon-edit"
+                @click="handleUpdate(scope.row)"
+                v-hasPermi="['system:quality:edit']"
+              >修改
+              </el-button>
+              <el-button
+                size="mini"
+                type="text"
+                icon="el-icon-delete"
+                @click="handleDelete(scope.row)"
+                v-hasPermi="['system:quality:remove']"
+              >删除
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+
+        <pagination
+          v-show="total>0"
+          :total="total"
+          :page.sync="queryParams.pageNum"
+          :limit.sync="queryParams.pageSize"
+          @pagination="getList"
+        />
+        <!--详情页面-->
+        <el-dialog :title="title" :visible.sync="opener" width="1000px" append-to-body>
+          <el-tabs v-model="activeName" type="card" @tab-click="handlexq">
+            <el-tab-pane label="桥梁质量" name="first">
+              <el-descriptions :model="form">
+                <el-descriptions-item label="桥梁名称">{{ form.routeName }}</el-descriptions-item>
+                <el-descriptions-item label="桥梁编码">{{ form.routeCode }}</el-descriptions-item>
+                <el-descriptions-item label="行政区划">{{ form.routeAdministrativeArea }}</el-descriptions-item>
+                <el-descriptions-item label="上部结构评分SPCI">{{ form.routeTopScore }}</el-descriptions-item>
+                <el-descriptions-item label="下部结构评分SBCI">{{ form.routeBottomScore }}</el-descriptions-item>
+                <el-descriptions-item label="桥面系评分BDCI">{{ form.routeFaceScore }}</el-descriptions-item>
+                <el-descriptions-item label="技术状况得分DR">{{ form.routeDr }}</el-descriptions-item>
+                <el-descriptions-item label="评定时间">{{ form.routeScoreDate }}</el-descriptions-item>
+                <el-descriptions-item label="评定单位">{{ form.routeCompany }}</el-descriptions-item>
+              </el-descriptions>
+            </el-tab-pane>
+          </el-tabs>
+        </el-dialog>
+        <!--选择桥梁-->
+        <el-dialog :title="title" :visible.sync="openers" width="1500px" append-to-body>
+          <Infdormations @chuan="shou"></Infdormations>
+        </el-dialog>
+        <!-- 添加或修改桥梁质量对话框 -->
+        <el-dialog :title="title" :visible.sync="open" width="700px" append-to-body>
+          <el-form ref="form" :model="form" :rules="rules" label-width="200px" :label-position="labelPosition">
+            <el-tabs v-model="activeName" type="card" @tab-click="handleAdd">
+              <el-tab-pane label="基本信息" name="first">
+                <el-row>
+                  <el-col :span="8">
+                    <div class="grid-content bg-purple">
+                      <el-form-item label="桥梁名称" prop="routeName">
+                        <el-input v-model="form.routeName" placeholder="请输入桥梁名称" :disabled="true">
+                          {{ bridge }}
+                        </el-input>
+                      </el-form-item>
+                    </div>
+                  </el-col>
+                  <el-col :span="8">
+                    <div class="grid-content bg-purple">
+                      <el-form-item label="桥梁编码" prop="routeCode">
+                        <el-input v-model="form.routeCode" placeholder="请输入桥梁编码" :disabled="true">
+                          {{ bridgeCode }}
+                        </el-input>
+                      </el-form-item>
+                    </div>
+                  </el-col>
+                  <el-col :span="8">
+                    <div class="grid-content bg-purple">
+                      <el-form-item label="点击选择桥梁">
+                        <el-button type="primary" @click="selectRout">选择桥梁</el-button>
+                      </el-form-item>
+
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="8">
+                    <div class="grid-content bg-purple-light">
+                      <el-form-item label="下部结构评分SBCI" prop="routeBottomScore">
+                        <el-input v-model="form.routeBottomScore" placeholder="请输入下部结构评分SBCI"/>
+                      </el-form-item>
+                    </div>
+                  </el-col>
+                  <el-col :span="8">
+                    <div class="grid-content bg-purple">
+                      <el-form-item label="桥面系评分BDCI" prop="routeFaceScore">
+                        <el-input v-model="form.routeFaceScore" placeholder="请输入桥面系评分BDCI"/>
+                      </el-form-item>
+                    </div>
+                  </el-col>
+                  <el-col :span="8">
+                    <div class="grid-content bg-purple-light">
+                      <el-form-item label="上部结构评分SPCI" prop="routeTopScore">
+                        <el-input v-model="form.routeTopScore" placeholder="请输入上部结构评分SPCI"/>
+                      </el-form-item>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-row>
+                  <el-col :span="8">
+                    <div class="grid-content bg-purple-light">
+                      <el-form-item label="行政区划" prop="routeAdministrativeArea">
+                        <el-input v-model="form.routeAdministrativeArea" placeholder="请输入行政区划" :disabled="true">
+                          {{ form.routeAdministrativeArea }}
+                        </el-input>
+                      </el-form-item>
+                    </div>
+                  </el-col>
+                  <el-col :span="8">
+                    <div class="grid-content bg-purple">
+                      <el-form-item label="技术状况得分DR" prop="routeDr">
+                        <el-input v-model="form.routeDr" :disabled="true" placeholder="请输入技术状况得分DR">
+                          {{ form.routeDr }}
+                        </el-input>
+                      </el-form-item>
+                    </div>
+                  </el-col>
+                  <el-col :span="8">
+                    <div class="grid-content bg-purple">
+                      <el-form-item label="评定时间" prop="routeScoreDate">
+                        <el-date-picker clearable
+                                        v-model="form.routeScoreDate"
+                                        type="date"
+                                        value-format="yyyy-MM-dd"
+                                        placeholder="请选择评定时间">
+                        </el-date-picker>
+                      </el-form-item>
+                    </div>
+                  </el-col>
+                </el-row>
+                <el-col :span="8">
+                  <div class="grid-content bg-purple">
+                    <el-form-item label="评定单位" prop="routeCompany">
+                      <el-input v-model="form.routeCompany" placeholder="请输入评定单位"/>
+                    </el-form-item>
+                  </div>
+                </el-col>
+              </el-tab-pane>
+            </el-tabs>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button type="primary" @click="submitForm">确 定</el-button>
+            <el-button @click="cancel">取 消</el-button>
+          </div>
+        </el-dialog>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -261,19 +270,19 @@
 import {listQuality, getQuality, delQuality, addQuality, updateQuality, you, hao, zhong} from "@/api/system/quality";
 import * as echarts from "echarts";
 import Infdormations from "@/views/system/infdormations";
-import axios from "axios";
+import $axios from "core-js/internals/queue";
+import request from "@/utils/request";
+
 export default {
   props: ["bridge", "bridgeCode"],
   components: {Infdormations},
   mounted() {
-    // echarts仅有一个方法init，执行init时传入一个具备大小
-    // （如果没有指定容器的大小将会按照0大小来处理即无法看到图标）的dom节点后即可实例化出图表对象，图标库实现为多实例的，
-    // 同一页面可多次init出多个图表
     this.tu();
   },
   name: "Quality",
   data() {
     return {
+      datay: [],
       labelPosition: 'top',
       activeName: 'first',
       // 遮罩层
@@ -295,7 +304,7 @@ export default {
       // 是否显示弹出层
       open: false,
       opener: false,
-      openers:false,
+      openers: false,
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -345,82 +354,84 @@ export default {
     this.getList();
   },
   methods: {
+    tu() {
+      var myEcharts = echarts.init(document.getElementById("main"));
+      myEcharts.setOption({
+          title: {
+            text: "北戴河区桥梁质量",
+            textStyle: {
+              color: 'blue',
+            },
+            // backgroundColor:'',
+            link: "http://www.baidu.com",
+            target: 'self',
+            x: 'center',
+          },
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              type: "shadow",
+            },
+            backgroundColor: 'yellow',
+            borderColor: 'black',
+            borderWidth: 2,
+            textStyle: {
+              color: 'blue',
+            },
+            formatter(params) {
+              console.log(params)
+              for (var i = 0; i < params.length; i++) {
+                return params[i].axisValue + "桥的数量：" + params[i].data
+              }
+            }
+          },
+          legend: {
+            show: true,//设置图例的开启或者关闭
+            // icon:'circle',//设置图例的形状
+            right: '0%', //设置位置
+            //设置宽高
+            itemWidth: 20,
+            itemHeight: 20,
+            textStyle: {
+              color: 'blue',
+              fontSize: 15,
+            }
+          },
+          xAxis: {
+            data: ["优", "良", "中"],
+          },
+          yAxis: {},
+          series: {
+            name: "数量",
+            type: "bar",
+            data: [2, 4, 6]
+          },
+        },
+        request('/system/quality/you').then(response => {
+          this.datay = response
+          console.log(this.datay)
+          myEcharts.setOption({
+            series: {
+              name: "数量",
+              type: "bar",
+              data: this.datay
+            },
+          })
+        })
+      )
+    },
     methods: {
       handleClick(tab, event) {
         console.log(tab, event);
       }
     },
-    tu(){
-    var myEcharts = echarts.init(document.getElementById("main"));
-    myEcharts.setOption({
-      title: {
-        text: "北戴河区桥梁质量",
-        textStyle: {
-          color: 'blue',
-        },
-        // backgroundColor:'',
-        link: "http://www.baidu.com",
-        target: 'self',
-        // borderColor:'red',
-        // borderWidth:5,
-        x: 'center',
-      },
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          type: "shadow",
-        },
-        backgroundColor: 'yellow',
-        borderColor: 'black',
-        borderWidth: 2,
-        textStyle: {
-          color: 'blue',
-        },
-        formatter(params) {
-          console.log(params)
-          for (var i = 0; i < params.length; i++) {
-            return params[i].axisValue + "桥的数量：" + params[i].data.value
-          }
-        }
-      },
-
-      legend: {
-        show: true,//设置图例的开启或者关闭
-        // icon:'circle',//设置图例的形状
-        right: '0%', //设置位置
-
-        //设置宽高
-        itemWidth: 20,
-        itemHeight: 20,
-        textStyle: {
-          color: 'blue',
-          fontSize: 15,
-
-        }
-      },
-      xAxis: {
-        data: ["优", "良", "中"],
-      },
-      yAxis: {},
-      series: {
-        name: "数量",
-        type: "bar",
-        data: [
-          {"value":"2"},
-          {"value":"4"},
-          {"value":"6"},
-        ]
-      }
-    })
-    },
     //选择桥梁信息
-    shou(bridge,bridgeCode,bi,qu){
+    shou(bridge, bridgeCode, bi, qu) {
       this.form.routeName = bridge;
       this.form.routeCode = bridgeCode;
-      this.form.routeAdministrativeArea= qu;
+      this.form.routeAdministrativeArea = qu;
       this.openers = bi;
     },
-
     /** 查询桥梁质量列表 */
     getList() {
       this.loading = true;
@@ -474,7 +485,7 @@ export default {
       this.title = "添加桥梁质量";
     },
     /**选择桥梁*/
-    selectRout(){
+    selectRout() {
       this.openers = true;
       this.title = "选择桥梁";
     },
@@ -547,6 +558,6 @@ export default {
   width: 300px;
   height: 330px;
   margin-left: 200px;
-  margin-bottom: 20px;
+  /*margin-bottom: 20px;*/
 }
 </style>

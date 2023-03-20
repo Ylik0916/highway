@@ -100,3 +100,29 @@ export function delConstruction(constructionId) {
     method: 'delete'
   })
 }
+
+// 新增W-yf
+export function addConstruction(data) {
+  return request({
+    url: '/system/construction',
+    method: 'post',
+    data: data
+  })
+}
+
+// 修改W-yf
+export function updateConstruction(data) {
+  return request({
+    url: '/system/construction',
+    method: 'put',
+    data: data
+  })
+}
+
+// 查询W-yf详细
+export function getConstructionById(constructionId) {
+  return request({
+    url: '/system/construction/' + constructionId,
+    method: 'get'
+  })
+}

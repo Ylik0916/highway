@@ -1,46 +1,75 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hg.system.mapper.HwUnitEvaluateMapper">
-    
+
     <resultMap type="HwUnitEvaluate" id="HwUnitEvaluateResult">
-        <result property="unitId"    column="unit_id"    />
-        <result property="unitName"    column="unit_name"    />
-        <result property="unitType"    column="unit_type"    />
-        <result property="evaluateYears"    column="evaluate_years"    />
+        <result property="unitId" column="unit_id"/>
+        <result property="unitName" column="unit_name"/>
+        <result property="unitType" column="unit_type"/>
+        <result property="evaluateYears" column="evaluate_years"/>
+    </resultMap>
+
+    <resultMap type="HwUnitEvaluate" id="HwUnitEvaluateScoreResult">
+        <result property="unitId" column="unit_id"/>
+        <result property="unitName" column="unit_name"/>
+        <result property="unitType" column="unit_type"/>
+        <result property="evaluateYears" column="evaluate_years"/>
+        <association property="hwHistoryEvaluate" javaType="hwHistoryEvaluate">
+            <id property="evaluateId" column="evaluate_id"/>
+            <result property="evaluateTime" column="evaluate_time"/>
+            <result property="evaluateScore" column="evaluate_score"/>
+            <result property="evaluateGrade" column="evaluate_grade"/>
+            <result property="evaluateUnitId" column="evaluate_unit_id"/>
+            <result property="evaluateDocumentUpload" column="evaluate_document_upload"/>
+        </association>
     </resultMap>
 
     <sql id="selectHwUnitEvaluateVo">
-        select unit_id, unit_name, unit_type, evaluate_years from hw_unit_evaluate
+        select unit_id, unit_name, unit_type, evaluate_years
+        from hw_unit_evaluate
     </sql>
 
     <select id="selectHwUnitEvaluateList" parameterType="HwUnitEvaluate" resultMap="HwUnitEvaluateResult">
         <include refid="selectHwUnitEvaluateVo"/>
-        <where>  
-            <if test="unitName != null  and unitName != ''"> and unit_name like concat('%', #{unitName}, '%')</if>
-            <if test="unitType != null  and unitType != ''"> and unit_type = #{unitType}</if>
-            <if test="evaluateYears != null  and evaluateYears != ''"> and evaluate_years = #{evaluateYears}</if>
+        <where>
+            <if test="unitName != null  and unitName != ''">and unit_name like concat('%', #{unitName}, '%')</if>
+            <if test="unitType != null  and unitType != ''">and unit_type = #{unitType}</if>
+            <if test="evaluateYears != null  and evaluateYears != ''">and evaluate_years = #{evaluateYears}</if>
         </where>
     </select>
-    
+
     <select id="selectHwUnitEvaluateByUnitId" parameterType="Long" resultMap="HwUnitEvaluateResult">
         <include refid="selectHwUnitEvaluateVo"/>
         where unit_id = #{unitId}
     </select>
-        
+
+    <!-- 查询从业单位评价列表和成绩 -->
+    <select id="selectHwUnitEvaluateAndScoreList" parameterType="HwUnitEvaluate"
+            resultMap="HwUnitEvaluateScoreResult">
+        SELECT *
+        FROM `hw_unit_evaluate` hue
+        LEFT JOIN `hw_history_evaluate` hhe ON hue.`unit_id` = hhe.`evaluate_unit_id`
+        <where>
+            <if test="unitName != null  and unitName != ''">and unit_name like concat('%', #{unitName}, '%')</if>
+            <if test="unitType != null  and unitType != ''">and unit_type = #{unitType}</if>
+            <if test="evaluateYears != null  and evaluateYears != ''">and evaluate_years = #{evaluateYears}</if>
+        </where>
+    </select>
+
     <insert id="insertHwUnitEvaluate" parameterType="HwUnitEvaluate" useGeneratedKeys="true" keyProperty="unitId">
         insert into hw_unit_evaluate
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="unitName != null and unitName != ''">unit_name,</if>
             <if test="unitType != null and unitType != ''">unit_type,</if>
             <if test="evaluateYears != null and evaluateYears != ''">evaluate_years,</if>
-         </trim>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="unitName != null and unitName != ''">#{unitName},</if>
             <if test="unitType != null and unitType != ''">#{unitType},</if>
             <if test="evaluateYears != null and evaluateYears != ''">#{evaluateYears},</if>
-         </trim>
+        </trim>
     </insert>
 
     <update id="updateHwUnitEvaluate" parameterType="HwUnitEvaluate">
@@ -54,11 +83,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteHwUnitEvaluateByUnitId" parameterType="Long">
-        delete from hw_unit_evaluate where unit_id = #{unitId}
+        delete
+        from hw_unit_evaluate
+        where unit_id = #{unitId}
     </delete>
 
     <delete id="deleteHwUnitEvaluateByUnitIds" parameterType="String">
-        delete from hw_unit_evaluate where unit_id in 
+        delete from hw_unit_evaluate where unit_id in
         <foreach item="unitId" collection="array" open="(" separator="," close=")">
             #{unitId}
         </foreach>

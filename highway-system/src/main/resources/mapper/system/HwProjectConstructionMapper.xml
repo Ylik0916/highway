@@ -50,10 +50,9 @@
     <select id="selectHwProjectConstructionSupervisor" parameterType="integer"
             resultMap="HwProjectConstructionSupervisor">
         SELECT *
-        FROM `hw_project_construction` hpc,
-             `hw_project_supervisor` hps
-        WHERE hpc.`construction_supervisor_id` = hps.`supervisor_id`
-          AND hpc.`construction_project_id` = #{constructionProjectId}
+        FROM `hw_project_construction` hpc
+                 LEFT JOIN `hw_project_supervisor` hps ON hpc.`construction_supervisor_id` = hps.`supervisor_id`
+        WHERE hpc.`construction_project_id` = #{constructionProjectId}
     </select>
 
     <insert id="insertHwProjectConstruction" parameterType="HwProjectConstruction" useGeneratedKeys="true"

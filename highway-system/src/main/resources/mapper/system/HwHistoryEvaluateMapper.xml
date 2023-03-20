@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hg.system.mapper.HwHistoryEvaluateMapper">
+
+    <resultMap type="HwHistoryEvaluate" id="HwHistoryEvaluateResult">
+        <result property="evaluateId" column="evaluate_id"/>
+        <result property="evaluateTime" column="evaluate_time"/>
+        <result property="evaluateScore" column="evaluate_score"/>
+        <result property="evaluateGrade" column="evaluate_grade"/>
+        <result property="evaluateUnitId" column="evaluate_unit_id"/>
+        <result property="evaluatePersonId" column="evaluate_person_id"/>
+        <result property="evaluateDocumentUpload" column="evaluate_document_upload"/>
+    </resultMap>
+
+    <sql id="selectHwHistoryEvaluateVo">
+        select evaluate_id,
+               evaluate_time,
+               evaluate_score,
+               evaluate_grade,
+               evaluate_unit_id,
+               evaluate_person_id,
+               evaluate_document_upload
+        from hw_history_evaluate
+    </sql>
+
+    <select id="selectHwHistoryEvaluateList" parameterType="HwHistoryEvaluate" resultMap="HwHistoryEvaluateResult">
+        <include refid="selectHwHistoryEvaluateVo"/>
+        <where>
+            <if test="evaluateTime != null ">and evaluate_time = #{evaluateTime}</if>
+            <if test="evaluateScore != null ">and evaluate_score = #{evaluateScore}</if>
+            <if test="evaluateGrade != null  and evaluateGrade != ''">and evaluate_grade = #{evaluateGrade}</if>
+            <if test="evaluateUnitId != null ">and evaluate_unit_id = #{evaluateUnitId}</if>
+            <if test="evaluatePersonId != null ">and evaluate_person_id = #{evaluatePersonId}</if>
+            <if test="evaluateDocumentUpload != null  and evaluateDocumentUpload != ''">and evaluate_document_upload =
+                #{evaluateDocumentUpload}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectHwHistoryEvaluateByEvaluateId" parameterType="Long" resultMap="HwHistoryEvaluateResult">
+        <include refid="selectHwHistoryEvaluateVo"/>
+        where evaluate_id = #{evaluateId}
+    </select>
+
+    <!-- 查询从业单位及人员历史评价根据单位id -->
+    <select id="selectHwHistoryEvaluateByUnitId" parameterType="Integer" resultMap="HwHistoryEvaluateResult">
+        SELECT *
+        FROM `hw_history_evaluate`
+        WHERE `evaluate_unit_id` = #{evaluateUnitId}
+    </select>
+
+    <!-- 查询从业单位及人员历史评价根据从业人员id -->
+    <select id="selectHwHistoryEvaluateByPersonId" parameterType="Integer" resultMap="HwHistoryEvaluateResult">
+        SELECT *
+        FROM `hw_history_evaluate`
+        WHERE `evaluate_person_id` = #{evaluatePersonId}
+    </select>
+
+    <insert id="insertHwHistoryEvaluate" parameterType="HwHistoryEvaluate" useGeneratedKeys="true"
+            keyProperty="evaluateId">
+        insert into hw_history_evaluate
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="evaluateTime != null">evaluate_time,</if>
+            <if test="evaluateScore != null">evaluate_score,</if>
+            <if test="evaluateGrade != null">evaluate_grade,</if>
+            <if test="evaluateUnitId != null">evaluate_unit_id,</if>
+            <if test="evaluatePersonId != null">evaluate_person_id,</if>
+            <if test="evaluateDocumentUpload != null">evaluate_document_upload,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="evaluateTime != null">#{evaluateTime},</if>
+            <if test="evaluateScore != null">#{evaluateScore},</if>
+            <if test="evaluateGrade != null">#{evaluateGrade},</if>
+            <if test="evaluateUnitId != null">#{evaluateUnitId},</if>
+            <if test="evaluatePersonId != null">#{evaluatePersonId},</if>
+            <if test="evaluateDocumentUpload != null">#{evaluateDocumentUpload},</if>
+        </trim>
+    </insert>
+
+    <update id="updateHwHistoryEvaluate" parameterType="HwHistoryEvaluate">
+        update hw_history_evaluate
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="evaluateTime != null">evaluate_time = #{evaluateTime},</if>
+            <if test="evaluateScore != null">evaluate_score = #{evaluateScore},</if>
+            <if test="evaluateGrade != null">evaluate_grade = #{evaluateGrade},</if>
+            <if test="evaluateUnitId != null">evaluate_unit_id = #{evaluateUnitId},</if>
+            <if test="evaluatePersonId != null">evaluate_person_id = #{evaluatePersonId},</if>
+            <if test="evaluateDocumentUpload != null">evaluate_document_upload = #{evaluateDocumentUpload},</if>
+        </trim>
+        where evaluate_id = #{evaluateId}
+    </update>
+
+    <delete id="deleteHwHistoryEvaluateByEvaluateId" parameterType="Long">
+        delete
+        from hw_history_evaluate
+        where evaluate_id = #{evaluateId}
+    </delete>
+
+    <delete id="deleteHwHistoryEvaluateByEvaluateIds" parameterType="String">
+        delete from hw_history_evaluate where evaluate_id in
+        <foreach item="evaluateId" collection="array" open="(" separator="," close=")">
+            #{evaluateId}
+        </foreach>
+    </delete>
+</mapper>

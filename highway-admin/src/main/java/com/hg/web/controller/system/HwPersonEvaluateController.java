@@ -2,6 +2,8 @@ package com.hg.web.controller.system;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.hg.system.domain.HwUnitEvaluate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,14 +25,13 @@ import com.hg.common.core.page.TableDataInfo;
 
 /**
  * 从业人员评价Controller
- * 
+ *
  * @author W-yf
  * @date 2023-03-07
  */
 @RestController
 @RequestMapping("/system/person")
-public class HwPersonEvaluateController extends BaseController
-{
+public class HwPersonEvaluateController extends BaseController {
     @Autowired
     private IHwPersonEvaluateService hwPersonEvaluateService;
 
@@ -39,8 +40,7 @@ public class HwPersonEvaluateController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:person:list')")
     @GetMapping("/list")
-    public TableDataInfo list(HwPersonEvaluate hwPersonEvaluate)
-    {
+    public TableDataInfo list(HwPersonEvaluate hwPersonEvaluate) {
         startPage();
         List<HwPersonEvaluate> list = hwPersonEvaluateService.selectHwPersonEvaluateList(hwPersonEvaluate);
         return getDataTable(list);
@@ -52,8 +52,7 @@ public class HwPersonEvaluateController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:person:export')")
     @Log(title = "从业人员评价", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, HwPersonEvaluate hwPersonEvaluate)
-    {
+    public void export(HttpServletResponse response, HwPersonEvaluate hwPersonEvaluate) {
         List<HwPersonEvaluate> list = hwPersonEvaluateService.selectHwPersonEvaluateList(hwPersonEvaluate);
         ExcelUtil<HwPersonEvaluate> util = new ExcelUtil<HwPersonEvaluate>(HwPersonEvaluate.class);
         util.exportExcel(response, list, "从业人员评价数据");
@@ -64,8 +63,7 @@ public class HwPersonEvaluateController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:person:query')")
     @GetMapping(value = "/{personId}")
-    public AjaxResult getInfo(@PathVariable("personId") Long personId)
-    {
+    public AjaxResult getInfo(@PathVariable("personId") Long personId) {
         return success(hwPersonEvaluateService.selectHwPersonEvaluateByPersonId(personId));
     }
 
@@ -75,8 +73,7 @@ public class HwPersonEvaluateController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:person:add')")
     @Log(title = "从业人员评价", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody HwPersonEvaluate hwPersonEvaluate)
-    {
+    public AjaxResult add(@RequestBody HwPersonEvaluate hwPersonEvaluate) {
         return toAjax(hwPersonEvaluateService.insertHwPersonEvaluate(hwPersonEvaluate));
     }
 
@@ -86,8 +83,7 @@ public class HwPersonEvaluateController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:person:edit')")
     @Log(title = "从业人员评价", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody HwPersonEvaluate hwPersonEvaluate)
-    {
+    public AjaxResult edit(@RequestBody HwPersonEvaluate hwPersonEvaluate) {
         return toAjax(hwPersonEvaluateService.updateHwPersonEvaluate(hwPersonEvaluate));
     }
 
@@ -96,9 +92,20 @@ public class HwPersonEvaluateController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('system:person:remove')")
     @Log(title = "从业人员评价", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{personIds}")
-    public AjaxResult remove(@PathVariable Long[] personIds)
-    {
+    @DeleteMapping("/{personIds}")
+    public AjaxResult remove(@PathVariable Long[] personIds) {
         return toAjax(hwPersonEvaluateService.deleteHwPersonEvaluateByPersonIds(personIds));
+    }
+
+    /**
+     * 查询从业人员评价列表新版
+     */
+    @PreAuthorize("@ss.hasPermi('system:person:list')")
+    @GetMapping("/newList")
+    public TableDataInfo newList(HwPersonEvaluate hwPersonEvaluate, HwUnitEvaluate hwUnitEvaluate) {
+        hwPersonEvaluate.setHwUnitEvaluate(hwUnitEvaluate);
+        startPage();
+        List<HwPersonEvaluate> list = hwPersonEvaluateService.selectHwPersonEvaluateListNew(hwPersonEvaluate);
+        return getDataTable(list);
     }
 }
