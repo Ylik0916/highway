@@ -391,7 +391,7 @@
             <if test="luCode != null">lu_code = #{luCode},</if>
             <if test="centerStake != null">center_stake = #{centerStake},</if>
             <if test="selectRoute != null">select_route = #{selectRoute},</if>
-            <if test="luId != null">lu_id =  #{luId},</if>
+            <if test="luId != null">lu_id = #{luId},</if>
             <if test="evaluationUnit != null">evaluation_unit = #{evaluationUnit},</if>
         </trim>
         where route_id = #{routeId}

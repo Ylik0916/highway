@@ -1284,6 +1284,7 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.routeId != null) {
+            this.form.luId = this.routeId
             updateInfdormation(this.form).then(response => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
