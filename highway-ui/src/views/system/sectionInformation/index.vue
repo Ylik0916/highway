@@ -262,7 +262,7 @@
         <!-- 添加或修改桥梁信息对话框 -->
         <el-dialog :title="title" :visible.sync="open" width="1000px" append-to-body>
           <el-form ref="form" :inline="true" :model="form" style="display: flex"  :rules="rules" :label-position="labelPosition"
-                   label-width="200px">
+                   label-width="500px">
           <el-tabs v-model="activeName" type="card" >
         <el-tab-pane label="基本信息" name="first">
           <!--        <el-form-item label="路线ID" prop="routeid">-->

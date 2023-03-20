@@ -19,6 +19,17 @@ public class HwWayDisease extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /**  */
+
+    private Long routeId;
+
+    public Long getRouteId() {
+        return routeId;
+    }
+
+    public void setRouteId(Long routeId) {
+        this.routeId = routeId;
+    }
+
     private Long wdid;
 
     /** 病害名称 */

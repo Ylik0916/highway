@@ -29,7 +29,7 @@
     <el-tab-pane label="桥梁信息" name="second"><Show :routeId="routeId"></Show></el-tab-pane>
     <el-tab-pane label="隧道信息" name="fourth"><Tunnel :rou="routeId"></Tunnel></el-tab-pane>
     <el-tab-pane label="标识标牌" name="firth"><Signage :vis="flag" :routeId="routeId"></Signage></el-tab-pane>
-    <el-tab-pane label="病害信息" name="sixth">病害信息</el-tab-pane>
+    <el-tab-pane label="病害信息" name="sixth"><Dispose :rou="routeId"></Dispose></el-tab-pane>
   </el-tabs>
   </div>
 </div>
@@ -40,11 +40,12 @@
 import {getInformation} from "@/api/system/information";
 import SectionInformation from "@/views/system/sectionInformation";
 import Tunnel from "@/views/system/tunnel";
+import Dispose from "@/views/system/disease/info";
 import Show from "@/views/system/infdormation/show";
 import Signage from "@/views/system/signage";
 export default {
   name: "index_",
-  components: {Signage, SectionInformation,Tunnel,Show},
+  components: {Signage, SectionInformation,Tunnel,Show,Dispose},
   dicts: ['construction_type', 'route_type'],
   data(){
     return {

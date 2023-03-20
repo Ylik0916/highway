@@ -43,7 +43,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectHwWayDiseaseVo">
-        select wdid, disease_name, path_code, path_name, section_code, section_name, reporter, report_date, report_type, statusid, where_path, disease_stake, disease_latitude, disease_longitude, disease_message, disease_img, maintain_site, maintain_case, maintain_people, maintain_fund, begin_time, over_time, maintain_remark, maintain_img, maintain_unit, damage_case, horizontal_positions, forecast_case, dispose_measure, driving_direction, dispose_stake, dispose_remark, dispose_time, dispose_img, administrative from hw_way_disease
+        select route_id,wdid, disease_name, path_code, path_name, section_code, section_name, reporter, report_date, report_type, statusid, where_path, disease_stake, disease_latitude, disease_longitude, disease_message, disease_img, maintain_site, maintain_case, maintain_people, maintain_fund, begin_time, over_time, maintain_remark, maintain_img, maintain_unit, damage_case, horizontal_positions, forecast_case, dispose_measure, driving_direction, dispose_stake, dispose_remark, dispose_time, dispose_img, administrative from hw_way_disease
     </sql>
 
     <select id="selectHwWayDiseaseList" parameterType="HwWayDisease" resultMap="HwWayDiseaseResult">
@@ -58,6 +58,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="reportDate != null "> and report_date = #{reportDate}</if>
             <if test="reportType != null  and reportType != ''"> and report_type = #{reportType}</if>
             <if test="statusid != null "> and statusid = #{statusid}</if>
+            <if test="routeId != null "> and route_id = #{routeId}</if>
             <if test="wherePath != null  and wherePath != ''"> and where_path = #{wherePath}</if>
             <if test="diseaseStake != null  and diseaseStake != ''"> and disease_stake = #{diseaseStake}</if>
             <if test="diseaseLatitude != null  and diseaseLatitude != ''"> and disease_latitude = #{diseaseLatitude}</if>

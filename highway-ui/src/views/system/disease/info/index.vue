@@ -97,6 +97,7 @@
 import { listDisease, getDisease, delDisease, addDisease, updateDisease } from "@/api/system/disease";
 
 export default {
+  props:['rou'],
   name: "Info",
   dicts: ['reporting_type', 'disease_state', 'driving_direction'],
   data() {
@@ -121,6 +122,7 @@ export default {
       open: false,
       // 查询参数
       queryParams: {
+        routeId: this.rou,
         pageNum: 1,
         pageSize: 10,
         diseaseName: null,
