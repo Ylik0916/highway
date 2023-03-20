@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hg.system.mapper.HwPlanMapper">
+    
+    <resultMap type="com.hg.system.domain.HwPlan" id="HwPlanResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="type"    column="type"    />
+        <result property="affiliation"    column="affiliation"    />
+        <result property="planYear"    column="plan_year"    />
+        <result property="fillPeriod"    column="fill_period"    />
+        <result property="replyCharacter"    column="reply_character"    />
+    </resultMap>
+
+    <sql id="selectHwPlanVo">
+        select id, name, type, affiliation, plan_year, fill_period, reply_character from hw_plan
+    </sql>
+
+    <select id="selectHwPlanList" parameterType="com.hg.system.domain.HwPlan" resultMap="HwPlanResult">
+        <include refid="selectHwPlanVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="affiliation != null "> and affiliation = #{affiliation}</if>
+            <if test="planYear != null  and planYear != ''"> and plan_year = #{planYear}</if>
+            <if test="fillPeriod != null "> and fill_period = #{fillPeriod}</if>
+            <if test="replyCharacter != null  and replyCharacter != ''"> and reply_character = #{replyCharacter}</if>
+        </where>
+    </select>
+    
+    <select id="selectHwPlanById" parameterType="long" resultMap="HwPlanResult">
+        <include refid="selectHwPlanVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertHwPlan" parameterType="com.hg.system.domain.HwPlan" useGeneratedKeys="true" keyProperty="id">
+        insert into hw_plan
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="type != null">type,</if>
+            <if test="affiliation != null">affiliation,</if>
+            <if test="planYear != null and planYear != ''">plan_year,</if>
+            <if test="fillPeriod != null">fill_period,</if>
+            <if test="replyCharacter != null and replyCharacter != ''">reply_character,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="type != null">#{type},</if>
+            <if test="affiliation != null">#{affiliation},</if>
+            <if test="planYear != null and planYear != ''">#{planYear},</if>
+            <if test="fillPeriod != null">#{fillPeriod},</if>
+            <if test="replyCharacter != null and replyCharacter != ''">#{replyCharacter},</if>
+         </trim>
+    </insert>
+
+    <update id="updateHwPlan" parameterType="com.hg.system.domain.HwPlan">
+        update hw_plan
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="affiliation != null">affiliation = #{affiliation},</if>
+            <if test="planYear != null and planYear != ''">plan_year = #{planYear},</if>
+            <if test="fillPeriod != null">fill_period = #{fillPeriod},</if>
+            <if test="replyCharacter != null and replyCharacter != ''">reply_character = #{replyCharacter},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteHwPlanById" parameterType="long">
+        delete from hw_plan where id = #{id}
+    </delete>
+
+    <delete id="deleteHwPlanByIds" parameterType="string">
+        delete from hw_plan where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

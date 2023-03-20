@@ -2,6 +2,7 @@ package com.hg.system.mapper;
 
 import java.util.List;
 import com.hg.system.domain.HwBridgeQuality;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * 桥梁质量Mapper接口
@@ -58,4 +59,14 @@ public interface HwBridgeQualityMapper
      * @return 结果
      */
     public int deleteHwBridgeQualityByRouteQualityIds(Long[] routeQualityIds);
+
+    @Select("SELECT COUNT(*) you FROM `hw_bridge_quality`" +
+            "WHERE route_dr >95;")
+    public int you();
+    @Select("SELECT COUNT(*) hao FROM `hw_bridge_quality`" +
+            "WHERE route_dr >80;")
+    public int hao();
+    @Select("SELECT COUNT(*) zhong FROM `hw_bridge_quality`" +
+            "WHERE route_dr <80;")
+    public int zhong();
 }

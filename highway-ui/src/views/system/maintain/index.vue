@@ -15,6 +15,7 @@
 import Delicacy from "@/views/system/maintain/delicacy";
 import Ordinary from "@/views/system/maintain/ordinary";
 export default {
+  name: "Maintain",
   data() {
     return {
       activeName: 'Ordinary',

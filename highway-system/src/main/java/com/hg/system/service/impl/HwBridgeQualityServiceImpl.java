@@ -14,7 +14,7 @@ import com.hg.system.service.IHwBridgeQualityService;
  * @date 2023-03-01
  */
 @Service
-public class HwBridgeQualityServiceImpl implements IHwBridgeQualityService 
+public class HwBridgeQualityServiceImpl implements IHwBridgeQualityService
 {
     @Autowired
     private HwBridgeQualityMapper hwBridgeQualityMapper;
@@ -90,4 +90,20 @@ public class HwBridgeQualityServiceImpl implements IHwBridgeQualityService
     {
         return hwBridgeQualityMapper.deleteHwBridgeQualityByRouteQualityId(routeQualityId);
     }
+
+    @Override
+    public int you() {
+        return hwBridgeQualityMapper.you();
+    }
+
+    @Override
+    public int hao() {
+        return hwBridgeQualityMapper.hao();
+    }
+
+    @Override
+    public int zhong() {
+        return hwBridgeQualityMapper.zhong();
+    }
+
 }
