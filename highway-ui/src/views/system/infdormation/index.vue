@@ -48,7 +48,6 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          :disabled="true"
           v-hasPermi="['system:infdormation:add']"
         >新增
         </el-button>
@@ -242,8 +241,10 @@
             <el-row>
               <el-col :span="6">
                 <div class="grid-content bg-purple">
-                  <el-form-item label="选择路线" prop="selectRoute">
-                    <el-input v-model="form.selectRoute" placeholder="请输入选择路线"/>
+                  <el-form-item label="选择路线" prop="luId">
+                    <el-select v-model="form.luId" filterable placeholder="请输选择路线">
+                      <el-option v-for="item in options" :key="item.id" :label="item.routeName" :value="item.id"/>
+                    </el-select>
                   </el-form-item>
                 </div>
               </el-col>
@@ -254,6 +255,15 @@
                   </el-form-item>
                 </div>
               </el-col>
+              <div style="display: none">
+              <el-col :span="6">
+                <div class="grid-content bg-purple">
+                  <el-form-item label="选择路线" prop="selectRoute">
+                    <el-input v-model="form.selectRoute" placeholder="请输入选择路线"/>
+                  </el-form-item>
+                </div>
+              </el-col>
+              </div>
               <el-col :span="6">
                 <div class="grid-content bg-purple">
                   <el-form-item label="桥梁名称" prop="routeName">
@@ -269,6 +279,7 @@
                 </div>
               </el-col>
             </el-row>
+
             <el-row>
               <el-col :span="6">
                 <div class="grid-content bg-purple-light">
@@ -488,6 +499,7 @@
                 </div>
               </el-col>
             </el-row>
+            <el-row>
             <el-col :span="6">
               <div class="grid-content bg-purple-light">
                 <el-form-item label="主桥上部构造结构形式" prop="routeTopShape">
@@ -535,6 +547,7 @@
                 </el-form-item>
               </div>
             </el-col>
+              </el-row>
             <el-row>
               <el-col :span="6">
                 <div class="grid-content bg-purple-light">
@@ -579,6 +592,7 @@
                 </div>
               </el-col>
             </el-row>
+            <el-row>
             <el-col :span="6">
               <div class="grid-content bg-purple-light">
                 <el-form-item label="抗震等级" prop="routeAntiseismic">
@@ -632,7 +646,8 @@
                 </el-form-item>
               </div>
             </el-col>
-
+              </el-row>
+            <el-row>
             <el-col :span="6">
               <div class="grid-content bg-purple-light">
                 <el-form-item label="改造部位" prop="routeRebuildPlace">
@@ -682,6 +697,8 @@
                 </el-form-item>
               </div>
             </el-col>
+              </el-row>
+            <el-row>
             <el-col :span="6">
               <div class="grid-content bg-purple-light">
                 <el-form-item label="桥梁所在位置" prop="routePosition">
@@ -738,6 +755,8 @@
                 </el-form-item>
               </div>
             </el-col>
+              </el-row>
+            <el-row>
             <el-col :span="6">
               <div class="grid-content bg-purple-light">
                 <el-form-item label="导入评定结果" prop="routeResult">
@@ -785,6 +804,8 @@
                 </el-form-item>
               </div>
             </el-col>
+              </el-row>
+            <el-row>
             <el-col :span="6">
               <div class="grid-content bg-purple-light">
                 <el-form-item label="改造施工单位" prop="routeRenovationUnit">
@@ -806,6 +827,7 @@
                 </el-form-item>
               </div>
             </el-col>
+              </el-row>
           </el-tab-pane>
           <el-tab-pane label="建养信息" name="second">
             <el-col :span="6">
@@ -815,6 +837,7 @@
                 </el-form-item>
               </div>
             </el-col>
+
             <el-col :span="6">
               <div class="grid-content bg-purple-light">
                 <el-form-item label="评定单位" prop="evaluationUnit">
@@ -986,15 +1009,17 @@ import {
 import {listDept} from "@/api/system/dept";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
+import {listInformation} from "@/api/system/information";
 export default {
-  props: ["vis", "routeId"],
+  props: ["vis"],
   name: "Infdormation",
-  dicts: ['seismic_grade', 'top_shap', 'bottom_shap', 'disease_location', 'transform', 'bearing_type', 'bridge_sort', 'bridge_load', 'sys_yes_no', 'navigation_level', 'management_maintenance', 'technical_evaluation', 'bridge_location', 'change_reason', 'abutment_type', 'bridge_zoning', 'bridge_cross', 'anti_collision_type', 'bridge_age_limit', 'top_material', 'species', 'pier_sort', 'collect_fees', 'reconstruction_part', 'underwater_tunnel_or_not'],
+  dicts: ['seismic_grade','top_shap','bottom_shap','disease_location','transform','bearing_type','bridge_sort','bridge_load','sys_yes_no','navigation_level','management_maintenance','technical_evaluation','bridge_location','change_reason','abutment_type', 'bridge_zoning', 'bridge_cross', 'anti_collision_type', 'bridge_age_limit', 'top_material', 'species', 'pier_sort', 'collect_fees', 'reconstruction_part', 'underwater_tunnel_or_not'],
   components: {
     Treeselect
   },
   data() {
     return {
+      options:[],
       ordinaryOptions: [],
       flag: this.vis,
       labelPosition: 'top',
@@ -1023,7 +1048,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        luId: this.routeId,
+        luId: null,
         routeCode: null,
         routeName: null,
         routeLongitude: null,
@@ -1156,11 +1181,18 @@ export default {
   created() {
     this.getTreeselect();
     this.getList();
+    this.getLu();
   },
   methods: {
     //标签页
     handleClick(tab, event) {
       console.log(tab, event);
+    },
+    getLu(){
+      listInformation(this.queryParams).then(response => {
+        this.options = response.rows;
+        console.log(response.rows)
+      });
     },
     /** 查询桥梁信息列表 */
     getList() {
@@ -1268,7 +1300,6 @@ export default {
     getTreeselect() {
       listDept().then(response => {
         this.ordinaryOptions = [];
-        // const data = { deptId: 0, deptName: '大陆', children: [] };
         this.ordinaryOptions = this.handleTree(response.data, "deptId", "parentId");
       });
     },
@@ -1311,6 +1342,7 @@ export default {
       const routeId = row.routeId || this.ids
       getInfdormation(routeId).then(response => {
         this.form = response.data;
+        console.log(response.data.luId)
         this.open = true;
         this.title = "修改桥梁信息";
       });
@@ -1326,7 +1358,6 @@ export default {
               this.getList();
             });
           } else {
-            this.form.luId = this.routeId
             addInfdormation(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
