@@ -9,14 +9,19 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label-width="100px" label="行政区编号" prop="administrativeDivisionNumber">
-        <el-input
-          v-model="queryParams.administrativeDivisionNumber"
-          placeholder="请输入行政区编号"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+<!--      <el-form-item label-width="100px" label="行政区名称" prop="nameOfTownship">-->
+<!--        <el-input-->
+<!--          v-model="queryParams.nameOfTownship"-->
+<!--          placeholder="请输入行政区名称"-->
+<!--          clearable-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+<!--      </el-form-item>-->
+
+      <el-form-item label="行政区划" prop="nameOfTownship">
+        <treeselect style="width: 200px" v-model="queryParams.nameOfTownship" :options="ordinaryOptions" :normalizer="normalizer" placeholder="请选择行政区" />
       </el-form-item>
+
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -176,7 +181,8 @@
             <el-radio
               v-for="dict in dict.type.latitude_and_longitude_type"
               :key="dict.value"
-              :label="parseInt(dict.value)"
+              :label="dict.value"
+              :value="dict.value"
             >{{dict.label}}</el-radio>
           </el-radio-group>
         </el-form-item>
@@ -192,7 +198,7 @@
               v-for="dict in dict.type.terrain"
               :key="dict.value"
               :label="dict.label"
-              :value="parseInt(dict.value)"
+              :value="dict.value"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -241,7 +247,7 @@
               v-for="dict in dict.type.access"
               :key="dict.value"
               :label="dict.label"
-              :value="parseInt(dict.value)"
+              :value="dict.value"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -251,7 +257,7 @@
               v-for="dict in dict.type.location_of_township_access"
               :key="dict.value"
               :label="dict.label"
-              :value="parseInt(dict.value)"
+              :value="dict.value"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -277,7 +283,7 @@
               v-for="dict in dict.type.direction_of_access"
               :key="dict.value"
               :label="dict.label"
-              :value="parseInt(dict.value)"
+              :value="dict.value"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -357,14 +363,20 @@
 
 <script>
 import { listTownship, getTownship, delTownship, addTownship, updateTownship } from "@/api/system/township";
-
+import Treeselect from "@riophae/vue-treeselect";
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
+import {listDept} from "@/api/system/dept";
 export default {
+  components: {
+    Treeselect
+  },
   name: "Township",
   dicts: ['latitude_and_longitude_type', 'access', 'optimization', 'sys_yes_no', 'terrain', 'location_of_township_access', 'direction_of_access'],
   data() {
     return {
       activeName:'first',
       openXq:false,
+      ordinaryOptions: [],
       // 遮罩层
       loading: true,
       // 选中数组
@@ -398,9 +410,27 @@ export default {
     };
   },
   created() {
+    this.getTreeselect();
     this.getList();
   },
   methods: {
+    getTreeselect() {
+      listDept().then(response => {
+        this.ordinaryOptions = [];
+        // const data = { deptId: 0, deptName: '大陆', children: [] };
+        this.ordinaryOptions = this.handleTree(response.data, "deptId", "parentId");
+      });
+    },
+    normalizer(node) {
+      if (node.children && !node.children.length) {
+        delete node.children;
+      }
+      return {
+        id: node.deptName,
+        label: node.deptName,
+        children: node.children
+      };
+    },
     getTownshipXq(row){
       const townshipId = row.townshipId || this.ids
       getTownship(townshipId).then(response => {

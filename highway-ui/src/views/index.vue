@@ -1,10 +1,9 @@
 <template>
   <div align="center">
-    <h1></h1>
+    <h1>公路系统欢迎您</h1>
   <img src="../assets/images/gl.jpg" alt="" width="900px">
   </div>
 </template>
-
 <script>
 export default {
   name: "Index",

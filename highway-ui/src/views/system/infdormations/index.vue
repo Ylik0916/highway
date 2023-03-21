@@ -28,9 +28,11 @@
             />
           </el-select>
         </el-form-item>
+
         <el-form-item label="行政区划" prop="routeAdministrativeArea">
           <treeselect style="width: 200px" v-model="queryParams.routeAdministrativeArea" :options="ordinaryOptions" :normalizer="normalizer" placeholder="请选择行政区" />
         </el-form-item>
+
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
           <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>

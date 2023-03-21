@@ -37,7 +37,7 @@ public class HwTownshipInformation extends BaseEntity
     private Long administrativeDivisionNumber;
 
     /** 经纬度类型 1高德 2GPS */
-    private Integer latitudeAndLongitudeType;
+    private String latitudeAndLongitudeType;
 
     /** 经度 */
     private String longitude;
@@ -46,7 +46,7 @@ public class HwTownshipInformation extends BaseEntity
     private String latitude;
 
     /** 所属地形 */
-    private Integer landform;
+    private String landform;
 
     /** 岛屿是否建有陆岛交通码头 */
     private String islandTransportationTerminal;
@@ -68,10 +68,10 @@ public class HwTownshipInformation extends BaseEntity
 
     /** 通达现状 */
     @Excel(name = "通达现状")
-    private Integer accessStatusQuo;
+    private String accessStatusQuo;
 
     /** 乡镇通达位置 */
-    private Integer locationOfTownshipAccess;
+    private String locationOfTownshipAccess;
 
     /** 优选通达路线行政等级 */
     private String administrativeLevelAccessRoute;
@@ -83,7 +83,7 @@ public class HwTownshipInformation extends BaseEntity
     private String accessRouteIsPreferred;
 
     /** 通达方向 */
-    private Integer directionOfAccess;
+    private String directionOfAccess;
 
     /** 待建路段里程(公里) */
     private BigDecimal lengthOfRoadToBeBuilt;
@@ -178,12 +178,12 @@ public class HwTownshipInformation extends BaseEntity
     {
         return administrativeDivisionNumber;
     }
-    public void setLatitudeAndLongitudeType(Integer latitudeAndLongitudeType) 
+    public void setLatitudeAndLongitudeType(String latitudeAndLongitudeType)
     {
         this.latitudeAndLongitudeType = latitudeAndLongitudeType;
     }
 
-    public Integer getLatitudeAndLongitudeType() 
+    public String getLatitudeAndLongitudeType()
     {
         return latitudeAndLongitudeType;
     }
@@ -205,12 +205,12 @@ public class HwTownshipInformation extends BaseEntity
     {
         return latitude;
     }
-    public void setLandform(Integer landform) 
+    public void setLandform(String landform)
     {
         this.landform = landform;
     }
 
-    public Integer getLandform() 
+    public String getLandform()
     {
         return landform;
     }
@@ -268,21 +268,21 @@ public class HwTownshipInformation extends BaseEntity
     {
         return causeOfUnsuitability;
     }
-    public void setAccessStatusQuo(Integer accessStatusQuo) 
+    public void setAccessStatusQuo(String accessStatusQuo)
     {
         this.accessStatusQuo = accessStatusQuo;
     }
 
-    public Integer getAccessStatusQuo() 
+    public String getAccessStatusQuo()
     {
         return accessStatusQuo;
     }
-    public void setLocationOfTownshipAccess(Integer locationOfTownshipAccess) 
+    public void setLocationOfTownshipAccess(String locationOfTownshipAccess)
     {
         this.locationOfTownshipAccess = locationOfTownshipAccess;
     }
 
-    public Integer getLocationOfTownshipAccess() 
+    public String getLocationOfTownshipAccess()
     {
         return locationOfTownshipAccess;
     }
@@ -313,12 +313,12 @@ public class HwTownshipInformation extends BaseEntity
     {
         return accessRouteIsPreferred;
     }
-    public void setDirectionOfAccess(Integer directionOfAccess) 
+    public void setDirectionOfAccess(String directionOfAccess)
     {
         this.directionOfAccess = directionOfAccess;
     }
 
-    public Integer getDirectionOfAccess() 
+    public String getDirectionOfAccess()
     {
         return directionOfAccess;
     }
