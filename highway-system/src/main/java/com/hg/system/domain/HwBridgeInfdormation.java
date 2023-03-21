@@ -20,15 +20,8 @@ public class HwBridgeInfdormation extends BaseEntity
     /** 桥梁id */
     private Long routeId;
 
-    private int luId;
+    private Integer luId;
 
-    public int getLuId() {
-        return luId;
-    }
-
-    public void setLuId(int luId) {
-        this.luId = luId;
-    }
 
     /** 桥梁编码 */
     @Excel(name = "桥梁编码")
@@ -92,7 +85,7 @@ public class HwBridgeInfdormation extends BaseEntity
 
     /** 是否危桥 */
     @Excel(name = "是否危桥")
-    private Long routeDanger;
+    private String routeDanger;
 
     /** 评定等级 */
     @Excel(name = "评定等级")
@@ -180,7 +173,7 @@ public class HwBridgeInfdormation extends BaseEntity
 
     /** 是否部补助项目 */
     @Excel(name = "是否部补助项目")
-    private Long routeSubsidy;
+    private String routeSubsidy;
 
     /** 已采取交通管制措施 */
     @Excel(name = "已采取交通管制措施")
@@ -192,11 +185,11 @@ public class HwBridgeInfdormation extends BaseEntity
 
     /** 是否宽路窄桥 */
     @Excel(name = "是否宽路窄桥")
-    private Long routeWroadNbridge;
+    private String routeWroadNbridge;
 
     /** 是否在长大桥梁目录 */
     @Excel(name = "是否在长大桥梁目录")
-    private Long routeLongBridges;
+    private String routeLongBridges;
 
     /** 下部结构形式 */
     @Excel(name = "下部结构形式")
@@ -320,6 +313,14 @@ public class HwBridgeInfdormation extends BaseEntity
     public void setRouteId(Long routeId)
     {
         this.routeId = routeId;
+    }
+
+    public Integer getLuId() {
+        return luId;
+    }
+
+    public void setLuId(Integer luId) {
+        this.luId = luId;
     }
 
     public Long getRouteId()
@@ -461,12 +462,12 @@ public class HwBridgeInfdormation extends BaseEntity
     {
         return routeYear;
     }
-    public void setRouteDanger(Long routeDanger)
+    public void setRouteDanger(String routeDanger)
     {
         this.routeDanger = routeDanger;
     }
 
-    public Long getRouteDanger()
+    public String getRouteDanger()
     {
         return routeDanger;
     }
@@ -650,12 +651,12 @@ public class HwBridgeInfdormation extends BaseEntity
     {
         return routeRebuildNature;
     }
-    public void setRouteSubsidy(Long routeSubsidy)
+    public void setRouteSubsidy(String routeSubsidy)
     {
         this.routeSubsidy = routeSubsidy;
     }
 
-    public Long getRouteSubsidy()
+    public String getRouteSubsidy()
     {
         return routeSubsidy;
     }
@@ -677,21 +678,21 @@ public class HwBridgeInfdormation extends BaseEntity
     {
         return routePosition;
     }
-    public void setRouteWroadNbridge(Long routeWroadNbridge)
+    public void setRouteWroadNbridge(String routeWroadNbridge)
     {
         this.routeWroadNbridge = routeWroadNbridge;
     }
 
-    public Long getRouteWroadNbridge()
+    public String getRouteWroadNbridge()
     {
         return routeWroadNbridge;
     }
-    public void setRouteLongBridges(Long routeLongBridges)
+    public void setRouteLongBridges(String routeLongBridges)
     {
         this.routeLongBridges = routeLongBridges;
     }
 
-    public Long getRouteLongBridges()
+    public String getRouteLongBridges()
     {
         return routeLongBridges;
     }
@@ -1032,6 +1033,7 @@ public class HwBridgeInfdormation extends BaseEntity
                 .append("centerStake", getCenterStake())
                 .append("luCode", getLuCode())
                 .append("evaluationUnit", getEvaluationUnit())
+                .append("luId", getLuId())
                 .toString();
     }
 }
