@@ -7,73 +7,89 @@ import com.hg.common.core.domain.BaseEntity;
 
 /**
  * 从业单位评价对象 hw_unit_evaluate
- * 
+ *
  * @author W-yf
  * @date 2023-03-15
  */
-public class HwUnitEvaluate extends BaseEntity
-{
+public class HwUnitEvaluate extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
-    /** 单位id */
+    /**
+     * 单位id
+     */
     private Long unitId;
 
-    /** 单位名称 */
+    /**
+     * 单位名称
+     */
     @Excel(name = "单位名称")
     private String unitName;
 
-    /** 单位类型 */
+    /**
+     * 单位类型
+     */
     @Excel(name = "单位类型")
     private String unitType;
 
-    /** 评价年度 */
+    /**
+     * 评价年度
+     */
     @Excel(name = "评价年度")
     private String evaluateYears;
 
-    public void setUnitId(Long unitId) 
-    {
+    /**
+     * 历史评价
+     */
+    private HwHistoryEvaluate hwHistoryEvaluate;
+
+    public void setUnitId(Long unitId) {
         this.unitId = unitId;
     }
 
-    public Long getUnitId() 
-    {
+    public Long getUnitId() {
         return unitId;
     }
-    public void setUnitName(String unitName) 
-    {
+
+    public void setUnitName(String unitName) {
         this.unitName = unitName;
     }
 
-    public String getUnitName() 
-    {
+    public String getUnitName() {
         return unitName;
     }
-    public void setUnitType(String unitType) 
-    {
+
+    public void setUnitType(String unitType) {
         this.unitType = unitType;
     }
 
-    public String getUnitType() 
-    {
+    public String getUnitType() {
         return unitType;
     }
-    public void setEvaluateYears(String evaluateYears) 
-    {
+
+    public void setEvaluateYears(String evaluateYears) {
         this.evaluateYears = evaluateYears;
     }
 
-    public String getEvaluateYears() 
-    {
+    public String getEvaluateYears() {
         return evaluateYears;
+    }
+
+    public HwHistoryEvaluate getHwHistoryEvaluate() {
+        return hwHistoryEvaluate;
+    }
+
+    public void setHwHistoryEvaluate(HwHistoryEvaluate hwHistoryEvaluate) {
+        this.hwHistoryEvaluate = hwHistoryEvaluate;
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("unitId", getUnitId())
-            .append("unitName", getUnitName())
-            .append("unitType", getUnitType())
-            .append("evaluateYears", getEvaluateYears())
-            .toString();
+        return "HwUnitEvaluate{" +
+                "unitId=" + unitId +
+                ", unitName='" + unitName + '\'' +
+                ", unitType='" + unitType + '\'' +
+                ", evaluateYears='" + evaluateYears + '\'' +
+                ", hwHistoryEvaluate=" + hwHistoryEvaluate +
+                '}';
     }
 }

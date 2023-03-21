@@ -15,10 +15,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="mileage"    column="mileage"    />
         <result property="amount"    column="amount"    />
         <result property="auditStatusid"    column="audit_statusid"    />
+        <result property="administrativeName" column="dept_name" />
+        <result property="administrativeCode" column="postcode" />
+        <result property="auditPeople"    column="audit_people"    />
+        <result property="time" column="time" />
+        <result property="message" column="message" />
     </resultMap>
 
     <sql id="selectHwMaintainPlanDelicacyVo">
-        select mpdid, administrative, path_name, where_village, road_typeid, technical_gradeid, road_width, mileage, amount, audit_statusid from hw_maintain_plan_delicacy
+        select mpdid, administrative, path_name, where_village, road_typeid, technical_gradeid, road_width, mileage, amount, audit_statusid ,dept_name,postcode,audit_people,`time`,message
+        from hw_maintain_plan_delicacy left join sys_dept on hw_maintain_plan_delicacy.administrative=sys_dept.dept_id
     </sql>
 
     <select id="selectHwMaintainPlanDelicacyList" parameterType="HwMaintainPlanDelicacy" resultMap="HwMaintainPlanDelicacyResult">
@@ -53,6 +59,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="mileage != null">mileage,</if>
             <if test="amount != null">amount,</if>
             <if test="auditStatusid != null">audit_statusid,</if>
+            <if test="auditPeople != null">audit_people,</if>
+            <if test="time != null">`time`,</if>
+            <if test="message != null">message,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="administrative != null">#{administrative},</if>
@@ -64,6 +73,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="mileage != null">#{mileage},</if>
             <if test="amount != null">#{amount},</if>
             <if test="auditStatusid != null">#{auditStatusid},</if>
+            <if test="auditPeople != null">#{audit_people},</if>
+            <if test="time != null">#{time},</if>
+            <if test="message != null">#{message},</if>
          </trim>
     </insert>
 
@@ -79,6 +91,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="mileage != null">mileage = #{mileage},</if>
             <if test="amount != null">amount = #{amount},</if>
             <if test="auditStatusid != null">audit_statusid = #{auditStatusid},</if>
+            <if test="auditPeople != null">audit_people = #{auditPeople},</if>
+            <if test="time != null">`time` = #{time},</if>
+            <if test="message != null">message = #{message},</if>
         </trim>
         where mpdid = #{mpdid}
     </update>

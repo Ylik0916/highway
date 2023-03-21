@@ -58,4 +58,12 @@ public interface HwUnitEvaluateMapper
      * @return 结果
      */
     public int deleteHwUnitEvaluateByUnitIds(Long[] unitIds);
+
+    /**
+     * 查询从业单位评价列表和成绩
+     *
+     * @param hwUnitEvaluate 从业单位评价
+     * @return 从业单位评价集合
+     */
+    public List<HwUnitEvaluate> selectHwUnitEvaluateAndScoreList(HwUnitEvaluate hwUnitEvaluate);
 }

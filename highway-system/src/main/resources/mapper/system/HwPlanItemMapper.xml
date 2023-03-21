@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hg.system.mapper.HwPlanItemMapper">
+    
+    <resultMap type="com.hg.system.domain.HwPlanItem" id="HwPlanItemResult">
+        <result property="id"    column="id"    />
+        <result property="encoding"    column="encoding"    />
+        <result property="name"    column="name"    />
+        <result property="length"    column="length"    />
+        <result property="custodyUnit"    column="custody_unit"    />
+        <result property="region"    column="region"    />
+        <result property="unfinished"    column="unfinished"    />
+        <result property="level"    column="level"    />
+        <result property="constructedType"    column="constructed_type"    />
+        <result property="surfaceWidth"    column="surface_width"    />
+        <result property="roadbedWidth"    column="roadbed_width"    />
+        <result property="startingNumber"    column="starting_number"    />
+        <result property="terminusNumber"    column="terminus_number"    />
+        <result property="nationalProvinceSubsidy"    column="national_province_subsidy"    />
+        <result property="municipalityInvest"    column="municipality_invest"    />
+        <result property="countySelfFund"    column="county_self_fund"    />
+        <result property="replyCapital"    column="reply_capital"    />
+        <result property="contractCapital"    column="contract_capital"    />
+        <result property="notInServiceCause"    column="not_in_service_cause"    />
+        <result property="progress"    column="progress"    />
+        <result property="replyFileNumber"    column="reply_file_number"    />
+        <result property="accountabilityUnit"    column="accountability_unit"    />
+        <result property="personInCharge"    column="person_in_charge"    />
+        <result property="phone"    column="phone"    />
+        <result property="startWorkYear"    column="start_work_year"    />
+        <result property="completionYear"    column="completion_year"    />
+        <result property="productionDrawing"    column="production_drawing"    />
+        <result property="productionDrawingApproval"    column="production_drawing_approval"    />
+        <result property="bidWhetherCompletion"    column="bid_whether_completion"    />
+        <result property="postscript"    column="postscript"    />
+        <result property="planId"    column="plan_id"    />
+        <result property="disease"    column="disease"    />
+        <result property="detailScale"    column="detail_scale"    />
+    </resultMap>
+
+    <sql id="selectHwPlanItemVo">
+        select id, encoding, name, length, custody_unit, region, unfinished, level, constructed_type, surface_width, roadbed_width, starting_number, terminus_number, national_province_subsidy, municipality_invest, county_self_fund, reply_capital, contract_capital, not_in_service_cause, progress, reply_file_number, accountability_unit, person_in_charge, phone, start_work_year, completion_year, production_drawing, production_drawing_approval, bid_whether_completion, postscript, plan_id, disease, detail_scale from hw_plan_item
+    </sql>
+
+    <select id="selectHwPlanItemList" parameterType="com.hg.system.domain.HwPlanItem" resultMap="HwPlanItemResult">
+        <include refid="selectHwPlanItemVo"/>
+        <where>  
+            <if test="encoding != null  and encoding != ''"> and encoding = #{encoding}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="length != null  and length != ''"> and length = #{length}</if>
+            <if test="custodyUnit != null  and custodyUnit != ''"> and custody_unit = #{custodyUnit}</if>
+            <if test="region != null  and region != ''"> and region = #{region}</if>
+            <if test="unfinished != null "> and unfinished = #{unfinished}</if>
+            <if test="level != null "> and level = #{level}</if>
+            <if test="constructedType != null "> and constructed_type = #{constructedType}</if>
+            <if test="surfaceWidth != null "> and surface_width = #{surfaceWidth}</if>
+            <if test="roadbedWidth != null "> and roadbed_width = #{roadbedWidth}</if>
+            <if test="startingNumber != null  and startingNumber != ''"> and starting_number = #{startingNumber}</if>
+            <if test="terminusNumber != null  and terminusNumber != ''"> and terminus_number = #{terminusNumber}</if>
+            <if test="nationalProvinceSubsidy != null "> and national_province_subsidy = #{nationalProvinceSubsidy}</if>
+            <if test="municipalityInvest != null "> and municipality_invest = #{municipalityInvest}</if>
+            <if test="countySelfFund != null "> and county_self_fund = #{countySelfFund}</if>
+            <if test="replyCapital != null "> and reply_capital = #{replyCapital}</if>
+            <if test="contractCapital != null "> and contract_capital = #{contractCapital}</if>
+            <if test="notInServiceCause != null  and notInServiceCause != ''"> and not_in_service_cause = #{notInServiceCause}</if>
+            <if test="progress != null  and progress != ''"> and progress = #{progress}</if>
+            <if test="replyFileNumber != null  and replyFileNumber != ''"> and reply_file_number = #{replyFileNumber}</if>
+            <if test="accountabilityUnit != null  and accountabilityUnit != ''"> and accountability_unit = #{accountabilityUnit}</if>
+            <if test="personInCharge != null  and personInCharge != ''"> and person_in_charge = #{personInCharge}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="startWorkYear != null "> and start_work_year = #{startWorkYear}</if>
+            <if test="completionYear != null "> and completion_year = #{completionYear}</if>
+            <if test="productionDrawing != null "> and production_drawing = #{productionDrawing}</if>
+            <if test="productionDrawingApproval != null "> and production_drawing_approval = #{productionDrawingApproval}</if>
+            <if test="bidWhetherCompletion != null "> and bid_whether_completion = #{bidWhetherCompletion}</if>
+            <if test="postscript != null  and postscript != ''"> and postscript = #{postscript}</if>
+            <if test="planId != null "> and plan_id = #{planId}</if>
+            <if test="disease != null  and disease != ''"> and disease = #{disease}</if>
+            <if test="detailScale != null "> and detail_scale = #{detailScale}</if>
+        </where>
+    </select>
+
+    <select id="selectHwPlanItemListAnd0" parameterType="com.hg.system.domain.HwPlanItem" resultMap="HwPlanItemResult">
+        <include refid="selectHwPlanItemVo"/>
+        where detail_scale = 0
+        <!--<include refid="selectHwPlanItemVo"/>-->
+        <!--<where>-->
+        <!--    detail_scale=2-->
+
+        <!--    <if test="encoding != null  and encoding != ''"> and encoding = #{encoding}</if>-->
+        <!--    <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>-->
+        <!--    <if test="length != null  and length != ''"> and length = #{length}</if>-->
+        <!--    <if test="custodyUnit != null  and custodyUnit != ''"> and custody_unit = #{custodyUnit}</if>-->
+        <!--    <if test="region != null  and region != ''"> and region = #{region}</if>-->
+        <!--    <if test="unfinished != null "> and unfinished = #{unfinished}</if>-->
+        <!--    <if test="level != null "> and level = #{level}</if>-->
+        <!--    <if test="constructedType != null "> and constructed_type = #{constructedType}</if>-->
+        <!--    <if test="surfaceWidth != null "> and surface_width = #{surfaceWidth}</if>-->
+        <!--    <if test="roadbedWidth != null "> and roadbed_width = #{roadbedWidth}</if>-->
+        <!--    <if test="startingNumber != null  and startingNumber != ''"> and starting_number = #{startingNumber}</if>-->
+        <!--    <if test="terminusNumber != null  and terminusNumber != ''"> and terminus_number = #{terminusNumber}</if>-->
+        <!--    <if test="nationalProvinceSubsidy != null "> and national_province_subsidy = #{nationalProvinceSubsidy}</if>-->
+        <!--    <if test="municipalityInvest != null "> and municipality_invest = #{municipalityInvest}</if>-->
+        <!--    <if test="countySelfFund != null "> and county_self_fund = #{countySelfFund}</if>-->
+        <!--    <if test="replyCapital != null "> and reply_capital = #{replyCapital}</if>-->
+        <!--    <if test="contractCapital != null "> and contract_capital = #{contractCapital}</if>-->
+        <!--    <if test="notInServiceCause != null  and notInServiceCause != ''"> and not_in_service_cause = #{notInServiceCause}</if>-->
+        <!--    <if test="progress != null  and progress != ''"> and progress = #{progress}</if>-->
+        <!--    <if test="replyFileNumber != null  and replyFileNumber != ''"> and reply_file_number = #{replyFileNumber}</if>-->
+        <!--    <if test="accountabilityUnit != null  and accountabilityUnit != ''"> and accountability_unit = #{accountabilityUnit}</if>-->
+        <!--    <if test="personInCharge != null  and personInCharge != ''"> and person_in_charge = #{personInCharge}</if>-->
+        <!--    <if test="phone != null  and phone != ''"> and phone = #{phone}</if>-->
+        <!--    <if test="startWorkYear != null "> and start_work_year = #{startWorkYear}</if>-->
+        <!--    <if test="completionYear != null "> and completion_year = #{completionYear}</if>-->
+        <!--    <if test="productionDrawing != null "> and production_drawing = #{productionDrawing}</if>-->
+        <!--    <if test="productionDrawingApproval != null "> and production_drawing_approval = #{productionDrawingApproval}</if>-->
+        <!--    <if test="bidWhetherCompletion != null "> and bid_whether_completion = #{bidWhetherCompletion}</if>-->
+        <!--    <if test="postscript != null  and postscript != ''"> and postscript = #{postscript}</if>-->
+        <!--    <if test="planId != null "> and plan_id = #{planId}</if>-->
+        <!--    <if test="disease != null  and disease != ''"> and disease = #{disease}</if>-->
+        <!--</where>-->
+    </select>
+
+    <select id="selectHwPlanItemListAnd1" parameterType="com.hg.system.domain.HwPlanItem" resultMap="HwPlanItemResult">
+        <include refid="selectHwPlanItemVo"/>
+        where detail_scale = 1
+    </select>
+
+    <select id="selectHwPlanItemListAnd2" parameterType="com.hg.system.domain.HwPlanItem" resultMap="HwPlanItemResult">
+        <include refid="selectHwPlanItemVo"/>
+        where detail_scale = 2 or detail_scale = 0
+    </select>
+
+    <select id="selectHwPlanItemListAnd3" parameterType="com.hg.system.domain.HwPlanItem" resultMap="HwPlanItemResult">
+        <include refid="selectHwPlanItemVo"/>
+        where detail_scale = 3
+    </select>
+
+
+    <select id="selectHwPlanItemById" parameterType="long" resultMap="HwPlanItemResult">
+        <include refid="selectHwPlanItemVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertHwPlanItem" parameterType="com.hg.system.domain.HwPlanItem" useGeneratedKeys="true" keyProperty="id">
+        insert into hw_plan_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="encoding != null and encoding != ''">encoding,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="length != null and length != ''">length,</if>
+            <if test="custodyUnit != null">custody_unit,</if>
+            <if test="region != null and region != ''">region,</if>
+            <if test="unfinished != null">unfinished,</if>
+            <if test="level != null">level,</if>
+            <if test="constructedType != null">constructed_type,</if>
+            <if test="surfaceWidth != null">surface_width,</if>
+            <if test="roadbedWidth != null">roadbed_width,</if>
+            <if test="startingNumber != null">starting_number,</if>
+            <if test="terminusNumber != null">terminus_number,</if>
+            <if test="nationalProvinceSubsidy != null">national_province_subsidy,</if>
+            <if test="municipalityInvest != null">municipality_invest,</if>
+            <if test="countySelfFund != null">county_self_fund,</if>
+            <if test="replyCapital != null">reply_capital,</if>
+            <if test="contractCapital != null">contract_capital,</if>
+            <if test="notInServiceCause != null">not_in_service_cause,</if>
+            <if test="progress != null">progress,</if>
+            <if test="replyFileNumber != null">reply_file_number,</if>
+            <if test="accountabilityUnit != null">accountability_unit,</if>
+            <if test="personInCharge != null">person_in_charge,</if>
+            <if test="phone != null">phone,</if>
+            <if test="startWorkYear != null">start_work_year,</if>
+            <if test="completionYear != null">completion_year,</if>
+            <if test="productionDrawing != null">production_drawing,</if>
+            <if test="productionDrawingApproval != null">production_drawing_approval,</if>
+            <if test="bidWhetherCompletion != null">bid_whether_completion,</if>
+            <if test="postscript != null">postscript,</if>
+            <if test="planId != null">plan_id,</if>
+            <if test="disease != null">disease,</if>
+            <if test="detailScale != null">detail_scale,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="encoding != null and encoding != ''">#{encoding},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="length != null and length != ''">#{length},</if>
+            <if test="custodyUnit != null">#{custodyUnit},</if>
+            <if test="region != null and region != ''">#{region},</if>
+            <if test="unfinished != null">#{unfinished},</if>
+            <if test="level != null">#{level},</if>
+            <if test="constructedType != null">#{constructedType},</if>
+            <if test="surfaceWidth != null">#{surfaceWidth},</if>
+            <if test="roadbedWidth != null">#{roadbedWidth},</if>
+            <if test="startingNumber != null">#{startingNumber},</if>
+            <if test="terminusNumber != null">#{terminusNumber},</if>
+            <if test="nationalProvinceSubsidy != null">#{nationalProvinceSubsidy},</if>
+            <if test="municipalityInvest != null">#{municipalityInvest},</if>
+            <if test="countySelfFund != null">#{countySelfFund},</if>
+            <if test="replyCapital != null">#{replyCapital},</if>
+            <if test="contractCapital != null">#{contractCapital},</if>
+            <if test="notInServiceCause != null">#{notInServiceCause},</if>
+            <if test="progress != null">#{progress},</if>
+            <if test="replyFileNumber != null">#{replyFileNumber},</if>
+            <if test="accountabilityUnit != null">#{accountabilityUnit},</if>
+            <if test="personInCharge != null">#{personInCharge},</if>
+            <if test="phone != null">#{phone},</if>
+            <if test="startWorkYear != null">#{startWorkYear},</if>
+            <if test="completionYear != null">#{completionYear},</if>
+            <if test="productionDrawing != null">#{productionDrawing},</if>
+            <if test="productionDrawingApproval != null">#{productionDrawingApproval},</if>
+            <if test="bidWhetherCompletion != null">#{bidWhetherCompletion},</if>
+            <if test="postscript != null">#{postscript},</if>
+            <if test="planId != null">#{planId},</if>
+            <if test="disease != null">#{disease},</if>
+            <if test="detailScale != null">#{detailScale},</if>
+         </trim>
+    </insert>
+
+    <update id="updateHwPlanItem" parameterType="com.hg.system.domain.HwPlanItem">
+        update hw_plan_item
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="encoding != null and encoding != ''">encoding = #{encoding},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="length != null and length != ''">length = #{length},</if>
+            <if test="custodyUnit != null">custody_unit = #{custodyUnit},</if>
+            <if test="region != null and region != ''">region = #{region},</if>
+            <if test="unfinished != null">unfinished = #{unfinished},</if>
+            <if test="level != null">level = #{level},</if>
+            <if test="constructedType != null">constructed_type = #{constructedType},</if>
+            <if test="surfaceWidth != null">surface_width = #{surfaceWidth},</if>
+            <if test="roadbedWidth != null">roadbed_width = #{roadbedWidth},</if>
+            <if test="startingNumber != null">starting_number = #{startingNumber},</if>
+            <if test="terminusNumber != null">terminus_number = #{terminusNumber},</if>
+            <if test="nationalProvinceSubsidy != null">national_province_subsidy = #{nationalProvinceSubsidy},</if>
+            <if test="municipalityInvest != null">municipality_invest = #{municipalityInvest},</if>
+            <if test="countySelfFund != null">county_self_fund = #{countySelfFund},</if>
+            <if test="replyCapital != null">reply_capital = #{replyCapital},</if>
+            <if test="contractCapital != null">contract_capital = #{contractCapital},</if>
+            <if test="notInServiceCause != null">not_in_service_cause = #{notInServiceCause},</if>
+            <if test="progress != null">progress = #{progress},</if>
+            <if test="replyFileNumber != null">reply_file_number = #{replyFileNumber},</if>
+            <if test="accountabilityUnit != null">accountability_unit = #{accountabilityUnit},</if>
+            <if test="personInCharge != null">person_in_charge = #{personInCharge},</if>
+            <if test="phone != null">phone = #{phone},</if>
+            <if test="startWorkYear != null">start_work_year = #{startWorkYear},</if>
+            <if test="completionYear != null">completion_year = #{completionYear},</if>
+            <if test="productionDrawing != null">production_drawing = #{productionDrawing},</if>
+            <if test="productionDrawingApproval != null">production_drawing_approval = #{productionDrawingApproval},</if>
+            <if test="bidWhetherCompletion != null">bid_whether_completion = #{bidWhetherCompletion},</if>
+            <if test="postscript != null">postscript = #{postscript},</if>
+            <if test="planId != null">plan_id = #{planId},</if>
+            <if test="disease != null">disease = #{disease},</if>
+            <if test="detailScale != null">detail_scale = #{detailScale},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteHwPlanItemById" parameterType="long">
+        delete from hw_plan_item where id = #{id}
+    </delete>
+
+    <delete id="deleteHwPlanItemByIds" parameterType="string">
+        delete from hw_plan_item where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

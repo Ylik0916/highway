@@ -22,17 +22,17 @@
 <!--          v-hasPermi="['system:tunnel:edit']"-->
 <!--        >修改</el-button>-->
 <!--      </el-col>-->
-<!--      <el-col :span="1.5">-->
-<!--        <el-button-->
-<!--          type="danger"-->
-<!--          plain-->
-<!--          icon="el-icon-delete"-->
-<!--          size="mini"-->
-<!--          :disabled="multiple"-->
-<!--          @click="handleDelete"-->
-<!--          v-hasPermi="['system:tunnel:remove']"-->
-<!--        >删除</el-button>-->
-<!--      </el-col>-->
+      <el-col :span="1.5">
+        <el-button
+          type="danger"
+          plain
+          icon="el-icon-delete"
+          size="mini"
+          :disabled="multiple"
+          @click="handleDelete"
+          v-hasPermi="['system:tunnel:remove']"
+        >删除</el-button>
+      </el-col>
       <el-col :span="1.5">
         <el-button
           type="warning"
@@ -46,8 +46,93 @@
 <!--      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>-->
     </el-row>
 
+
+    <!-- 详情桥梁信息对话框 -->
+    <el-dialog :title="title" :visible.sync="openXq" width="1000px" append-to-body>
+      <el-tabs v-model="activeName" type="card">
+        <el-tab-pane label="基本信息" name="first">
+          <el-descriptions :model="form">
+            <el-descriptions-item label="隧道名称">{{ form.tunnelName }}</el-descriptions-item>
+            <el-descriptions-item label="隧道编号">{{ form.tunnelNumber }}</el-descriptions-item>
+            <el-descriptions-item label="隧道中心桩号">{{ form.tunnelCenterPileNumber }}</el-descriptions-item>
+            <el-descriptions-item label="入口桩号/起点桩号">{{ form.startingPileNumber }}</el-descriptions-item>
+            <el-descriptions-item label="隧道长度">{{ form.tunnelLength }}</el-descriptions-item>
+            <el-descriptions-item label="隧道全宽">{{ form.tunnelOverallWidth }}</el-descriptions-item>
+            <el-descriptions-item label="隧道净宽">{{ form.tunnelClearWidth }}</el-descriptions-item>
+            <el-descriptions-item label="隧道净高">{{ form.tunnelClearHeight }}</el-descriptions-item>
+            <el-descriptions-item label="人行道宽">{{ form.sidewalkWidth }}</el-descriptions-item>
+            <el-descriptions-item label="按隧道长度分类">{{ form.tunnelLengthType }}</el-descriptions-item>
+            <el-descriptions-item label="断面形式">{{ form.sectionForm }}</el-descriptions-item>
+            <el-descriptions-item label="洞口形式">{{ form.openingForm }}</el-descriptions-item>
+            <el-descriptions-item label="衬砌材料">{{ form.liningMaterial }}</el-descriptions-item>
+            <el-descriptions-item label="消防设施">{{ form.fireEquipments }}</el-descriptions-item>
+            <el-descriptions-item label="安全通道数量">{{ form.numberOfSafeChannels }}</el-descriptions-item>
+            <el-descriptions-item label="是否水下隧道">{{ form.underwaterTunnelOrNot }}</el-descriptions-item>
+            <el-descriptions-item label="管养单位性质">{{ form.natureOfCustodialUnit }}</el-descriptions-item>
+            <el-descriptions-item label="隧道评定等级">{{ form.tunnelRating }}</el-descriptions-item>
+            <el-descriptions-item label="评定日期">{{ form.dateOfAssessment }}</el-descriptions-item>
+            <el-descriptions-item label="评定单位">{{ form.ratingUnit }}</el-descriptions-item>
+            <el-descriptions-item label="隧道评定等级_土建">{{ form.tunnelRatingCivilConstruction }}</el-descriptions-item>
+            <el-descriptions-item label="评定日期土建">{{ form.ratingDateCivilConstruction }}</el-descriptions-item>
+            <el-descriptions-item label="评定单位土建">{{ form.evaluateTheCivilConstruction }}</el-descriptions-item>
+            <el-descriptions-item label="隧道评定等级_机电">{{ form.tunnelRatingGrade }}</el-descriptions-item>
+            <el-descriptions-item label="评定单位_机电">{{ form.ratingUnitMechanical }}</el-descriptions-item>
+            <el-descriptions-item label="评定日期_机电">{{ form.dateOfEvaluation }}</el-descriptions-item>
+            <el-descriptions-item label="隧道评定等级_其他">{{ form.tunnelRatingOther }}</el-descriptions-item>
+            <el-descriptions-item label="评定单位_其他">{{ form.ratingUnitOther }}</el-descriptions-item>
+            <el-descriptions-item label="原隧道编码">{{ form.originalTunnelCoding }}</el-descriptions-item>
+            <el-descriptions-item label="路面面层类型">{{ form.typeOfPavementLayer }}</el-descriptions-item>
+            <el-descriptions-item label="隧道照明">{{ form.tunnelLighting }}</el-descriptions-item>
+            <el-descriptions-item label="隧道通风">{{ form.tunnelVentilation }}</el-descriptions-item>
+            <el-descriptions-item label="隧道高程">{{ form.tunnelElevation }}</el-descriptions-item>
+            <el-descriptions-item label="隧道养护等级">{{ form.tunnelMaintenanceGrade }}</el-descriptions-item>
+            <el-descriptions-item label="是否在长大隧道目录">{{ form.longTunnelDirectory }}</el-descriptions-item>
+          </el-descriptions>
+        </el-tab-pane>
+        <el-tab-pane label="养护信息" name="second">
+          <el-descriptions :model="form">
+            <el-descriptions-item label="隧道排水类型">{{ form.tunnelDrainageType}}</el-descriptions-item>
+            <el-descriptions-item label="隧道所在地点">{{ form.tunnelLocation }}</el-descriptions-item>
+            <el-descriptions-item label="建成时间(年份)">{{ form.completionTime }}</el-descriptions-item>
+            <el-descriptions-item label="通车日期">{{ form.openingDate}}</el-descriptions-item>
+            <el-descriptions-item label="变更原因">{{ form.reasonForChange}}</el-descriptions-item>
+            <el-descriptions-item label="隧道电子设备">{{ form.tunnelElectronics}}</el-descriptions-item>
+            <el-descriptions-item label="设计单位名称">{{ form.nameOfDesignCompany }}</el-descriptions-item>
+            <el-descriptions-item label="监管单位名称">{{ form.nameOfSupervisoryUnit }}</el-descriptions-item>
+            <el-descriptions-item label="施工单位名称">{{ form.nameOfConstructionUnit }}</el-descriptions-item>
+            <el-descriptions-item label="监理单位名称">{{ form.nameOfSupervisionUnit }}</el-descriptions-item>
+            <el-descriptions-item label="建设单位名称">{{ form.nameOfConstruction }}</el-descriptions-item>
+            <el-descriptions-item label="管养单位代码">{{ form.custodialUnitCode }}</el-descriptions-item>
+            <el-descriptions-item label="管养单位名称">{{ form.nameOfCustodialUnit }}</el-descriptions-item>
+            <el-descriptions-item label="改建年度">{{ form.conversionYear }}</el-descriptions-item>
+            <el-descriptions-item label="隧道改造部位">{{ form.tunnelReconstructionSite }}</el-descriptions-item>
+            <el-descriptions-item label="最近改造工程性质">{{ form.recentRenovationProject }}</el-descriptions-item>
+            <el-descriptions-item label="改造完工日期">{{ form.dateOfCompletion }}</el-descriptions-item>
+            <el-descriptions-item label="隧道病害位置">{{ form.tunnelTroubleLocation }}</el-descriptions-item>
+            <el-descriptions-item label="入口位置经度/隧道经度">{{ form.tunnelLongitude }}</el-descriptions-item>
+            <el-descriptions-item label="入口位置纬度/隧道纬度">{{ form.tunnelLatitude }}</el-descriptions-item>
+            <el-descriptions-item label="隧道病害描述">{{ form.tunnelDamageDescription }}</el-descriptions-item>
+          </el-descriptions>
+        </el-tab-pane>
+        <el-tab-pane label="其他信息" name="third">
+          <el-descriptions :model="form">
+            <el-descriptions-item label="填报单位">{{ form.reportingUnit }}</el-descriptions-item>
+            <el-descriptions-item label="填报单位代码">{{ form.reportingUnitCode }}</el-descriptions-item>
+            <el-descriptions-item label="填报单位负责人">{{ form.reportingUnitPrincipal }}</el-descriptions-item>
+            <el-descriptions-item label="填表人">{{ form.reportingPerson }}</el-descriptions-item>
+            <el-descriptions-item label="填表人电话">{{ form.reportingPersonTelephone }}</el-descriptions-item>
+            <el-descriptions-item label="审核人">{{ form.auditor }}</el-descriptions-item>
+            <el-descriptions-item label="审核人电话">{{ form.auditorTelephone }}</el-descriptions-item>
+            <el-descriptions-item label="采集时间">{{ form.acquisitionTime }}</el-descriptions-item>
+            <el-descriptions-item label="修改时间">{{ form.modificationTime }}</el-descriptions-item>
+            <el-descriptions-item label="备注">{{ form.remarks }}</el-descriptions-item>
+          </el-descriptions>
+        </el-tab-pane>
+      </el-tabs>
+    </el-dialog>
+
     <el-table v-loading="loading" :data="tunnelList" @selection-change="handleSelectionChange">
-<!--      <el-table-column type="selection" width="55" align="center" />-->
+      <el-table-column type="selection" width="55" align="center" />
 <!--      <el-table-column label="隧道ID" align="center" prop="tunnelId" />-->
       <el-table-column label="路线编码" align="center" prop="routeCoding" />
       <el-table-column label="路线名称" align="center" prop="routeName" />
@@ -56,7 +141,7 @@
       <el-table-column label="隧道中心桩号" align="center" prop="tunnelCenterPileNumber" />
       <el-table-column label="隧道长度" align="center" prop="tunnelLength" />
       <el-table-column label="隧道全宽" align="center" prop="tunnelOverallWidth" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column width="150px" label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -92,8 +177,10 @@
     />
 
     <!-- 添加或修改隧道信息对话框 -->
-    <el-dialog :title="title" :visible.sync="open" append-to-body width="800px" >
-      <el-form ref="form" :model="form" :rules="rules" style="display: flex;flex-wrap: wrap;justify-content: space-between">
+    <el-dialog :title="title" :visible.sync="open" append-to-body width="1000px">
+      <el-form ref="form" :inline="true" :model="form" :rules="rules" :label-position="labelPosition">
+        <el-tabs v-model="activeName" type="card">
+          <el-tab-pane label="基本信息" name="first">
 <!--        <el-form-item label="路线编码" prop="routeCoding">-->
 <!--          <el-input v-model="form.routeCoding" placeholder="请输入路线编码" />-->
 <!--        </el-form-item>-->
@@ -101,34 +188,34 @@
 <!--          <el-input v-model="form.routeName" placeholder="请输入路线名称" />-->
 <!--        </el-form-item>-->
         <el-form-item label="隧道名称" prop="tunnelName">
-          <el-input v-model="form.tunnelName" placeholder="请输入隧道名称"  :disabled="flag" />
+          <el-input v-model="form.tunnelName" placeholder="请输入隧道名称"/>
         </el-form-item>
         <el-form-item label="隧道编号" prop="tunnelNumber">
-          <el-input v-model="form.tunnelNumber" placeholder="请输入隧道编号" :disabled="flag"/>
+          <el-input v-model="form.tunnelNumber" placeholder="请输入隧道编号"/>
         </el-form-item>
         <el-form-item label="隧道中心桩号" prop="tunnelCenterPileNumber">
-          <el-input v-model="form.tunnelCenterPileNumber" placeholder="请输入隧道中心桩号" :disabled="flag"/>
+          <el-input v-model="form.tunnelCenterPileNumber" placeholder="请输入隧道中心桩号"/>
         </el-form-item>
         <el-form-item label="入口桩号/起点桩号" prop="startingPileNumber">
-          <el-input v-model="form.startingPileNumber" placeholder="请输入入口桩号/起点桩号" :disabled="flag"/>
+          <el-input v-model="form.startingPileNumber" placeholder="请输入入口桩号/起点桩号"/>
         </el-form-item>
         <el-form-item label="隧道长度" prop="tunnelLength">
-          <el-input v-model="form.tunnelLength" placeholder="请输入隧道长度" :disabled="flag"/>
+          <el-input v-model="form.tunnelLength" placeholder="请输入隧道长度"/>
         </el-form-item>
         <el-form-item label="隧道全宽" prop="tunnelOverallWidth">
-          <el-input v-model="form.tunnelOverallWidth" placeholder="请输入隧道全宽" :disabled="flag"/>
+          <el-input v-model="form.tunnelOverallWidth" placeholder="请输入隧道全宽"/>
         </el-form-item>
         <el-form-item label="隧道净宽" prop="tunnelClearWidth">
-          <el-input v-model="form.tunnelClearWidth" placeholder="请输入隧道净宽" :disabled="flag" />
+          <el-input v-model="form.tunnelClearWidth" placeholder="请输入隧道净宽"/>
         </el-form-item>
         <el-form-item label="隧道净高" prop="tunnelClearHeight">
-          <el-input v-model="form.tunnelClearHeight" placeholder="请输入隧道净高" :disabled="flag"/>
+          <el-input v-model="form.tunnelClearHeight" placeholder="请输入隧道净高"/>
         </el-form-item>
         <el-form-item label="人行道宽" prop="sidewalkWidth">
-          <el-input v-model="form.sidewalkWidth" placeholder="请输入人行道宽" :disabled="flag"/>
+          <el-input v-model="form.sidewalkWidth" placeholder="请输入人行道宽"/>
         </el-form-item>
         <el-form-item label="按隧道长度分类" prop="tunnelLengthType">
-          <el-select v-model="form.tunnelLengthType" placeholder="请选择按隧道长度分类" :disabled="flag">
+          <el-select v-model="form.tunnelLengthType" placeholder="请选择按隧道长度分类">
             <el-option
               v-for="dict in dict.type.tunnel_length_type"
               :key="dict.value"
@@ -138,7 +225,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="断面形式" prop="sectionForm">
-          <el-select v-model="form.sectionForm" placeholder="请选择断面形式" :disabled="flag">
+          <el-select v-model="form.sectionForm" placeholder="请选择断面形式">
             <el-option
               v-for="dict in dict.type.section_form"
               :key="dict.value"
@@ -148,7 +235,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="洞口形式" prop="openingForm">
-          <el-select v-model="form.openingForm" placeholder="请选择洞口形式" :disabled="flag">
+          <el-select v-model="form.openingForm" placeholder="请选择洞口形式">
             <el-option
               v-for="dict in dict.type.opening_form"
               :key="dict.value"
@@ -158,7 +245,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="衬砌材料" prop="liningMaterial">
-          <el-select v-model="form.liningMaterial" placeholder="请选择衬砌材料" :disabled="flag">
+          <el-select v-model="form.liningMaterial" placeholder="请选择衬砌材料">
             <el-option
               v-for="dict in dict.type.lining_material"
               :key="dict.value"
@@ -168,13 +255,13 @@
           </el-select>
         </el-form-item>
         <el-form-item label="消防设施" prop="fireEquipments">
-          <el-input v-model="form.fireEquipments" placeholder="请输入消防设施" :disabled="flag"/>
+          <el-input v-model="form.fireEquipments" placeholder="请输入消防设施"/>
         </el-form-item>
         <el-form-item label="安全通道数量" prop="numberOfSafeChannels">
-          <el-input v-model="form.numberOfSafeChannels" placeholder="请输入安全通道数量" :disabled="flag"/>
+          <el-input v-model="form.numberOfSafeChannels" placeholder="请输入安全通道数量"/>
         </el-form-item>
         <el-form-item label="是否水下隧道" prop="underwaterTunnelOrNot">
-          <el-select v-model="form.underwaterTunnelOrNot" placeholder="请选择是否水下隧道" :disabled="flag">
+          <el-select v-model="form.underwaterTunnelOrNot" placeholder="请选择是否水下隧道">
             <el-option
               v-for="dict in dict.type.underwater_tunnel_or_not"
               :key="dict.value"
@@ -184,7 +271,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="管养单位性质" prop="natureOfCustodialUnit">
-          <el-select v-model="form.natureOfCustodialUnit" placeholder="请选择管养单位性质" :disabled="flag">
+          <el-select v-model="form.natureOfCustodialUnit" placeholder="请选择管养单位性质">
             <el-option
               v-for="dict in dict.type.management_maintenance"
               :key="dict.value"
@@ -194,7 +281,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="隧道评定等级" prop="tunnelRating">
-          <el-select v-model="form.tunnelRating" placeholder="请选择隧道评定等级" :disabled="flag">
+          <el-select v-model="form.tunnelRating" placeholder="请选择隧道评定等级">
             <el-option
               v-for="dict in dict.type.tunnel_level"
               :key="dict.value"
@@ -208,14 +295,14 @@
             v-model="form.dateOfAssessment"
             type="date"
             value-format="yyyy-MM-dd"
-            placeholder="请选择评定日期" :disabled="flag">
+            placeholder="请选择评定日期">
           </el-date-picker>
         </el-form-item>
         <el-form-item label="评定单位" prop="ratingUnit">
-          <el-input v-model="form.ratingUnit" placeholder="请输入评定单位" :disabled="flag"/>
+          <el-input v-model="form.ratingUnit" placeholder="请输入评定单位"/>
         </el-form-item>
         <el-form-item label="隧道评定等级_土建" prop="tunnelRatingCivilConstruction">
-          <el-select v-model="form.tunnelRatingCivilConstruction" placeholder="请选择隧道评定等级_土建" :disabled="flag">
+          <el-select v-model="form.tunnelRatingCivilConstruction" placeholder="请选择隧道评定等级_土建">
             <el-option
               v-for="dict in dict.type.tunnel_rating"
               :key="dict.value"
@@ -229,14 +316,14 @@
             v-model="form.ratingDateCivilConstruction"
             type="date"
             value-format="yyyy-MM-dd"
-            placeholder="请选择评定日期土建" :disabled="flag">
+            placeholder="请选择评定日期土建">
           </el-date-picker>
         </el-form-item>
         <el-form-item label="评定单位土建" prop="evaluateTheCivilConstruction">
-          <el-input v-model="form.evaluateTheCivilConstruction" placeholder="请输入评定单位土建" :disabled="flag"/>
+          <el-input v-model="form.evaluateTheCivilConstruction" placeholder="请输入评定单位土建"/>
         </el-form-item>
         <el-form-item label="隧道评定等级_机电" prop="tunnelRatingGrade">
-          <el-select v-model="form.tunnelRatingGrade" placeholder="请选择隧道评定等级_机电" :disabled="flag">
+          <el-select v-model="form.tunnelRatingGrade" placeholder="请选择隧道评定等级_机电">
             <el-option
               v-for="dict in dict.type.tunnel_rating"
               :key="dict.value"
@@ -246,27 +333,27 @@
           </el-select>
         </el-form-item>
         <el-form-item label="评定单位_机电" prop="ratingUnitMechanical">
-          <el-input v-model="form.ratingUnitMechanical" placeholder="请输入评定单位_机电" :disabled="flag"/>
+          <el-input v-model="form.ratingUnitMechanical" placeholder="请输入评定单位_机电"/>
         </el-form-item>
         <el-form-item label="评定日期_机电" prop="dateOfEvaluation">
           <el-date-picker clearable
             v-model="form.dateOfEvaluation"
             type="date"
             value-format="yyyy-MM-dd"
-            placeholder="请选择评定日期_机电" :disabled="flag">
+            placeholder="请选择评定日期_机电" >
           </el-date-picker>
         </el-form-item>
         <el-form-item label="隧道评定等级_其他" prop="tunnelRatingOther">
-          <el-input v-model="form.tunnelRatingOther" placeholder="请输入隧道评定等级_其他" :disabled="flag"/>
+          <el-input v-model="form.tunnelRatingOther" placeholder="请输入隧道评定等级_其他" />
         </el-form-item>
         <el-form-item label="评定单位_其他" prop="ratingUnitOther">
-          <el-input v-model="form.ratingUnitOther" placeholder="请输入评定单位_其他" :disabled="flag"/>
+          <el-input v-model="form.ratingUnitOther" placeholder="请输入评定单位_其他" />
         </el-form-item>
         <el-form-item label="原隧道编码" prop="originalTunnelCoding">
-          <el-input v-model="form.originalTunnelCoding" placeholder="请输入原隧道编码" :disabled="flag"/>
+          <el-input v-model="form.originalTunnelCoding" placeholder="请输入原隧道编码" />
         </el-form-item>
         <el-form-item label="路面面层类型" prop="typeOfPavementLayer">
-          <el-select v-model="form.typeOfPavementLayer" placeholder="请选择路面面层类型" :disabled="flag">
+          <el-select v-model="form.typeOfPavementLayer" placeholder="请选择路面面层类型" >
             <el-option
               v-for="dict in dict.type.type_of_pavement_layer"
               :key="dict.value"
@@ -276,7 +363,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="隧道照明" prop="tunnelLighting">
-          <el-select v-model="form.tunnelLighting" placeholder="请选择隧道照明" :disabled="flag">
+          <el-select v-model="form.tunnelLighting" placeholder="请选择隧道照明" >
             <el-option
               v-for="dict in dict.type.tunnel_lighting"
               :key="dict.value"
@@ -286,7 +373,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="隧道通风" prop="tunnelVentilation">
-          <el-select v-model="form.tunnelVentilation" placeholder="请选择隧道通风" :disabled="flag">
+          <el-select v-model="form.tunnelVentilation" placeholder="请选择隧道通风" >
             <el-option
               v-for="dict in dict.type.tunnel_ventilation"
               :key="dict.value"
@@ -296,10 +383,10 @@
           </el-select>
         </el-form-item>
         <el-form-item label="隧道高程" prop="tunnelElevation">
-          <el-input v-model="form.tunnelElevation" placeholder="请输入隧道高程" :disabled="flag"/>
+          <el-input v-model="form.tunnelElevation" placeholder="请输入隧道高程" />
         </el-form-item>
         <el-form-item label="隧道养护等级" prop="tunnelMaintenanceGrade">
-          <el-select v-model="form.tunnelMaintenanceGrade" placeholder="请选择隧道养护等级" :disabled="flag">
+          <el-select v-model="form.tunnelMaintenanceGrade" placeholder="请选择隧道养护等级" >
             <el-option
               v-for="dict in dict.type.tunnel_maintenance_grade"
               :key="dict.value"
@@ -308,8 +395,20 @@
             ></el-option>
           </el-select>
         </el-form-item>
+            <el-form-item label="是否在长大隧道目录" prop="longTunnelDirectory">
+              <el-select v-model="form.longTunnelDirectory" placeholder="请选择是否在长大隧道目录" >
+                <el-option
+                  v-for="dict in dict.type.underwater_tunnel_or_not"
+                  :key="dict.value"
+                  :label="dict.label"
+                  :value="dict.value"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-tab-pane>
+          <el-tab-pane label="养护信息" name="second">
         <el-form-item label="隧道排水类型" prop="tunnelDrainageType">
-          <el-select v-model="form.tunnelDrainageType" placeholder="请选择隧道排水类型" :disabled="flag">
+          <el-select v-model="form.tunnelDrainageType" placeholder="请选择隧道排水类型" >
             <el-option
               v-for="dict in dict.type.tunnel_drainage_type"
               :key="dict.value"
@@ -319,14 +418,14 @@
           </el-select>
         </el-form-item>
         <el-form-item label="隧道所在地点" prop="tunnelLocation">
-          <el-input v-model="form.tunnelLocation" placeholder="请输入隧道所在地点" :disabled="flag"/>
+          <el-input v-model="form.tunnelLocation" placeholder="请输入隧道所在地点" />
         </el-form-item>
         <el-form-item label="建成时间(年份)" prop="completionTime">
           <el-date-picker clearable
             v-model="form.completionTime"
             type="date"
             value-format="yyyy-MM-dd"
-            placeholder="请选择建成时间(年份)" :disabled="flag">
+            placeholder="请选择建成时间(年份)" >
           </el-date-picker>
         </el-form-item>
         <el-form-item label="通车日期" prop="openingDate">
@@ -334,11 +433,11 @@
             v-model="form.openingDate"
             type="date"
             value-format="yyyy-MM-dd"
-            placeholder="请选择通车日期" :disabled="flag">
+            placeholder="请选择通车日期" >
           </el-date-picker>
         </el-form-item>
         <el-form-item label="变更原因" prop="reasonForChange">
-          <el-select v-model="form.reasonForChange" placeholder="请选择变更原因" :disabled="flag">
+          <el-select v-model="form.reasonForChange" placeholder="请选择变更原因" >
             <el-option
               v-for="dict in dict.type.reason_for_change"
               :key="dict.value"
@@ -348,7 +447,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="隧道电子设备" prop="tunnelElectronics">
-          <el-select v-model="form.tunnelElectronics" placeholder="请选择隧道电子设备" :disabled="flag">
+          <el-select v-model="form.tunnelElectronics" placeholder="请选择隧道电子设备" >
             <el-option
               v-for="dict in dict.type.tunnel_electronics"
               :key="dict.value"
@@ -358,36 +457,36 @@
           </el-select>
         </el-form-item>
         <el-form-item label="设计单位名称" prop="nameOfDesignCompany">
-          <el-input v-model="form.nameOfDesignCompany" placeholder="请输入设计单位名称" :disabled="flag"/>
+          <el-input v-model="form.nameOfDesignCompany" placeholder="请输入设计单位名称" />
         </el-form-item>
         <el-form-item label="监管单位名称" prop="nameOfSupervisoryUnit">
-          <el-input v-model="form.nameOfSupervisoryUnit" placeholder="请输入监管单位名称" :disabled="flag"/>
+          <el-input v-model="form.nameOfSupervisoryUnit" placeholder="请输入监管单位名称" />
         </el-form-item>
         <el-form-item label="施工单位名称" prop="nameOfConstructionUnit">
-          <el-input v-model="form.nameOfConstructionUnit" placeholder="请输入施工单位名称" :disabled="flag"/>
+          <el-input v-model="form.nameOfConstructionUnit" placeholder="请输入施工单位名称" />
         </el-form-item>
         <el-form-item label="监理单位名称" prop="nameOfSupervisionUnit">
-          <el-input v-model="form.nameOfSupervisionUnit" placeholder="请输入监理单位名称" :disabled="flag"/>
+          <el-input v-model="form.nameOfSupervisionUnit" placeholder="请输入监理单位名称" />
         </el-form-item>
         <el-form-item label="建设单位名称" prop="nameOfConstruction">
-          <el-input v-model="form.nameOfConstruction" placeholder="请输入建设单位名称" :disabled="flag"/>
+          <el-input v-model="form.nameOfConstruction" placeholder="请输入建设单位名称" />
         </el-form-item>
         <el-form-item label="管养单位代码" prop="custodialUnitCode">
-          <el-input v-model="form.custodialUnitCode" placeholder="请输入管养单位代码" :disabled="flag"/>
+          <el-input v-model="form.custodialUnitCode" placeholder="请输入管养单位代码" />
         </el-form-item>
         <el-form-item label="管养单位名称" prop="nameOfCustodialUnit">
-          <el-input v-model="form.nameOfCustodialUnit" placeholder="请输入管养单位名称" :disabled="flag"/>
+          <el-input v-model="form.nameOfCustodialUnit" placeholder="请输入管养单位名称" />
         </el-form-item>
         <el-form-item label="改建年度" prop="conversionYear">
           <el-date-picker clearable
             v-model="form.conversionYear"
             type="date"
             value-format="yyyy-MM-dd"
-            placeholder="请选择改建年度" :disabled="flag">
+            placeholder="请选择改建年度" >
           </el-date-picker>
         </el-form-item>
         <el-form-item label="隧道改造部位" prop="tunnelReconstructionSite">
-          <el-select v-model="form.tunnelReconstructionSite" placeholder="请选择隧道改造部位" :disabled="flag">
+          <el-select v-model="form.tunnelReconstructionSite" placeholder="请选择隧道改造部位" >
             <el-option
               v-for="dict in dict.type.tunnel_reconstruction_site"
               :key="dict.value"
@@ -397,7 +496,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="最近改造工程性质" prop="recentRenovationProject">
-          <el-select v-model="form.recentRenovationProject" placeholder="请选择最近改造工程性质" :disabled="flag">
+          <el-select v-model="form.recentRenovationProject" placeholder="请选择最近改造工程性质" >
             <el-option
               v-for="dict in dict.type.recent_renovation_project"
               :key="dict.value"
@@ -411,11 +510,11 @@
             v-model="form.dateOfCompletion"
             type="date"
             value-format="yyyy-MM-dd"
-            placeholder="请选择改造完工日期" :disabled="flag">
+            placeholder="请选择改造完工日期" >
           </el-date-picker>
         </el-form-item>
         <el-form-item label="隧道病害位置" prop="tunnelTroubleLocation">
-          <el-select v-model="form.tunnelTroubleLocation" placeholder="请选择隧道病害位置" :disabled="flag">
+          <el-select v-model="form.tunnelTroubleLocation" placeholder="请选择隧道病害位置" >
             <el-option
               v-for="dict in dict.type.tunnel_trouble_location"
               :key="dict.value"
@@ -424,42 +523,44 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="隧道病害描述" prop="tunnelDamageDescription">
-          <el-input v-model="form.tunnelDamageDescription" type="textarea" placeholder="请输入内容" :disabled="flag"/>
-        </el-form-item>
         <el-form-item label="入口位置经度/隧道经度" prop="tunnelLongitude">
-          <el-input v-model="form.tunnelLongitude" placeholder="请输入入口位置经度/隧道经度" :disabled="flag"/>
+          <el-input v-model="form.tunnelLongitude" placeholder="请输入入口位置经度/隧道经度" />
         </el-form-item>
         <el-form-item label="入口位置纬度/隧道纬度" prop="tunnelLatitude">
-          <el-input v-model="form.tunnelLatitude" placeholder="请输入入口位置纬度/隧道纬度" :disabled="flag"/>
+          <el-input v-model="form.tunnelLatitude" placeholder="请输入入口位置纬度/隧道纬度" />
         </el-form-item>
+        <el-form-item label="隧道病害描述" prop="tunnelDamageDescription">
+          <el-input v-model="form.tunnelDamageDescription" type="textarea" placeholder="请输入内容" />
+        </el-form-item>
+          </el-tab-pane>
+          <el-tab-pane label="其他信息" name="third">
         <el-form-item label="填报单位" prop="reportingUnit">
-          <el-input v-model="form.reportingUnit" placeholder="请输入填报单位" :disabled="flag"/>
+          <el-input v-model="form.reportingUnit" placeholder="请输入填报单位" />
         </el-form-item>
         <el-form-item label="填报单位代码" prop="reportingUnitCode">
-          <el-input v-model="form.reportingUnitCode" placeholder="请输入填报单位代码" :disabled="flag"/>
+          <el-input v-model="form.reportingUnitCode" placeholder="请输入填报单位代码" />
         </el-form-item>
         <el-form-item label="填报单位负责人" prop="reportingUnitPrincipal">
-          <el-input v-model="form.reportingUnitPrincipal" placeholder="请输入填报单位负责人" :disabled="flag"/>
+          <el-input v-model="form.reportingUnitPrincipal" placeholder="请输入填报单位负责人" />
         </el-form-item>
         <el-form-item label="填表人" prop="reportingPerson">
-          <el-input v-model="form.reportingPerson" placeholder="请输入填表人" :disabled="flag"/>
+          <el-input v-model="form.reportingPerson" placeholder="请输入填表人" />
         </el-form-item>
         <el-form-item label="填表人电话" prop="reportingPersonTelephone">
-          <el-input v-model="form.reportingPersonTelephone" placeholder="请输入填表人电话" :disabled="flag"/>
+          <el-input v-model="form.reportingPersonTelephone" placeholder="请输入填表人电话" />
         </el-form-item>
         <el-form-item label="审核人" prop="auditor">
-          <el-input v-model="form.auditor" placeholder="请输入审核人" :disabled="flag"/>
+          <el-input v-model="form.auditor" placeholder="请输入审核人" />
         </el-form-item>
         <el-form-item label="审核人电话" prop="auditorTelephone">
-          <el-input v-model="form.auditorTelephone" placeholder="请输入审核人电话" :disabled="flag"/>
+          <el-input v-model="form.auditorTelephone" placeholder="请输入审核人电话" />
         </el-form-item>
         <el-form-item label="采集时间" prop="acquisitionTime">
           <el-date-picker clearable
             v-model="form.acquisitionTime"
             type="date"
             value-format="yyyy-MM-dd"
-            placeholder="请选择采集时间" :disabled="flag">
+            placeholder="请选择采集时间" >
           </el-date-picker>
         </el-form-item>
         <el-form-item label="修改时间" prop="modificationTime">
@@ -467,25 +568,17 @@
             v-model="form.modificationTime"
             type="date"
             value-format="yyyy-MM-dd"
-            placeholder="请选择修改时间" :disabled="flag">
+            placeholder="请选择修改时间" >
           </el-date-picker>
         </el-form-item>
         <el-form-item label="备注" prop="remarks">
-          <el-input v-model="form.remarks" type="textarea" placeholder="请输入内容" :disabled="flag"/>
+          <el-input v-model="form.remarks" type="textarea" placeholder="请输入内容" />
         </el-form-item>
 <!--        <el-form-item label="路线ID" prop="routeId">-->
 <!--          <el-input v-model="form.routeId" placeholder="请输入路线ID" />-->
 <!--        </el-form-item>-->
-        <el-form-item label="是否在长大隧道目录" prop="longTunnelDirectory">
-          <el-select v-model="form.longTunnelDirectory" placeholder="请选择是否在长大隧道目录" :disabled="flag">
-            <el-option
-              v-for="dict in dict.type.underwater_tunnel_or_not"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
+          </el-tab-pane>
+        </el-tabs>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -504,6 +597,8 @@ export default {
   dicts: ['section_form', 'tunnel_ventilation', 'underwater_tunnel_or_not', 'tunnel_length_type', 'tunnel_reconstruction_site', 'tunnel_drainage_type', 'opening_form', 'management_maintenance', 'recent_renovation_project', 'tunnel_trouble_location', 'tunnel_rating', 'tunnel_electronics', 'tunnel_maintenance_grade', 'reason_for_change', 'tunnel_level', 'type_of_pavement_layer', 'tunnel_lighting', 'lining_material'],
   data() {
     return {
+      labelPosition: 'top',
+      activeName: 'first',
       flag:false,
       // 遮罩层
       loading: true,
@@ -523,6 +618,8 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
+      // 是否显示详情弹出层
+      openXq: false,
       // 查询参数
       queryParams: {
         routeId: this.rou,
@@ -702,7 +799,7 @@ export default {
       getTunnel(tunnelId).then(response => {
         this.form = response.data;
         this.flag=true,
-        this.open = true;
+        this.openXq = true;
         this.title = "隧道详细信息";
       });
     },
