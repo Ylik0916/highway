@@ -2,53 +2,27 @@
   <div>
 
     <div class="app-container">
-      <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-        <el-form-item label="项目名称" prop="name">
-          <el-input
-            v-model="queryParams.name"
-            placeholder="请输入项目名称"
-            clearable
-            @keyup.enter.native="handleQuery"
-          />
-        </el-form-item>
-        <el-form-item label="行政区域" prop="type">
-          <el-select v-model="queryParams.type" placeholder="请选择计划类型" clearable>
-            <el-option
-              v-for="dict in dict.type.plan_type"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
+      <div :style="{display:this.flag}">
+        <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+          <el-form-item label="项目名称" prop="name">
+            <el-input
+              v-model="queryParams.name"
+              placeholder="请输入项目名称"
+              clearable
+              @keyup.enter.native="handleQuery"
             />
-          </el-select>
-        </el-form-item>
-        <!--<el-form-item label="行政区划" prop="routeAdministrativeArea">-->
-        <!--  <treeselect-->
-        <!--    style="width: 200px"-->
-        <!--    v-model="queryParams.routeAdministrativeArea"-->
-        <!--    :options="ordinaryOptions"-->
-        <!--    :normalizer="normalizer"-->
-        <!--    placeholder="请选择行政区" />-->
-        <!--</el-form-item>-->
+          </el-form-item>
 
-<!--
-        <el-form-item label="计划年度" prop="planYear">
-          <el-select v-model="queryParams.planYear" placeholder="请选择计划年度" clearable>
-            <el-option
-              v-for="dict in dict.type.plan_year"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            />
-          </el-select>
-        </el-form-item>-->
+          <el-form-item label="行政区划" prop="routeAdministrativeArea">
+            <treeselect style="width: 200px" v-model="queryParams.routeAdministrativeArea" :options="ordinaryOptions" :normalizer="normalizer" placeholder="请选择行政区" />
+          </el-form-item>
 
-
-        <el-form-item>
-          <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-          <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
-        </el-form-item>
-      </el-form>
-
+          <el-form-item>
+            <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+            <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
       <el-row :gutter="10" class="mb8">
         <!--<el-col :span="1.5">
           <el-button
@@ -76,7 +50,7 @@
       <el-table v-loading="loading" :data="planList" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center" />
         <el-table-column label="所属年度计划" align="center" prop="planId" />
-        <el-table-column label="明细名称" align="center" prop="name" />
+        <el-table-column label="项目名称" align="center" prop="name" />
         <el-table-column label="国省补助(万元)" align="center" prop="nationalProvinceSubsidy"/>
         <el-table-column label="市州投资(万元)" align="center" prop="municipalityInvest"/>
         <el-table-column label="县区自筹(万元)" align="center" prop="countySelfFund" />
@@ -415,10 +389,13 @@ import {listPlan, getPlan, delPlan, addPlan, updatePlan, listItemAnd2} from "@/a
 import {getItem} from "@/api/system/item";
 
 export default {
+  props: ["vis", "routeId"],
   name: "ProgressReport",
   dicts: ['plan_type', 'plan_year', 'fill_period', 'reply_character', 'affiliation'],
   data() {
     return {
+      ordinaryOptions: [],
+      flag: this.vis,
       //默认打开的窗口
       activeName:'first',
       // 遮罩层
@@ -475,7 +452,9 @@ export default {
         bidWhetherCompletion: null,
         postscript: null,
         planId: null,
-        disease: null
+        disease: null,
+        routeAdministrativeArea: null
+
       },
       // 表单参数
       form: {
@@ -509,6 +488,17 @@ export default {
   },
   methods: {
 
+    /** 转换一般养护数据结构 */
+    normalizer(node) {
+      if (node.children && !node.children.length) {
+        delete node.children;
+      }
+      return {
+        id: node.deptName,
+        label: node.deptName,
+        children: node.children
+      };
+    },
     /** 查询已驳回明细上报列表 */
     getList() {
       this.loading = true;
@@ -525,14 +515,15 @@ export default {
     },
     // 表单重置
     reset() {
-      this.form = {
+        this.form = {
         id: null,
         name: null,
         type: null,
         affiliation: null,
         planYear: null,
         fillPeriod: null,
-        replyCharacter: null
+        replyCharacter: null,
+        routeAdministrativeArea: null
       };
       this.resetForm("form");
     },
