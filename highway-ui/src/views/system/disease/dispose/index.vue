@@ -64,21 +64,21 @@
           <el-button
             size="mini"
             type="text"
-            icon="el-icon-edit"
+            icon="el-icon-finished"
             @click="getDinfo(scope.row)"
             v-hasPermi="['system:disease:query']"
           >详情</el-button>
           <el-button
             size="mini"
             type="text"
-            icon="el-icon-plus"
+            icon="el-icon-tickets"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:disease:edit']"
           >处置</el-button>
           <el-button
             size="mini"
             type="text"
-            icon="el-icon-delete"
+            icon="el-icon-close"
             @click="handleClose(scope.row)"
             v-hasPermi="['system:disease:edit']"
           >关闭</el-button>

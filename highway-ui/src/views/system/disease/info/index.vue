@@ -74,7 +74,7 @@
           <el-button
             size="mini"
             type="text"
-            icon="el-icon-edit"
+            icon="el-icon-finished"
             @click="getDinfo(scope.row)"
             v-hasPermi="['system:disease:edit']"
           >详情</el-button>

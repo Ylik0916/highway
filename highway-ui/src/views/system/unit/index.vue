@@ -47,17 +47,6 @@
       </el-col>
       <el-col :span="1.5">
         <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:unit:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
           type="danger"
           plain
           icon="el-icon-delete"
@@ -87,13 +76,13 @@
       <el-table-column label="登录名" :show-overflow-tooltip="true" align="center" prop="loginName" />
       <el-table-column label="单位地址" :show-overflow-tooltip="true" align="center" prop="unitSite" />
       <el-table-column label="单位电话" :show-overflow-tooltip="true" align="center" prop="uniyPhone" />
-      <el-table-column label="备注"  align="center" prop="remark" />
+<!--      <el-table-column label="备注"  align="center" prop="remark" />-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
             type="text"
-            icon="el-icon-edit"
+            icon="el-icon-finished"
             @click="handleOne(scope.row)"
           >详情</el-button>
           <el-button
@@ -102,11 +91,11 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:unit:edit']"
-          >编辑</el-button>
+          >修改</el-button>
           <el-button
             size="mini"
             type="text"
-            icon="el-icon-edit"
+            icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['system:unit:remove']"
           >删除</el-button>
@@ -172,22 +161,11 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="8">
-            <div class="grid-content">
-              <el-form-item label="备注" prop="remark">
-                <el-input v-model="form.remark" placeholder="请输入备注" />
-              </el-form-item>
-            </div>
-          </el-col>
-          <el-col :span="8"><div class="grid-content"></div></el-col>
-          <el-col :span="8"><div class="grid-content"></div></el-col>
-        </el-row>
-        <el-row :gutter="20">
           <el-col :span="24">
             <div class="grid-content">
-              <el-form-item label="行政区划权限">
+              <el-form-item label="行政区划权限" prop="administrative">
                 <treeselect
-                  :show-count="true"
+                  :show-count="true"administrative
                   :multiple="true"
                   value-consists-of="LEAF_PRIORITY"
                   :default-checked-keys="form.administrative"
@@ -199,7 +177,15 @@
             </div>
           </el-col>
         </el-row>
-<!--   :flat="true" :disable-branch-nodes="true"      -->
+        <el-row :gutter="20">
+          <el-col :span="24">
+            <div class="grid-content">
+              <el-form-item label="备注" prop="remark">
+                <el-input v-model="form.remark" type="textarea" placeholder="请输入备注" />
+              </el-form-item>
+            </div>
+          </el-col>
+        </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -224,16 +210,6 @@
       </el-row>
       <el-row>
         <el-col :span="24"><div class="grid-content"><span>行政区划权限:</span><span>
-<!--          <el-tree-->
-<!--            class="tree-border"-->
-<!--            :data="options"-->
-<!--            node-key="deptId"-->
-<!--            :props="defaultProps"-->
-<!--            default-expand-all-->
-<!--            show-checkbox-->
-<!--            ref="dept"-->
-<!--            :default-checked-keys="form.administrative">-->
-<!--          </el-tree>-->
           <el-tree
             :data="options"
             show-checkbox

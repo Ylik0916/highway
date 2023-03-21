@@ -64,24 +64,17 @@
           <el-button
             size="mini"
             type="text"
-            icon="el-icon-edit"
+            icon="el-icon-fork-spoon"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:disease:edit']"
           >养护</el-button>
           <el-button
             type="text"
-            icon="el-icon-plus"
+            icon="el-icon-finished"
             size="mini"
             @click="getDinfo(scope.row)"
             v-hasPermi="['system:disease:add']"
           >详情</el-button>
-<!--          <el-button-->
-<!--            size="mini"-->
-<!--            type="text"-->
-<!--            icon="el-icon-delete"-->
-<!--            @click="handleDelete(scope.row)"-->
-<!--            v-hasPermi="['system:disease:remove']"-->
-<!--          >删除</el-button>-->
         </template>
       </el-table-column>
     </el-table>
