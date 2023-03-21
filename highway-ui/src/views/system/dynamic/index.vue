@@ -39,17 +39,6 @@
       </el-col>
       <el-col :span="1.5">
         <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:dynamic:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
           type="danger"
           plain
           icon="el-icon-delete"
@@ -76,7 +65,7 @@
       <el-table-column type="selection" width="55" align="center" />
 <!--      <el-table-column label="" align="center" prop="mdid" />-->
       <el-table-column label="养护人" align="center" prop="maintainPeople" />
-      <el-table-column label="养护单位" align="center" prop="maintainUnit" />
+<!--      <el-table-column label="养护单位" align="center" prop="maintainUnit" />-->
       <el-table-column label="养护路线名称" align="center" prop="pathName" />
       <el-table-column label="养护路线编号" align="center" prop="pathCode" />
       <el-table-column label="开始桩号" align="center" prop="beginStake" />
@@ -91,7 +80,7 @@
           <el-button
             size="mini"
             type="text"
-            icon="el-icon-edit"
+            icon="el-icon-finished"
             @click="handleOne(scope.row)"
             v-hasPermi="['system:dynamic:query']"
           >详情</el-button>

@@ -86,7 +86,7 @@
           <el-button
             size="mini"
             type="text"
-            icon="el-icon-edit"
+            icon="el-icon-s-order"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:disease:edit']"
           >上报</el-button>

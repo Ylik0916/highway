@@ -46,17 +46,6 @@
       </el-col>
       <el-col :span="1.5">
         <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:ordinary:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
           type="danger"
           plain
           icon="el-icon-delete"
@@ -111,14 +100,14 @@
           <el-button
             size="mini"
             type="text"
-            icon="el-icon-edit"
+            icon="el-icon-finished"
             @click="handleOne(scope.row)"
             v-hasPermi="['system:ordinary:query']"
           >详情</el-button>
           <el-button
             size="mini"
             type="text"
-            icon="el-icon-edit"
+            icon="el-icon-info"
             @click="handleAudit(scope.row)"
             :disabled="scope.row.auditStatusid !== 0"
             v-hasPermi="['system:ordinary:edit']"
