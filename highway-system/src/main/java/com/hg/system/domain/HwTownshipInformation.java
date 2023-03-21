@@ -32,8 +32,8 @@ public class HwTownshipInformation extends BaseEntity
     /** 所属建制村数量 */
     private Integer numberOfIncorporatedVillages;
 
-    /** 行政区划编号 */
-    @Excel(name = "行政区划编号")
+    /** 行政区编号 */
+    @Excel(name = "行政区编号")
     private Long administrativeDivisionNumber;
 
     /** 经纬度类型 1高德 2GPS */

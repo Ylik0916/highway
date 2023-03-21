@@ -9,7 +9,7 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="行政区划" prop="administrativeDivisionNumber">
+      <el-form-item label="行政区编码" prop="administrativeDivisionNumber">
         <el-input
           v-model="queryParams.administrativeDivisionNumber"
           placeholder="请输入行政区划"
@@ -61,7 +61,7 @@
 
     <el-table v-loading="loading" :data="villageList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="行政区划编码" align="center" prop="administrativeDivisionNumber" />
+      <el-table-column label="行政区编号" align="center" prop="administrativeDivisionNumber" />
       <el-table-column label="行政区名称" align="center" prop="nameOfVillage" />
       <el-table-column label="建制村名称" align="center" prop="nameOfVillage" />
       <el-table-column label="通达现状" align="center" prop="accessStatusQuo">
