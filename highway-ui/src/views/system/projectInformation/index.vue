@@ -46,18 +46,6 @@
           </el-col>
           <el-col :span="1.5">
             <el-button
-              type="success"
-              plain
-              icon="el-icon-edit"
-              size="mini"
-              :disabled="single"
-              @click="handleUpdate"
-              v-hasPermi="['system:projectInformation:edit']"
-            >修改
-            </el-button>
-          </el-col>
-          <el-col :span="1.5">
-            <el-button
               type="danger"
               plain
               icon="el-icon-delete"
@@ -132,32 +120,32 @@
             <template slot-scope="scope">
               <el-button
                 size="mini"
-                type="success"
-                style="width: 45px"
+                type="text"
+                icon="el-icon-finished"
                 @click="handleDetails(scope.row)"
                 v-hasPermi="['system:projectInformation:query']"
               >详情
               </el-button>
               <el-button
                 size="mini"
-                type="primary"
-                style="width: 45px"
+                type="text"
+                icon="el-icon-edit"
                 @click="handleUpdate(scope.row)"
                 v-hasPermi="['system:projectInformation:edit']"
-              >编辑
+              >修改
               </el-button>
               <el-button
                 size="mini"
-                type="success"
-                style="width: 45px"
+                type="text"
+                icon="el-icon-location"
                 @click="handleBdQuery(scope.row)"
                 v-hasPermi="['system:projectInformation:edit']"
               >标段
               </el-button>
               <el-button
                 size="mini"
-                type="danger"
-                style="width: 45px"
+                type="text"
+                icon="el-icon-delete"
                 @click="handleDelete(scope.row)"
                 v-hasPermi="['system:projectInformation:remove']"
               >删除
@@ -198,7 +186,8 @@
                 </el-form-item>
                 <el-form-item label="行政区划" prop="administrativeRegion"
                               style="width: 400px;height:100px;padding-top: 50px;margin-left: 50px">
-                  <el-input v-model="form.administrativeRegion" placeholder="请输入行政区划名称" :disabled="disabled"/>
+                  <treeselect v-model="form.administrativeRegion" :options="ordinaryOptions"
+                              :normalizer="normalizer" placeholder="请选择行政区" :disabled="disabled"/>
                 </el-form-item>
                 <el-form-item label="路线名称" prop="routeName" style="width: 400px;height:100px;padding-top: 30px">
                   <el-input v-model="form.routeName" placeholder="请输入路线名称" :disabled="disabled"/>

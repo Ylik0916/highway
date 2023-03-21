@@ -53,18 +53,6 @@
           </el-col>
           <el-col :span="1.5">
             <el-button
-              type="success"
-              plain
-              icon="el-icon-edit"
-              size="mini"
-              :disabled="single"
-              @click="handleUpdate"
-              v-hasPermi="['system:evaluate:edit']"
-            >修改
-            </el-button>
-          </el-col>
-          <el-col :span="1.5">
-            <el-button
               type="danger"
               plain
               icon="el-icon-delete"
@@ -104,23 +92,23 @@
             <template slot-scope="scope">
               <el-button
                 size="mini"
-                type="success"
-                style="width: 60px"
+                type="text"
+                icon="el-icon-tickets"
                 @click="getHistoryList(scope.row)"
               >历史评价
               </el-button>
               <el-button
                 size="mini"
-                type="primary"
-                style="width: 45px"
+                type="text"
+                icon="el-icon-edit"
                 @click="handleUpdate(scope.row)"
                 v-hasPermi="['system:evaluate:edit']"
-              >编辑
+              >修改
               </el-button>
               <el-button
                 size="mini"
-                type="danger"
-                style="width: 45px"
+                type="text"
+                icon="el-icon-delete"
                 @click="handleDelete(scope.row)"
                 v-hasPermi="['system:evaluate:remove']"
               >删除
@@ -139,7 +127,8 @@
 
         <!-- 添加或修改从业单位评价对话框 -->
         <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-          <el-form ref="form" :model="form" :rules="rules" label-width="80px" style="margin-left: 80px" label-position="top">
+          <el-form ref="form" :model="form" :rules="rules" label-width="80px" style="margin-left: 80px"
+                   label-position="top">
             <el-form-item label="评价年度" prop="evaluateYears">
               <div class="block">
                 <el-date-picker
