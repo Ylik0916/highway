@@ -48,23 +48,11 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          :disabled="true"
           v-hasPermi="['system:infdormation:add']"
         >新增
         </el-button>
       </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:infdormation:edit']"
-        >修改
-        </el-button>
-      </el-col>
+
       <el-col :span="1.5">
         <el-button
           type="danger"
