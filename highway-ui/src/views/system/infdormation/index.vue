@@ -33,6 +33,15 @@
         <el-form-item label="行政区划" prop="routeAdministrativeArea">
           <treeselect style="width: 200px" v-model="queryParams.routeAdministrativeArea" :options="ordinaryOptions" :normalizer="normalizer" placeholder="请选择行政区" />
         </el-form-item>
+        <el-form-item label="选择路线" prop="luId">
+          <el-select v-model="queryParams.luId" filterable placeholder="请输选择路线">
+            <el-option
+              v-for="item in options"
+              :key="item.id"
+              :label="item.routeName"
+              :value="item.id"/>
+          </el-select>
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
           <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -230,6 +239,8 @@
                 <el-descriptions-item label="采集时间">{{ form.acquisitionTime }}</el-descriptions-item>
                 <el-descriptions-item label="修改时间">{{ form.updateTime }}</el-descriptions-item>
                 <el-descriptions-item label="备注">{{ form.remarks }}</el-descriptions-item>
+                <el-descriptions-item label="关联路线">{{ form.luId }}</el-descriptions-item>
+
               </el-descriptions>
             </el-tab-pane>
           </el-tabs>

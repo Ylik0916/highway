@@ -20,15 +20,8 @@ public class HwBridgeInfdormation extends BaseEntity
     /** 桥梁id */
     private Long routeId;
 
-    private int luId;
+    private Integer luId;
 
-    public int getLuId() {
-        return luId;
-    }
-
-    public void setLuId(int luId) {
-        this.luId = luId;
-    }
 
     /** 桥梁编码 */
     @Excel(name = "桥梁编码")
@@ -320,6 +313,14 @@ public class HwBridgeInfdormation extends BaseEntity
     public void setRouteId(Long routeId)
     {
         this.routeId = routeId;
+    }
+
+    public Integer getLuId() {
+        return luId;
+    }
+
+    public void setLuId(Integer luId) {
+        this.luId = luId;
     }
 
     public Long getRouteId()
@@ -1032,6 +1033,7 @@ public class HwBridgeInfdormation extends BaseEntity
                 .append("centerStake", getCenterStake())
                 .append("luCode", getLuCode())
                 .append("evaluationUnit", getEvaluationUnit())
+                .append("luId", getLuId())
                 .toString();
     }
 }

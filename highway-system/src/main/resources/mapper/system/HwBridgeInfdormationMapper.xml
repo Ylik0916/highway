@@ -76,6 +76,7 @@
         <result property="selectRoute"    column="select_route"    />
         <result property="centerStake"    column="center_stake"    />
         <result property="luCode"    column="lu_code"    />
+        <result property="luId"    column="lu_id"    />
         <result property="evaluationUnit"    column="evaluation_unit"    />
     </resultMap>
 
