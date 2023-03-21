@@ -31,6 +31,15 @@
         <el-form-item label="行政区划" prop="routeAdministrativeArea">
           <treeselect style="width: 200px" v-model="queryParams.routeAdministrativeArea" :options="ordinaryOptions" :normalizer="normalizer" placeholder="请选择行政区" />
         </el-form-item>
+        <el-form-item label="选择路线" prop="luId">
+          <el-select v-model="queryParams.luId" filterable placeholder="请输选择路线">
+            <el-option
+              v-for="item in options"
+              :key="item.id"
+              :label="item.routeName"
+              :value="item.id"/>
+          </el-select>
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
           <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -67,7 +76,7 @@
           <el-button
             size="mini"
             type="text"
-            icon="el-icon-edit"
+            icon="el-icon-finished"
             @click="handleSubmit(scope.row)"
           >选择
           </el-button>
@@ -92,6 +101,7 @@ import {
 import {listDept} from "@/api/system/dept";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
+import {listInformation} from "@/api/system/information";
 export default {
   components: {
     Treeselect
@@ -210,6 +220,7 @@ export default {
   created() {
     this.getTreeselect();
     this.getList();
+    this.getLu();
   },
   methods: {
     //标签页
@@ -242,6 +253,11 @@ export default {
         this.infdormationList = response.rows;
         this.total = response.total;
         this.loading = false;
+      });
+    },
+    getLu() {
+      listInformation(this.queryParams).then(response => {
+        this.options = response.rows;
       });
     },
     /** 选择桥梁*/

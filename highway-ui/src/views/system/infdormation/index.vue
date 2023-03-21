@@ -124,7 +124,7 @@
               <el-button
                 size="mini"
                 type="text"
-                icon="el-icon-edit"
+                icon="el-icon-finished"
                 @click="handledetails(scope.row)"
                 v-hasPermi="['system:infdormation:edit']"
               >详情
@@ -176,10 +176,7 @@
                 <el-descriptions-item label="设计荷载">{{ form.routeLoad }}</el-descriptions-item>
                 <el-descriptions-item label="按跨径分">{{ form.routeCross }}</el-descriptions-item>
                 <el-descriptions-item label="按建筑材料和使用年限分">{{ form.routeYear }}</el-descriptions-item>
-                <el-descriptions-item label="是否危桥">{{
-                    form.routeDanger == '1' ? '是' : '否'
-                  }}
-                </el-descriptions-item>
+                <el-descriptions-item label="是否危桥">{{form.routeDanger }}</el-descriptions-item>
                 <el-descriptions-item label="技术状况评定">{{ form.routeGrade }}</el-descriptions-item>
                 <el-descriptions-item label="评定日期">{{ form.routeEvaluationDate }}</el-descriptions-item>
                 <el-descriptions-item label="主桥上部构造结构形式">{{ form.routeTopShape }}</el-descriptions-item>
@@ -239,7 +236,7 @@
                 <el-descriptions-item label="采集时间">{{ form.acquisitionTime }}</el-descriptions-item>
                 <el-descriptions-item label="修改时间">{{ form.updateTime }}</el-descriptions-item>
                 <el-descriptions-item label="备注">{{ form.remarks }}</el-descriptions-item>
-                <el-descriptions-item label="关联路线">{{ form.luId }}</el-descriptions-item>
+<!--                <el-descriptions-item label="关联路线">{{ form.luId }}</el-descriptions-item>-->
 
               </el-descriptions>
             </el-tab-pane>
@@ -427,7 +424,7 @@
                             v-for="dict in dict.type.underwater_tunnel_or_not"
                             :key="dict.value"
                             :label="dict.label"
-                            :value="parseInt(dict.value)"
+                            :value="dict.value"
                           ></el-option>
                         </el-select>
                       </el-form-item>
@@ -703,7 +700,7 @@
                             v-for="dict in dict.type.underwater_tunnel_or_not"
                             :key="dict.value"
                             :label="dict.label"
-                            :value="parseInt(dict.value)"
+                            :value="dict.value"
                           ></el-option>
                         </el-select>
                       </el-form-item>
@@ -740,7 +737,7 @@
                             v-for="dict in dict.type.underwater_tunnel_or_not"
                             :key="dict.value"
                             :label="dict.label"
-                            :value="parseInt(dict.value)"
+                            :value="dict.value"
                           ></el-option>
                         </el-select>
                       </el-form-item>
@@ -754,7 +751,7 @@
                             v-for="dict in dict.type.underwater_tunnel_or_not"
                             :key="dict.value"
                             :label="dict.label"
-                            :value="parseInt(dict.value)"
+                            :value="dict.value"
                           ></el-option>
                         </el-select>
                       </el-form-item>

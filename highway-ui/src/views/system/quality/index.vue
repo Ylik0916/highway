@@ -104,7 +104,7 @@
               <el-button
                 size="mini"
                 type="text"
-                icon="el-icon-edit"
+                icon="el-icon-finished"
                 @click="handlexq(scope.row)"
                 v-hasPermi="['system:quality:edit']"
               >详情
