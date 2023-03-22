@@ -2,6 +2,8 @@ package com.hg.system.service.impl;
 
 import java.util.List;
 
+import com.hg.system.domain.HwHistoryEvaluate;
+import com.hg.system.mapper.HwHistoryEvaluateMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.hg.system.mapper.HwUnitEvaluateMapper;
@@ -18,6 +20,9 @@ import com.hg.system.service.IHwUnitEvaluateService;
 public class HwUnitEvaluateServiceImpl implements IHwUnitEvaluateService {
     @Autowired
     private HwUnitEvaluateMapper hwUnitEvaluateMapper;
+
+    @Autowired
+    private HwHistoryEvaluateMapper hwHistoryEvaluateMapper;
 
     /**
      * 查询从业单位评价
@@ -93,6 +98,13 @@ public class HwUnitEvaluateServiceImpl implements IHwUnitEvaluateService {
      */
     @Override
     public List<HwUnitEvaluate> selectHwUnitEvaluateAndScoreList(HwUnitEvaluate hwUnitEvaluate) {
-        return hwUnitEvaluateMapper.selectHwUnitEvaluateAndScoreList(hwUnitEvaluate);
+        List<HwUnitEvaluate> evaluateList = hwUnitEvaluateMapper.selectHwUnitEvaluateAndScoreList(hwUnitEvaluate);
+        for (int i = 0; i < evaluateList.size(); i++) {
+            HwUnitEvaluate evaluate = evaluateList.get(i);
+            Integer unitId = evaluate.getUnitId();
+            HwHistoryEvaluate hwHistoryEvaluate = hwHistoryEvaluateMapper.selectHwHistoryEvaluateByUnitIdByNew(unitId);
+            evaluate.setHwHistoryEvaluate(hwHistoryEvaluate);
+        }
+        return evaluateList;
     }
 }

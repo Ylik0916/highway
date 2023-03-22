@@ -20,7 +20,7 @@ public class HwProjectInformation extends BaseEntity {
     /**
      * 项目id
      */
-    private Long projectId;
+    private Integer projectId;
 
     /**
      * 项目名称
@@ -155,11 +155,11 @@ public class HwProjectInformation extends BaseEntity {
      */
     private HwProjectConstruction hwProjectConstruction;
 
-    public void setProjectId(Long projectId) {
+    public void setProjectId(Integer projectId) {
         this.projectId = projectId;
     }
 
-    public Long getProjectId() {
+    public Integer getProjectId() {
         return projectId;
     }
 

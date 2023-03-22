@@ -51,11 +51,27 @@
         WHERE `evaluate_unit_id` = #{evaluateUnitId}
     </select>
 
+    <!-- 查询从业单位及人员历史评价根据单位id仅查最新 -->
+    <select id="selectHwHistoryEvaluateByUnitIdByNew" parameterType="Integer" resultMap="HwHistoryEvaluateResult">
+        SELECT *
+        FROM `hw_history_evaluate`
+        WHERE `evaluate_unit_id` = #{evaluateUnitId}
+        ORDER BY `evaluate_id` DESC LIMIT 1
+    </select>
+
     <!-- 查询从业单位及人员历史评价根据从业人员id -->
     <select id="selectHwHistoryEvaluateByPersonId" parameterType="Integer" resultMap="HwHistoryEvaluateResult">
         SELECT *
         FROM `hw_history_evaluate`
         WHERE `evaluate_person_id` = #{evaluatePersonId}
+    </select>
+
+    <!-- 查询从业单位及人员历史评价根据从业人员id仅查最新 -->
+    <select id="selectHwHistoryEvaluateByPersonIdByNew" parameterType="Integer" resultMap="HwHistoryEvaluateResult">
+        SELECT *
+        FROM `hw_history_evaluate`
+        WHERE `evaluate_person_id` = #{evaluatePersonId}
+        ORDER BY `evaluate_id` DESC LIMIT 1
     </select>
 
     <insert id="insertHwHistoryEvaluate" parameterType="HwHistoryEvaluate" useGeneratedKeys="true"

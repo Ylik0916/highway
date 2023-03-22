@@ -2,6 +2,10 @@ package com.hg.system.service.impl;
 
 import java.util.List;
 
+import com.hg.system.domain.HwProjectConstruction;
+import com.hg.system.domain.HwProjectSupervisor;
+import com.hg.system.mapper.HwProjectConstructionMapper;
+import com.hg.system.mapper.HwProjectSupervisorMapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +23,12 @@ import com.hg.system.service.IHwProjectInformationService;
 public class HwProjectInformationServiceImpl implements IHwProjectInformationService {
     @Autowired
     private HwProjectInformationMapper hwProjectInformationMapper;
+
+    @Autowired
+    private HwProjectSupervisorMapper hwProjectSupervisorMapper;
+
+    @Autowired
+    private HwProjectConstructionMapper hwProjectConstructionMapper;
 
     /**
      * 查询项目信息管理
@@ -51,7 +61,7 @@ public class HwProjectInformationServiceImpl implements IHwProjectInformationSer
     @Override
     public int insertHwProjectInformation(HwProjectInformation hwProjectInformation) {
         Integer phase = hwProjectInformation.getProjectPhase();
-        if (phase == 0){
+        if (phase == 0) {
             phase = 1;
         }
         hwProjectInformation.setProjectPhase(phase);
@@ -99,6 +109,15 @@ public class HwProjectInformationServiceImpl implements IHwProjectInformationSer
      */
     @Override
     public List<HwProjectInformation> selectAllProjectInformationList(@Param("hwProjectInformation") HwProjectInformation hwProjectInformation) {
-        return hwProjectInformationMapper.selectAllProjectInformationList(hwProjectInformation);
+        List<HwProjectInformation> informationList = hwProjectInformationMapper.selectAllProjectInformationList(hwProjectInformation);
+        for (int i = 0; i < informationList.size(); i++) {
+            HwProjectInformation information = informationList.get(i);
+            Integer projectId = information.getProjectId();
+            HwProjectSupervisor hwProjectSupervisors = hwProjectSupervisorMapper.selectHwProjectSupervisorByProjectIdByNew(projectId);
+            information.setHwProjectSupervisor(hwProjectSupervisors);
+            HwProjectConstruction hwProjectConstruction = hwProjectConstructionMapper.selectHwProjectConstructionSupervisorByNew(projectId);
+            information.setHwProjectConstruction(hwProjectConstruction);
+        }
+        return informationList;
     }
 }

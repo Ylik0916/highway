@@ -126,11 +126,45 @@
     </select>
 
     <!-- 新版查询， -->
+    <!--<select id="selectAllProjectInformationList" resultMap="allInformation">
+        SELECT DISTINCT
+        project_id,MAX(hps.`supervisor_id`),`project_name`,`administrative_region`,`route_coding`,`route_name`,`project_phase`,`start_time`,`submit_time`,`end_time`,`invest_cost`,`invest_equipment_cost`,`invest_engineering_cost`,`design_cost`,`design_equipment_cost`,`design_engineering_cost`,`construction_cost`,`construction_equipment_cost`,`construction_engineering_cost`,`contract_cost`,`provisional_payment`,`document_upload`,
+        `supervisor_id`,`supervisor_name`,`supervisor_project_id`,`construction_id`,`construction_name`,`construction_project_id`,`construction_supervisor_id`
+        FROM `hw_project_information` hpi
+        LEFT JOIN `hw_project_supervisor` hps ON hpi.`project_id` = hps.`supervisor_project_id`
+        LEFT JOIN `hw_project_construction` hpc ON hps.`supervisor_project_id` = hpc.`construction_supervisor_id`
+        GROUP BY hpi.`project_id`
+        <where>
+            <if test="projectName != null  and projectName != ''">and project_name like concat('%', #{projectName},
+                '%')
+            </if>
+            <if test="administrativeRegion != null ">and administrative_region = #{administrativeRegion}</if>
+            <if test="routeCoding != null ">and route_coding = #{routeCoding}</if>
+            <if test="routeName != null  and routeName != ''">and route_name like concat('%', #{routeName}, '%')</if>
+            <if test="projectPhase != null  and projectPhase != ''">and project_phase = #{projectPhase}</if>
+            <if test="startTime != null ">and start_time = #{startTime}</if>
+            <if test="submitTime != null ">and submit_time = #{submitTime}</if>
+            <if test="endTime != null ">and end_time = #{endTime}</if>
+            <if test="investCost != null ">and invest_cost = #{investCost}</if>
+            <if test="investEquipmentCost != null ">and invest_equipment_cost = #{investEquipmentCost}</if>
+            <if test="investEngineeringCost != null ">and invest_engineering_cost = #{investEngineeringCost}</if>
+            <if test="designCost != null ">and design_cost = #{designCost}</if>
+            <if test="designEquipmentCost != null ">and design_equipment_cost = #{designEquipmentCost}</if>
+            <if test="designEngineeringCost != null ">and design_engineering_cost = #{designEngineeringCost}</if>
+            <if test="constructionCost != null ">and construction_cost = #{constructionCost}</if>
+            <if test="constructionEquipmentCost != null ">and construction_equipment_cost =
+                #{constructionEquipmentCost}
+            </if>
+            <if test="constructionEngineeringCost != null ">and construction_engineering_cost =
+                #{constructionEngineeringCost}
+            </if>
+            <if test="contractCost != null ">and contract_cost = #{contractCost}</if>
+            <if test="provisionalPayment != null ">and provisional_payment = #{provisionalPayment}</if>
+        </where>
+    </select>-->
     <select id="selectAllProjectInformationList" resultMap="allInformation">
         SELECT *
         FROM `hw_project_information` hpi
-        LEFT JOIN `hw_project_supervisor` hps ON hpi.`project_id` = hps.`supervisor_project_id`
-        LEFT JOIN `hw_project_construction` hpc ON hps.`supervisor_id` = hpc.`construction_supervisor_id`
         <where>
             <if test="projectName != null  and projectName != ''">and project_name like concat('%', #{projectName},
                 '%')

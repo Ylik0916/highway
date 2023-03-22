@@ -55,6 +55,16 @@
         WHERE hpc.`construction_project_id` = #{constructionProjectId}
     </select>
 
+    <!-- 新版查询施工最新标段 -->
+    <select id="selectHwProjectConstructionSupervisorByNew" parameterType="integer"
+            resultMap="HwProjectConstructionSupervisor">
+        SELECT *
+        FROM `hw_project_construction` hpc
+                 LEFT JOIN `hw_project_supervisor` hps ON hpc.`construction_supervisor_id` = hps.`supervisor_id`
+        WHERE hpc.`construction_project_id` = #{constructionProjectId}
+        ORDER BY hpc.`construction_id` DESC LIMIT 1
+    </select>
+
     <insert id="insertHwProjectConstruction" parameterType="HwProjectConstruction" useGeneratedKeys="true"
             keyProperty="constructionId">
         insert into hw_project_construction

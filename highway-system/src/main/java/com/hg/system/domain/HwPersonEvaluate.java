@@ -17,7 +17,7 @@ public class HwPersonEvaluate extends BaseEntity {
     /**
      * 人员id
      */
-    private Long personId;
+    private Integer personId;
 
     /**
      * 从业人员名称
@@ -53,11 +53,11 @@ public class HwPersonEvaluate extends BaseEntity {
      */
     private HwHistoryEvaluate hwHistoryEvaluate;
 
-    public void setPersonId(Long personId) {
+    public void setPersonId(Integer personId) {
         this.personId = personId;
     }
 
-    public Long getPersonId() {
+    public Integer getPersonId() {
         return personId;
     }
 
