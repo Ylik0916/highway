@@ -981,6 +981,43 @@ export default {
     Treeselect
   },
   data() {
+    // 定义两个变量
+    const startTime = (rules, value, callback) => {
+      if (!value) {
+        callback(new Error('请选择建成时间'))
+      } else {
+        if (this.form.routeTrafficDate) {
+          this.$refs.form.validateField('routeTrafficDate')
+        }
+        callback()
+      }
+    }
+    const endTime = (rules, value, callback) => {
+      if (!value) {
+        callback(new Error('请选择通车时间'))
+      } else {
+        if (!this.form.routeCompletionTime) {
+          callback(new Error('请选择建成时间！'))
+        } else if (Date.parse(this.form.routeCompletionTime) >= Date.parse(value)) {
+          callback(new Error('通车时间必须大于建成时间！'))
+        } else {
+          callback()
+        }
+      }
+    }
+    const centreTime = (rules, value, callback) => {
+      // if (!value) {
+      //    callback(new Error('请选择改建时间'))
+      // } else {
+      //   if (!this.form.routeCompletionTime) {
+      //     callback(new Error('请选择建成时间！'))
+      //   } else
+      if (Date.parse(this.form.routeCompletionTime) >= Date.parse(value)) {
+        callback(new Error('改建时间必须大于建成时间！'))
+      } else {
+        callback()
+      }
+    }
     return {
       ordinaryOptions: [],
       flag: this.vis,
@@ -1129,13 +1166,16 @@ export default {
           {required: true, message: "立交桥类别不能为空", trigger: "change"}
         ],
         routeRebuild: [
-          {required: true, message: "改建年度不能为空", trigger: "blur"}
+          {required: true, validator: centreTime, trigger: "blur"}
         ],
         routeMethod: [
           {required: true, message: "已采取交通管制措施不能为空", trigger: "blur"}
         ],
         routeTrafficDate: [
-          {required: true, message: "通车日期不能为空", trigger: "blur"}
+          {required: true, validator: endTime, trigger: "blur"}
+        ],
+        routeCompletionTime:[
+          { required: true, validator: startTime, trigger: "blur" }
         ],
       }
     };
