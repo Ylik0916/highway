@@ -70,7 +70,7 @@
           </el-table-column>
           <el-table-column label="行政区划" align="center" prop="routeAdministrativeArea">
           </el-table-column>
-          <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+          <el-table-column width="150px" label="操作" align="center" class-name="small-padding fixed-width">
             <template slot-scope="scope">
               <el-button
                 size="mini"

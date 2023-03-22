@@ -132,7 +132,7 @@
     </el-dialog>
 
     <el-table v-loading="loading" :data="tunnelList" @selection-change="handleSelectionChange">
-<!--      <el-table-column type="selection" width="55" align="center" />-->
+      <el-table-column type="selection" width="55" align="center" />
 <!--      <el-table-column label="隧道ID" align="center" prop="tunnelId" />-->
       <el-table-column label="路线编码" align="center" prop="routeCoding" />
       <el-table-column label="路线名称" align="center" prop="routeName" />
@@ -141,7 +141,7 @@
       <el-table-column label="隧道中心桩号" align="center" prop="tunnelCenterPileNumber" />
       <el-table-column label="隧道长度" align="center" prop="tunnelLength" />
       <el-table-column label="隧道全宽" align="center" prop="tunnelOverallWidth" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column width="150px" label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
             size="mini"
