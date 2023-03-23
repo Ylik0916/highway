@@ -1,6 +1,7 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+    <div :style="{display:this.flag}">
+    <el-form  :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="病害名称" prop="diseaseName">
         <el-input
           v-model="queryParams.diseaseName"
@@ -30,7 +31,7 @@
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
-
+    </div>
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
         <el-button
@@ -97,11 +98,12 @@
 import { listDisease, getDisease, delDisease, addDisease, updateDisease } from "@/api/system/disease";
 
 export default {
-  props:['rou'],
+  props:['rou','vis'],
   name: "Info",
   dicts: ['reporting_type', 'disease_state', 'driving_direction'],
   data() {
     return {
+      flag :this.vis,
       // 遮罩层
       loading: true,
       // 选中数组
