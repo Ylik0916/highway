@@ -254,6 +254,12 @@ export default {
       form: {},
       // 表单校验
       rules: {
+        routeName: [
+          { required: true, message: "路线名称不能为空", trigger: "blur" }
+        ],
+        routeCoding: [
+          { required: true, message: "路线编码不能为空", trigger: "blur" }
+        ],
       }
     };
   },

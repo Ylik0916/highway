@@ -9,13 +9,15 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="行政区划" prop="administrativeDivisionNumber">
-        <el-input
-          v-model="queryParams.administrativeDivisionNumber"
-          placeholder="请输入行政区划"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item label="行政区编码" prop="nameOfVillage">
+<!--        <el-input-->
+<!--          v-model="queryParams.nameOfVillage"-->
+<!--          placeholder="请输入行政区划"-->
+<!--          clearable-->
+<!--          @keyup.enter.native="handleQuery"-->
+<!--        />-->
+        <treeselect style="width: 200px" v-model="queryParams.nameOfVillage" :options="ordinaryOptions" :normalizer="normalizer" placeholder="请选择行政区" />
+
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -61,7 +63,7 @@
 
     <el-table v-loading="loading" :data="villageList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="行政区划编码" align="center" prop="administrativeDivisionNumber" />
+      <el-table-column label="行政区编号" align="center" prop="administrativeDivisionNumber" />
       <el-table-column label="行政区名称" align="center" prop="nameOfVillage" />
       <el-table-column label="建制村名称" align="center" prop="nameOfVillage" />
       <el-table-column label="通达现状" align="center" prop="accessStatusQuo">
@@ -174,7 +176,7 @@
             <el-radio
               v-for="dict in dict.type.latitude_and_longitude_type"
               :key="dict.value"
-              :label="parseInt(dict.value)"
+              :label="dict.value"
             >{{dict.label}}</el-radio>
           </el-radio-group>
         </el-form-item>
@@ -193,7 +195,7 @@
               v-for="dict in dict.type.terrain"
               :key="dict.value"
               :label="dict.label"
-              :value="parseInt(dict.value)"
+              :value="dict.value"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -229,7 +231,7 @@
               v-for="dict in dict.type.access"
               :key="dict.value"
               :label="dict.label"
-              :value="parseInt(dict.value)"
+              :value="dict.value"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -239,7 +241,7 @@
               v-for="dict in dict.type.location_of_township_access"
               :key="dict.value"
               :label="dict.label"
-              :value="parseInt(dict.value)"
+              :value="dict.value"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -265,7 +267,7 @@
               v-for="dict in dict.type.direction_of_access"
               :key="dict.value"
               :label="dict.label"
-              :value="parseInt(dict.value)"
+              :value="dict.value"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -345,12 +347,18 @@
 
 <script>
 import { listVillage, getVillage, delVillage, addVillage, updateVillage } from "@/api/system/village";
-
+import Treeselect from "@riophae/vue-treeselect";
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
+import {listDept} from "@/api/system/dept";
 export default {
   name: "Village",
+  components: {
+    Treeselect
+  },
   dicts: ['latitude_and_longitude_type', 'access', 'optimization', 'sys_yes_no', 'terrain', 'location_of_township_access', 'direction_of_access'],
   data() {
     return {
+      ordinaryOptions: [],
       activeName:'first',
       openXq:false,
       // 遮罩层
@@ -389,6 +397,7 @@ export default {
     };
   },
   created() {
+    this.getTreeselect();
     this.getList();
   },
   methods: {
@@ -455,6 +464,25 @@ export default {
         remarks: null
       };
       this.resetForm("form");
+    },
+    /** 转换一般养护数据结构 */
+    normalizer(node) {
+      if (node.children && !node.children.length) {
+        delete node.children;
+      }
+      return {
+        id: node.deptName,
+        label: node.deptName,
+        children: node.children
+      };
+    },
+    /** 查询一般养护下拉树结构 */
+    getTreeselect() {
+      listDept().then(response => {
+        this.ordinaryOptions = [];
+        // const data = { deptId: 0, deptName: '大陆', children: [] };
+        this.ordinaryOptions = this.handleTree(response.data, "deptId", "parentId");
+      });
     },
     /** 搜索按钮操作 */
     handleQuery() {
