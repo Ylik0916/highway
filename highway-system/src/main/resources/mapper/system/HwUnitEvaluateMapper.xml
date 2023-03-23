@@ -46,11 +46,21 @@
     </select>
 
     <!-- 查询从业单位评价列表和成绩 -->
-    <select id="selectHwUnitEvaluateAndScoreList" parameterType="HwUnitEvaluate"
+    <!--<select id="selectHwUnitEvaluateAndScoreList" parameterType="HwUnitEvaluate"
             resultMap="HwUnitEvaluateScoreResult">
         SELECT *
         FROM `hw_unit_evaluate` hue
         LEFT JOIN `hw_history_evaluate` hhe ON hue.`unit_id` = hhe.`evaluate_unit_id`
+        <where>
+            <if test="unitName != null  and unitName != ''">and unit_name like concat('%', #{unitName}, '%')</if>
+            <if test="unitType != null  and unitType != ''">and unit_type = #{unitType}</if>
+            <if test="evaluateYears != null  and evaluateYears != ''">and evaluate_years = #{evaluateYears}</if>
+        </where>
+    </select>-->
+    <select id="selectHwUnitEvaluateAndScoreList" parameterType="HwUnitEvaluate"
+            resultMap="HwUnitEvaluateScoreResult">
+        SELECT *
+        FROM `hw_unit_evaluate` hue
         <where>
             <if test="unitName != null  and unitName != ''">and unit_name like concat('%', #{unitName}, '%')</if>
             <if test="unitType != null  and unitType != ''">and unit_type = #{unitType}</if>

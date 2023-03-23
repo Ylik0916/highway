@@ -1,27 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hg.system.mapper.HwProjectSupervisorMapper">
-    
+
     <resultMap type="HwProjectSupervisor" id="HwProjectSupervisorResult">
-        <result property="supervisorId"    column="supervisor_id"    />
-        <result property="supervisorName"    column="supervisor_name"    />
-        <result property="supervisorProjectId"    column="supervisor_project_id"    />
+        <result property="supervisorId" column="supervisor_id"/>
+        <result property="supervisorName" column="supervisor_name"/>
+        <result property="supervisorProjectId" column="supervisor_project_id"/>
     </resultMap>
 
     <sql id="selectHwProjectSupervisorVo">
-        select supervisor_id, supervisor_name, supervisor_project_id from hw_project_supervisor
+        select supervisor_id, supervisor_name, supervisor_project_id
+        from hw_project_supervisor
     </sql>
 
-    <select id="selectHwProjectSupervisorList" parameterType="HwProjectSupervisor" resultMap="HwProjectSupervisorResult">
+    <select id="selectHwProjectSupervisorList" parameterType="HwProjectSupervisor"
+            resultMap="HwProjectSupervisorResult">
         <include refid="selectHwProjectSupervisorVo"/>
-        <where>  
-            <if test="supervisorName != null  and supervisorName != ''"> and supervisor_name like concat('%', #{supervisorName}, '%')</if>
-            <if test="supervisorProjectId != null "> and supervisor_project_id = #{supervisorProjectId}</if>
+        <where>
+            <if test="supervisorName != null  and supervisorName != ''">and supervisor_name like concat('%',
+                #{supervisorName}, '%')
+            </if>
+            <if test="supervisorProjectId != null ">and supervisor_project_id = #{supervisorProjectId}</if>
         </where>
     </select>
-    
+
     <select id="selectHwProjectSupervisorBySupervisorId" parameterType="Long" resultMap="HwProjectSupervisorResult">
         <include refid="selectHwProjectSupervisorVo"/>
         where supervisor_id = #{supervisorId}
@@ -32,17 +36,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectHwProjectSupervisorVo"/>
         where `supervisor_project_id` = #{supervisorProjectId}
     </select>
-        
-    <insert id="insertHwProjectSupervisor" parameterType="HwProjectSupervisor" useGeneratedKeys="true" keyProperty="supervisorId">
+
+    <!-- 根据项目信息id查询最新标段 -->
+    <select id="selectHwProjectSupervisorByProjectIdByNew" parameterType="Integer"
+            resultMap="HwProjectSupervisorResult">
+        <include refid="selectHwProjectSupervisorVo"/>
+        where `supervisor_project_id` = #{supervisorProjectId}
+        ORDER BY supervisor_id DESC
+        LIMIT 1
+    </select>
+
+    <insert id="insertHwProjectSupervisor" parameterType="HwProjectSupervisor" useGeneratedKeys="true"
+            keyProperty="supervisorId">
         insert into hw_project_supervisor
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="supervisorName != null and supervisorName != ''">supervisor_name,</if>
             <if test="supervisorProjectId != null">supervisor_project_id,</if>
-         </trim>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="supervisorName != null and supervisorName != ''">#{supervisorName},</if>
             <if test="supervisorProjectId != null">#{supervisorProjectId},</if>
-         </trim>
+        </trim>
     </insert>
 
     <update id="updateHwProjectSupervisor" parameterType="HwProjectSupervisor">
@@ -55,11 +69,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteHwProjectSupervisorBySupervisorId" parameterType="Long">
-        delete from hw_project_supervisor where supervisor_id = #{supervisorId}
+        delete
+        from hw_project_supervisor
+        where supervisor_id = #{supervisorId}
     </delete>
 
     <delete id="deleteHwProjectSupervisorBySupervisorIds" parameterType="String">
-        delete from hw_project_supervisor where supervisor_id in 
+        delete from hw_project_supervisor where supervisor_id in
         <foreach item="supervisorId" collection="array" open="(" separator="," close=")">
             #{supervisorId}
         </foreach>

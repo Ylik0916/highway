@@ -2,6 +2,8 @@ package com.hg.system.service.impl;
 
 import java.util.List;
 
+import com.hg.system.domain.HwHistoryEvaluate;
+import com.hg.system.mapper.HwHistoryEvaluateMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.hg.system.mapper.HwPersonEvaluateMapper;
@@ -18,6 +20,9 @@ import com.hg.system.service.IHwPersonEvaluateService;
 public class HwPersonEvaluateServiceImpl implements IHwPersonEvaluateService {
     @Autowired
     private HwPersonEvaluateMapper hwPersonEvaluateMapper;
+
+    @Autowired
+    private HwHistoryEvaluateMapper hwHistoryEvaluateMapper;
 
     /**
      * 查询从业人员评价
@@ -93,6 +98,13 @@ public class HwPersonEvaluateServiceImpl implements IHwPersonEvaluateService {
      */
     @Override
     public List<HwPersonEvaluate> selectHwPersonEvaluateListNew(HwPersonEvaluate hwPersonEvaluate) {
-        return hwPersonEvaluateMapper.selectHwPersonEvaluateListNew(hwPersonEvaluate);
+        List<HwPersonEvaluate> evaluateList = hwPersonEvaluateMapper.selectHwPersonEvaluateListNew(hwPersonEvaluate);
+        for (int i = 0; i < evaluateList.size(); i++) {
+            HwPersonEvaluate evaluate = evaluateList.get(i);
+            Integer personId = evaluate.getPersonId();
+            HwHistoryEvaluate historyEvaluate = hwHistoryEvaluateMapper.selectHwHistoryEvaluateByPersonIdByNew(personId);
+            evaluate.setHwHistoryEvaluate(historyEvaluate);
+        }
+        return evaluateList;
     }
 }

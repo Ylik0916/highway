@@ -164,7 +164,7 @@
 
         <!-- 添加或修改项目信息管理对话框 -->
         <el-dialog :title="title" :visible.sync="open" width="1200px" append-to-body>
-          <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+          <el-form ref="form" :model="form" :rules="rules" label-width="80px" label-position="top">
             <el-form-item label="项目阶段" prop="projectPhase">
               <el-steps :active="active" finish-status="success" align-center>
                 <el-step title="立项阶段" @click.native="next(1)"></el-step>
@@ -204,69 +204,78 @@
               <div class="projectDetailsInformation">
 
                 <div class="tzCostTitle" style="border-bottom: 1px solid #f0f0f0">
-                  <span style="line-height: 30px;margin-left: 10px;font-weight: bold">投资估算（万元）</span>
+                  <span style="line-height: 30px;margin-left: 1px;font-weight: bold">投资估算（万元）</span>
                   <div class="cost">
                     <el-form-item label="建安费" prop="investCost" class="detailsInformation">
-                      <el-input v-model="form.investCost" placeholder="请输入建安费" :disabled="disabled"/>
+                      <el-input-number style="width: 300px" placeholder="请输入建安费" v-model="form.investCost" controls-position="right" :min="0"
+                                       :disabled="disabled"/>
                     </el-form-item>
-                    <el-form-item label="设备及工器购置费" prop="investEquipmentCost" class="detailsInformation"
-                                  style="line-height: 80px;align-items: center">
-                      <el-input v-model="form.investEquipmentCost" placeholder="请输入设备及工器购置费" :disabled="disabled"/>
+                    <el-form-item label="设备及工器购置费" prop="investEquipmentCost" class="detailsInformation">
+                      <el-input-number style="width: 300px" v-model="form.investEquipmentCost" controls-position="right" :min="0"
+                                       :disabled="disabled"/>
                     </el-form-item>
                     <el-form-item label="工程费" prop="investEngineeringCost" class="detailsInformation">
-                      <el-input v-model="form.investEngineeringCost" placeholder="请输入工程费" :disabled="disabled"/>
+                      <el-input-number style="width: 300px" v-model="form.investEngineeringCost" controls-position="right" :min="0"
+                                       :disabled="disabled"/>
                     </el-form-item>
                   </div>
                 </div>
 
                 <div class="sjCostTitle" style="border-bottom: 1px solid #f0f0f0">
-                  <span style="line-height: 30px;margin-left: 10px;font-weight: bold">设计概算（万元）</span>
+                  <span style="line-height: 30px;margin-left: 1px;font-weight: bold">设计概算（万元）</span>
                   <div class="cost">
                     <el-form-item label="建安费" prop="designCost" class="detailsInformation">
-                      <el-input v-model="form.designCost" placeholder="请输入建安费" :disabled="disabled"/>
+                      <el-input-number style="width: 300px" v-model="form.designCost" controls-position="right" :min="0"
+                                       :disabled="disabled"/>
                     </el-form-item>
                     <el-form-item label="设备及工器购置费" prop="designEquipmentCost" class="detailsInformation">
-                      <el-input v-model="form.designEquipmentCost" placeholder="请输入设备及工器购置费" :disabled="disabled"/>
+                      <el-input-number style="width: 300px" v-model="form.designEquipmentCost" controls-position="right" :min="0"
+                                       :disabled="disabled"/>
                     </el-form-item>
                     <el-form-item label="工程费" prop="designEngineeringCost" class="detailsInformation">
-                      <el-input v-model="form.designEngineeringCost" placeholder="请输入工程费" :disabled="disabled"/>
+                      <el-input-number style="width: 300px" v-model="form.designEngineeringCost" controls-position="right" :min="0"
+                                       :disabled="disabled"/>
                     </el-form-item>
                   </div>
                 </div>
 
                 <div class="sgCostTitle" style="border-bottom: 1px solid #f0f0f0">
-                  <span style="line-height: 30px;margin-left: 10px;font-weight: bold">施工图预算（万元）</span>
+                  <span style="line-height: 30px;margin-left: 1px;font-weight: bold">施工图预算（万元）</span>
                   <div class="cost">
                     <el-form-item label="建安费" prop="constructionCost" class="detailsInformation">
-                      <el-input v-model="form.constructionCost" placeholder="请输入建安费" :disabled="disabled"/>
+                      <el-input-number style="width: 300px" v-model="form.constructionCost" controls-position="right" :min="0"
+                                       :disabled="disabled"/>
                     </el-form-item>
                     <el-form-item label="设备及工器购置费" prop="constructionEquipmentCost" class="detailsInformation">
-                      <el-input v-model="form.constructionEquipmentCost" placeholder="请输入设备及工器购置费"
-                                :disabled="disabled"/>
+                      <el-input-number style="width: 300px" v-model="form.constructionEquipmentCost" controls-position="right" :min="0"
+                                       :disabled="disabled"></el-input-number>
                     </el-form-item>
                     <el-form-item label="工程费" prop="constructionEngineeringCost" class="detailsInformation">
-                      <el-input v-model="form.constructionEngineeringCost" placeholder="请输入工程费" :disabled="disabled"/>
+                      <el-input-number style="width: 300px" v-model="form.constructionEngineeringCost" controls-position="right" :min="0"
+                                       :disabled="disabled"/>
                     </el-form-item>
                   </div>
                 </div>
 
                 <div class="sgCostTitle" style="border-bottom: 1px solid #f0f0f0">
-                  <span style="line-height: 30px;margin-left: 10px;font-weight: bold">招标费用（万元）</span>
+                  <span style="line-height: 30px;margin-left: 1px;font-weight: bold">招标费用（万元）</span>
                   <div class="cost">
                     <el-form-item label="合同价(不含暂定金)" prop="contractCost" class="detailsInformation">
-                      <el-input v-model="form.contractCost" placeholder="请输入合同价(不含暂定金)" :disabled="disabled"/>
+                      <el-input-number style="width: 300px" v-model="form.contractCost" controls-position="right" :min="0"
+                                       :disabled="disabled"/>
                     </el-form-item>
                     <el-form-item label="暂定金" prop="provisionalPayment" class="detailsInformation">
-                      <el-input v-model="form.provisionalPayment" placeholder="请输入暂定金" :disabled="disabled"/>
+                      <el-input-number style="width: 300px" v-model="form.provisionalPayment" controls-position="right" :min="0"
+                                       :disabled="disabled"/>
                     </el-form-item>
                   </div>
                 </div>
 
                 <div class="sgCostTitle">
-                  <span style="line-height: 30px;margin-left: 10px;font-weight: bold">交竣工时间</span>
+                  <span style="line-height: 30px;margin-left: 1px;font-weight: bold">交竣工时间</span>
                   <div class="cost">
                     <el-form-item label="开工时间" prop="startTime" class="detailsInformation">
-                      <el-date-picker clearable
+                      <el-date-picker style="width: 300px" clearable
                                       v-model="form.startTime"
                                       type="date"
                                       value-format="yyyy-MM-dd"
@@ -275,7 +284,7 @@
                       </el-date-picker>
                     </el-form-item>
                     <el-form-item label="交工时间" prop="submitTime" class="detailsInformation">
-                      <el-date-picker clearable
+                      <el-date-picker style="width: 300px" clearable
                                       v-model="form.submitTime"
                                       type="date"
                                       value-format="yyyy-MM-dd"
@@ -284,7 +293,7 @@
                       </el-date-picker>
                     </el-form-item>
                     <el-form-item label="竣工时间" prop="endTime" class="detailsInformation">
-                      <el-date-picker clearable
+                      <el-date-picker style="width: 300px" clearable
                                       v-model="form.endTime"
                                       type="date"
                                       value-format="yyyy-MM-dd"
@@ -921,6 +930,7 @@ export default {
   height: 250px;
   border-top: #f0f0f0 1px solid;
   margin-top: 5px;
+  margin-left: 8px;
   display: flex;
   flex-wrap: wrap;
 }
@@ -944,7 +954,7 @@ export default {
 .detailsInformation {
   width: 330px;
   height: 80px;
-  padding-top: 20px;
+  /*padding-top: 20px;*/
 }
 
 .cost {

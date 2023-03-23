@@ -205,7 +205,7 @@
         <el-dialog :title="historyAddTitle" :visible.sync="historyAddOpen" width="500px" append-to-body>
           <el-form ref="historyForm" :model="historyForm" :rules="historyRules" label-width="80px">
             <el-form-item label="评分" prop="evaluateScore" style="width: 300px">
-              <el-input v-model="historyForm.evaluateScore" placeholder="请输入评分施工标名称"/>
+              <el-input-number v-model="historyForm.evaluateScore" controls-position="right" placeholder="请输入评分施工标名称" :min="0"/>
             </el-form-item>
             <el-form-item label="附件" prop="evaluateDocumentUpload">
               <file-upload v-model="historyForm.evaluateDocumentUpload"/>

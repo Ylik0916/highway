@@ -55,11 +55,27 @@
     </select>
 
     <!-- 查询从业人员评价列表新版 -->
-    <select id="selectHwPersonEvaluateListNew" parameterType="hwPersonEvaluate" resultMap="HwPersonEvaluateResultNew">
+    <!--<select id="selectHwPersonEvaluateListNew" parameterType="hwPersonEvaluate" resultMap="HwPersonEvaluateResultNew">
         SELECT *
         FROM `hw_person_evaluate` hpe
         LEFT JOIN `hw_unit_evaluate` hue ON hpe.`person_unit` = hue.`unit_id`
         LEFT JOIN `hw_history_evaluate` hhe ON hpe.`person_id` = hhe.`evaluate_person_id`
+        <where>
+            <if test="personName != null  and personName != ''">and person_name like concat('%', #{personName}, '%')
+            </if>
+            <if test="personUnit != null ">and person_unit = #{personUnit}</if>
+            <if test="unitType != null  and unitType != ''">and hpe.unit_type = #{unitType}</if>
+            <if test="evaluateYears != null  and evaluateYears != ''">and hpe.evaluate_years = #{evaluateYears}</if>
+            <if test="hwUnitEvaluate != null  and hwUnitEvaluate != ''">
+                <if test="hwUnitEvaluate.unitName != null  and hwUnitEvaluate.unitName != ''">and hue.`unit_name` like
+                    concat('%', #{hwUnitEvaluate.unitName}, '%')
+                </if>
+            </if>
+        </where>
+    </select>-->
+    <select id="selectHwPersonEvaluateListNew" parameterType="hwPersonEvaluate" resultMap="HwPersonEvaluateResultNew">
+        SELECT *
+        FROM `hw_person_evaluate` hpe
         <where>
             <if test="personName != null  and personName != ''">and person_name like concat('%', #{personName}, '%')
             </if>

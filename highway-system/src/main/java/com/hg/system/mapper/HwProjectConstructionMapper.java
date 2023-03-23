@@ -66,4 +66,12 @@ public interface HwProjectConstructionMapper
      * @return W-yf集合
      */
     public List<HwProjectConstruction> selectHwProjectConstructionSupervisor(Integer constructionProjectId);
+
+    /**
+     * 新版查询施工最新标段
+     *
+     * @param constructionProjectId 项目id
+     * @return W-yf集合
+     */
+    HwProjectConstruction selectHwProjectConstructionSupervisorByNew(Integer constructionProjectId);
 }
