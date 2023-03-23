@@ -9,10 +9,10 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label-width="100px" label="行政区划编号" prop="administrativeDivisionNumber">
+      <el-form-item label-width="100px" label="行政区编号" prop="administrativeDivisionNumber">
         <el-input
           v-model="queryParams.administrativeDivisionNumber"
-          placeholder="请输入行政区划编号"
+          placeholder="请输入行政区编号"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -61,7 +61,7 @@
 
     <el-table v-loading="loading" :data="townshipList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="行政区划编号" align="center" prop="administrativeDivisionNumber" />
+      <el-table-column label="行政区编号" align="center" prop="administrativeDivisionNumber" />
       <el-table-column label="行政区名称" align="center" prop="nameOfTownship" />
       <el-table-column label="乡镇名称" align="center" prop="nameOfTownship" />
       <el-table-column label="通达现状" align="center" prop="accessStatusQuo">
@@ -112,7 +112,7 @@
             <el-descriptions-item label="乡镇名称">{{ form.nameOfTownship }}</el-descriptions-item>
             <el-descriptions-item label="区域人口">{{ form.regionalPopulation }}</el-descriptions-item>
             <el-descriptions-item label="所属建制村数量">{{ form.numberOfIncorporatedVillages }}</el-descriptions-item>
-            <el-descriptions-item label="行政区划编号">{{ form.administrativeDivisionNumber }}</el-descriptions-item>
+            <el-descriptions-item label="行政区编号">{{ form.administrativeDivisionNumber }}</el-descriptions-item>
             <el-descriptions-item label="经纬度类型">{{ form.latitudeAndLongitudeType }}</el-descriptions-item>
             <el-descriptions-item label="经度">{{ form.longitude }}</el-descriptions-item>
             <el-descriptions-item label="维度">{{ form.latitude }}</el-descriptions-item>
@@ -168,15 +168,15 @@
         <el-form-item label="所属建制村数量" prop="numberOfIncorporatedVillages">
           <el-input v-model="form.numberOfIncorporatedVillages" placeholder="请输入所属建制村数量" />
         </el-form-item>
-        <el-form-item label="行政区划编号" prop="administrativeDivisionNumber">
-          <el-input v-model="form.administrativeDivisionNumber" placeholder="请输入行政区划编号" />
+        <el-form-item label="行政区编号" prop="administrativeDivisionNumber">
+          <el-input v-model="form.administrativeDivisionNumber" placeholder="请输入行政区编号" />
         </el-form-item>
         <el-form-item label="经纬度类型" prop="latitudeAndLongitudeType">
           <el-radio-group v-model="form.latitudeAndLongitudeType">
             <el-radio
               v-for="dict in dict.type.latitude_and_longitude_type"
               :key="dict.value"
-              :label="parseInt(dict.value)"
+              :label="dict.value"
             >{{dict.label}}</el-radio>
           </el-radio-group>
         </el-form-item>
@@ -192,7 +192,7 @@
               v-for="dict in dict.type.terrain"
               :key="dict.value"
               :label="dict.label"
-              :value="parseInt(dict.value)"
+              :value="dict.value"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -241,7 +241,7 @@
               v-for="dict in dict.type.access"
               :key="dict.value"
               :label="dict.label"
-              :value="parseInt(dict.value)"
+              :value="dict.value"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -251,7 +251,7 @@
               v-for="dict in dict.type.location_of_township_access"
               :key="dict.value"
               :label="dict.label"
-              :value="parseInt(dict.value)"
+              :value="dict.value"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -277,7 +277,7 @@
               v-for="dict in dict.type.direction_of_access"
               :key="dict.value"
               :label="dict.label"
-              :value="parseInt(dict.value)"
+              :value="dict.value"
             ></el-option>
           </el-select>
         </el-form-item>
