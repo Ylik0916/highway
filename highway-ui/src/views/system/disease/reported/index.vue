@@ -201,7 +201,7 @@
           </el-col>
         </el-row>
         <el-form-item label="病害图片" prop="diseaseImg">
-          <image-upload v-model="form.diseaseImg"/>
+          <image-upload :limit="1" v-model="form.diseaseImg"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -232,9 +232,9 @@ export default {
     return {
       // 遮罩层
       loading: true,
-
       // 选中数组
       ids: [],
+      diseaseNames: [],
       // 非单个禁用
       single: true,
       // 非多个禁用
@@ -288,10 +288,10 @@ export default {
           { required: true, message: "病害中心桩号不能为空", trigger: "blur" }
         ],
         diseaseLatitude: [
-          { required: true, message: "病害纬度不能为空", trigger: "blur" }
+          { required: true, message: "病害纬度不能为空", trigger: "blur" },
         ],
         diseaseLongitude: [
-          { required: true, message: "病害经度不能为空", trigger: "blur" }
+          { required: true, message: "病害经度不能为空", trigger: "blur" },
         ],
         diseaseImg: [
           { required: true, message: "病害图片不能为空", trigger: "blur" }
@@ -408,6 +408,7 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.wdid)
+      this.diseaseNames = selection.map(item => item.diseaseName)
       this.single = selection.length!==1
       this.multiple = !selection.length
     },
@@ -448,13 +449,13 @@ export default {
         if (valid) {
           if (this.form.wdid != null) {
             updateDisease(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功");
+              this.$modal.msgSuccess("操作成功");
               this.open = false;
               this.getList();
             });
           } else {
             addDisease(this.form).then(response => {
-              this.$modal.msgSuccess("新增成功");
+              this.$modal.msgSuccess("操作成功");
               this.open = false;
               this.getList();
             });
@@ -465,7 +466,8 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const wdids = row.wdid || this.ids;
-      this.$modal.confirm('是否确认删除道路病害管理编号为"' + wdids + '"的数据项？').then(function() {
+      const diseaseNames = row.diseaseName || this.diseaseNames;
+      this.$modal.confirm('是否确认删除道路病害名称为"' + diseaseNames + '"的数据项？').then(function() {
         return delDisease(wdids);
       }).then(() => {
         this.getList();

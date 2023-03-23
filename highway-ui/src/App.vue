@@ -4,7 +4,6 @@
     <theme-picker />
   </div>
 </template>
-
 <script>
 import ThemePicker from "@/components/ThemePicker";
 
@@ -33,7 +32,11 @@ export default {
   height: 800px;
   font-size: 18px;
   border: 1px #ededf7 ridge;
+  overflow: scroll;
 }
+
+/*去除滚动条显示*/
+.bigBox::-webkit-scrollbar{display:none}
 .smallBox{
   background-color: white;
   margin: 30px auto auto;
@@ -41,5 +44,6 @@ export default {
   box-shadow: #97a8be;
   width: 91%;
   border-radius: 10px;
+
 }
 </style>

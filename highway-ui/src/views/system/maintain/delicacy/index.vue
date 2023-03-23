@@ -210,7 +210,7 @@
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="路面宽度" prop="roadWidth">
-                <el-input v-model.number="form.roadWidth" placeholder="请输入路面宽度" />
+                <el-input v-model="form.roadWidth" placeholder="请输入路面宽度" />
               </el-form-item>
             </div>
           </el-col>
@@ -219,14 +219,14 @@
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="里程" prop="mileage">
-                <el-input v-model.number="form.mileage" placeholder="请输入里程" />
+                <el-input v-model="form.mileage" placeholder="请输入里程" />
               </el-form-item>
             </div>
           </el-col>
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="金额" prop="amount">
-                <el-input v-model.number="form.amount" placeholder="请输入金额" />
+                <el-input v-model="form.amount" placeholder="请输入金额" />
               </el-form-item>
             </div>
           </el-col>
@@ -309,12 +309,24 @@ export default {
   components: {
     Treeselect
   },
-  data() {
+  data(){
+    var rulesNumber = (rule, value, callback) => {
+      if (!isNaN(Number(value))) {
+        if (value < 0) {
+          callback(new Error('输入值必须大于0'));
+        } else {
+          callback();
+        }
+      } else {
+        callback(new Error('输入的必须为数字值'));
+      }
+    };
     return {
       // 遮罩层
       loading: true,
       // 选中数组
       ids: [],
+      pathNames: [],
       // 非单个禁用
       single: true,
       // 非多个禁用
@@ -365,13 +377,13 @@ export default {
           { required: true, message: "所在乡镇不能为空", trigger: "blur" }
         ],
         roadWidth: [
-          { type: 'number', message: "路面宽度必须为数字值", trigger: "blur" }
+          { validator: rulesNumber, trigger: 'blur' }
         ],
         mileage: [
-          { type: 'number', message: "里程必须为数字值", trigger: "blur" }
+          { validator: rulesNumber, trigger: 'blur' }
         ],
         amount: [
-          { type: 'number', message: "金额必须为数字值", trigger: "blur" }
+          { validator: rulesNumber, trigger: 'blur' }
         ],
       }
     };
@@ -392,6 +404,8 @@ export default {
     // 取消按钮
     cancel() {
       this.open = false;
+      this.openAuit = false,
+      this.detailsOpen =  false,
       this.reset();
     },
     // 表单重置
@@ -440,13 +454,13 @@ export default {
     getTreeselect() {
       listDept().then(response => {
         this.ordinaryOptions = [];
-        // const data = { deptId: 0, deptName: '大陆', children: [] };
         this.ordinaryOptions = this.handleTree(response.data, "deptId", "parentId");
       });
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.mpdid)
+      this.pathNames = selection.map(item => item.pathName)
       this.single = selection.length!==1
       this.multiple = !selection.length
     },
@@ -507,14 +521,14 @@ export default {
         if (valid) {
           if (this.form.mpdid != null) {
             updateDelicacy(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功");
+              this.$modal.msgSuccess("操作成功");
               this.open = false;
               this.openAuit = false;
               this.getList();
             });
           } else {
             addDelicacy(this.form).then(response => {
-              this.$modal.msgSuccess("新增成功");
+              this.$modal.msgSuccess("操作成功");
               this.open = false;
               this.getList();
             });
@@ -525,7 +539,8 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const mpdids = row.mpdid || this.ids;
-      this.$modal.confirm('是否确认删除精品示范编号为"' + mpdids + '"的数据项？').then(function() {
+      const pathName = row.pathName || this.pathNames;
+      this.$modal.confirm('是否确认删除路线名称为"' + pathName + '"的计划？').then(function() {
         return delDelicacy(mpdids);
       }).then(() => {
         this.getList();

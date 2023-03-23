@@ -149,7 +149,7 @@
           <el-input v-model="form.maintainRemark" type="textarea" placeholder="请输入内容" />
         </el-form-item>
         <el-form-item label="养护图片" prop="maintainImg">
-          <image-upload v-model="form.maintainImg"/>
+          <image-upload :limit="1" v-model="form.maintainImg"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -167,6 +167,17 @@ export default {
   name: "Conserve",
   dicts: ['reporting_type', 'disease_state', 'driving_direction'],
   data() {
+    var rulesNumber = (rule, value, callback) => {
+      if (!isNaN(Number(value))) {
+        if (value < 0) {
+          callback(new Error('输入值必须大于0'));
+        } else {
+          callback();
+        }
+      } else {
+        callback(new Error('输入的必须为数字值'));
+      }
+    };
     return {
       // 遮罩层
       loading: true,
@@ -208,8 +219,7 @@ export default {
           { required: true, message: "养护人不能为空", trigger: "blur" }
         ],
         maintainFund: [
-          { required: true, message: "养护经费不能为空", trigger: "blur" },
-          { type: 'number', message: '养护经费必须为数字值', trigger: "blur"}
+          { validator: rulesNumber, trigger: 'blur' }
         ],
         beginTime: [
           { required: true, message: "开始时间不能为空", trigger: "blur" }
@@ -312,7 +322,7 @@ export default {
       getDisease(wdid).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改道路病害管理";
+        this.title = "病害养护";
       });
     },
     /** 提交按钮 */

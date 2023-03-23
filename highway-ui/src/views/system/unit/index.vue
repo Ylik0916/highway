@@ -251,6 +251,7 @@ export default {
       loading: true,
       // 选中数组
       ids: [],
+      unitNames: [],
       // 非单个禁用
       single: true,
       // 非多个禁用
@@ -331,12 +332,6 @@ export default {
       this.open = false;
       this.reset();
     },
-    // renderContent(h, { node, data, store }) {
-    //   return (
-    //     <span class="custom-tree-node">
-    //         <span>{node.data.deptName}</span>
-    //       </span>);
-    // },
     // 表单重置
     reset() {
       this.form = {
@@ -367,10 +362,9 @@ export default {
         children: node.children
       };
     },
-    /** 查询一般养护下拉树结构 */
+    /** 查询行政区下拉树结构 */
     getTreeselect() {
       listDept().then(response => {
-        // const data = { deptId: 0, deptName: '大陆', children: [] };
         this.options = this.handleTree(response.data, "deptId", "parentId");
       });
     },
@@ -387,6 +381,7 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.muid)
+      this.unitNames = selection.map(item => item.unitName)
       this.single = selection.length!==1
       this.multiple = !selection.length
     },
@@ -442,7 +437,8 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const muids = row.muid || this.ids;
-      this.$modal.confirm('是否确认删除养护单位管理编号为"' + muids + '"的数据项？').then(function() {
+      const unitNames = row.unitName || this.unitNames;
+      this.$modal.confirm('是否确认删除养护单位名称为"' + unitNames + '"的数据项？').then(function() {
         return delUnit(muids);
       }).then(() => {
         this.getList();
