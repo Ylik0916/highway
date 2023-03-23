@@ -1180,6 +1180,9 @@ export default {
       form: {},
       // 表单校验
       rules: {
+        luId:[{
+          required: true, message: "路线不能为空", trigger: "blur"
+        }],
         routeCode: [
           {required: true, message: "桥梁编码不能为空", trigger: "blur"}
         ],
