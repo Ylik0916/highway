@@ -176,7 +176,7 @@
             <el-radio
               v-for="dict in dict.type.latitude_and_longitude_type"
               :key="dict.value"
-              :label="parseInt(dict.value)"
+              :label="dict.value"
             >{{dict.label}}</el-radio>
           </el-radio-group>
         </el-form-item>
@@ -192,7 +192,7 @@
               v-for="dict in dict.type.terrain"
               :key="dict.value"
               :label="dict.label"
-              :value="parseInt(dict.value)"
+              :value="dict.value"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -241,7 +241,7 @@
               v-for="dict in dict.type.access"
               :key="dict.value"
               :label="dict.label"
-              :value="parseInt(dict.value)"
+              :value="dict.value"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -251,7 +251,7 @@
               v-for="dict in dict.type.location_of_township_access"
               :key="dict.value"
               :label="dict.label"
-              :value="parseInt(dict.value)"
+              :value="dict.value"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -277,7 +277,7 @@
               v-for="dict in dict.type.direction_of_access"
               :key="dict.value"
               :label="dict.label"
-              :value="parseInt(dict.value)"
+              :value="dict.value"
             ></el-option>
           </el-select>
         </el-form-item>
