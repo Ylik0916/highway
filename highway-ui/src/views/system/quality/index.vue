@@ -46,18 +46,6 @@
           </el-col>
           <el-col :span="1.5">
             <el-button
-              type="success"
-              plain
-              icon="el-icon-edit"
-              size="mini"
-              :disabled="single"
-              @click="handleUpdate"
-              v-hasPermi="['system:quality:edit']"
-            >修改
-            </el-button>
-          </el-col>
-          <el-col :span="1.5">
-            <el-button
               type="danger"
               plain
               icon="el-icon-delete"
@@ -88,7 +76,6 @@
           <el-table-column label="桥梁编码" align="center" prop="routeCode"/>
           <el-table-column label="DR" align="center" prop="routeDr"/>
           <el-table-column label="桥梁技术状况指数评定" align="center">
-            <!--      <el-table-column label="桥梁质量id" align="center" prop="routeQualityId" />-->
             <el-table-column label="SPCI" align="center" prop="routeTopScore"/>
             <el-table-column label="SBCI" align="center" prop="routeBottomScore"/>
             <el-table-column label="BDCI" align="center" prop="routeFaceScore"/>
@@ -99,12 +86,12 @@
             </template>
           </el-table-column>
 
-          <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+          <el-table-column width="150px" label="操作" align="center" class-name="small-padding fixed-width">
             <template slot-scope="scope">
               <el-button
                 size="mini"
                 type="text"
-                icon="el-icon-edit"
+                icon="el-icon-finished"
                 @click="handlexq(scope.row)"
                 v-hasPermi="['system:quality:edit']"
               >详情
@@ -419,11 +406,6 @@ export default {
           })
         })
       )
-    },
-    methods: {
-      handleClick(tab, event) {
-        console.log(tab, event);
-      }
     },
     //选择桥梁信息
     shou(bridge, bridgeCode, bi, qu) {

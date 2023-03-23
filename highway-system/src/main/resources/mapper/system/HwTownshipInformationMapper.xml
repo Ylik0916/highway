@@ -50,7 +50,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectHwTownshipInformationList" parameterType="HwTownshipInformation" resultMap="HwTownshipInformationResult">
         <include refid="selectHwTownshipInformationVo"/>
-        <where>  
+        <where>
             <if test="nameOfTownship != null  and nameOfTownship != ''"> and name_of_township like concat('%', #{nameOfTownship}, '%')</if>
             <if test="administrativeDivisionNumber != null "> and administrative_division_number = #{administrativeDivisionNumber}</if>
         </where>
