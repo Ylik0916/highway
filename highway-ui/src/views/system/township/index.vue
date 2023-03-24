@@ -176,16 +176,15 @@
         <el-form-item label="行政区编号" prop="administrativeDivisionNumber">
           <el-input v-model="form.administrativeDivisionNumber" placeholder="请输入行政区编号" />
         </el-form-item>
-        <el-form-item label="经纬度类型" prop="latitudeAndLongitudeType">
-          <el-radio-group v-model="form.latitudeAndLongitudeType">
-            <el-radio
-              v-for="dict in dict.type.latitude_and_longitude_type"
-              :key="dict.value"
-              :label="dict.value"
-              :value="dict.value"
-            >{{dict.label}}</el-radio>
-          </el-radio-group>
-        </el-form-item>
+          <el-form-item label="经纬度类型" prop="latitudeAndLongitudeType">
+            <el-radio-group v-model="form.latitudeAndLongitudeType">
+              <el-radio
+                v-for="dict in dict.type.latitude_and_longitude_type"
+                :key="dict.value"
+                :label="dict.value"
+              >{{dict.label}}</el-radio>
+            </el-radio-group>
+          </el-form-item>
         <el-form-item label="经度" prop="longitude">
           <el-input v-model="form.longitude" placeholder="请输入经度" />
         </el-form-item>

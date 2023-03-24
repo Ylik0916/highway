@@ -167,31 +167,31 @@
           </el-select>
         </el-form-item>
         <el-form-item label="起点名称" prop="startingPointname">
-          <el-input v-model="form.startingPointname" placeholder="请输入起点名称" />
+          <el-input v-model="form.startingPointname" placeholder="请输入起点名称"/>
         </el-form-item>
         <el-form-item label="终点名称" prop="endPointName">
-          <el-input v-model="form.endPointName" placeholder="请输入终点名称" />
+          <el-input v-model="form.endPointName" placeholder="请输入终点名称"/>
         </el-form-item>
         <el-form-item label="起点经度" prop="startingPointLongitude">
-          <el-input v-model="form.startingPointLongitude" placeholder="请输入起点经度" />
+          <el-input v-model="form.startingPointLongitude" placeholder="请输入起点经度"/>
         </el-form-item>
         <el-form-item label="终点经度" prop="endPointLongitude">
           <el-input v-model="form.endPointLongitude" placeholder="请输入终点经度" />
         </el-form-item>
         <el-form-item label="起点纬度" prop="startLatitude">
-          <el-input v-model="form.startLatitude" placeholder="请输入起点纬度" />
+          <el-input v-model="form.startLatitude" placeholder="请输入起点纬度"/>
         </el-form-item>
         <el-form-item label="终点纬度" prop="endLatitude">
-          <el-input v-model="form.endLatitude" placeholder="请输入终点纬度" />
+          <el-input v-model="form.endLatitude" placeholder="请输入终点纬度"/>
         </el-form-item>
         <el-form-item label="起点桩号" prop="startingPointStation">
-          <el-input v-model="form.startingPointStation" placeholder="请输入起点桩号" />
+          <el-input v-model="form.startingPointStation" placeholder="请输入起点桩号"/>
         </el-form-item>
         <el-form-item label="终点桩号" prop="endPointStation">
-          <el-input v-model="form.endPointStation" placeholder="请输入终点桩号" />
+          <el-input v-model="form.endPointStation" placeholder="请输入终点桩号"/>
         </el-form-item>
         <el-form-item label="路段数量" prop="numberRoadSegments">
-          <el-input v-model="form.numberRoadSegments" placeholder="请输入路段数量" />
+          <el-input v-model="form.numberRoadSegments" placeholder="请输入路段数量"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

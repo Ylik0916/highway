@@ -520,13 +520,7 @@
                       </el-form-item>
                     </div>
                   </el-col>
-                  <el-col :span="6">
-                    <div class="grid-content bg-purple-light">
-                      <el-form-item label="主要病害描述" prop="routeDiseaseDescribe">
-                        <el-input v-model="form.routeDiseaseDescribe" type="textarea" placeholder="请输入内容"/>
-                      </el-form-item>
-                    </div>
-                  </el-col>
+
                   <el-col :span="6">
                     <div class="grid-content bg-purple-light">
                       <el-form-item label="墩台防撞设施类型" prop="routeAnticollisionType">
@@ -774,6 +768,13 @@
                             :value="dict.value"
                           ></el-option>
                         </el-select>
+                      </el-form-item>
+                    </div>
+                  </el-col>
+                  <el-col :span="6">
+                    <div class="grid-content bg-purple-light">
+                      <el-form-item label="主要病害描述" prop="routeDiseaseDescribe">
+                        <el-input v-model="form.routeDiseaseDescribe" type="textarea" placeholder="请输入内容"/>
                       </el-form-item>
                     </div>
                   </el-col>

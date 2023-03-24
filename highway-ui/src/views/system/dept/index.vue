@@ -61,8 +61,8 @@
       <el-table-column prop="postcode" label="行政编码" width="80" :show-overflow-tooltip="true"></el-table-column>
       <el-table-column prop="longitude" label="经度" width="80" :show-overflow-tooltip="true"></el-table-column>
       <el-table-column prop="latitude" label="纬度" width="80" :show-overflow-tooltip="true"></el-table-column>
-      <el-table-column prop="priorityRoute" label="优选通达路线名称" width="100"></el-table-column>
-      <el-table-column prop="priorityRouteCode" label="优选通达路线编码" width="100"></el-table-column>
+      <el-table-column prop="priorityRoute" label="优选通达路线名称" width="125px"></el-table-column>
+      <el-table-column prop="priorityRouteCode" label="优选通达路线编码" width="125px"></el-table-column>
 
       <el-table-column label="优选通达路线行政等级" align="center" prop="landForm">
         <template slot-scope="scope">
@@ -133,7 +133,7 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="行政名称" prop="deptName">
-              <el-input v-model="form.deptName" placeholder="请输入部门名称" />
+              <el-input v-model="form.deptName" placeholder="请输入部门名称"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -142,7 +142,6 @@
             </el-form-item>
           </el-col>
         </el-row>
-
         <el-row>
           <el-col :span="12">
             <el-form-item label="行政编码" prop="postcode">
@@ -155,7 +154,6 @@
             </el-form-item>
           </el-col>
         </el-row>
-
         <el-row>
           <el-col :span="12">
             <el-form-item label="纬度" prop="latitude">

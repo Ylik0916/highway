@@ -61,18 +61,18 @@
         >新增
         </el-button>
       </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:infdormation:edit']"
-        >修改
-        </el-button>
-      </el-col>
+<!--      <el-col :span="1.5">-->
+<!--        <el-button-->
+<!--          type="success"-->
+<!--          plain-->
+<!--          icon="el-icon-edit"-->
+<!--          size="mini"-->
+<!--          :disabled="single"-->
+<!--          @click="handleUpdate"-->
+<!--          v-hasPermi="['system:infdormation:edit']"-->
+<!--        >修改-->
+<!--        </el-button>-->
+<!--      </el-col>-->
       <el-col :span="1.5">
         <el-button
           type="danger"
@@ -119,7 +119,7 @@
           </el-table-column>
           <el-table-column label="行政区划" align="center" prop="routeAdministrativeArea">
           </el-table-column>
-          <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+          <el-table-column label="操作" width="150px" align="center" class-name="small-padding fixed-width">
             <template slot-scope="scope">
               <el-button
                 size="mini"
@@ -586,13 +586,7 @@
                       </el-form-item>
                     </div>
                   </el-col>
-                  <el-col :span="6">
-                    <div class="grid-content bg-purple-light">
-                      <el-form-item label="主要病害描述" prop="routeDiseaseDescribe">
-                        <el-input v-model="form.routeDiseaseDescribe" type="textarea" placeholder="请输入内容"/>
-                      </el-form-item>
-                    </div>
-                  </el-col>
+
                   <el-col :span="6">
                     <div class="grid-content bg-purple-light">
                       <el-form-item label="墩台防撞设施类型" prop="routeAnticollisionType">
@@ -840,6 +834,13 @@
                             :value="dict.value"
                           ></el-option>
                         </el-select>
+                      </el-form-item>
+                    </div>
+                  </el-col>
+                  <el-col :span="6">
+                    <div class="grid-content bg-purple-light">
+                      <el-form-item label="主要病害描述" prop="routeDiseaseDescribe">
+                        <el-input v-model="form.routeDiseaseDescribe" type="textarea" placeholder="请输入内容"/>
                       </el-form-item>
                     </div>
                   </el-col>
