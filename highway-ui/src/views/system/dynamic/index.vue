@@ -187,7 +187,7 @@
           <el-col :span="24">
             <div class="grid-content ">
               <el-form-item label="养护附件" prop="maintainAccessory">
-                <file-upload v-model="form.maintainAccessory"/>
+                <file-upload :limit="1" v-model="form.maintainAccessory"/>
               </el-form-item>
             </div>
           </el-col>

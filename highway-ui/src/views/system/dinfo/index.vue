@@ -11,13 +11,16 @@
           </div>
         </el-col>
         <el-col :span="9">
-          <div class="grid-content">地图</div>
+          <div class="grid-content">
+            <div id="container"></div>
+          </div>
         </el-col>
       </el-row>
     </div>
   </div>
   </div>
 </template>
+
 
 <script>
 import Dinfomatio from "@/views/system/dinfo/dinfomatio";
@@ -42,6 +45,10 @@ export default {
     Ddispose,
     Dconserve,
   },
+  mounted(){
+    //DOM初始化完成进行地图初始化
+    this.initMap();
+  },
   methods: {
     getDiseaseOne(){
       getDisease(this.id).then(response=>{
@@ -49,9 +56,10 @@ export default {
       });
     },
     load(){
-      console.log(this.compentList.length)
       this.compentList.length = 3;
-    }
+    },
+    initMap(){
+    },
   },
 };
 </script>
