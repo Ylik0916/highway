@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hg.system.mapper.HwTownshipInformationMapper">
-    
+
     <resultMap type="HwTownshipInformation" id="HwTownshipInformationResult">
         <result property="townshipId"    column="township_id"    />
         <result property="nameOfTownship"    column="name_of_township"    />
         <result property="regionalPopulation"    column="regional_population"    />
+        <result property="adminiStrative"    column="admini_strative"    />
         <result property="numberOfIncorporatedVillages"    column="number_of_incorporated_villages"    />
         <result property="administrativeDivisionNumber"    column="administrative_division_number"    />
         <result property="latitudeAndLongitudeType"    column="latitude_and_longitude_type"    />
@@ -45,27 +46,63 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectHwTownshipInformationVo">
-        select township_id, name_of_township, regional_population, number_of_incorporated_villages, administrative_division_number, latitude_and_longitude_type, longitude, latitude, landform, island_transportation_terminal, distance_from_pier_to_land, roads_on_the_island, suitable_for_road_access, elevation_of_township_government, cause_of_unsuitability, access_status_quo, location_of_township_access, administrative_level_access_route, optimal_access_route_coding, access_route_is_preferred, direction_of_access, length_of_road_to_be_built, point_of_the_road_section, end_point_of_the_road_to_be_built, fill_in_the_unit_code, reporting_unit, person_in_charge, form_filler, person_filling_in_the_form, auditor, auditor_telephone, degree_of_change, acquisition_mark, included_in_statistics, acquisition_time, modification_time, remarks from hw_township_information
+        select township_id, name_of_township, regional_population, admini_strative, number_of_incorporated_villages, administrative_division_number, latitude_and_longitude_type, longitude, latitude, landform, island_transportation_terminal, distance_from_pier_to_land, roads_on_the_island, suitable_for_road_access, elevation_of_township_government, cause_of_unsuitability, access_status_quo, location_of_township_access, administrative_level_access_route, optimal_access_route_coding, access_route_is_preferred, direction_of_access, length_of_road_to_be_built, point_of_the_road_section, end_point_of_the_road_to_be_built, fill_in_the_unit_code, reporting_unit, person_in_charge, form_filler, person_filling_in_the_form, auditor, auditor_telephone, degree_of_change, acquisition_mark, included_in_statistics, acquisition_time, modification_time, remarks from hw_township_information
     </sql>
 
     <select id="selectHwTownshipInformationList" parameterType="HwTownshipInformation" resultMap="HwTownshipInformationResult">
         <include refid="selectHwTownshipInformationVo"/>
-        <where>  
-            <if test="nameOfTownship != null  and nameOfTownship != ''"> and name_of_township like concat('%', #{nameOfTownship}, '%')</if>
+        <where>
+            <if test="nameOfTownship != null  and nameOfTownship != ''"> and name_of_township = #{nameOfTownship}</if>
+            <if test="regionalPopulation != null "> and regional_population = #{regionalPopulation}</if>
+            <if test="adminiStrative != null  and adminiStrative != ''"> and admini_strative = #{adminiStrative}</if>
+            <if test="numberOfIncorporatedVillages != null "> and number_of_incorporated_villages = #{numberOfIncorporatedVillages}</if>
             <if test="administrativeDivisionNumber != null "> and administrative_division_number = #{administrativeDivisionNumber}</if>
+            <if test="latitudeAndLongitudeType != null  and latitudeAndLongitudeType != ''"> and latitude_and_longitude_type = #{latitudeAndLongitudeType}</if>
+            <if test="longitude != null  and longitude != ''"> and longitude = #{longitude}</if>
+            <if test="latitude != null  and latitude != ''"> and latitude = #{latitude}</if>
+            <if test="landform != null  and landform != ''"> and landform = #{landform}</if>
+            <if test="islandTransportationTerminal != null  and islandTransportationTerminal != ''"> and island_transportation_terminal = #{islandTransportationTerminal}</if>
+            <if test="distanceFromPierToLand != null "> and distance_from_pier_to_land = #{distanceFromPierToLand}</if>
+            <if test="roadsOnTheIsland != null  and roadsOnTheIsland != ''"> and roads_on_the_island = #{roadsOnTheIsland}</if>
+            <if test="suitableForRoadAccess != null  and suitableForRoadAccess != ''"> and suitable_for_road_access = #{suitableForRoadAccess}</if>
+            <if test="elevationOfTownshipGovernment != null "> and elevation_of_township_government = #{elevationOfTownshipGovernment}</if>
+            <if test="causeOfUnsuitability != null  and causeOfUnsuitability != ''"> and cause_of_unsuitability = #{causeOfUnsuitability}</if>
+            <if test="accessStatusQuo != null  and accessStatusQuo != ''"> and access_status_quo = #{accessStatusQuo}</if>
+            <if test="locationOfTownshipAccess != null  and locationOfTownshipAccess != ''"> and location_of_township_access = #{locationOfTownshipAccess}</if>
+            <if test="administrativeLevelAccessRoute != null  and administrativeLevelAccessRoute != ''"> and administrative_level_access_route = #{administrativeLevelAccessRoute}</if>
+            <if test="optimalAccessRouteCoding != null  and optimalAccessRouteCoding != ''"> and optimal_access_route_coding = #{optimalAccessRouteCoding}</if>
+            <if test="accessRouteIsPreferred != null  and accessRouteIsPreferred != ''"> and access_route_is_preferred = #{accessRouteIsPreferred}</if>
+            <if test="directionOfAccess != null  and directionOfAccess != ''"> and direction_of_access = #{directionOfAccess}</if>
+            <if test="lengthOfRoadToBeBuilt != null "> and length_of_road_to_be_built = #{lengthOfRoadToBeBuilt}</if>
+            <if test="pointOfTheRoadSection != null  and pointOfTheRoadSection != ''"> and point_of_the_road_section = #{pointOfTheRoadSection}</if>
+            <if test="endPointOfTheRoadToBeBuilt != null  and endPointOfTheRoadToBeBuilt != ''"> and end_point_of_the_road_to_be_built = #{endPointOfTheRoadToBeBuilt}</if>
+            <if test="fillInTheUnitCode != null  and fillInTheUnitCode != ''"> and fill_in_the_unit_code = #{fillInTheUnitCode}</if>
+            <if test="reportingUnit != null  and reportingUnit != ''"> and reporting_unit = #{reportingUnit}</if>
+            <if test="personInCharge != null  and personInCharge != ''"> and person_in_charge = #{personInCharge}</if>
+            <if test="formFiller != null  and formFiller != ''"> and form_filler = #{formFiller}</if>
+            <if test="personFillingInTheForm != null  and personFillingInTheForm != ''"> and person_filling_in_the_form = #{personFillingInTheForm}</if>
+            <if test="auditor != null  and auditor != ''"> and auditor = #{auditor}</if>
+            <if test="auditorTelephone != null  and auditorTelephone != ''"> and auditor_telephone = #{auditorTelephone}</if>
+            <if test="degreeOfChange != null  and degreeOfChange != ''"> and degree_of_change = #{degreeOfChange}</if>
+            <if test="acquisitionMark != null  and acquisitionMark != ''"> and acquisition_mark = #{acquisitionMark}</if>
+            <if test="includedInStatistics != null  and includedInStatistics != ''"> and included_in_statistics = #{includedInStatistics}</if>
+            <if test="acquisitionTime != null "> and acquisition_time = #{acquisitionTime}</if>
+            <if test="modificationTime != null "> and modification_time = #{modificationTime}</if>
+            <if test="remarks != null  and remarks != ''"> and remarks = #{remarks}</if>
         </where>
     </select>
-    
+
     <select id="selectHwTownshipInformationByTownshipId" parameterType="Long" resultMap="HwTownshipInformationResult">
         <include refid="selectHwTownshipInformationVo"/>
         where township_id = #{townshipId}
     </select>
-        
+
     <insert id="insertHwTownshipInformation" parameterType="HwTownshipInformation" useGeneratedKeys="true" keyProperty="townshipId">
         insert into hw_township_information
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="nameOfTownship != null">name_of_township,</if>
             <if test="regionalPopulation != null">regional_population,</if>
+            <if test="adminiStrative != null">admini_strative,</if>
             <if test="numberOfIncorporatedVillages != null">number_of_incorporated_villages,</if>
             <if test="administrativeDivisionNumber != null">administrative_division_number,</if>
             <if test="latitudeAndLongitudeType != null">latitude_and_longitude_type,</if>
@@ -100,10 +137,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="acquisitionTime != null">acquisition_time,</if>
             <if test="modificationTime != null">modification_time,</if>
             <if test="remarks != null">remarks,</if>
-         </trim>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="nameOfTownship != null">#{nameOfTownship},</if>
             <if test="regionalPopulation != null">#{regionalPopulation},</if>
+            <if test="adminiStrative != null">#{adminiStrative},</if>
             <if test="numberOfIncorporatedVillages != null">#{numberOfIncorporatedVillages},</if>
             <if test="administrativeDivisionNumber != null">#{administrativeDivisionNumber},</if>
             <if test="latitudeAndLongitudeType != null">#{latitudeAndLongitudeType},</if>
@@ -138,7 +176,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="acquisitionTime != null">#{acquisitionTime},</if>
             <if test="modificationTime != null">#{modificationTime},</if>
             <if test="remarks != null">#{remarks},</if>
-         </trim>
+        </trim>
     </insert>
 
     <update id="updateHwTownshipInformation" parameterType="HwTownshipInformation">
@@ -146,6 +184,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="SET" suffixOverrides=",">
             <if test="nameOfTownship != null">name_of_township = #{nameOfTownship},</if>
             <if test="regionalPopulation != null">regional_population = #{regionalPopulation},</if>
+            <if test="adminiStrative != null">admini_strative = #{adminiStrative},</if>
             <if test="numberOfIncorporatedVillages != null">number_of_incorporated_villages = #{numberOfIncorporatedVillages},</if>
             <if test="administrativeDivisionNumber != null">administrative_division_number = #{administrativeDivisionNumber},</if>
             <if test="latitudeAndLongitudeType != null">latitude_and_longitude_type = #{latitudeAndLongitudeType},</if>
@@ -189,7 +228,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteHwTownshipInformationByTownshipIds" parameterType="String">
-        delete from hw_township_information where township_id in 
+        delete from hw_township_information where township_id in
         <foreach item="townshipId" collection="array" open="(" separator="," close=")">
             #{townshipId}
         </foreach>

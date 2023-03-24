@@ -9,19 +9,9 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-<!--      <el-form-item label-width="100px" label="行政区名称" prop="nameOfTownship">-->
-<!--        <el-input-->
-<!--          v-model="queryParams.nameOfTownship"-->
-<!--          placeholder="请输入行政区名称"-->
-<!--          clearable-->
-<!--          @keyup.enter.native="handleQuery"-->
-<!--        />-->
-<!--      </el-form-item>-->
-
-      <el-form-item label="行政区划" prop="nameOfTownship">
-        <treeselect style="width: 200px" v-model="queryParams.nameOfTownship" :options="ordinaryOptions" :normalizer="normalizer" placeholder="请选择行政区" />
+      <el-form-item label-width="100px" label="行政区名称" prop="adminiStrative">
+        <treeselect style="width: 200px" v-model="queryParams.adminiStrative" :options="ordinaryOptions" :normalizer="normalizer" placeholder="请选择行政区" />
       </el-form-item>
-
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -67,7 +57,7 @@
     <el-table v-loading="loading" :data="townshipList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="行政区编号" align="center" prop="administrativeDivisionNumber" />
-      <el-table-column label="行政区名称" align="center" prop="nameOfTownship" />
+      <el-table-column label="行政区名称" align="center" prop="adminiStrative" />
       <el-table-column label="乡镇名称" align="center" prop="nameOfTownship" />
       <el-table-column label="通达现状" align="center" prop="accessStatusQuo">
         <template slot-scope="scope">
@@ -176,15 +166,15 @@
         <el-form-item label="行政区编号" prop="administrativeDivisionNumber">
           <el-input v-model="form.administrativeDivisionNumber" placeholder="请输入行政区编号" />
         </el-form-item>
-          <el-form-item label="经纬度类型" prop="latitudeAndLongitudeType">
-            <el-radio-group v-model="form.latitudeAndLongitudeType">
-              <el-radio
-                v-for="dict in dict.type.latitude_and_longitude_type"
-                :key="dict.value"
-                :label="dict.value"
-              >{{dict.label}}</el-radio>
-            </el-radio-group>
-          </el-form-item>
+        <el-form-item label="经纬度类型" prop="latitudeAndLongitudeType">
+          <el-radio-group v-model="form.latitudeAndLongitudeType">
+            <el-radio
+              v-for="dict in dict.type.latitude_and_longitude_type"
+              :key="dict.value"
+              :label="dict.value"
+            >{{dict.label}}</el-radio>
+          </el-radio-group>
+        </el-form-item>
         <el-form-item label="经度" prop="longitude">
           <el-input v-model="form.longitude" placeholder="请输入经度" />
         </el-form-item>
@@ -362,20 +352,20 @@
 
 <script>
 import { listTownship, getTownship, delTownship, addTownship, updateTownship } from "@/api/system/township";
+import {listDept} from "@/api/system/dept";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
-import {listDept} from "@/api/system/dept";
 export default {
+  name: "Township",
   components: {
     Treeselect
   },
-  name: "Township",
   dicts: ['latitude_and_longitude_type', 'access', 'optimization', 'sys_yes_no', 'terrain', 'location_of_township_access', 'direction_of_access'],
   data() {
     return {
+      ordinaryOptions: [],
       activeName:'first',
       openXq:false,
-      ordinaryOptions: [],
       // 遮罩层
       loading: true,
       // 选中数组
@@ -413,23 +403,6 @@ export default {
     this.getList();
   },
   methods: {
-    getTreeselect() {
-      listDept().then(response => {
-        this.ordinaryOptions = [];
-        // const data = { deptId: 0, deptName: '大陆', children: [] };
-        this.ordinaryOptions = this.handleTree(response.data, "deptId", "parentId");
-      });
-    },
-    normalizer(node) {
-      if (node.children && !node.children.length) {
-        delete node.children;
-      }
-      return {
-        id: node.deptName,
-        label: node.deptName,
-        children: node.children
-      };
-    },
     getTownshipXq(row){
       const townshipId = row.townshipId || this.ids
       getTownship(townshipId).then(response => {
@@ -505,6 +478,25 @@ export default {
       this.resetForm("queryForm");
       this.handleQuery();
     },
+    /** 转换一般养护数据结构 */
+    normalizer(node) {
+      if (node.children && !node.children.length) {
+        delete node.children;
+      }
+      return {
+        id: node.deptName,
+        label: node.deptName,
+        children: node.children
+      };
+    },
+    /** 查询一般养护下拉树结构 */
+    getTreeselect() {
+      listDept().then(response => {
+        this.ordinaryOptions = [];
+        // const data = { deptId: 0, deptName: '大陆', children: [] };
+        this.ordinaryOptions = this.handleTree(response.data, "deptId", "parentId");
+      });
+    },
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.townshipId)
@@ -538,6 +530,7 @@ export default {
               this.getList();
             });
           } else {
+            this.form.adminiStrative=this.form.nameOfTownship
             addTownship(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;

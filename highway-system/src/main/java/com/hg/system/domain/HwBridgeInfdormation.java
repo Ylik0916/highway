@@ -1,11 +1,12 @@
 package com.hg.system.domain;
 
-import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import com.hg.common.annotation.Excel;
 import com.hg.common.core.domain.BaseEntity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+import java.util.Date;
 
 /**
  * 桥梁信息对象 hw_bridge_infdormation
@@ -41,19 +42,19 @@ public class HwBridgeInfdormation extends BaseEntity
 
     /** 桥梁程高 */
     @Excel(name = "桥梁程高")
-    private Long routeHigh;
+    private String routeHigh;
 
     /** 桥梁长度 */
     @Excel(name = "桥梁长度")
-    private Long routeLong;
+    private String routeLong;
 
     /** 跨境总长 */
     @Excel(name = "跨境总长")
-    private Long routeCrossLong;
+    private String routeCrossLong;
 
     /** 单孔最大跨径(米) */
     @Excel(name = "单孔最大跨径(米)")
-    private Long routeSingleLong;
+    private String routeSingleLong;
 
     /** 桥梁跨境组合（孔*米） */
     @Excel(name = "桥梁跨境组合", readConverterExp = "孔=*米")
@@ -61,15 +62,15 @@ public class HwBridgeInfdormation extends BaseEntity
 
     /** 桥面全宽 */
     @Excel(name = "桥面全宽")
-    private Long routeWide;
+    private String routeWide;
 
     /** 桥梁全长 */
     @Excel(name = "桥梁全长")
-    private Long routeOverallLength;
+    private String routeOverallLength;
 
     /** 桥面净宽(米) */
     @Excel(name = "桥面净宽(米)")
-    private Long routeClearWidth;
+    private String routeClearWidth;
 
     /** 设计荷载 */
     @Excel(name = "设计荷载")
@@ -270,7 +271,7 @@ public class HwBridgeInfdormation extends BaseEntity
 
     /** 填表人电话 */
     @Excel(name = "填表人电话")
-    private Long preparerTel;
+    private String preparerTel;
 
     /** 审核人 */
     @Excel(name = "审核人")
@@ -278,7 +279,7 @@ public class HwBridgeInfdormation extends BaseEntity
 
     /** 审核人电话 */
     @Excel(name = "审核人电话")
-    private Long processTel;
+    private String processTel;
 
     /** 采集时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -363,39 +364,39 @@ public class HwBridgeInfdormation extends BaseEntity
     {
         return routeLatitude;
     }
-    public void setRouteHigh(Long routeHigh)
+    public void setRouteHigh(String routeHigh)
     {
         this.routeHigh = routeHigh;
     }
 
-    public Long getRouteHigh()
+    public String getRouteHigh()
     {
         return routeHigh;
     }
-    public void setRouteLong(Long routeLong)
+    public void setRouteLong(String routeLong)
     {
         this.routeLong = routeLong;
     }
 
-    public Long getRouteLong()
+    public String getRouteLong()
     {
         return routeLong;
     }
-    public void setRouteCrossLong(Long routeCrossLong)
+    public void setRouteCrossLong(String routeCrossLong)
     {
         this.routeCrossLong = routeCrossLong;
     }
 
-    public Long getRouteCrossLong()
+    public String getRouteCrossLong()
     {
         return routeCrossLong;
     }
-    public void setRouteSingleLong(Long routeSingleLong)
+    public void setRouteSingleLong(String routeSingleLong)
     {
         this.routeSingleLong = routeSingleLong;
     }
 
-    public Long getRouteSingleLong()
+    public String getRouteSingleLong()
     {
         return routeSingleLong;
     }
@@ -408,30 +409,30 @@ public class HwBridgeInfdormation extends BaseEntity
     {
         return routeSpanCombination;
     }
-    public void setRouteWide(Long routeWide)
+    public void setRouteWide(String routeWide)
     {
         this.routeWide = routeWide;
     }
 
-    public Long getRouteWide()
+    public String getRouteWide()
     {
         return routeWide;
     }
-    public void setRouteOverallLength(Long routeOverallLength)
+    public void setRouteOverallLength(String routeOverallLength)
     {
         this.routeOverallLength = routeOverallLength;
     }
 
-    public Long getRouteOverallLength()
+    public String getRouteOverallLength()
     {
         return routeOverallLength;
     }
-    public void setRouteClearWidth(Long routeClearWidth)
+    public void setRouteClearWidth(String routeClearWidth)
     {
         this.routeClearWidth = routeClearWidth;
     }
 
-    public Long getRouteClearWidth()
+    public String getRouteClearWidth()
     {
         return routeClearWidth;
     }
@@ -867,12 +868,12 @@ public class HwBridgeInfdormation extends BaseEntity
     {
         return preparer;
     }
-    public void setPreparerTel(Long preparerTel)
+    public void setPreparerTel(String preparerTel)
     {
         this.preparerTel = preparerTel;
     }
 
-    public Long getPreparerTel()
+    public String getPreparerTel()
     {
         return preparerTel;
     }
@@ -885,12 +886,12 @@ public class HwBridgeInfdormation extends BaseEntity
     {
         return process;
     }
-    public void setProcessTel(Long processTel)
+    public void setProcessTel(String processTel)
     {
         this.processTel = processTel;
     }
 
-    public Long getProcessTel()
+    public String getProcessTel()
     {
         return processTel;
     }
