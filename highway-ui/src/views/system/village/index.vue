@@ -9,7 +9,7 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="行政区编码" prop="nameOfVillage">
+      <el-form-item label="行政区名称" prop="nameOfVillage">
 <!--        <el-input-->
 <!--          v-model="queryParams.nameOfVillage"-->
 <!--          placeholder="请输入行政区划"-->
@@ -17,7 +17,6 @@
 <!--          @keyup.enter.native="handleQuery"-->
 <!--        />-->
         <treeselect style="width: 200px" v-model="queryParams.nameOfVillage" :options="ordinaryOptions" :normalizer="normalizer" placeholder="请选择行政区" />
-
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>

@@ -1,29 +1,30 @@
 package com.hg.system.service.impl;
 
-import java.util.List;
+import com.hg.system.domain.HwTownshipInformation;
+import com.hg.system.mapper.HwTownshipInformationMapper;
+import com.hg.system.service.IHwTownshipInformationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.hg.system.mapper.HwTownshipInformationMapper;
-import com.hg.system.domain.HwTownshipInformation;
-import com.hg.system.service.IHwTownshipInformationService;
+
+import java.util.List;
 
 /**
- * 乡镇Service业务层处理
- * 
+ * 乡镇信息Service业务层处理
+ *
  * @author ruoyi
- * @date 2023-03-14
+ * @date 2023-03-24
  */
 @Service
-public class HwTownshipInformationServiceImpl implements IHwTownshipInformationService 
+public class HwTownshipInformationServiceImpl implements IHwTownshipInformationService
 {
     @Autowired
     private HwTownshipInformationMapper hwTownshipInformationMapper;
 
     /**
-     * 查询乡镇
-     * 
-     * @param townshipId 乡镇主键
-     * @return 乡镇
+     * 查询乡镇信息
+     *
+     * @param townshipId 乡镇信息主键
+     * @return 乡镇信息
      */
     @Override
     public HwTownshipInformation selectHwTownshipInformationByTownshipId(Long townshipId)
@@ -32,10 +33,10 @@ public class HwTownshipInformationServiceImpl implements IHwTownshipInformationS
     }
 
     /**
-     * 查询乡镇列表
-     * 
-     * @param hwTownshipInformation 乡镇
-     * @return 乡镇
+     * 查询乡镇信息列表
+     *
+     * @param hwTownshipInformation 乡镇信息
+     * @return 乡镇信息
      */
     @Override
     public List<HwTownshipInformation> selectHwTownshipInformationList(HwTownshipInformation hwTownshipInformation)
@@ -44,9 +45,9 @@ public class HwTownshipInformationServiceImpl implements IHwTownshipInformationS
     }
 
     /**
-     * 新增乡镇
-     * 
-     * @param hwTownshipInformation 乡镇
+     * 新增乡镇信息
+     *
+     * @param hwTownshipInformation 乡镇信息
      * @return 结果
      */
     @Override
@@ -56,9 +57,9 @@ public class HwTownshipInformationServiceImpl implements IHwTownshipInformationS
     }
 
     /**
-     * 修改乡镇
-     * 
-     * @param hwTownshipInformation 乡镇
+     * 修改乡镇信息
+     *
+     * @param hwTownshipInformation 乡镇信息
      * @return 结果
      */
     @Override
@@ -68,9 +69,9 @@ public class HwTownshipInformationServiceImpl implements IHwTownshipInformationS
     }
 
     /**
-     * 批量删除乡镇
-     * 
-     * @param townshipIds 需要删除的乡镇主键
+     * 批量删除乡镇信息
+     *
+     * @param townshipIds 需要删除的乡镇信息主键
      * @return 结果
      */
     @Override
@@ -80,9 +81,9 @@ public class HwTownshipInformationServiceImpl implements IHwTownshipInformationS
     }
 
     /**
-     * 删除乡镇信息
-     * 
-     * @param townshipId 乡镇主键
+     * 删除乡镇信息信息
+     *
+     * @param townshipId 乡镇信息主键
      * @return 结果
      */
     @Override

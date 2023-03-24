@@ -9,13 +9,8 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label-width="100px" label="行政区编号" prop="administrativeDivisionNumber">
-        <el-input
-          v-model="queryParams.administrativeDivisionNumber"
-          placeholder="请输入行政区编号"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item label-width="100px" label="行政区名称" prop="adminiStrative">
+        <treeselect style="width: 200px" v-model="queryParams.adminiStrative" :options="ordinaryOptions" :normalizer="normalizer" placeholder="请选择行政区" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -62,7 +57,7 @@
     <el-table v-loading="loading" :data="townshipList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="行政区编号" align="center" prop="administrativeDivisionNumber" />
-      <el-table-column label="行政区名称" align="center" prop="nameOfTownship" />
+      <el-table-column label="行政区名称" align="center" prop="adminiStrative" />
       <el-table-column label="乡镇名称" align="center" prop="nameOfTownship" />
       <el-table-column label="通达现状" align="center" prop="accessStatusQuo">
         <template slot-scope="scope">
@@ -357,12 +352,18 @@
 
 <script>
 import { listTownship, getTownship, delTownship, addTownship, updateTownship } from "@/api/system/township";
-
+import {listDept} from "@/api/system/dept";
+import Treeselect from "@riophae/vue-treeselect";
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 export default {
   name: "Township",
+  components: {
+    Treeselect
+  },
   dicts: ['latitude_and_longitude_type', 'access', 'optimization', 'sys_yes_no', 'terrain', 'location_of_township_access', 'direction_of_access'],
   data() {
     return {
+      ordinaryOptions: [],
       activeName:'first',
       openXq:false,
       // 遮罩层
@@ -398,6 +399,7 @@ export default {
     };
   },
   created() {
+    this.getTreeselect();
     this.getList();
   },
   methods: {
@@ -476,6 +478,25 @@ export default {
       this.resetForm("queryForm");
       this.handleQuery();
     },
+    /** 转换一般养护数据结构 */
+    normalizer(node) {
+      if (node.children && !node.children.length) {
+        delete node.children;
+      }
+      return {
+        id: node.deptName,
+        label: node.deptName,
+        children: node.children
+      };
+    },
+    /** 查询一般养护下拉树结构 */
+    getTreeselect() {
+      listDept().then(response => {
+        this.ordinaryOptions = [];
+        // const data = { deptId: 0, deptName: '大陆', children: [] };
+        this.ordinaryOptions = this.handleTree(response.data, "deptId", "parentId");
+      });
+    },
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.townshipId)
@@ -509,6 +530,7 @@ export default {
               this.getList();
             });
           } else {
+            this.form.adminiStrative=this.form.nameOfTownship
             addTownship(this.form).then(response => {
               this.$modal.msgSuccess("新增成功");
               this.open = false;
