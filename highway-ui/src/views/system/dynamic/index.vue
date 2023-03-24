@@ -224,7 +224,12 @@
       </el-row>
       <h3 style="font-weight: bold">养护附件</h3>
       <el-row>
-        <el-col :span="24"><div class="grid-content">{{form.maintainAccessory}}</div></el-col>
+<!--        <el-col :span="24"><div class="grid-content">{{form.maintainAccessory}}</div></el-col>-->
+        <el-col :span="24">
+          <div class="grid-content">
+            <el-button type="primary" @click="downAccessory(form.maintainAccessory)">{{form.maintainAccessory}}</el-button>
+          </div>
+        </el-col>
       </el-row>
     </el-dialog>
   </div>
@@ -236,6 +241,7 @@
 <script>
 import { listDynamic, getDynamic, delDynamic, addDynamic, updateDynamic } from "@/api/system/dynamic";
 import {listInformation} from "@/api/system/information";
+// import {download} from "@/utils/request";
 
 export default {
   name: "Dynamic",
@@ -304,6 +310,17 @@ export default {
     this.getList();
   },
   methods: {
+    downAccessory(url){
+      console.log(url)
+      let list = url.split("/");
+      let fileName = list[list.length-1];
+      //这是文件路径参数，因为download函数需要传三个参数，这是第二个参数
+      let params = {
+        resource:url
+      };
+      this.$download.resource(url);
+      // download('/common/download/resource',params,fileName);
+    },
     /** 查询动态养护管理列表 */
     getList() {
       this.loading = true;
