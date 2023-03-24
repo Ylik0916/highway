@@ -66,4 +66,12 @@ public interface HwProjectSupervisorMapper
      * @return 项目信息管理==》监理标段
      */
     public List<HwProjectSupervisor> selectHwProjectSupervisorByProjectId(Integer projectId);
+
+    /**
+     * 根据项目id查询其最新标段
+     *
+     * @param projectId 项目信息管理id
+     * @return 项目信息管理==》监理标段
+     */
+    HwProjectSupervisor selectHwProjectSupervisorByProjectIdByNew(Integer projectId);
 }

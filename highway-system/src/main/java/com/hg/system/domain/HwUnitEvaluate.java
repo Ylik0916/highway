@@ -17,7 +17,7 @@ public class HwUnitEvaluate extends BaseEntity {
     /**
      * 单位id
      */
-    private Long unitId;
+    private Integer unitId;
 
     /**
      * 单位名称
@@ -42,11 +42,11 @@ public class HwUnitEvaluate extends BaseEntity {
      */
     private HwHistoryEvaluate hwHistoryEvaluate;
 
-    public void setUnitId(Long unitId) {
+    public void setUnitId(Integer unitId) {
         this.unitId = unitId;
     }
 
-    public Long getUnitId() {
+    public Integer getUnitId() {
         return unitId;
     }
 
