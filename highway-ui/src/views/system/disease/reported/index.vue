@@ -139,18 +139,23 @@
           <el-col :span="8">
             <div class="grid-content">
               <el-row>
-                <el-col :span="12">
+                <el-col :span="8">
                   <div class="grid-content">
                     <el-form-item label="病害纬度" prop="diseaseLatitude">
-                      <el-input v-model="form.diseaseLatitude" placeholder="请输入病害纬度" />
+                      <el-input v-model="form.diseaseLatitude" :disabled="true" placeholder="请输入病害纬度" />
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12">
+                <el-col :span="8">
                   <div class="grid-content">
                     <el-form-item label="病害经度" prop="diseaseLongitude">
-                      <el-input v-model="form.diseaseLongitude" placeholder="请输入病害经度" />
+                      <el-input v-model="form.diseaseLongitude" :disabled="true" placeholder="请输入病害经度" />
                     </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8">
+                  <div class="grid-content">
+                      <el-button style="margin-top: 46px;width: 100%"  type="primary" @click="openMap()">地图定位</el-button>
                   </div>
                 </el-col>
               </el-row>
@@ -197,6 +202,7 @@
           </el-col>
           <el-col :span="12">
             <div class="grid-content">
+
             </div>
           </el-col>
         </el-row>
@@ -210,6 +216,11 @@
 <!--        <el-button @click="cancel">保存病害</el-button>-->
       </div>
     </el-dialog>
+
+    <!-- 关闭 -->
+    <el-dialog :title="titleMap" :visible.sync="mapClose" style="height: 800px;" width="800px" append-to-body>
+      <MapContainer :getMapCode="getMapCode"/>
+    </el-dialog>
   </div>
 </template>
 
@@ -220,12 +231,14 @@ import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 import { listDept } from "@/api/system/dept";
 import {listInformation} from "@/api/system/information";
 import {listSectionInformation} from "@/api/system/sectionInformation";
+import MapContainer from "@/views/system/disease/components/MapContainer";
 
 
 export default {
   name: "Reported",
   dicts: ['reporting_type', 'disease_state', 'driving_direction'],
   components: {
+    MapContainer,
     Treeselect
   },
   data() {
@@ -255,8 +268,10 @@ export default {
       sectionList: [],
       // 弹出层标题
       title: "",
+      titleMap: "",
       // 是否显示弹出层
       open: false,
+      mapClose: false,
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -306,6 +321,17 @@ export default {
     this.getList();
   },
   methods: {
+    getMapCode(lng,lat){
+      this.form.diseaseLongitude = lng;
+      this.form.diseaseLatitude = lat;
+    },
+    closeMap(){
+      this.mapClose = false;
+    },
+    openMap(){
+      this.mapClose = true;
+      this.titleMap = "地图定位";
+    },
     /** 查询道路病害管理列表 */
     getList() {
       this.queryParams.statusid=0;
@@ -483,3 +509,4 @@ export default {
   }
 };
 </script>
+
