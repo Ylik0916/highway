@@ -146,340 +146,319 @@ public class HwPlanItem extends BaseEntity
     @Excel(name = "明细状态")
     private Integer detailScale;
 
-    public void setId(Long id) 
-    {
+    /** 所属年度计划名称 */
+    @Excel(name = "所属年度计划名称")
+    private String planName;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Long getId() 
-    {
-        return id;
+    public String getEncoding() {
+        return encoding;
     }
-    public void setEncoding(String encoding) 
-    {
+
+    public void setEncoding(String encoding) {
         this.encoding = encoding;
     }
 
-    public String getEncoding() 
-    {
-        return encoding;
+    public String getName() {
+        return name;
     }
-    public void setName(String name) 
-    {
+
+    public void setName(String name) {
         this.name = name;
     }
 
-    public String getName() 
-    {
-        return name;
+    public String getLength() {
+        return length;
     }
-    public void setLength(String length) 
-    {
+
+    public void setLength(String length) {
         this.length = length;
     }
 
-    public String getLength() 
-    {
-        return length;
+    public String getCustodyUnit() {
+        return custodyUnit;
     }
-    public void setCustodyUnit(String custodyUnit) 
-    {
+
+    public void setCustodyUnit(String custodyUnit) {
         this.custodyUnit = custodyUnit;
     }
 
-    public String getCustodyUnit() 
-    {
-        return custodyUnit;
+    public String getRegion() {
+        return region;
     }
-    public void setRegion(String region) 
-    {
+
+    public void setRegion(String region) {
         this.region = region;
     }
 
-    public String getRegion() 
-    {
-        return region;
+    public Long getUnfinished() {
+        return unfinished;
     }
-    public void setUnfinished(Long unfinished) 
-    {
+
+    public void setUnfinished(Long unfinished) {
         this.unfinished = unfinished;
     }
 
-    public Long getUnfinished() 
-    {
-        return unfinished;
+    public Integer getLevel() {
+        return level;
     }
-    public void setLevel(Integer level) 
-    {
+
+    public void setLevel(Integer level) {
         this.level = level;
     }
 
-    public Integer getLevel() 
-    {
-        return level;
+    public Integer getConstructedType() {
+        return constructedType;
     }
-    public void setConstructedType(Integer constructedType) 
-    {
+
+    public void setConstructedType(Integer constructedType) {
         this.constructedType = constructedType;
     }
 
-    public Integer getConstructedType() 
-    {
-        return constructedType;
+    public Long getSurfaceWidth() {
+        return surfaceWidth;
     }
-    public void setSurfaceWidth(Long surfaceWidth) 
-    {
+
+    public void setSurfaceWidth(Long surfaceWidth) {
         this.surfaceWidth = surfaceWidth;
     }
 
-    public Long getSurfaceWidth() 
-    {
-        return surfaceWidth;
+    public Long getRoadbedWidth() {
+        return roadbedWidth;
     }
-    public void setRoadbedWidth(Long roadbedWidth) 
-    {
+
+    public void setRoadbedWidth(Long roadbedWidth) {
         this.roadbedWidth = roadbedWidth;
     }
 
-    public Long getRoadbedWidth() 
-    {
-        return roadbedWidth;
+    public String getStartingNumber() {
+        return startingNumber;
     }
-    public void setStartingNumber(String startingNumber) 
-    {
+
+    public void setStartingNumber(String startingNumber) {
         this.startingNumber = startingNumber;
     }
 
-    public String getStartingNumber() 
-    {
-        return startingNumber;
+    public String getTerminusNumber() {
+        return terminusNumber;
     }
-    public void setTerminusNumber(String terminusNumber) 
-    {
+
+    public void setTerminusNumber(String terminusNumber) {
         this.terminusNumber = terminusNumber;
     }
 
-    public String getTerminusNumber() 
-    {
-        return terminusNumber;
+    public Long getNationalProvinceSubsidy() {
+        return nationalProvinceSubsidy;
     }
-    public void setNationalProvinceSubsidy(Long nationalProvinceSubsidy) 
-    {
+
+    public void setNationalProvinceSubsidy(Long nationalProvinceSubsidy) {
         this.nationalProvinceSubsidy = nationalProvinceSubsidy;
     }
 
-    public Long getNationalProvinceSubsidy() 
-    {
-        return nationalProvinceSubsidy;
+    public Long getMunicipalityInvest() {
+        return municipalityInvest;
     }
-    public void setMunicipalityInvest(Long municipalityInvest) 
-    {
+
+    public void setMunicipalityInvest(Long municipalityInvest) {
         this.municipalityInvest = municipalityInvest;
     }
 
-    public Long getMunicipalityInvest() 
-    {
-        return municipalityInvest;
+    public Long getCountySelfFund() {
+        return countySelfFund;
     }
-    public void setCountySelfFund(Long countySelfFund) 
-    {
+
+    public void setCountySelfFund(Long countySelfFund) {
         this.countySelfFund = countySelfFund;
     }
 
-    public Long getCountySelfFund() 
-    {
-        return countySelfFund;
+    public Long getReplyCapital() {
+        return replyCapital;
     }
-    public void setReplyCapital(Long replyCapital) 
-    {
+
+    public void setReplyCapital(Long replyCapital) {
         this.replyCapital = replyCapital;
     }
 
-    public Long getReplyCapital() 
-    {
-        return replyCapital;
+    public Long getContractCapital() {
+        return contractCapital;
     }
-    public void setContractCapital(Long contractCapital) 
-    {
+
+    public void setContractCapital(Long contractCapital) {
         this.contractCapital = contractCapital;
     }
 
-    public Long getContractCapital() 
-    {
-        return contractCapital;
+    public String getNotInServiceCause() {
+        return notInServiceCause;
     }
-    public void setNotInServiceCause(String notInServiceCause) 
-    {
+
+    public void setNotInServiceCause(String notInServiceCause) {
         this.notInServiceCause = notInServiceCause;
     }
 
-    public String getNotInServiceCause() 
-    {
-        return notInServiceCause;
+    public String getProgress() {
+        return progress;
     }
-    public void setProgress(String progress) 
-    {
+
+    public void setProgress(String progress) {
         this.progress = progress;
     }
 
-    public String getProgress() 
-    {
-        return progress;
+    public String getReplyFileNumber() {
+        return replyFileNumber;
     }
-    public void setReplyFileNumber(String replyFileNumber) 
-    {
+
+    public void setReplyFileNumber(String replyFileNumber) {
         this.replyFileNumber = replyFileNumber;
     }
 
-    public String getReplyFileNumber() 
-    {
-        return replyFileNumber;
+    public String getAccountabilityUnit() {
+        return accountabilityUnit;
     }
-    public void setAccountabilityUnit(String accountabilityUnit) 
-    {
+
+    public void setAccountabilityUnit(String accountabilityUnit) {
         this.accountabilityUnit = accountabilityUnit;
     }
 
-    public String getAccountabilityUnit() 
-    {
-        return accountabilityUnit;
+    public String getPersonInCharge() {
+        return personInCharge;
     }
-    public void setPersonInCharge(String personInCharge) 
-    {
+
+    public void setPersonInCharge(String personInCharge) {
         this.personInCharge = personInCharge;
     }
 
-    public String getPersonInCharge() 
-    {
-        return personInCharge;
+    public String getPhone() {
+        return phone;
     }
-    public void setPhone(String phone) 
-    {
+
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
-    public String getPhone() 
-    {
-        return phone;
+    public Integer getStartWorkYear() {
+        return startWorkYear;
     }
-    public void setStartWorkYear(Integer startWorkYear) 
-    {
+
+    public void setStartWorkYear(Integer startWorkYear) {
         this.startWorkYear = startWorkYear;
     }
 
-    public Integer getStartWorkYear() 
-    {
-        return startWorkYear;
+    public Integer getCompletionYear() {
+        return completionYear;
     }
-    public void setCompletionYear(Integer completionYear) 
-    {
+
+    public void setCompletionYear(Integer completionYear) {
         this.completionYear = completionYear;
     }
 
-    public Integer getCompletionYear() 
-    {
-        return completionYear;
+    public Integer getProductionDrawing() {
+        return productionDrawing;
     }
-    public void setProductionDrawing(Integer productionDrawing) 
-    {
+
+    public void setProductionDrawing(Integer productionDrawing) {
         this.productionDrawing = productionDrawing;
     }
 
-    public Integer getProductionDrawing() 
-    {
-        return productionDrawing;
+    public Integer getProductionDrawingApproval() {
+        return productionDrawingApproval;
     }
-    public void setProductionDrawingApproval(Integer productionDrawingApproval) 
-    {
+
+    public void setProductionDrawingApproval(Integer productionDrawingApproval) {
         this.productionDrawingApproval = productionDrawingApproval;
     }
 
-    public Integer getProductionDrawingApproval() 
-    {
-        return productionDrawingApproval;
+    public Integer getBidWhetherCompletion() {
+        return bidWhetherCompletion;
     }
-    public void setBidWhetherCompletion(Integer bidWhetherCompletion) 
-    {
+
+    public void setBidWhetherCompletion(Integer bidWhetherCompletion) {
         this.bidWhetherCompletion = bidWhetherCompletion;
     }
 
-    public Integer getBidWhetherCompletion() 
-    {
-        return bidWhetherCompletion;
+    public String getPostscript() {
+        return postscript;
     }
-    public void setPostscript(String postscript) 
-    {
+
+    public void setPostscript(String postscript) {
         this.postscript = postscript;
     }
 
-    public String getPostscript() 
-    {
-        return postscript;
+    public Long getPlanId() {
+        return planId;
     }
-    public void setPlanId(Long planId) 
-    {
+
+    public void setPlanId(Long planId) {
         this.planId = planId;
     }
 
-    public Long getPlanId() 
-    {
-        return planId;
+    public String getDisease() {
+        return disease;
     }
-    public void setDisease(String disease) 
-    {
+
+    public void setDisease(String disease) {
         this.disease = disease;
     }
 
-    public String getDisease() 
-    {
-        return disease;
+    public Integer getDetailScale() {
+        return detailScale;
     }
-    public void setDetailScale(Integer detailScale) 
-    {
+
+    public void setDetailScale(Integer detailScale) {
         this.detailScale = detailScale;
     }
 
-    public Integer getDetailScale() 
-    {
-        return detailScale;
+    public String getPlanName() {
+        return planName;
+    }
+
+    public void setPlanName(String planName) {
+        this.planName = planName;
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("id", getId())
-            .append("encoding", getEncoding())
-            .append("name", getName())
-            .append("length", getLength())
-            .append("custodyUnit", getCustodyUnit())
-            .append("region", getRegion())
-            .append("unfinished", getUnfinished())
-            .append("level", getLevel())
-            .append("constructedType", getConstructedType())
-            .append("surfaceWidth", getSurfaceWidth())
-            .append("roadbedWidth", getRoadbedWidth())
-            .append("startingNumber", getStartingNumber())
-            .append("terminusNumber", getTerminusNumber())
-            .append("nationalProvinceSubsidy", getNationalProvinceSubsidy())
-            .append("municipalityInvest", getMunicipalityInvest())
-            .append("countySelfFund", getCountySelfFund())
-            .append("replyCapital", getReplyCapital())
-            .append("contractCapital", getContractCapital())
-            .append("notInServiceCause", getNotInServiceCause())
-            .append("progress", getProgress())
-            .append("replyFileNumber", getReplyFileNumber())
-            .append("accountabilityUnit", getAccountabilityUnit())
-            .append("personInCharge", getPersonInCharge())
-            .append("phone", getPhone())
-            .append("startWorkYear", getStartWorkYear())
-            .append("completionYear", getCompletionYear())
-            .append("productionDrawing", getProductionDrawing())
-            .append("productionDrawingApproval", getProductionDrawingApproval())
-            .append("bidWhetherCompletion", getBidWhetherCompletion())
-            .append("postscript", getPostscript())
-            .append("planId", getPlanId())
-            .append("disease", getDisease())
-            .append("detailScale", getDetailScale())
-            .toString();
+        return "HwPlanItem{" +
+                "id=" + id +
+                ", encoding='" + encoding + '\'' +
+                ", name='" + name + '\'' +
+                ", length='" + length + '\'' +
+                ", custodyUnit='" + custodyUnit + '\'' +
+                ", region='" + region + '\'' +
+                ", unfinished=" + unfinished +
+                ", level=" + level +
+                ", constructedType=" + constructedType +
+                ", surfaceWidth=" + surfaceWidth +
+                ", roadbedWidth=" + roadbedWidth +
+                ", startingNumber='" + startingNumber + '\'' +
+                ", terminusNumber='" + terminusNumber + '\'' +
+                ", nationalProvinceSubsidy=" + nationalProvinceSubsidy +
+                ", municipalityInvest=" + municipalityInvest +
+                ", countySelfFund=" + countySelfFund +
+                ", replyCapital=" + replyCapital +
+                ", contractCapital=" + contractCapital +
+                ", notInServiceCause='" + notInServiceCause + '\'' +
+                ", progress='" + progress + '\'' +
+                ", replyFileNumber='" + replyFileNumber + '\'' +
+                ", accountabilityUnit='" + accountabilityUnit + '\'' +
+                ", personInCharge='" + personInCharge + '\'' +
+                ", phone='" + phone + '\'' +
+                ", startWorkYear=" + startWorkYear +
+                ", completionYear=" + completionYear +
+                ", productionDrawing=" + productionDrawing +
+                ", productionDrawingApproval=" + productionDrawingApproval +
+                ", bidWhetherCompletion=" + bidWhetherCompletion +
+                ", postscript='" + postscript + '\'' +
+                ", planId=" + planId +
+                ", disease='" + disease + '\'' +
+                ", detailScale=" + detailScale +
+                ", planName='" + planName + '\'' +
+                '}';
     }
 }

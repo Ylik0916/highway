@@ -19,6 +19,24 @@ public interface HwPlanItemMapper
      */
     public HwPlanItem selectHwPlanItemById(Long id);
 
+
+    /**
+     * 查询进度列表 和 所属的年度计划
+     *
+     * @param hwPlanItem 进度
+     * @return 进度集合
+     */
+    // public List<HwPlanItem> selectHwPlanAndItemList(HwPlanItem hwPlanItem);
+
+
+    /**
+     * 根据年度计划查询进度列表
+     *
+     * @param id 进度
+     * @return 进度集合
+     */
+    public List<HwPlanItem> selectHwPlanItemListByPlanId(long id);
+
     /**
      * 查询进度列表
      * 
@@ -46,7 +64,7 @@ public interface HwPlanItemMapper
     public List<HwPlanItem> selectHwPlanItemListAnd1(HwPlanItem hwPlanItem);
 
     /**
-     * 查询已驳回明细上报列表
+     * 查询已驳回明细上报列表  以及对应的年度计划名称
      *
      * @param hwPlanItem 进度
      * @return 进度集合

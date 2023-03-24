@@ -19,6 +19,16 @@ public interface IHwPlanService
      */
     public HwPlan selectHwPlanById(Long id);
 
+
+    /**
+     * 查询年度计划列表和项目个数以及总资金
+     *
+     * @param hwPlan 年度计划
+     * @return 年度计划集合
+     */
+    public List<HwPlan> selectHwPlanListAll(HwPlan hwPlan);
+    
+    
     /**
      * 查询年度计划列表
      * 

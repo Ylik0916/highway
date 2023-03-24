@@ -32,6 +32,32 @@ public class HwPlanItemServiceImpl implements IHwPlanItemService
     }
 
     /**
+     * 查询进度列表 和 所属的年度计划
+     *
+     * @param hwPlanItem 进度
+     * @return 进度
+     */
+    // @Override
+    // public List<HwPlanItem> selectHwPlanAndItemList(HwPlanItem hwPlanItem)
+    // {
+    //     return hwPlanItemMapper.selectHwPlanAndItemList(hwPlanItem);
+    // }
+
+
+
+    /**
+     * 根据年度计划查询进度列表
+     *
+     * @param id 进度
+     * @return 进度
+     */
+    @Override
+    public List<HwPlanItem> selectHwPlanItemListByPlanId(long id)
+    {
+        return hwPlanItemMapper.selectHwPlanItemListByPlanId(id);
+    }
+    
+    /**
      * 查询进度列表
      * 
      * @param hwPlanItem 进度
@@ -42,7 +68,6 @@ public class HwPlanItemServiceImpl implements IHwPlanItemService
     {
         return hwPlanItemMapper.selectHwPlanItemList(hwPlanItem);
     }
-
 
 
     /**
@@ -73,7 +98,7 @@ public class HwPlanItemServiceImpl implements IHwPlanItemService
 
 
     /**
-     * 查询已驳回明细上报列表
+     * 查询已驳回明细上报列表 以及对应的年度计划名称
      *
      * @param hwPlanItem 进度
      * @return 进度

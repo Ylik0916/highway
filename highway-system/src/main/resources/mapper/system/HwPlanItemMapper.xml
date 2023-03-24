@@ -40,9 +40,72 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="detailScale"    column="detail_scale"    />
     </resultMap>
 
+    <resultMap type="com.hg.system.domain.HwPlanItem" id="HwPlanItemResultAndPlanName">
+        <result property="id"    column="id"    />
+        <result property="encoding"    column="encoding"    />
+        <result property="name"    column="name"    />
+        <result property="length"    column="length"    />
+        <result property="custodyUnit"    column="custody_unit"    />
+        <result property="region"    column="region"    />
+        <result property="unfinished"    column="unfinished"    />
+        <result property="level"    column="level"    />
+        <result property="constructedType"    column="constructed_type"    />
+        <result property="surfaceWidth"    column="surface_width"    />
+        <result property="roadbedWidth"    column="roadbed_width"    />
+        <result property="startingNumber"    column="starting_number"    />
+        <result property="terminusNumber"    column="terminus_number"    />
+        <result property="nationalProvinceSubsidy"    column="national_province_subsidy"    />
+        <result property="municipalityInvest"    column="municipality_invest"    />
+        <result property="countySelfFund"    column="county_self_fund"    />
+        <result property="replyCapital"    column="reply_capital"    />
+        <result property="contractCapital"    column="contract_capital"    />
+        <result property="notInServiceCause"    column="not_in_service_cause"    />
+        <result property="progress"    column="progress"    />
+        <result property="replyFileNumber"    column="reply_file_number"    />
+        <result property="accountabilityUnit"    column="accountability_unit"    />
+        <result property="personInCharge"    column="person_in_charge"    />
+        <result property="phone"    column="phone"    />
+        <result property="startWorkYear"    column="start_work_year"    />
+        <result property="completionYear"    column="completion_year"    />
+        <result property="productionDrawing"    column="production_drawing"    />
+        <result property="productionDrawingApproval"    column="production_drawing_approval"    />
+        <result property="bidWhetherCompletion"    column="bid_whether_completion"    />
+        <result property="postscript"    column="postscript"    />
+        <result property="planId"    column="plan_id"    />
+        <result property="disease"    column="disease"    />
+        <result property="detailScale"    column="detail_scale"    />
+        <result property="planName"    column="plan_name"    />
+    </resultMap>
+
     <sql id="selectHwPlanItemVo">
         select id, encoding, name, length, custody_unit, region, unfinished, level, constructed_type, surface_width, roadbed_width, starting_number, terminus_number, national_province_subsidy, municipality_invest, county_self_fund, reply_capital, contract_capital, not_in_service_cause, progress, reply_file_number, accountability_unit, person_in_charge, phone, start_work_year, completion_year, production_drawing, production_drawing_approval, bid_whether_completion, postscript, plan_id, disease, detail_scale from hw_plan_item
     </sql>
+
+
+   <!-- <select id="selectHwPlanAndItemList" parameterType="com.hg.system.domain.HwPlanItem" resultMap="HwPlanItemResult">
+        SELECT * FROM
+            (
+                SELECT
+                    `id`,t1.`name`,`type`,`affiliation`,`plan_year`,`fill_period`,`reply_character`,
+                    (SELECT COUNT(t2.`id`) FROM `hw_plan_item` AS t2 WHERE t1.`id`=t2.`plan_id`) AS number_items
+                FROM
+                    `hw_plan` AS t1
+
+            ) a
+                LEFT JOIN
+            (
+                SELECT `plan_id`,SUM(`contract_capital`) AS total_funds FROM `hw_plan_item` GROUP BY `plan_id`
+            ) b
+            ON a.id=b.plan_id
+    </select>
+-->
+
+    <select id="selectHwPlanItemListByPlanId" parameterType="long" resultMap="HwPlanItemResult">
+        <include refid="selectHwPlanItemVo"/>
+        <where>
+            <if test="planId != null "> and plan_id = #{id}</if>
+        </where>
+    </select>
 
     <select id="selectHwPlanItemList" parameterType="com.hg.system.domain.HwPlanItem" resultMap="HwPlanItemResult">
         <include refid="selectHwPlanItemVo"/>
@@ -128,9 +191,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where detail_scale = 1
     </select>
 
-    <select id="selectHwPlanItemListAnd2" parameterType="com.hg.system.domain.HwPlanItem" resultMap="HwPlanItemResult">
-        <include refid="selectHwPlanItemVo"/>
-        where detail_scale = 2 or detail_scale = 0
+    <select id="selectHwPlanItemListAnd2" parameterType="com.hg.system.domain.HwPlanItem" resultMap="HwPlanItemResultAndPlanName">
+        SELECT a.*,b.`name` AS plan_name FROM `hw_plan_item` a,`hw_plan` b WHERE  a.`plan_id`=b.`id`  AND (detail_scale = 2 OR detail_scale = 0)
     </select>
 
     <select id="selectHwPlanItemListAnd3" parameterType="com.hg.system.domain.HwPlanItem" resultMap="HwPlanItemResult">

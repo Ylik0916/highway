@@ -39,8 +39,8 @@
 
     <el-table v-loading="loading" :data="itemList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="路线名称" align="center" prop="name" />
-      <el-table-column label="行政区域" align="center" prop="region" />
+      <el-table-column label="区县" align="center" prop="region" />
+      <el-table-column label="项目名称" align="center" prop="name" />
       <el-table-column label="国省补助(万元)" align="center" prop="nationalProvinceSubsidy" />
       <el-table-column label="市州投资(万元)" align="center" prop="municipalityInvest" />
       <el-table-column label="县区自筹(万元)" align="center" prop="countySelfFund" />
@@ -79,12 +79,20 @@
         <el-tab-pane label="路线信息" name="first">
           <el-descriptions :model="form">
             <el-descriptions-item label="路线编码">{{ form.encoding }}</el-descriptions-item>
-            <el-descriptions-item label="路线名称">{{ form.name }}</el-descriptions-item>
+            <el-descriptions-item label="项目名称">{{ form.name }}</el-descriptions-item>
             <el-descriptions-item label="路线全长">{{ form.length }}</el-descriptions-item>
             <el-descriptions-item label="管养单位">{{ form.custodyUnit }}</el-descriptions-item>
             <el-descriptions-item label="行政区域">{{ form.region }}</el-descriptions-item>
             <el-descriptions-item label="待建里程(公里)">{{ form.unfinished }}</el-descriptions-item>
-            <el-descriptions-item v-model="form.level" label="技术等级">
+            <el-descriptions-item label="技术等级" >
+              <dict-tag style="margin-left: 3px" :options="dict.type.technical_grade" :value="form.level"/>
+            </el-descriptions-item>
+
+            <el-descriptions-item label="计划修建路面类型" >
+              <dict-tag style="margin-left: 3px" :options="dict.type.constructed_type" :value="form.constructedType"/>
+            </el-descriptions-item>
+
+            <!--<el-descriptions-item v-model="form.level" label="技术等级">
               <el-select v-model="form.level" placeholder="请选择技术等级">
                 <el-option
                   v-for="dict in dict.type.technical_grade"
@@ -93,9 +101,9 @@
                   :value="parseInt(dict.value)"
                 ></el-option>
               </el-select>
-            </el-descriptions-item>
-            <el-descriptions-item label="计划修建路面类型">
-              <!--{{ form.cutoffPoint }}-->
+            </el-descriptions-item>-->
+
+           <!-- <el-descriptions-item v-model="form.constructedType" label="计划修建路面类型">
               <el-select v-model="form.constructedType" placeholder="请选择计划修建路面类型">
                 <el-option
                   v-for="dict in dict.type.constructed_type"
@@ -104,8 +112,8 @@
                   :value="parseInt(dict.value)"
                 ></el-option>
               </el-select>
+            </el-descriptions-item>-->
 
-            </el-descriptions-item>
             <el-descriptions-item label="路面宽度">{{ form.surfaceWidth }}</el-descriptions-item>
             <el-descriptions-item label="路基宽度">{{ form.roadbedWidth }}</el-descriptions-item>
             <el-descriptions-item label="起点桩号">{{ form.startingNumber }}</el-descriptions-item>
@@ -129,8 +137,13 @@
             <el-descriptions-item label="责任单位">{{ form.accountabilityUnit }}</el-descriptions-item>
             <el-descriptions-item label="负责人">{{ form.personInCharge }}</el-descriptions-item>
             <el-descriptions-item label="联系电话">{{ form.phone }}</el-descriptions-item>
-            <el-descriptions-item label="开工年限">
-              <!--{{ form.modificationTime }}-->
+
+            <el-descriptions-item label="开工年限" >
+              <dict-tag style="margin-left: 3px" :options="dict.type.plan_year" :value="form.startWorkYear"/>
+            </el-descriptions-item>
+
+           <!-- <el-descriptions-item label="开工年限">
+              &lt;!&ndash;{{ form.modificationTime }}&ndash;&gt;
               <el-select v-model="form.startWorkYear" placeholder="请选择开工年限">
                 <el-option
                   v-for="dict in dict.type.plan_year"
@@ -139,9 +152,14 @@
                   :value="parseInt(dict.value)"
                 ></el-option>
               </el-select>
+            </el-descriptions-item>-->
+
+            <el-descriptions-item label="完工年限" >
+              <dict-tag style="margin-left: 3px" :options="dict.type.plan_year" :value="form.completionYear"/>
             </el-descriptions-item>
-            <el-descriptions-item label="完工年限">
-              <!--{{ form.remarks }}-->
+
+           <!-- <el-descriptions-item label="完工年限">
+              &lt;!&ndash;{{ form.remarks }}&ndash;&gt;
               <el-select v-model="form.completionYear" placeholder="请选择完工年限">
                 <el-option
                   v-for="dict in dict.type.plan_year"
@@ -150,9 +168,14 @@
                   :value="parseInt(dict.value)"
                 ></el-option>
               </el-select>
+            </el-descriptions-item>-->
+
+            <el-descriptions-item label="施工图设计是否完成" >
+              <dict-tag style="margin-left: 3px" :options="dict.type.item_true_false" :value="form.productionDrawing"/>
             </el-descriptions-item>
-            <el-descriptions-item label="施工图设计是否完成">
-              <!--{{ form.remarks }}-->
+
+           <!-- <el-descriptions-item label="施工图设计是否完成">
+              &lt;!&ndash;{{ form.remarks }}&ndash;&gt;
               <el-radio-group v-model="form.productionDrawing">
                 <el-radio
                   v-for="dict in dict.type.true_false"
@@ -160,9 +183,14 @@
                   :label="parseInt(dict.value)"
                 >{{dict.label}}</el-radio>
               </el-radio-group>
+            </el-descriptions-item>-->
+
+            <el-descriptions-item label="施工图审批是否完成" >
+              <dict-tag style="margin-left: 3px" :options="dict.type.item_true_false" :value="form.productionDrawingApproval"/>
             </el-descriptions-item>
+          <!--
             <el-descriptions-item label="施工图审批是否完成">
-              <!--{{ form.remarks }}-->
+              &lt;!&ndash;{{ form.remarks }}&ndash;&gt;
               <el-radio-group v-model="form.productionDrawingApproval">
                 <el-radio
                   v-for="dict in dict.type.true_false"
@@ -170,8 +198,13 @@
                   :label="parseInt(dict.value)"
                 >{{dict.label}}</el-radio>
               </el-radio-group>
+            </el-descriptions-item>-->
+
+            <el-descriptions-item label="施工图招投标是否完成" >
+              <dict-tag style="margin-left: 3px" :options="dict.type.item_true_false" :value="form.bidWhetherCompletion"/>
             </el-descriptions-item>
-            <el-descriptions-item label="施工图招投标是否完成">
+
+           <!-- <el-descriptions-item label="施工图招投标是否完成">
               {{ form.remarks }}
               <el-radio-group v-model="form.bidWhetherCompletion">
                 <el-radio
@@ -180,7 +213,8 @@
                   :label="parseInt(dict.value)"
                 >{{dict.label}}</el-radio>
               </el-radio-group>
-            </el-descriptions-item>
+            </el-descriptions-item>-->
+
             <el-descriptions-item label="建议(养护内容)">{{ form.disease }}</el-descriptions-item>
             <el-descriptions-item label="备注">{{ form.postscript }}</el-descriptions-item>
 
@@ -195,8 +229,8 @@
         <el-form-item label="路线编码" prop="encoding">
           <el-input v-model="form.encoding" placeholder="请输入路线编码" />
         </el-form-item>
-        <el-form-item label="路线名称" prop="name">
-          <el-input v-model="form.name" placeholder="请输入路线名称" />
+        <el-form-item label="项目名称" prop="name">
+          <el-input v-model="form.name" placeholder="请输入项目名称" />
         </el-form-item>
         <el-form-item label="路线全长" prop="length">
           <el-input v-model="form.length" placeholder="请输入路线全长" />
@@ -342,7 +376,7 @@
 </template>
 
 <script>
-import { listItem, getItem, delItem, addItem, updateItem } from "@/api/system/item";
+import {listItem, getItem, delItem, addItem, updateItem, listItemByPlanId} from "@/api/system/item";
 import {getSectionInformation} from "@/api/system/sectionInformation";
 
 export default {
@@ -350,6 +384,8 @@ export default {
   dicts: ['plan_year', 'constructed_type', 'true_false', 'technical_grade'],
   data() {
     return {
+      //使用技术等级字典
+      technicalGradeOptions: [],
       //默认打开的窗口
       activeName:'first',
       // 遮罩层
@@ -416,7 +452,7 @@ export default {
           { required: true, message: "路线编码不能为空", trigger: "blur" }
         ],
         name: [
-          { required: true, message: "路线名称不能为空", trigger: "blur" }
+          { required: true, message: "项目名称不能为空", trigger: "blur" }
         ],
         length: [
           { required: true, message: "路线全长不能为空", trigger: "blur" }
@@ -436,10 +472,35 @@ export default {
       }
     };
   },
-  created() {
+  /*created() {
     this.getList();
+  },*/
+  created() {
+    this.getItemByPlanId();
   },
   methods: {
+    /** 根据年度计划查询进度列表 */
+    getItemByPlanId(row) {
+      //获取PlanId参数
+      const id = this.$route.query.id
+      //刷新页面
+/*
+      this.mounted()
+*/
+      this.loading = true;
+      listItemByPlanId(id).then(response => {
+        this.itemList = response.rows;
+        this.total = response.total;
+        this.loading = false;
+      });
+    },
+    /** 刷新页面*/
+   /* mounted() {
+      if (location.href.indexOf("#reloaded") == -1) {
+        location.href = location.href + "#reloaded";
+        location.reload();
+      }
+    },*/
     /** 查询进度列表 */
     getList() {
       this.loading = true;
@@ -520,7 +581,7 @@ export default {
       getItem(id).then(response => {
         this.form = response.data;
         this.openXq = true;
-        this.title = "详细进度";
+        this.title = "详情进度";
       });
     },
     /** 提交按钮 */
@@ -559,6 +620,11 @@ export default {
         ...this.queryParams
       }, `item_${new Date().getTime()}.xlsx`)
     }
-  }
+  }/*,
+  mounted() {
+    console.log("aaaaaaaa")
+    console.log(this.$route.query.id)
+    this.getItemByPlanId(this.$route.query.id)
+  }*/
 };
 </script>

@@ -1,5 +1,14 @@
 import request from '@/utils/request'
 
+
+// 根据年度计划Id查询进度列表
+export function listItemByPlanId(id) {
+  return request({
+    url: '/system/item/listByPlanId/' + id,
+    method: 'get',
+  })
+}
+
 // 查询进度列表
 export function listItem(query) {
   return request({

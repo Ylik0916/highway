@@ -66,7 +66,7 @@
 
       <el-table v-loading="loading" :data="planList" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center" />
-        <el-table-column label="所属年度计划" align="center" prop="planId" />
+        <el-table-column label="所属年度计划" align="center" prop="planName" />
         <el-table-column label="明细名称" align="center" prop="name" />
         <el-table-column label="国省补助(万元)" align="center" prop="nationalProvinceSubsidy"/>
         <el-table-column label="市州投资(万元)" align="center" prop="municipalityInvest"/>
@@ -237,165 +237,507 @@
 
       <!-- 添加和上报明细上报对话框 -->
 
-      <el-dialog :title="title" :visible.sync="open" width="1000px" append-to-body>
+      <el-dialog :title="title" :visible.sync="open" width="1100px" append-to-body>
         <!--<el-form ref="form" :model="form" :rules="rules" label-width="80px" >-->
         <el-form ref="form" :model="form" :rules="rules" label-width="80px" style="display: flex;flex-wrap: wrap;justify-content: space-between" >
-            <el-form-item label="路线编码" prop="encoding">
-              <el-input v-model="form.encoding" placeholder="请输入路线编码" />
-            </el-form-item>
-            <el-form-item label="路线名称" prop="name">
-              <el-input v-model="form.name" placeholder="请输入路线名称" />
-            </el-form-item>
-            <el-form-item label="路线全长" prop="length">
-              <el-input v-model="form.length" placeholder="请输入路线全长" />
-            </el-form-item>
-            <el-form-item label="管养单位" prop="custodyUnit">
-              <el-input v-model="form.custodyUnit" placeholder="请输入管养单位" />
-            </el-form-item>
-            <el-form-item label="行政区域" prop="region">
-              <el-input v-model="form.region" placeholder="请输入行政区域" />
-            </el-form-item>
-            <el-form-item label="待建里程(公里)" prop="unfinished">
-              <el-input v-model="form.unfinished" placeholder="请输入待建里程(公里)" />
-            </el-form-item>
-            <el-form-item label="技术等级" prop="level">
-              <el-select v-model="form.level" placeholder="请选择技术等级">
-                <el-option
-                  v-for="dict in dict.type.technical_grade"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="parseInt(dict.value)"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="计划修建路面类型" prop="constructedType">
-              <el-select v-model="form.constructedType" placeholder="请选择计划修建路面类型">
-                <el-option
-                  v-for="dict in dict.type.constructed_type"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="parseInt(dict.value)"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="路面宽度" prop="surfaceWidth">
-              <el-input v-model="form.surfaceWidth" placeholder="请输入路面宽度" />
-            </el-form-item>
-            <el-form-item label="路基宽度" prop="roadbedWidth">
-              <el-input v-model="form.roadbedWidth" placeholder="请输入路基宽度" />
-            </el-form-item>
-            <el-form-item label="起点桩号" prop="startingNumber">
-              <el-input v-model="form.startingNumber" placeholder="请输入起点桩号" />
-            </el-form-item>
-            <el-form-item label="终点桩号" prop="terminusNumber">
-              <el-input v-model="form.terminusNumber" placeholder="请输入终点桩号" />
-            </el-form-item>
-            <el-form-item label="国省补助" prop="nationalProvinceSubsidy">
-              <el-input v-model="form.nationalProvinceSubsidy" placeholder="请输入国省补助" />
-            </el-form-item>
-            <el-form-item label="市州投资" prop="municipalityInvest">
-              <el-input v-model="form.municipalityInvest" placeholder="请输入市州投资" />
-            </el-form-item>
-            <el-form-item label="县区自筹" prop="countySelfFund">
-              <el-input v-model="form.countySelfFund" placeholder="请输入县区自筹" />
-            </el-form-item>
-            <el-form-item label="批复资金" prop="replyCapital">
-              <el-input v-model="form.replyCapital" placeholder="请输入批复资金" />
-            </el-form-item>
-            <el-form-item label="合同资金" prop="contractCapital">
-              <el-input v-model="form.contractCapital" placeholder="请输入合同资金" />
-            </el-form-item>
-            <el-form-item label="未开工原因" prop="notInServiceCause">
-              <el-input v-model="form.notInServiceCause" placeholder="请输入未开工原因" />
-            </el-form-item>
-            <el-form-item label="进展进度" prop="progress">
-              <el-input v-model="form.progress" placeholder="请输入进展进度" />
-            </el-form-item>
-            <el-form-item label="批复/整合文件文号" prop="replyFileNumber">
-              <el-input v-model="form.replyFileNumber" placeholder="请输入批复/整合文件文号" />
-            </el-form-item>
-            <el-form-item label="责任单位" prop="accountabilityUnit">
-              <el-input v-model="form.accountabilityUnit" placeholder="请输入责任单位" />
-            </el-form-item>
-            <el-form-item label="责任人" prop="personInCharge">
-              <el-input v-model="form.personInCharge" placeholder="请输入责任人" />
-            </el-form-item>
-            <el-form-item label="电话" prop="phone">
-              <el-input v-model="form.phone" placeholder="请输入电话" />
-            </el-form-item>
-            <el-form-item label="开工年限" prop="startWorkYear">
-              <el-select v-model="form.startWorkYear" placeholder="请选择开工年限">
-                <el-option
-                  v-for="dict in dict.type.plan_year"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="parseInt(dict.value)"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="完工年限" prop="completionYear">
-              <el-select v-model="form.completionYear" placeholder="请选择完工年限">
-                <el-option
-                  v-for="dict in dict.type.plan_year"
-                  :key="dict.value"
-                  :label="dict.label"
-                  :value="parseInt(dict.value)"
-                ></el-option>
-              </el-select>
-            </el-form-item>
+          <el-row :gutter="20">
+            <el-col :span="8">
+              <div class="grid-content">
+                <el-form-item label="路线编码" prop="encoding">
+                  <el-input v-model="form.encoding" placeholder="请输入路线编码" />
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content">
+                <el-form-item label="路线名称" prop="name">
+                  <el-input v-model="form.name" placeholder="请输入路线名称" />
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content">
+                <el-form-item label="路线全长" prop="length">
+                  <el-input v-model="form.length" placeholder="请输入路线全长" />
+                </el-form-item>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="8">
+              <div class="grid-content">
+                <el-form-item label="管养单位" prop="custodyUnit">
+                  <el-input v-model="form.custodyUnit" placeholder="请输入管养单位" />
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content">
+                <el-form-item label="行政区域" prop="region">
+                  <el-input v-model="form.region" placeholder="请输入行政区域" />
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content">
+                <el-form-item label="待建里程(公里)" prop="unfinished">
+                  <el-input v-model="form.unfinished" placeholder="请输入待建里程(公里)" />
+                </el-form-item>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="8">
+              <div class="grid-content">
+                <el-form-item label="技术等级" prop="level">
+                  <el-select v-model="form.level" placeholder="请选择技术等级">
+                    <el-option
+                      v-for="dict in dict.type.technical_grade"
+                      :key="dict.value"
+                      :label="dict.label"
+                      :value="parseInt(dict.value)"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content">
+                <el-form-item label="计划修建路面类型" prop="constructedType">
+                  <el-select v-model="form.constructedType" placeholder="请选择计划修建路面类型">
+                    <el-option
+                      v-for="dict in dict.type.constructed_type"
+                      :key="dict.value"
+                      :label="dict.label"
+                      :value="parseInt(dict.value)"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content">
+                <el-form-item label="路面宽度" prop="surfaceWidth">
+                  <el-input v-model="form.surfaceWidth" placeholder="请输入路面宽度" />
+                </el-form-item>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="8">
+              <div class="grid-content">
+                <el-form-item label="路基宽度" prop="roadbedWidth">
+                  <el-input v-model="form.roadbedWidth" placeholder="请输入路基宽度" />
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content">
+                <el-form-item label="起点桩号" prop="startingNumber">
+                  <el-input v-model="form.startingNumber" placeholder="请输入起点桩号" />
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content">
+                <el-form-item label="终点桩号" prop="terminusNumber">
+                  <el-input v-model="form.terminusNumber" placeholder="请输入终点桩号" />
+                </el-form-item>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="8">
+              <div class="grid-content">
+                <el-form-item label="国省补助" prop="nationalProvinceSubsidy">
+                  <el-input v-model="form.nationalProvinceSubsidy" placeholder="请输入国省补助" />
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content">
+                <el-form-item label="市州投资" prop="municipalityInvest">
+                  <el-input v-model="form.municipalityInvest" placeholder="请输入市州投资" />
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content">
+                <el-form-item label="县区自筹" prop="countySelfFund">
+                  <el-input v-model="form.countySelfFund" placeholder="请输入县区自筹" />
+                </el-form-item>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="8">
+              <div class="grid-content">
+                <el-form-item label="批复资金" prop="replyCapital">
+                  <el-input v-model="form.replyCapital" placeholder="请输入批复资金" />
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content">
+                <el-form-item label="合同资金" prop="contractCapital">
+                  <el-input v-model="form.contractCapital" placeholder="请输入合同资金" />
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content">
+                <el-form-item label="未开工原因" prop="notInServiceCause">
+                  <el-input v-model="form.notInServiceCause" placeholder="请输入未开工原因" />
+                </el-form-item>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="8">
+              <div class="grid-content">
+                <el-form-item label="进展进度" prop="progress">
+                  <el-input v-model="form.progress" placeholder="请输入进展进度" />
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content">
+                <el-form-item label="批复/整合文件文号" prop="replyFileNumber">
+                  <el-input v-model="form.replyFileNumber" placeholder="请输入批复/整合文件文号" />
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content">
+                <el-form-item label="责任单位" prop="accountabilityUnit">
+                  <el-input v-model="form.accountabilityUnit" placeholder="请输入责任单位" />
+                </el-form-item>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="8">
+              <div class="grid-content">
+                <el-form-item label="责任人" prop="personInCharge">
+                  <el-input v-model="form.personInCharge" placeholder="请输入责任人" />
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content">
+                <el-form-item label="电话" prop="phone">
+                  <el-input v-model="form.phone" placeholder="请输入电话" />
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content">
+                <el-form-item label="开工年限" prop="startWorkYear">
+                  <el-select v-model="form.startWorkYear" placeholder="请选择开工年限">
+                    <el-option
+                      v-for="dict in dict.type.plan_year"
+                      :key="dict.value"
+                      :label="dict.label"
+                      :value="parseInt(dict.value)"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="8">
+              <div class="grid-content">
+                <el-form-item label="完工年限" prop="completionYear">
+                  <el-select v-model="form.completionYear" placeholder="请选择完工年限">
+                    <el-option
+                      v-for="dict in dict.type.plan_year"
+                      :key="dict.value"
+                      :label="dict.label"
+                      :value="parseInt(dict.value)"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="8"><div class="grid-content"></div></el-col>
+            <el-col :span="8"><div class="grid-content"></div></el-col>
+          </el-row>
 
+          <el-row :gutter="20">
+            <el-col :span="8">
+              <div class="grid-content">
+                <el-form-item label="施工图设计是否完成"  style="width: 100%" prop="productionDrawing">
+                  <!--<el-radio-group v-model="form.productionDrawing">
+                    <el-radio
+                      v-for="dict in dict.type.true_false"
+                      :key="dict.value"
+                      :label="parseInt(dict.value)"
+                    >{{dict.label}}</el-radio>
+                  </el-radio-group>-->
+                  <el-switch v-model="form.productionDrawing"></el-switch>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="8"><div class="grid-content"></div></el-col>
+            <el-col :span="8"><div class="grid-content"></div></el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="8">
+              <div class="grid-content">
+                <el-form-item label="施工图审批是否完成" style="width: 100%" prop="productionDrawingApproval">
+                  <!--<el-radio-group v-model="form.productionDrawingApproval">
+                    <el-radio
+                      v-for="dict in dict.type.true_false"
+                      :key="dict.value"
+                      :label="parseInt(dict.value)"
+                    >{{dict.label}}</el-radio>
+                  </el-radio-group>-->
+                  <el-switch v-model="form.productionDrawingApproval"></el-switch>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="8"><div class="grid-content"></div></el-col>
+            <el-col :span="8"><div class="grid-content"></div></el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="8">
+              <div class="grid-content">
+                <el-form-item label="施工招投标是否完成" style="width: 100%" prop="bidWhetherCompletion">
+                  <!--<el-radio-group v-model="form.bidWhetherCompletion">
+                    <el-radio
+                      v-for="dict in dict.type.true_false"
+                      :key="dict.value"
+                      :label="parseInt(dict.value)"
+                    >{{dict.label}}</el-radio>
+                  </el-radio-group>-->
+                  <el-switch v-model="form.bidWhetherCompletion"></el-switch>
+                </el-form-item>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="8">
+              <div class="grid-content">
+                <el-form-item label="备注" style="width: 100%" prop="postscript">
+                  <el-input v-model="form.postscript" type="textarea" placeholder="请输入内容" />
+                </el-form-item>
 
-            <el-form-item label="施工图设计是否完成"  style="width: 100%" prop="productionDrawing">
-              <!--<el-radio-group v-model="form.productionDrawing">
-                <el-radio
-                  v-for="dict in dict.type.true_false"
-                  :key="dict.value"
-                  :label="parseInt(dict.value)"
-                >{{dict.label}}</el-radio>
-              </el-radio-group>-->
-              <el-switch v-model="form.productionDrawing"></el-switch>
-            </el-form-item>
-            <el-form-item label="施工图审批是否完成" style="width: 100%" prop="productionDrawingApproval">
-              <!--<el-radio-group v-model="form.productionDrawingApproval">
-                <el-radio
-                  v-for="dict in dict.type.true_false"
-                  :key="dict.value"
-                  :label="parseInt(dict.value)"
-                >{{dict.label}}</el-radio>
-              </el-radio-group>-->
-              <el-switch v-model="form.productionDrawingApproval"></el-switch>
-            </el-form-item>
-            <el-form-item label="施工招投标是否完成" style="width: 100%" prop="bidWhetherCompletion">
-              <!--<el-radio-group v-model="form.bidWhetherCompletion">
-                <el-radio
-                  v-for="dict in dict.type.true_false"
-                  :key="dict.value"
-                  :label="parseInt(dict.value)"
-                >{{dict.label}}</el-radio>
-              </el-radio-group>-->
-              <el-switch v-model="form.bidWhetherCompletion"></el-switch>
-            </el-form-item>
-            <el-form-item label="备注" style="width: 100%" prop="postscript">
-              <el-input v-model="form.postscript" type="textarea" placeholder="请输入内容" />
-            </el-form-item>
-            <!--<el-form-item label="年度计划ID"  prop="planId">-->
-            <!--  <el-input v-model="form.planId" placeholder="请输入年度计划ID" />-->
-            <!--</el-form-item>-->
-            <el-form-item label="病害内容" style="width: 100%" prop="disease">
-              <el-input v-model="form.disease" type="textarea" placeholder="请输入内容" />
-            </el-form-item>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="8">
+              <div class="grid-content">
+                <el-form-item label="病害内容" style="width: 100%" prop="disease">
+                  <el-input v-model="form.disease" type="textarea" placeholder="请输入内容" />
+                </el-form-item>
+              </div>
+            </el-col>
+          </el-row>
 
+        <!--  <el-row :gutter="20">
+            <el-col :span="8">
+              <div class="grid-content">
 
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content">
 
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content">
+
+              </div>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="8">
+              <div class="grid-content">
+
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content">
+
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content">
+
+              </div>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="8">
+              <div class="grid-content">
+
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content">
+
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content">
+
+              </div>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="8">
+              <div class="grid-content">
+
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content">
+
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content">
+
+              </div>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="8">
+              <div class="grid-content">
+
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content">
+
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content">
+
+              </div>
+            </el-col>
+          </el-row>
+-->
+
+          <!--<el-form-item label="年度计划ID"  prop="planId">-->
+          <!--  <el-input v-model="form.planId" placeholder="请输入年度计划ID" />-->
+          <!--</el-form-item>-->
 
         </el-form>
+
+
         <div slot="footer" class="dialog-footer">
           <el-button type="primary" @click="submitForm">保  存</el-button>
           <el-button type="primary" @click="cancel">上  报</el-button>
         </div>
       </el-dialog>
 
+      <!--
 
+      <el-dialog :title="title" :visible.sync="open" width="1100px" append-to-body>
+        <el-form ref="form" :model="form" :rules="rules" label-position="top" label-width="80px">
+          <el-row :gutter="20">
+            <el-col :span="8">
+              <div class="grid-content">
+                <el-form-item label="行政区" prop="administrative">
+                  <treeselect v-model="form.administrative" :options="ordinaryOptions" :normalizer="normalizer" placeholder="请选择行政区" />
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content">
+                <el-form-item label="路线名称" prop="pathName">
+                  <el-select v-model="form.pathName" value-key="id" placeholder="请输入路线名称" style="width: 100%">
+                    <el-option
+                      v-for="item in listInformation"
+                      :key="item.id"
+                      :label="item.routeName"
+                      :value="item.routeName">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content">
+                <el-form-item label="所在乡镇" prop="whereVillage">
+                  <el-input v-model="form.whereVillage" placeholder="请输入所在乡镇" />
+                </el-form-item>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="8">
+              <div class="grid-content">
+                <el-form-item label="路面类型" prop="roadTypeid">
+                  <el-select v-model="form.roadTypeid" placeholder="请选择路面类型" style="width: 100%">
+                    <el-option
+                      v-for="dict in dict.type.pavement_type"
+                      :key="dict.value"
+                      :label="dict.label"
+                      :value="parseInt(dict.value)"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content">
+                <el-form-item label="技术等级" prop="technicalGradeid">
+                  <el-select v-model="form.technicalGradeid" placeholder="请选择技术等级" style="width: 100%">
+                    <el-option
+                      v-for="dict in dict.type.technical_grade"
+                      :key="dict.value"
+                      :label="dict.label"
+                      :value="parseInt(dict.value)"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content">
+                <el-form-item label="路面宽度" prop="roadWidth">
+                  <el-input v-model.number="form.roadWidth" placeholder="请输入路面宽度" />
+                </el-form-item>
+              </div>
+            </el-col>
+          </el-row>
+          <el-row :gutter="20">
+            <el-col :span="8">
+              <div class="grid-content">
+                <el-form-item label="里程" prop="mileage">
+                  <el-input v-model.number="form.mileage" placeholder="请输入里程" />
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content">
+                <el-form-item label="金额" prop="amount">
+                  <el-input v-model.number="form.amount" placeholder="请输入金额" />
+                </el-form-item>
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="grid-content">
+              </div>
+            </el-col>
+          </el-row>
+        </el-form>
+
+
+
+        <div slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="submitForm(0)">确 定</el-button>
+          <el-button @click="cancel">取 消</el-button>
+        </div>
+      </el-dialog>
+
+      -->
 
     </div>
   </div>
@@ -404,12 +746,16 @@
 <script>
 import {listPlan, getPlan, delPlan, addPlan, updatePlan, listItemAnd2} from "@/api/system/plan";
 import {getItem} from "@/api/system/item";
+import {listDept} from "@/api/system/dept";
 
 export default {
   name: "DetailedReporting",
-  dicts: ['plan_type', 'plan_year', 'fill_period', 'reply_character', 'affiliation'],
+  dicts: ['plan_type', 'plan_year', 'technical_grade', 'constructed_type', 'affiliation'],
   data() {
     return {
+      //行政下拉
+      ordinaryOptions: [],
+      listInformation: [],
       //默认打开的窗口
       activeName:'first',
       // 遮罩层
@@ -466,7 +812,8 @@ export default {
         bidWhetherCompletion: null,
         postscript: null,
         planId: null,
-        disease: null
+        disease: null,
+        planName: null
       },
       // 表单参数
       form: {
@@ -527,6 +874,26 @@ export default {
       };
       this.resetForm("form");
     },
+
+    /** 转换一般养护数据结构 */
+    normalizer(node) {
+      if (node.children && !node.children.length) {
+        delete node.children;
+      }
+      return {
+        id: node.deptId,
+        label: node.deptName,
+        children: node.children
+      };
+    },
+    /** 查询一般养护下拉树结构 */
+    getTreeselect() {
+      listDept().then(response => {
+        this.ordinaryOptions = [];
+        // const data = { deptId: 0, deptName: '大陆', children: [] };
+        this.ordinaryOptions = this.handleTree(response.data, "deptId", "parentId");
+      });
+    },
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;
@@ -546,11 +913,13 @@ export default {
     /** 新增按钮操作 */
     handleAdd() {
       this.reset();
+      this.getTreeselect();
       this.open = true;
       this.title = "添加明细上报";
     },
     /** 详情按钮操作 */
     detailXq(row){
+      this.getTreeselect();
       const id = row.id || this.ids
       getItem(id).then(response => {
         this.form = response.data;
@@ -563,6 +932,7 @@ export default {
     /** 上报按钮操作 */
     handleUpdate(row) {
       this.reset();
+      this.getTreeselect();
       const id = row.id || this.ids
       getPlan(id).then(response => {
         this.form = response.data;

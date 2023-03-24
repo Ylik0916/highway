@@ -34,6 +34,20 @@ public class HwPlanController extends BaseController
     @Autowired
     private IHwPlanService hwPlanService;
 
+
+    /**
+     * 查询年度计划列表和项目个数以及总资金
+     */
+    @PreAuthorize("@ss.hasPermi('system:plan:list')")
+    @GetMapping("/listAll")
+    public TableDataInfo listAll(HwPlan hwPlan)
+    {
+        startPage();
+        List<HwPlan> list = hwPlanService.selectHwPlanListAll(hwPlan);
+        return getDataTable(list);
+    }
+    
+    
     /**
      * 查询年度计划列表
      */

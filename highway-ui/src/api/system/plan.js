@@ -1,5 +1,24 @@
 import request from '@/utils/request'
 
+
+// 查询年度计划列表 和 明细项目
+/*export function listPlanAndItem(query) {
+  return request({
+    url: '/system/item/andPlanList',
+    method: 'get',
+    params: query
+  })
+}*/
+
+// 查询年度计划列表 以及项目个数和总资金
+export function listPlanAll(query) {
+  return request({
+    url: '/system/plan/listAll',
+    method: 'get',
+    params: query
+  })
+}
+
 // 查询年度计划列表
 export function listPlan(query) {
   return request({
@@ -30,7 +49,7 @@ export function listItemAnd1(query) {
 
 
 
-// 查询已驳回明细上报列表
+// 查询已驳回明细上报列表以及对应的年度计划名称
 export function listItemAnd2(query) {
   return request({
     url: '/system/item/listAnd2',
