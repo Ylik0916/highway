@@ -149,6 +149,33 @@ public class HwPlanItemServiceImpl implements IHwPlanItemService
         return hwPlanItemMapper.updateHwPlanItem(hwPlanItem);
     }
 
+
+    /**
+     * 修改进度状态为已审核
+     *
+     * @param id 进度
+     * @return 结果
+     */
+    @Override
+    public int updateItemScale(Long id)
+    {
+        return hwPlanItemMapper.updateItemScale(id);
+    }
+
+
+    /**
+     * 修改进度状态为已驳回
+     *
+     * @param id 进度
+     * @return 结果
+     */
+    @Override
+    public int updateItemReject(Long id)
+    {
+        return hwPlanItemMapper.updateItemReject(id);
+    }
+    
+
     /**
      * 批量删除进度
      * 

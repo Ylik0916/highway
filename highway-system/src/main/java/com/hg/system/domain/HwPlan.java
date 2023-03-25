@@ -23,23 +23,23 @@ public class HwPlan extends BaseEntity
     private String name;
 
     /** 计划类型 */
-    @Excel(name = "计划类型")
+    @Excel(name = "计划类型", dictType = "plan_type")
     private Integer type;
 
     /** 计划归属 */
-    @Excel(name = "计划归属")
+    @Excel(name = "计划归属", dictType = "affiliation")
     private Integer affiliation;
 
     /** 计划年度 */
-    @Excel(name = "计划年度")
+    @Excel(name = "计划年度", dictType = "plan_year")
     private String planYear;
 
     /** 填报周期 */
-    @Excel(name = "填报周期")
+    @Excel(name = "填报周期", dictType = "fill_period")
     private Integer fillPeriod;
 
     /** 批复角色 */
-    @Excel(name = "批复角色")
+    @Excel(name = "批复角色", dictType = "reply_character")
     private String replyCharacter;
     
     /** 项目个数 */

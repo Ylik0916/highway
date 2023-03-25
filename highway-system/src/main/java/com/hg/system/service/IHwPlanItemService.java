@@ -100,6 +100,24 @@ public interface IHwPlanItemService
      */
     public int updateHwPlanItem(HwPlanItem hwPlanItem);
 
+
+    /**
+     * 修改进度状态为已审核
+     *
+     * @param id 进度
+     * @return 结果
+     */
+    public int updateItemScale(Long id);
+
+    /**
+     * 修改进度状态为已驳回
+     *
+     * @param id 进度
+     * @return 结果
+     */
+    public int updateItemReject(Long id);
+    
+
     /**
      * 批量删除进度
      * 

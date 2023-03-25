@@ -97,6 +97,24 @@ public interface HwPlanItemMapper
     public int updateHwPlanItem(HwPlanItem hwPlanItem);
 
     /**
+     * 修改进度状态为已审核
+     *
+     * @param id 进度
+     * @return 结果
+     */
+    public int updateItemScale(Long id);
+
+
+    /**
+     * 修改进度状态为已审核
+     *
+     * @param id 进度
+     * @return 结果
+     */
+    public int updateItemReject(Long id);
+    
+    
+    /**
      * 删除进度
      * 
      * @param id 进度主键

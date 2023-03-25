@@ -172,6 +172,30 @@ public class HwPlanItemController extends BaseController
         return toAjax(hwPlanItemService.updateHwPlanItem(hwPlanItem));
     }
 
+
+    /**
+     * 修改进度状态为已审核
+     */
+    @PreAuthorize("@ss.hasPermi('system:item:edit')")
+    @Log(title = "进度", businessType = BusinessType.UPDATE)
+    @PutMapping("/scale/{id}")
+    public AjaxResult editScale(@PathVariable Long id)
+    {
+        return toAjax(hwPlanItemService.updateItemScale(id));
+    }
+
+    /**
+     * 修改进度状态为已驳回
+     */
+    @PreAuthorize("@ss.hasPermi('system:item:edit')")
+    @Log(title = "进度", businessType = BusinessType.UPDATE)
+    @PutMapping("/reject/{id}")
+    public AjaxResult rejectScale(@PathVariable Long id)
+    {
+        return toAjax(hwPlanItemService.updateItemReject(id));
+    }
+    
+
     /**
      * 删除进度
      */

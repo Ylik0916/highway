@@ -43,11 +43,11 @@ public class HwPlanItem extends BaseEntity
     private Long unfinished;
 
     /** 技术等级 */
-    @Excel(name = "技术等级")
+    @Excel(name = "技术等级", dictType = "technical_grade")
     private Integer level;
 
     /** 计划修建路面类型 */
-    @Excel(name = "计划修建路面类型")
+    @Excel(name = "计划修建路面类型", dictType = "constructed_type")
     private Integer constructedType;
 
     /** 路面宽度 */
@@ -111,24 +111,24 @@ public class HwPlanItem extends BaseEntity
     private String phone;
 
     /** 开工年限 */
-    @Excel(name = "开工年限")
+    @Excel(name = "开工年限", dictType = "plan_year")
     private Integer startWorkYear;
 
     /** 完工年限 */
-    @Excel(name = "完工年限")
+    @Excel(name = "完工年限", dictType = "plan_year")
     private Integer completionYear;
 
     /** 施工图设计是否完成 */
-    @Excel(name = "施工图设计是否完成")
-    private Integer productionDrawing;
+    @Excel(name = "施工图设计是否完成", dictType = "item_true_false")
+    private String productionDrawing;
 
     /** 施工图审批是否完成 */
-    @Excel(name = "施工图审批是否完成")
-    private Integer productionDrawingApproval;
+    @Excel(name = "施工图审批是否完成", dictType = "item_true_false")
+    private String productionDrawingApproval;
 
     /** 施工招投标是否完成 */
-    @Excel(name = "施工招投标是否完成")
-    private Integer bidWhetherCompletion;
+    @Excel(name = "施工招投标是否完成", dictType = "item_true_false")
+    private String bidWhetherCompletion;
 
     /** 备注 */
     @Excel(name = "备注")
@@ -143,7 +143,7 @@ public class HwPlanItem extends BaseEntity
     private String disease;
 
     /** 明细状态 */
-    @Excel(name = "明细状态")
+    @Excel(name = "明细状态", dictType = "detail_scale")
     private Integer detailScale;
 
     /** 所属年度计划名称 */
@@ -358,27 +358,27 @@ public class HwPlanItem extends BaseEntity
         this.completionYear = completionYear;
     }
 
-    public Integer getProductionDrawing() {
+    public String getProductionDrawing() {
         return productionDrawing;
     }
 
-    public void setProductionDrawing(Integer productionDrawing) {
+    public void setProductionDrawing(String productionDrawing) {
         this.productionDrawing = productionDrawing;
     }
 
-    public Integer getProductionDrawingApproval() {
+    public String getProductionDrawingApproval() {
         return productionDrawingApproval;
     }
 
-    public void setProductionDrawingApproval(Integer productionDrawingApproval) {
+    public void setProductionDrawingApproval(String productionDrawingApproval) {
         this.productionDrawingApproval = productionDrawingApproval;
     }
 
-    public Integer getBidWhetherCompletion() {
+    public String getBidWhetherCompletion() {
         return bidWhetherCompletion;
     }
 
-    public void setBidWhetherCompletion(Integer bidWhetherCompletion) {
+    public void setBidWhetherCompletion(String bidWhetherCompletion) {
         this.bidWhetherCompletion = bidWhetherCompletion;
     }
 
@@ -451,9 +451,9 @@ public class HwPlanItem extends BaseEntity
                 ", phone='" + phone + '\'' +
                 ", startWorkYear=" + startWorkYear +
                 ", completionYear=" + completionYear +
-                ", productionDrawing=" + productionDrawing +
-                ", productionDrawingApproval=" + productionDrawingApproval +
-                ", bidWhetherCompletion=" + bidWhetherCompletion +
+                ", productionDrawing='" + productionDrawing + '\'' +
+                ", productionDrawingApproval='" + productionDrawingApproval + '\'' +
+                ", bidWhetherCompletion='" + bidWhetherCompletion + '\'' +
                 ", postscript='" + postscript + '\'' +
                 ", planId=" + planId +
                 ", disease='" + disease + '\'' +

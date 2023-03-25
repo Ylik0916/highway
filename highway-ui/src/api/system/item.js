@@ -44,6 +44,23 @@ export function updateItem(data) {
   })
 }
 
+// 修改进度状态为已审核
+export function updateItemScale(id) {
+  return request({
+    url: '/system/item/scale/' + id,
+    method: 'put',
+  })
+}
+
+
+// 修改进度为已驳回
+export function rejectScale(id) {
+  return request({
+    url: '/system/item/reject/' + id,
+    method: 'put',
+  })
+}
+
 // 删除进度
 export function delItem(id) {
   return request({

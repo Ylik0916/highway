@@ -113,6 +113,11 @@ public class HwPlanController extends BaseController
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)
     {
-        return toAjax(hwPlanService.deleteHwPlanByIds(ids));
+        try {
+            return toAjax(hwPlanService.deleteHwPlanByIds(ids));
+        }catch (Exception e){
+            return AjaxResult.error("包涵子项目，无法删除！");
+        }
+        
     }
 }

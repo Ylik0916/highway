@@ -81,25 +81,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select id, encoding, name, length, custody_unit, region, unfinished, level, constructed_type, surface_width, roadbed_width, starting_number, terminus_number, national_province_subsidy, municipality_invest, county_self_fund, reply_capital, contract_capital, not_in_service_cause, progress, reply_file_number, accountability_unit, person_in_charge, phone, start_work_year, completion_year, production_drawing, production_drawing_approval, bid_whether_completion, postscript, plan_id, disease, detail_scale from hw_plan_item
     </sql>
 
-
-   <!-- <select id="selectHwPlanAndItemList" parameterType="com.hg.system.domain.HwPlanItem" resultMap="HwPlanItemResult">
-        SELECT * FROM
-            (
-                SELECT
-                    `id`,t1.`name`,`type`,`affiliation`,`plan_year`,`fill_period`,`reply_character`,
-                    (SELECT COUNT(t2.`id`) FROM `hw_plan_item` AS t2 WHERE t1.`id`=t2.`plan_id`) AS number_items
-                FROM
-                    `hw_plan` AS t1
-
-            ) a
-                LEFT JOIN
-            (
-                SELECT `plan_id`,SUM(`contract_capital`) AS total_funds FROM `hw_plan_item` GROUP BY `plan_id`
-            ) b
-            ON a.id=b.plan_id
-    </select>
--->
-
     <select id="selectHwPlanItemListByPlanId" parameterType="long" resultMap="HwPlanItemResult">
         <include refid="selectHwPlanItemVo"/>
         <where>
@@ -145,57 +126,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
 
-    <select id="selectHwPlanItemListAnd0" parameterType="com.hg.system.domain.HwPlanItem" resultMap="HwPlanItemResult">
+    <select id="selectHwPlanItemListAnd0" parameterType="com.hg.system.domain.HwPlanItem" resultMap="HwPlanItemResultAndPlanName">
         <include refid="selectHwPlanItemVo"/>
         where detail_scale = 0
-        <!--<include refid="selectHwPlanItemVo"/>-->
-        <!--<where>-->
-        <!--    detail_scale=2-->
-
-        <!--    <if test="encoding != null  and encoding != ''"> and encoding = #{encoding}</if>-->
-        <!--    <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>-->
-        <!--    <if test="length != null  and length != ''"> and length = #{length}</if>-->
-        <!--    <if test="custodyUnit != null  and custodyUnit != ''"> and custody_unit = #{custodyUnit}</if>-->
-        <!--    <if test="region != null  and region != ''"> and region = #{region}</if>-->
-        <!--    <if test="unfinished != null "> and unfinished = #{unfinished}</if>-->
-        <!--    <if test="level != null "> and level = #{level}</if>-->
-        <!--    <if test="constructedType != null "> and constructed_type = #{constructedType}</if>-->
-        <!--    <if test="surfaceWidth != null "> and surface_width = #{surfaceWidth}</if>-->
-        <!--    <if test="roadbedWidth != null "> and roadbed_width = #{roadbedWidth}</if>-->
-        <!--    <if test="startingNumber != null  and startingNumber != ''"> and starting_number = #{startingNumber}</if>-->
-        <!--    <if test="terminusNumber != null  and terminusNumber != ''"> and terminus_number = #{terminusNumber}</if>-->
-        <!--    <if test="nationalProvinceSubsidy != null "> and national_province_subsidy = #{nationalProvinceSubsidy}</if>-->
-        <!--    <if test="municipalityInvest != null "> and municipality_invest = #{municipalityInvest}</if>-->
-        <!--    <if test="countySelfFund != null "> and county_self_fund = #{countySelfFund}</if>-->
-        <!--    <if test="replyCapital != null "> and reply_capital = #{replyCapital}</if>-->
-        <!--    <if test="contractCapital != null "> and contract_capital = #{contractCapital}</if>-->
-        <!--    <if test="notInServiceCause != null  and notInServiceCause != ''"> and not_in_service_cause = #{notInServiceCause}</if>-->
-        <!--    <if test="progress != null  and progress != ''"> and progress = #{progress}</if>-->
-        <!--    <if test="replyFileNumber != null  and replyFileNumber != ''"> and reply_file_number = #{replyFileNumber}</if>-->
-        <!--    <if test="accountabilityUnit != null  and accountabilityUnit != ''"> and accountability_unit = #{accountabilityUnit}</if>-->
-        <!--    <if test="personInCharge != null  and personInCharge != ''"> and person_in_charge = #{personInCharge}</if>-->
-        <!--    <if test="phone != null  and phone != ''"> and phone = #{phone}</if>-->
-        <!--    <if test="startWorkYear != null "> and start_work_year = #{startWorkYear}</if>-->
-        <!--    <if test="completionYear != null "> and completion_year = #{completionYear}</if>-->
-        <!--    <if test="productionDrawing != null "> and production_drawing = #{productionDrawing}</if>-->
-        <!--    <if test="productionDrawingApproval != null "> and production_drawing_approval = #{productionDrawingApproval}</if>-->
-        <!--    <if test="bidWhetherCompletion != null "> and bid_whether_completion = #{bidWhetherCompletion}</if>-->
-        <!--    <if test="postscript != null  and postscript != ''"> and postscript = #{postscript}</if>-->
-        <!--    <if test="planId != null "> and plan_id = #{planId}</if>-->
-        <!--    <if test="disease != null  and disease != ''"> and disease = #{disease}</if>-->
-        <!--</where>-->
     </select>
 
-    <select id="selectHwPlanItemListAnd1" parameterType="com.hg.system.domain.HwPlanItem" resultMap="HwPlanItemResult">
-        <include refid="selectHwPlanItemVo"/>
-        where detail_scale = 1
+    <select id="selectHwPlanItemListAnd1" parameterType="com.hg.system.domain.HwPlanItem" resultMap="HwPlanItemResultAndPlanName">
+        SELECT a.*,b.`name` AS plan_name FROM `hw_plan_item` a,`hw_plan` b 
+        WHERE  a.`plan_id`=b.`id`  AND detail_scale=1
     </select>
 
     <select id="selectHwPlanItemListAnd2" parameterType="com.hg.system.domain.HwPlanItem" resultMap="HwPlanItemResultAndPlanName">
-        SELECT a.*,b.`name` AS plan_name FROM `hw_plan_item` a,`hw_plan` b WHERE  a.`plan_id`=b.`id`  AND (detail_scale = 2 OR detail_scale = 0)
+        SELECT a.*,b.`name` AS plan_name FROM `hw_plan_item` a,`hw_plan` b 
+        WHERE  a.`plan_id`=b.`id`  AND (detail_scale = 2 OR detail_scale = 0)
     </select>
 
-    <select id="selectHwPlanItemListAnd3" parameterType="com.hg.system.domain.HwPlanItem" resultMap="HwPlanItemResult">
+    <select id="selectHwPlanItemListAnd3" parameterType="com.hg.system.domain.HwPlanItem" resultMap="HwPlanItemResultAndPlanName">
         <include refid="selectHwPlanItemVo"/>
         where detail_scale = 3
     </select>
@@ -278,6 +224,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
+    <update id="updateItemScale" parameterType="com.hg.system.domain.HwPlanItem">
+        update hw_plan_item
+        SET `detail_scale`='0'
+        where id = #{id}
+    </update>
+
+    <update id="updateItemReject" parameterType="com.hg.system.domain.HwPlanItem">
+        update hw_plan_item
+        SET `detail_scale`='2'
+        where id = #{id}
+    </update>
+    
     <update id="updateHwPlanItem" parameterType="com.hg.system.domain.HwPlanItem">
         update hw_plan_item
         <trim prefix="SET" suffixOverrides=",">
