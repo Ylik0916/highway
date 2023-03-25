@@ -71,4 +71,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <delete id="deleteHwMaintainRegionByMuid" parameterType="Long">
         delete from hw_maintain_region where muid = #{muid}
     </delete>
+    <delete id="deleteHwMaintainRegionByMuids">
+        delete from hw_maintain_region where muid in
+        <foreach item="muid" collection="array" open="(" separator="," close=")">
+            #{muid}
+        </foreach>
+    </delete>
 </mapper>
