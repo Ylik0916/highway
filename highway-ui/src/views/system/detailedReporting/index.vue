@@ -209,7 +209,7 @@
             <el-input v-model="form.custodyUnit" placeholder="请输入管养单位" />
           </el-form-item>
           <el-form-item label="行政区域" prop="region" style="width: 30%">
-            <treeselect v-model="form.administrative" :options="ordinaryOptions" :normalizer="normalizer" placeholder="请选择行政区" />
+            <treeselect v-model="form.region" :options="ordinaryOptions" :normalizer="normalizer" placeholder="请选择行政区" />
           </el-form-item>
           <el-form-item label="待建里程(公里)" prop="unfinished">
             <el-input v-model="form.unfinished" placeholder="请输入待建里程(公里)" />
