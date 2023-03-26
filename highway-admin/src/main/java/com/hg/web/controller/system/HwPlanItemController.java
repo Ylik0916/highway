@@ -35,6 +35,33 @@ public class HwPlanItemController extends BaseController
     private IHwPlanItemService hwPlanItemService;
 
     /**
+     * 查询进度列表 和 所属的年度计划
+     */
+    // @PreAuthorize("@ss.hasPermi('system:item:list')")
+    // @GetMapping("/andPlanList")
+    // public TableDataInfo listAndPlan(HwPlanItem hwPlanItem)
+    // {
+    //     startPage();
+    //     List<HwPlanItem> list = hwPlanItemService.selectHwPlanAndItemList(hwPlanItem);
+    //     return getDataTable(list);
+    // }
+
+
+    /**
+     *  根据年度计划查询进度列表
+     */
+    @PreAuthorize("@ss.hasPermi('system:item:list')")
+    @GetMapping("/listByPlanId/{id}")
+    public TableDataInfo listByPlanId(@PathVariable("id") long id)
+    {
+        startPage();
+        List<HwPlanItem> list = hwPlanItemService.selectHwPlanItemListByPlanId(id);
+        return getDataTable(list);
+    }
+
+
+
+    /**
      * 查询进度列表
      */
     @PreAuthorize("@ss.hasPermi('system:item:list')")
@@ -74,7 +101,7 @@ public class HwPlanItemController extends BaseController
 
 
     /**
-     * 查询已驳回明细上报列表
+     * 查询已驳回明细上报列表 以及对应的年度计划名称
      */
     @PreAuthorize("@ss.hasPermi('system:item:list')")
     @GetMapping("/listAnd2")
@@ -144,6 +171,30 @@ public class HwPlanItemController extends BaseController
     {
         return toAjax(hwPlanItemService.updateHwPlanItem(hwPlanItem));
     }
+
+
+    /**
+     * 修改进度状态为已审核
+     */
+    @PreAuthorize("@ss.hasPermi('system:item:edit')")
+    @Log(title = "进度", businessType = BusinessType.UPDATE)
+    @PutMapping("/scale/{id}")
+    public AjaxResult editScale(@PathVariable Long id)
+    {
+        return toAjax(hwPlanItemService.updateItemScale(id));
+    }
+
+    /**
+     * 修改进度状态为已驳回
+     */
+    @PreAuthorize("@ss.hasPermi('system:item:edit')")
+    @Log(title = "进度", businessType = BusinessType.UPDATE)
+    @PutMapping("/reject/{id}")
+    public AjaxResult rejectScale(@PathVariable Long id)
+    {
+        return toAjax(hwPlanItemService.updateItemReject(id));
+    }
+    
 
     /**
      * 删除进度

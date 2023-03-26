@@ -23,99 +23,117 @@ public class HwPlan extends BaseEntity
     private String name;
 
     /** 计划类型 */
-    @Excel(name = "计划类型")
+    @Excel(name = "计划类型", dictType = "plan_type")
     private Integer type;
 
     /** 计划归属 */
-    @Excel(name = "计划归属")
+    @Excel(name = "计划归属", dictType = "affiliation")
     private Integer affiliation;
 
     /** 计划年度 */
-    @Excel(name = "计划年度")
+    @Excel(name = "计划年度", dictType = "plan_year")
     private String planYear;
 
     /** 填报周期 */
-    @Excel(name = "填报周期")
+    @Excel(name = "填报周期", dictType = "fill_period")
     private Integer fillPeriod;
 
     /** 批复角色 */
-    @Excel(name = "批复角色")
+    @Excel(name = "批复角色", dictType = "reply_character")
     private String replyCharacter;
+    
+    /** 项目个数 */
+    @Excel(name = "项目个数")
+    private String numberItems;
 
-    public void setId(Long id) 
-    {
+    /** 计划投资(万元) */
+    @Excel(name = "计划投资(万元)")
+    private String totalFunds;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public Long getId() 
-    {
-        return id;
+    public String getName() {
+        return name;
     }
-    public void setName(String name) 
-    {
+
+    public void setName(String name) {
         this.name = name;
     }
 
-    public String getName() 
-    {
-        return name;
+    public Integer getType() {
+        return type;
     }
-    public void setType(Integer type) 
-    {
+
+    public void setType(Integer type) {
         this.type = type;
     }
 
-    public Integer getType() 
-    {
-        return type;
+    public Integer getAffiliation() {
+        return affiliation;
     }
-    public void setAffiliation(Integer affiliation) 
-    {
+
+    public void setAffiliation(Integer affiliation) {
         this.affiliation = affiliation;
     }
 
-    public Integer getAffiliation() 
-    {
-        return affiliation;
+    public String getPlanYear() {
+        return planYear;
     }
-    public void setPlanYear(String planYear) 
-    {
+
+    public void setPlanYear(String planYear) {
         this.planYear = planYear;
     }
 
-    public String getPlanYear() 
-    {
-        return planYear;
+    public Integer getFillPeriod() {
+        return fillPeriod;
     }
-    public void setFillPeriod(Integer fillPeriod) 
-    {
+
+    public void setFillPeriod(Integer fillPeriod) {
         this.fillPeriod = fillPeriod;
     }
 
-    public Integer getFillPeriod() 
-    {
-        return fillPeriod;
+    public String getReplyCharacter() {
+        return replyCharacter;
     }
-    public void setReplyCharacter(String replyCharacter) 
-    {
+
+    public void setReplyCharacter(String replyCharacter) {
         this.replyCharacter = replyCharacter;
     }
 
-    public String getReplyCharacter() 
-    {
-        return replyCharacter;
+    public String getNumberItems() {
+        return numberItems;
+    }
+
+    public void setNumberItems(String numberItems) {
+        this.numberItems = numberItems;
+    }
+
+    public String getTotalFunds() {
+        return totalFunds;
+    }
+
+    public void setTotalFunds(String totalFunds) {
+        this.totalFunds = totalFunds;
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("id", getId())
-            .append("name", getName())
-            .append("type", getType())
-            .append("affiliation", getAffiliation())
-            .append("planYear", getPlanYear())
-            .append("fillPeriod", getFillPeriod())
-            .append("replyCharacter", getReplyCharacter())
-            .toString();
+        return "HwPlan{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", type=" + type +
+                ", affiliation=" + affiliation +
+                ", planYear='" + planYear + '\'' +
+                ", fillPeriod=" + fillPeriod +
+                ", replyCharacter='" + replyCharacter + '\'' +
+                ", numberItems='" + numberItems + '\'' +
+                ", totalFunds='" + totalFunds + '\'' +
+                '}';
     }
 }

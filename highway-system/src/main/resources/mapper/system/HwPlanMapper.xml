@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hg.system.mapper.HwPlanMapper">
-    
+
     <resultMap type="com.hg.system.domain.HwPlan" id="HwPlanResult">
         <result property="id"    column="id"    />
         <result property="name"    column="name"    />
@@ -14,10 +14,41 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="replyCharacter"    column="reply_character"    />
     </resultMap>
 
+
+    <resultMap type="com.hg.system.domain.HwPlan" id="HwPlanAllResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="type"    column="type"    />
+        <result property="affiliation"    column="affiliation"    />
+        <result property="planYear"    column="plan_year"    />
+        <result property="fillPeriod"    column="fill_period"    />
+        <result property="replyCharacter"    column="reply_character"    />
+        <result property="totalFunds"    column="total_funds"    />
+        <result property="numberItems"    column="number_items"    />
+    </resultMap>
+
     <sql id="selectHwPlanVo">
         select id, name, type, affiliation, plan_year, fill_period, reply_character from hw_plan
     </sql>
 
+    <select id="selectHwPlanListAll" parameterType="com.hg.system.domain.HwPlan" resultMap="HwPlanAllResult">
+        SELECT * FROM
+            (
+                SELECT
+                    `id`,t1.`name`,`type`,`affiliation`,`plan_year`,`fill_period`,`reply_character`,
+                    (SELECT COUNT(t2.`id`) FROM `hw_plan_item` AS t2 WHERE t1.`id`=t2.`plan_id`) AS number_items
+                FROM
+                    `hw_plan` AS t1
+
+            ) a
+                LEFT JOIN
+            (
+                SELECT `plan_id`,SUM(`contract_capital`) AS total_funds FROM `hw_plan_item` GROUP BY `plan_id`
+            ) b
+            ON a.id=b.plan_id
+    </select>
+    
+    
     <select id="selectHwPlanList" parameterType="com.hg.system.domain.HwPlan" resultMap="HwPlanResult">
         <include refid="selectHwPlanVo"/>
         <where>  

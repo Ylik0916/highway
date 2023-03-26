@@ -32,6 +32,19 @@ public class HwPlanServiceImpl implements IHwPlanService
     }
 
     /**
+     * 查询年度计划列表和项目个数以及总资金
+     *
+     * @param hwPlan 年度计划
+     * @return 年度计划
+     */
+    @Override
+    public List<HwPlan> selectHwPlanListAll(HwPlan hwPlan)
+    {
+        return hwPlanMapper.selectHwPlanListAll(hwPlan);
+    }
+    
+    
+    /**
      * 查询年度计划列表
      * 
      * @param hwPlan 年度计划

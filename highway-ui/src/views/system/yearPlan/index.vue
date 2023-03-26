@@ -65,11 +65,11 @@
         <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
       </el-row>
 
-      <el-table v-loading="loading" :data="planList" @selection-change="handleSelectionChange">
+      <el-table v-loading="loading" :data="planList"  @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center" />
         <el-table-column label="计划名称" align="center" prop="name" />
-        <el-table-column label="计划投资(万元)" align="center" prop="investment">1</el-table-column>
-        <el-table-column label="项目个数" align="center" prop="numberOfItems" >10</el-table-column>
+        <el-table-column label="计划投资(万元)"  align="center" prop="totalFunds" :formatter="ifTotalFundsNull"/>
+        <el-table-column label="项目个数" align="center" prop="numberItems"/>
         <el-table-column label="计划类型" align="center" prop="type">
           <template slot-scope="scope">
             <dict-tag :options="dict.type.plan_type" :value="scope.row.type"/>
@@ -193,7 +193,7 @@
 </template>
 
 <script>
-import { listPlan, getPlan, delPlan, addPlan, updatePlan } from "@/api/system/plan";
+import {listPlan, getPlan, delPlan, addPlan, updatePlan, listPlanAll} from "@/api/system/plan";
 
 export default {
   name: "YearPlan",
@@ -227,7 +227,9 @@ export default {
         affiliation: null,
         planYear: null,
         fillPeriod: null,
-        replyCharacter: null
+        replyCharacter: null,
+        numberItems: null,
+        totalFunds: null
       },
       // 表单参数
       form: {},
@@ -262,7 +264,7 @@ export default {
     /** 查询年度计划列表 */
     getList() {
       this.loading = true;
-      listPlan(this.queryParams).then(response => {
+      listPlanAll(this.queryParams).then(response => {
         this.planList = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -286,6 +288,11 @@ export default {
       };
       this.resetForm("form");
     },
+    //如果计划投资为空，则显示0
+    ifTotalFundsNull(row){
+      return row.totalFunds==null?"0":row.totalFunds;
+    },
+
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;

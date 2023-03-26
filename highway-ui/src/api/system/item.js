@@ -1,5 +1,14 @@
 import request from '@/utils/request'
 
+
+// 根据年度计划Id查询进度列表
+export function listItemByPlanId(id) {
+  return request({
+    url: '/system/item/listByPlanId/' + id,
+    method: 'get',
+  })
+}
+
 // 查询进度列表
 export function listItem(query) {
   return request({
@@ -32,6 +41,23 @@ export function updateItem(data) {
     url: '/system/item',
     method: 'put',
     data: data
+  })
+}
+
+// 修改进度状态为已审核
+export function updateItemScale(id) {
+  return request({
+    url: '/system/item/scale/' + id,
+    method: 'put',
+  })
+}
+
+
+// 修改进度为已驳回
+export function rejectScale(id) {
+  return request({
+    url: '/system/item/reject/' + id,
+    method: 'put',
   })
 }
 
