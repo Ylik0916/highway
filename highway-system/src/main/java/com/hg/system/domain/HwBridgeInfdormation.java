@@ -1,11 +1,12 @@
 package com.hg.system.domain;
 
-import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import com.hg.common.annotation.Excel;
 import com.hg.common.core.domain.BaseEntity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+import java.util.Date;
 
 /**
  * 桥梁信息对象 hw_bridge_infdormation
@@ -92,7 +93,7 @@ public class HwBridgeInfdormation extends BaseEntity
 
     /** 是否危桥 */
     @Excel(name = "是否危桥")
-    private Long routeDanger;
+    private String routeDanger;
 
     /** 评定等级 */
     @Excel(name = "评定等级")
@@ -461,12 +462,12 @@ public class HwBridgeInfdormation extends BaseEntity
     {
         return routeYear;
     }
-    public void setRouteDanger(Long routeDanger)
+    public void setRouteDanger(String routeDanger)
     {
         this.routeDanger = routeDanger;
     }
 
-    public Long getRouteDanger()
+    public String getRouteDanger()
     {
         return routeDanger;
     }

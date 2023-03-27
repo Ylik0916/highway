@@ -39,17 +39,6 @@
       </el-col>
       <el-col :span="1.5">
         <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:dynamic:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
           type="danger"
           plain
           icon="el-icon-delete"
@@ -76,7 +65,7 @@
       <el-table-column type="selection" width="55" align="center" />
 <!--      <el-table-column label="" align="center" prop="mdid" />-->
       <el-table-column label="养护人" align="center" prop="maintainPeople" />
-      <el-table-column label="养护单位" align="center" prop="maintainUnit" />
+<!--      <el-table-column label="养护单位" align="center" prop="maintainUnit" />-->
       <el-table-column label="养护路线名称" align="center" prop="pathName" />
       <el-table-column label="养护路线编号" align="center" prop="pathCode" />
       <el-table-column label="开始桩号" align="center" prop="beginStake" />
@@ -91,7 +80,7 @@
           <el-button
             size="mini"
             type="text"
-            icon="el-icon-edit"
+            icon="el-icon-finished"
             @click="handleOne(scope.row)"
             v-hasPermi="['system:dynamic:query']"
           >详情</el-button>
@@ -198,7 +187,7 @@
           <el-col :span="24">
             <div class="grid-content ">
               <el-form-item label="养护附件" prop="maintainAccessory">
-                <file-upload v-model="form.maintainAccessory"/>
+                <file-upload :limit="1" v-model="form.maintainAccessory"/>
               </el-form-item>
             </div>
           </el-col>
@@ -235,7 +224,12 @@
       </el-row>
       <h3 style="font-weight: bold">养护附件</h3>
       <el-row>
-        <el-col :span="24"><div class="grid-content">{{form.maintainAccessory}}</div></el-col>
+<!--        <el-col :span="24"><div class="grid-content">{{form.maintainAccessory}}</div></el-col>-->
+        <el-col :span="24">
+          <div class="grid-content">
+            <el-button type="primary" @click="downAccessory(form.maintainAccessory)">{{form.maintainAccessory}}</el-button>
+          </div>
+        </el-col>
       </el-row>
     </el-dialog>
   </div>
@@ -247,6 +241,7 @@
 <script>
 import { listDynamic, getDynamic, delDynamic, addDynamic, updateDynamic } from "@/api/system/dynamic";
 import {listInformation} from "@/api/system/information";
+// import {download} from "@/utils/request";
 
 export default {
   name: "Dynamic",
@@ -315,6 +310,17 @@ export default {
     this.getList();
   },
   methods: {
+    downAccessory(url){
+      console.log(url)
+      let list = url.split("/");
+      let fileName = list[list.length-1];
+      //这是文件路径参数，因为download函数需要传三个参数，这是第二个参数
+      let params = {
+        resource:url
+      };
+      this.$download.resource(url);
+      // download('/common/download/resource',params,fileName);
+    },
     /** 查询动态养护管理列表 */
     getList() {
       this.loading = true;

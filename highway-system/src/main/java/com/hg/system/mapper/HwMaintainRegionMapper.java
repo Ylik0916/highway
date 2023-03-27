@@ -29,7 +29,7 @@ public interface HwMaintainRegionMapper
     public HwMaintainRegion selectHwMaintainRegionByMrid(Long mrid);
 
     /**
-     *
+     * 根据muid查询
      * @param muid
      * @return
      */
@@ -81,4 +81,11 @@ public interface HwMaintainRegionMapper
      * @return
      */
     public int deleteHwMaintainRegionByMuid(Long muid);
+
+    /**
+     * 批量删除养护单位关联行政区根据muid
+     * @param muids
+     * @return
+     */
+    public int deleteHwMaintainRegionByMuids(Long[] muids);
 }

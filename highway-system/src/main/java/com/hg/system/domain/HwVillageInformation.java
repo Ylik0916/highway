@@ -1,16 +1,15 @@
 package com.hg.system.domain;
 
-import java.math.BigDecimal;
-import java.util.Date;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import com.hg.common.annotation.Excel;
 import com.hg.common.core.domain.BaseEntity;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * 建制村对象 hw_village_information
- * 
+ *
  * @author ruoyi
  * @date 2023-03-14
  */
@@ -37,7 +36,7 @@ public class HwVillageInformation extends BaseEntity
     private Long administrativeDivisionNumber;
 
     /** 经纬度类型 1高德 2GPS */
-    private Integer latitudeAndLongitudeType;
+    private String latitudeAndLongitudeType;
 
     /** 经度 */
     private String longitude;
@@ -49,7 +48,7 @@ public class HwVillageInformation extends BaseEntity
     private BigDecimal distanceFromPierToLand;
 
     /** 所属地形 */
-    private Integer landform;
+    private String landform;
 
     /** 岛内是否建有公路 */
     private String roadsOnTheIsland;
@@ -65,10 +64,10 @@ public class HwVillageInformation extends BaseEntity
 
     /** 通达现状 */
     @Excel(name = "通达现状")
-    private Integer accessStatusQuo;
+    private String accessStatusQuo;
 
     /** 乡镇通达位置 */
-    private Integer locationOfTownshipAccess;
+    private String locationOfTownshipAccess;
 
     /** 优选通达路线行政等级 */
     private String administrativeLevelAccessRoute;
@@ -80,7 +79,7 @@ public class HwVillageInformation extends BaseEntity
     private String accessRouteIsPreferred;
 
     /** 通达方向 */
-    private Integer directionOfAccess;
+    private String directionOfAccess;
 
     /** 待建路段里程(公里) */
     private BigDecimal lengthOfRoadToBeBuilt;
@@ -130,327 +129,327 @@ public class HwVillageInformation extends BaseEntity
     /** 备注 */
     private String remarks;
 
-    public void setVillageId(Long villageId) 
+    public void setVillageId(Long villageId)
     {
         this.villageId = villageId;
     }
 
-    public Long getVillageId() 
+    public Long getVillageId()
     {
         return villageId;
     }
-    public void setNameOfVillage(String nameOfVillage) 
+    public void setNameOfVillage(String nameOfVillage)
     {
         this.nameOfVillage = nameOfVillage;
     }
 
-    public String getNameOfVillage() 
+    public String getNameOfVillage()
     {
         return nameOfVillage;
     }
-    public void setRegionalPopulation(Long regionalPopulation) 
+    public void setRegionalPopulation(Long regionalPopulation)
     {
         this.regionalPopulation = regionalPopulation;
     }
 
-    public Long getRegionalPopulation() 
+    public Long getRegionalPopulation()
     {
         return regionalPopulation;
     }
-    public void setNumberOfIncorporatedVillages(Integer numberOfIncorporatedVillages) 
+    public void setNumberOfIncorporatedVillages(Integer numberOfIncorporatedVillages)
     {
         this.numberOfIncorporatedVillages = numberOfIncorporatedVillages;
     }
 
-    public Integer getNumberOfIncorporatedVillages() 
+    public Integer getNumberOfIncorporatedVillages()
     {
         return numberOfIncorporatedVillages;
     }
-    public void setAdministrativeDivisionNumber(Long administrativeDivisionNumber) 
+    public void setAdministrativeDivisionNumber(Long administrativeDivisionNumber)
     {
         this.administrativeDivisionNumber = administrativeDivisionNumber;
     }
 
-    public Long getAdministrativeDivisionNumber() 
+    public Long getAdministrativeDivisionNumber()
     {
         return administrativeDivisionNumber;
     }
-    public void setLatitudeAndLongitudeType(Integer latitudeAndLongitudeType) 
+    public void setLatitudeAndLongitudeType(String latitudeAndLongitudeType)
     {
         this.latitudeAndLongitudeType = latitudeAndLongitudeType;
     }
 
-    public Integer getLatitudeAndLongitudeType() 
+    public String getLatitudeAndLongitudeType()
     {
         return latitudeAndLongitudeType;
     }
-    public void setLongitude(String longitude) 
+    public void setLongitude(String longitude)
     {
         this.longitude = longitude;
     }
 
-    public String getLongitude() 
+    public String getLongitude()
     {
         return longitude;
     }
-    public void setLatitude(String latitude) 
+    public void setLatitude(String latitude)
     {
         this.latitude = latitude;
     }
 
-    public String getLatitude() 
+    public String getLatitude()
     {
         return latitude;
     }
-    public void setDistanceFromPierToLand(BigDecimal distanceFromPierToLand) 
+    public void setDistanceFromPierToLand(BigDecimal distanceFromPierToLand)
     {
         this.distanceFromPierToLand = distanceFromPierToLand;
     }
 
-    public BigDecimal getDistanceFromPierToLand() 
+    public BigDecimal getDistanceFromPierToLand()
     {
         return distanceFromPierToLand;
     }
-    public void setLandform(Integer landform) 
+    public void setLandform(String landform)
     {
         this.landform = landform;
     }
 
-    public Integer getLandform() 
+    public String getLandform()
     {
         return landform;
     }
-    public void setRoadsOnTheIsland(String roadsOnTheIsland) 
+    public void setRoadsOnTheIsland(String roadsOnTheIsland)
     {
         this.roadsOnTheIsland = roadsOnTheIsland;
     }
 
-    public String getRoadsOnTheIsland() 
+    public String getRoadsOnTheIsland()
     {
         return roadsOnTheIsland;
     }
-    public void setSuitableForRoadAccess(String suitableForRoadAccess) 
+    public void setSuitableForRoadAccess(String suitableForRoadAccess)
     {
         this.suitableForRoadAccess = suitableForRoadAccess;
     }
 
-    public String getSuitableForRoadAccess() 
+    public String getSuitableForRoadAccess()
     {
         return suitableForRoadAccess;
     }
-    public void setElevationOfTownshipGovernment(Long elevationOfTownshipGovernment) 
+    public void setElevationOfTownshipGovernment(Long elevationOfTownshipGovernment)
     {
         this.elevationOfTownshipGovernment = elevationOfTownshipGovernment;
     }
 
-    public Long getElevationOfTownshipGovernment() 
+    public Long getElevationOfTownshipGovernment()
     {
         return elevationOfTownshipGovernment;
     }
-    public void setCauseOfUnsuitability(String causeOfUnsuitability) 
+    public void setCauseOfUnsuitability(String causeOfUnsuitability)
     {
         this.causeOfUnsuitability = causeOfUnsuitability;
     }
 
-    public String getCauseOfUnsuitability() 
+    public String getCauseOfUnsuitability()
     {
         return causeOfUnsuitability;
     }
-    public void setAccessStatusQuo(Integer accessStatusQuo) 
+    public void setAccessStatusQuo(String accessStatusQuo)
     {
         this.accessStatusQuo = accessStatusQuo;
     }
 
-    public Integer getAccessStatusQuo() 
+    public String getAccessStatusQuo()
     {
         return accessStatusQuo;
     }
-    public void setLocationOfTownshipAccess(Integer locationOfTownshipAccess) 
+    public void setLocationOfTownshipAccess(String locationOfTownshipAccess)
     {
         this.locationOfTownshipAccess = locationOfTownshipAccess;
     }
 
-    public Integer getLocationOfTownshipAccess() 
+    public String getLocationOfTownshipAccess()
     {
         return locationOfTownshipAccess;
     }
-    public void setAdministrativeLevelAccessRoute(String administrativeLevelAccessRoute) 
+    public void setAdministrativeLevelAccessRoute(String administrativeLevelAccessRoute)
     {
         this.administrativeLevelAccessRoute = administrativeLevelAccessRoute;
     }
 
-    public String getAdministrativeLevelAccessRoute() 
+    public String getAdministrativeLevelAccessRoute()
     {
         return administrativeLevelAccessRoute;
     }
-    public void setOptimalAccessRouteCoding(String optimalAccessRouteCoding) 
+    public void setOptimalAccessRouteCoding(String optimalAccessRouteCoding)
     {
         this.optimalAccessRouteCoding = optimalAccessRouteCoding;
     }
 
-    public String getOptimalAccessRouteCoding() 
+    public String getOptimalAccessRouteCoding()
     {
         return optimalAccessRouteCoding;
     }
-    public void setAccessRouteIsPreferred(String accessRouteIsPreferred) 
+    public void setAccessRouteIsPreferred(String accessRouteIsPreferred)
     {
         this.accessRouteIsPreferred = accessRouteIsPreferred;
     }
 
-    public String getAccessRouteIsPreferred() 
+    public String getAccessRouteIsPreferred()
     {
         return accessRouteIsPreferred;
     }
-    public void setDirectionOfAccess(Integer directionOfAccess) 
+    public void setDirectionOfAccess(String directionOfAccess)
     {
         this.directionOfAccess = directionOfAccess;
     }
 
-    public Integer getDirectionOfAccess() 
+    public String getDirectionOfAccess()
     {
         return directionOfAccess;
     }
-    public void setLengthOfRoadToBeBuilt(BigDecimal lengthOfRoadToBeBuilt) 
+    public void setLengthOfRoadToBeBuilt(BigDecimal lengthOfRoadToBeBuilt)
     {
         this.lengthOfRoadToBeBuilt = lengthOfRoadToBeBuilt;
     }
 
-    public BigDecimal getLengthOfRoadToBeBuilt() 
+    public BigDecimal getLengthOfRoadToBeBuilt()
     {
         return lengthOfRoadToBeBuilt;
     }
-    public void setPointOfTheRoadSection(String pointOfTheRoadSection) 
+    public void setPointOfTheRoadSection(String pointOfTheRoadSection)
     {
         this.pointOfTheRoadSection = pointOfTheRoadSection;
     }
 
-    public String getPointOfTheRoadSection() 
+    public String getPointOfTheRoadSection()
     {
         return pointOfTheRoadSection;
     }
-    public void setEndPointOfTheRoadToBeBuilt(String endPointOfTheRoadToBeBuilt) 
+    public void setEndPointOfTheRoadToBeBuilt(String endPointOfTheRoadToBeBuilt)
     {
         this.endPointOfTheRoadToBeBuilt = endPointOfTheRoadToBeBuilt;
     }
 
-    public String getEndPointOfTheRoadToBeBuilt() 
+    public String getEndPointOfTheRoadToBeBuilt()
     {
         return endPointOfTheRoadToBeBuilt;
     }
-    public void setFillInTheUnitCode(String fillInTheUnitCode) 
+    public void setFillInTheUnitCode(String fillInTheUnitCode)
     {
         this.fillInTheUnitCode = fillInTheUnitCode;
     }
 
-    public String getFillInTheUnitCode() 
+    public String getFillInTheUnitCode()
     {
         return fillInTheUnitCode;
     }
-    public void setReportingUnit(String reportingUnit) 
+    public void setReportingUnit(String reportingUnit)
     {
         this.reportingUnit = reportingUnit;
     }
 
-    public String getReportingUnit() 
+    public String getReportingUnit()
     {
         return reportingUnit;
     }
-    public void setPersonInCharge(String personInCharge) 
+    public void setPersonInCharge(String personInCharge)
     {
         this.personInCharge = personInCharge;
     }
 
-    public String getPersonInCharge() 
+    public String getPersonInCharge()
     {
         return personInCharge;
     }
-    public void setFormFiller(String formFiller) 
+    public void setFormFiller(String formFiller)
     {
         this.formFiller = formFiller;
     }
 
-    public String getFormFiller() 
+    public String getFormFiller()
     {
         return formFiller;
     }
-    public void setPersonFillingInTheForm(String personFillingInTheForm) 
+    public void setPersonFillingInTheForm(String personFillingInTheForm)
     {
         this.personFillingInTheForm = personFillingInTheForm;
     }
 
-    public String getPersonFillingInTheForm() 
+    public String getPersonFillingInTheForm()
     {
         return personFillingInTheForm;
     }
-    public void setAuditor(String auditor) 
+    public void setAuditor(String auditor)
     {
         this.auditor = auditor;
     }
 
-    public String getAuditor() 
+    public String getAuditor()
     {
         return auditor;
     }
-    public void setAuditorTelephone(String auditorTelephone) 
+    public void setAuditorTelephone(String auditorTelephone)
     {
         this.auditorTelephone = auditorTelephone;
     }
 
-    public String getAuditorTelephone() 
+    public String getAuditorTelephone()
     {
         return auditorTelephone;
     }
-    public void setDegreeOfChange(String degreeOfChange) 
+    public void setDegreeOfChange(String degreeOfChange)
     {
         this.degreeOfChange = degreeOfChange;
     }
 
-    public String getDegreeOfChange() 
+    public String getDegreeOfChange()
     {
         return degreeOfChange;
     }
-    public void setAcquisitionMark(String acquisitionMark) 
+    public void setAcquisitionMark(String acquisitionMark)
     {
         this.acquisitionMark = acquisitionMark;
     }
 
-    public String getAcquisitionMark() 
+    public String getAcquisitionMark()
     {
         return acquisitionMark;
     }
-    public void setIncludedInStatistics(String includedInStatistics) 
+    public void setIncludedInStatistics(String includedInStatistics)
     {
         this.includedInStatistics = includedInStatistics;
     }
 
-    public String getIncludedInStatistics() 
+    public String getIncludedInStatistics()
     {
         return includedInStatistics;
     }
-    public void setAcquisitionTime(Date acquisitionTime) 
+    public void setAcquisitionTime(Date acquisitionTime)
     {
         this.acquisitionTime = acquisitionTime;
     }
 
-    public Date getAcquisitionTime() 
+    public Date getAcquisitionTime()
     {
         return acquisitionTime;
     }
-    public void setModificationTime(Date modificationTime) 
+    public void setModificationTime(Date modificationTime)
     {
         this.modificationTime = modificationTime;
     }
 
-    public Date getModificationTime() 
+    public Date getModificationTime()
     {
         return modificationTime;
     }
-    public void setRemarks(String remarks) 
+    public void setRemarks(String remarks)
     {
         this.remarks = remarks;
     }
 
-    public String getRemarks() 
+    public String getRemarks()
     {
         return remarks;
     }

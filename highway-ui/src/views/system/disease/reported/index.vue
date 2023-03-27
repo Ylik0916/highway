@@ -86,7 +86,7 @@
           <el-button
             size="mini"
             type="text"
-            icon="el-icon-edit"
+            icon="el-icon-s-order"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:disease:edit']"
           >上报</el-button>
@@ -139,18 +139,23 @@
           <el-col :span="8">
             <div class="grid-content">
               <el-row>
-                <el-col :span="12">
+                <el-col :span="8">
                   <div class="grid-content">
                     <el-form-item label="病害纬度" prop="diseaseLatitude">
-                      <el-input v-model="form.diseaseLatitude" placeholder="请输入病害纬度" />
+                      <el-input v-model="form.diseaseLatitude" :disabled="true" placeholder="请输入病害纬度" />
                     </el-form-item>
                   </div>
                 </el-col>
-                <el-col :span="12">
+                <el-col :span="8">
                   <div class="grid-content">
                     <el-form-item label="病害经度" prop="diseaseLongitude">
-                      <el-input v-model="form.diseaseLongitude" placeholder="请输入病害经度" />
+                      <el-input v-model="form.diseaseLongitude" :disabled="true" placeholder="请输入病害经度" />
                     </el-form-item>
+                  </div>
+                </el-col>
+                <el-col :span="8">
+                  <div class="grid-content">
+                      <el-button style="margin-top: 46px;width: 100%"  type="primary" @click="openMap()">地图定位</el-button>
                   </div>
                 </el-col>
               </el-row>
@@ -197,11 +202,12 @@
           </el-col>
           <el-col :span="12">
             <div class="grid-content">
+
             </div>
           </el-col>
         </el-row>
         <el-form-item label="病害图片" prop="diseaseImg">
-          <image-upload v-model="form.diseaseImg"/>
+          <image-upload :limit="1" v-model="form.diseaseImg"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -209,6 +215,11 @@
         <el-button type="primary" @click="submitForm(0)">保存病害</el-button>
 <!--        <el-button @click="cancel">保存病害</el-button>-->
       </div>
+    </el-dialog>
+
+    <!-- 关闭 -->
+    <el-dialog :title="titleMap" :visible.sync="mapClose" style="height: 800px;" width="800px" append-to-body>
+      <MapContainer :getMapCode="getMapCode"/>
     </el-dialog>
   </div>
 </template>
@@ -220,21 +231,23 @@ import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 import { listDept } from "@/api/system/dept";
 import {listInformation} from "@/api/system/information";
 import {listSectionInformation} from "@/api/system/sectionInformation";
+import MapContainer from "@/views/system/disease/components/MapContainer";
 
 
 export default {
   name: "Reported",
   dicts: ['reporting_type', 'disease_state', 'driving_direction'],
   components: {
+    MapContainer,
     Treeselect
   },
   data() {
     return {
       // 遮罩层
       loading: true,
-
       // 选中数组
       ids: [],
+      diseaseNames: [],
       // 非单个禁用
       single: true,
       // 非多个禁用
@@ -255,8 +268,10 @@ export default {
       sectionList: [],
       // 弹出层标题
       title: "",
+      titleMap: "",
       // 是否显示弹出层
       open: false,
+      mapClose: false,
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -288,10 +303,10 @@ export default {
           { required: true, message: "病害中心桩号不能为空", trigger: "blur" }
         ],
         diseaseLatitude: [
-          { required: true, message: "病害纬度不能为空", trigger: "blur" }
+          { required: true, message: "病害纬度不能为空", trigger: "blur" },
         ],
         diseaseLongitude: [
-          { required: true, message: "病害经度不能为空", trigger: "blur" }
+          { required: true, message: "病害经度不能为空", trigger: "blur" },
         ],
         diseaseImg: [
           { required: true, message: "病害图片不能为空", trigger: "blur" }
@@ -306,6 +321,17 @@ export default {
     this.getList();
   },
   methods: {
+    getMapCode(lng,lat){
+      this.form.diseaseLongitude = lng;
+      this.form.diseaseLatitude = lat;
+    },
+    closeMap(){
+      this.mapClose = false;
+    },
+    openMap(){
+      this.mapClose = true;
+      this.titleMap = "地图定位";
+    },
     /** 查询道路病害管理列表 */
     getList() {
       this.queryParams.statusid=0;
@@ -408,6 +434,7 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.wdid)
+      this.diseaseNames = selection.map(item => item.diseaseName)
       this.single = selection.length!==1
       this.multiple = !selection.length
     },
@@ -448,13 +475,13 @@ export default {
         if (valid) {
           if (this.form.wdid != null) {
             updateDisease(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功");
+              this.$modal.msgSuccess("操作成功");
               this.open = false;
               this.getList();
             });
           } else {
             addDisease(this.form).then(response => {
-              this.$modal.msgSuccess("新增成功");
+              this.$modal.msgSuccess("操作成功");
               this.open = false;
               this.getList();
             });
@@ -465,7 +492,8 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const wdids = row.wdid || this.ids;
-      this.$modal.confirm('是否确认删除道路病害管理编号为"' + wdids + '"的数据项？').then(function() {
+      const diseaseNames = row.diseaseName || this.diseaseNames;
+      this.$modal.confirm('是否确认删除道路病害名称为"' + diseaseNames + '"的数据项？').then(function() {
         return delDisease(wdids);
       }).then(() => {
         this.getList();
@@ -481,3 +509,4 @@ export default {
   }
 };
 </script>
+

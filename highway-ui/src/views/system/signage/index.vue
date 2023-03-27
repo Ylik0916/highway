@@ -11,12 +11,7 @@
         />
       </el-form-item>
       <el-form-item label="行政区域" prop="administrativeRegion">
-        <el-input
-          v-model="queryParams.administrativeRegion"
-          placeholder="请输入行政区域"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+          <treeselect style="width: 200px" v-model="queryParams.administrativeRegion" :options="ordinaryOptions" :normalizer="normalizer" placeholder="请选择行政区" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -163,12 +158,16 @@
 <script>
 import { listSignage, getSignage, delSignage, addSignage, updateSignage } from "@/api/system/signage";
 import {listInformation} from "@/api/system/information";
+import Treeselect from "@riophae/vue-treeselect";
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
+import {listDept} from "@/api/system/dept";
 
 export default {
   props:["vis","routeId"],
   name: "Signage",
   data() {
     return {
+      ordinaryOptions: [],
       activeName:'first',
       updateDis:'',
       flag :this.vis,
@@ -216,10 +215,33 @@ export default {
       }
     };
   },
+  components: {
+    Treeselect
+  },
   created() {
+    this.getTreeselect();
     this.getList();
   },
   methods: {
+    /** 转换一般养护数据结构 */
+    normalizer(node) {
+      if (node.children && !node.children.length) {
+        delete node.children;
+      }
+      return {
+        id: node.deptName,
+        label: node.deptName,
+        children: node.children
+      };
+    },
+    /** 查询一般养护下拉树结构 */
+    getTreeselect() {
+      listDept().then(response => {
+        this.ordinaryOptions = [];
+        // const data = { deptId: 0, deptName: '大陆', children: [] };
+        this.ordinaryOptions = this.handleTree(response.data, "deptId", "parentId");
+      });
+    },
     /** 查询标识标牌详情 */
     getSignageXq(row){
       const identificationTagId = row.identificationTagId || this.ids

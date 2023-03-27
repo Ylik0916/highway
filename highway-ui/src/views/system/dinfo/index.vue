@@ -11,7 +11,9 @@
           </div>
         </el-col>
         <el-col :span="9">
-          <div class="grid-content">地图</div>
+          <div class="grid-content" style="height: 790px" v-if="this.diseaseItem">
+            <MapInfo :items="diseaseItem"/>
+          </div>
         </el-col>
       </el-row>
     </div>
@@ -19,11 +21,15 @@
   </div>
 </template>
 
+
 <script>
 import Dinfomatio from "@/views/system/dinfo/dinfomatio";
 import Ddispose from "@/views/system/dinfo/ddispose";
 import Dconserve from "@/views/system/dinfo/dconserve";
 import {getDisease} from "@/api/system/disease";
+import MapInfo from "@/views/system/dinfo/components/MapInfo";
+import MapContainer from "@/views/system/disease/components/MapContainer";
+
 
 export default {
   name: "Dinfo",
@@ -32,6 +38,7 @@ export default {
       compentList:this.$route.query.compentList,
       id:this.$route.query.id,
       diseaseItem:null,
+      map: null,
     }
   },
   created() {
@@ -41,6 +48,8 @@ export default {
     Dinfomatio,
     Ddispose,
     Dconserve,
+    MapInfo,
+    MapContainer
   },
   methods: {
     getDiseaseOne(){
@@ -49,9 +58,8 @@ export default {
       });
     },
     load(){
-      console.log(this.compentList.length)
       this.compentList.length = 3;
-    }
+    },
   },
 };
 </script>

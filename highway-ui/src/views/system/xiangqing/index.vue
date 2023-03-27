@@ -29,7 +29,7 @@
     <el-tab-pane label="桥梁信息" name="second"><Show :routeId="routeId"></Show></el-tab-pane>
     <el-tab-pane label="隧道信息" name="fourth"><Tunnel :rou="routeId"></Tunnel></el-tab-pane>
     <el-tab-pane label="标识标牌" name="firth"><Signage :vis="flag" :routeId="routeId"></Signage></el-tab-pane>
-    <el-tab-pane label="病害信息" name="sixth"><Dispose :rou="routeId"></Dispose></el-tab-pane>
+    <el-tab-pane label="病害信息" name="sixth"><Dispose :vis="flag" :rou="routeId"></Dispose></el-tab-pane>
   </el-tabs>
   </div>
 </div>
