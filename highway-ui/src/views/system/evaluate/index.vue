@@ -178,7 +178,17 @@
             <el-table-column label="评价时间" align="center" prop="evaluateTime"/>
             <el-table-column label="评价分数" align="center" prop="evaluateScore"/>
             <el-table-column label="评价等级" align="center" prop="evaluateGrade"/>
-            <el-table-column label="评价附件" align="center" prop="evaluateDocumentUpload"/>
+            <el-table-column label="评价附件" align="center" prop="evaluateDocumentUpload">
+              <template slot-scope="scope">
+                <el-button
+                  size="mini"
+                  type="text"
+                  icon="el-icon-download"
+                  @click="downAccessory(scope.row.evaluateDocumentUpload)"
+                >下载
+                </el-button>
+              </template>
+            </el-table-column>
             <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
               <template slot-scope="scope">
                 <el-button
@@ -205,7 +215,8 @@
         <el-dialog :title="historyAddTitle" :visible.sync="historyAddOpen" width="500px" append-to-body>
           <el-form ref="historyForm" :model="historyForm" :rules="historyRules" label-width="80px">
             <el-form-item label="评分" prop="evaluateScore" style="width: 300px">
-              <el-input-number v-model="historyForm.evaluateScore" controls-position="right" placeholder="请输入评分施工标名称" :min="0"/>
+              <el-input-number v-model="historyForm.evaluateScore" controls-position="right" placeholder="请输入评分施工标名称"
+                               :min="0"/>
             </el-form-item>
             <el-form-item label="附件" prop="evaluateDocumentUpload">
               <file-upload v-model="historyForm.evaluateDocumentUpload"/>
@@ -321,6 +332,10 @@ export default {
     this.getList();
   },
   methods: {
+    /** 下载方法 */
+    downAccessory(url) {
+      this.$download.resource(url);
+    },
     /** 查询历史评价列表 */
     getHistoryList(row) {
       const unitId = row.unitId || this.ids
