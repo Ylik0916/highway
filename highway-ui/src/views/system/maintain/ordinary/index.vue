@@ -46,17 +46,6 @@
       </el-col>
       <el-col :span="1.5">
         <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['system:ordinary:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
           type="danger"
           plain
           icon="el-icon-delete"
@@ -111,14 +100,14 @@
           <el-button
             size="mini"
             type="text"
-            icon="el-icon-edit"
+            icon="el-icon-finished"
             @click="handleOne(scope.row)"
             v-hasPermi="['system:ordinary:query']"
           >详情</el-button>
           <el-button
             size="mini"
             type="text"
-            icon="el-icon-edit"
+            icon="el-icon-info"
             @click="handleAudit(scope.row)"
             :disabled="scope.row.auditStatusid !== 0"
             v-hasPermi="['system:ordinary:edit']"
@@ -188,21 +177,21 @@
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="养护里程" prop="maintainMileage">
-                <el-input v-model.number="form.maintainMileage" placeholder="请输入养护里程" />
+                <el-input v-model="form.maintainMileage" placeholder="请输入养护里程" />
               </el-form-item>
             </div>
           </el-col>
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="沥青路面、水泥混凝土路面、砖路面(km)" prop="pitchRoad">
-                <el-input v-model.number="form.pitchRoad" placeholder="请输入沥青路面、水泥混凝土路面、砖路面(km)" />
+                <el-input v-model="form.pitchRoad" placeholder="请输入沥青路面、水泥混凝土路面、砖路面(km)" />
               </el-form-item>
             </div>
           </el-col>
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="砂砾路面" prop="gravelRoad">
-                <el-input v-model.number="form.gravelRoad" placeholder="请输入砂砾路面" />
+                <el-input v-model="form.gravelRoad" placeholder="请输入砂砾路面" />
               </el-form-item>
             </div>
           </el-col>
@@ -211,21 +200,21 @@
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="总养护资金(万元)" prop="allFund">
-                <el-input v-model.number="form.allFund" placeholder="请输入总养护资金(万元)" />
+                <el-input v-model="form.allFund" placeholder="请输入总养护资金(万元)" />
               </el-form-item>
             </div>
           </el-col>
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="市养护资金(万元)" prop="cityFund">
-                <el-input v-model.number="form.cityFund" placeholder="请输入市养护资金(万元)" />
+                <el-input v-model="form.cityFund" placeholder="请输入市养护资金(万元)" />
               </el-form-item>
             </div>
           </el-col>
           <el-col :span="8">
             <div class="grid-content">
               <el-form-item label="县养护资金(万元)" prop="countyFund">
-                <el-input v-model.number="form.countyFund" placeholder="请输入县养护资金(万元)" />
+                <el-input v-model="form.countyFund" placeholder="请输入县养护资金(万元)" />
               </el-form-item>
             </div>
           </el-col>
@@ -297,11 +286,23 @@ export default {
     Treeselect
   },
   data() {
+    var rulesNumber = (rule, value, callback) => {
+      if (!isNaN(Number(value))) {
+        if (value < 0) {
+          callback(new Error('输入值必须大于0'));
+        } else {
+          callback();
+        }
+      } else {
+        callback(new Error('输入的必须为数字值'));
+      }
+    };
     return {
       // 遮罩层
       loading: true,
       // 选中数组
       ids: [],
+      codes: [],
       // 非单个禁用
       single: true,
       // 非多个禁用
@@ -331,18 +332,19 @@ export default {
         administrative: null,
         pathCode: null,
         villageName: null,
-        maintainMileage: null,
-        pitchRoad: null,
-        gravelRoad: null,
-        allFund: null,
-        cityFund: null,
-        countyFund: null,
         auditStatusid: null,
         administrativeName: null,
         administrativeCode: null
       },
       // 表单参数
-      form: {},
+      form: {
+        maintainMileage: 0,
+        pitchRoad: 0,
+        gravelRoad: 0,
+        allFund: 0,
+        cityFund: 0,
+        countyFund: 0,
+      },
       // 表单校验
       rules: {
         administrative: [
@@ -355,22 +357,22 @@ export default {
           { required: true, message: "村道名称不能为空", trigger: "blur" }
         ],
         maintainMileage: [
-          { type: 'number', message: '养护里程必须为数字值', trigger: "blur"}
+          { validator: rulesNumber, trigger: 'blur' }
         ],
         pitchRoad: [
-          { type: 'number', message: '沥青路面、水泥混凝土路面、砖路面必须为数字值', trigger: "blur"}
+          { validator: rulesNumber, trigger: 'blur' }
         ],
         gravelRoad: [
-          { type: 'number', message: '砂砾路面必须为数字值', trigger: "blur"}
+          { validator: rulesNumber, trigger: 'blur' }
         ],
         allFund: [
-          { type: 'number', message: "总养护资金必须为数字值", trigger: "blur" }
+          { validator: rulesNumber, trigger: 'blur' }
         ],
         cityFund: [
-          { type: 'number', message: "市养护资金必须为数字值", trigger: "blur" }
+          { validator: rulesNumber, trigger: 'blur' }
         ],
         countyFund: [
-          { type: 'number', message: "县养护资金必须为数字值", trigger: "blur" }
+          { validator: rulesNumber, trigger: 'blur' }
         ],
       }
     };
@@ -403,13 +405,14 @@ export default {
     getTreeselect() {
       listDept().then(response => {
         this.ordinaryOptions = [];
-        // const data = { deptId: 0, deptName: '大陆', children: [] };
         this.ordinaryOptions = this.handleTree(response.data, "deptId", "parentId");
       });
     },
     // 取消按钮
     cancel() {
       this.open = false;
+      this.openAuit = false;
+      this.detailsOpen = false;
       this.reset();
     },
     // 表单重置
@@ -434,6 +437,16 @@ export default {
       };
       this.resetForm("form");
     },
+    /** 类型转换 */
+    numStrChange(){
+      this.form.maintainMileage = Number(this.form.maintainMileage);
+      console.log(typeof this.form.maintainMileage)
+      this.form.pitchRoad = Number(this.form.pitchRoad);
+      this.form.gravelRoad = Number(this.form.gravelRoad);
+      this.form.allFund = Number(this.form.allFund);
+      this.form.cityFund = Number(this.form.cityFund);
+      this.form.countyFund = Number(this.form.countyFund);
+    },
     /** 搜索按钮操作 */
     handleQuery() {
       this.queryParams.pageNum = 1;
@@ -447,6 +460,7 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.mpoid)
+      this.codes = selection.map(item => item.pathCode)
       this.single = selection.length!==1
       this.multiple = !selection.length
     },
@@ -492,6 +506,7 @@ export default {
       const mpoid = row.mpoid || this.ids
       getOrdinary(mpoid).then(response => {
         this.form = response.data;
+        // this.numStrChange();
         this.open = true;
         this.title = "修改一般养护";
       });
@@ -507,14 +522,14 @@ export default {
         if (valid) {
           if (this.form.mpoid != null) {
             updateOrdinary(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功");
+              this.$modal.msgSuccess("操作成功");
               this.open = false;
               this.openAuit = false;
               this.getList();
             });
           } else {
             addOrdinary(this.form).then(response => {
-              this.$modal.msgSuccess("新增成功");
+              this.$modal.msgSuccess("操作成功");
               this.open = false;
               this.getList();
             });
@@ -525,7 +540,8 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const mpoids = row.mpoid || this.ids;
-      this.$modal.confirm('是否确认删除一般养护编号为"' + mpoids + '"的数据项？').then(function() {
+      const codes = row.pathCode || this.codes;
+      this.$modal.confirm('是否确认删除路线编号为"' + codes + '的计划？').then(function() {
         return delOrdinary(mpoids);
       }).then(() => {
         this.getList();

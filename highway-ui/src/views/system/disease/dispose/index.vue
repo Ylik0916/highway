@@ -64,21 +64,21 @@
           <el-button
             size="mini"
             type="text"
-            icon="el-icon-edit"
+            icon="el-icon-finished"
             @click="getDinfo(scope.row)"
             v-hasPermi="['system:disease:query']"
           >详情</el-button>
           <el-button
             size="mini"
             type="text"
-            icon="el-icon-plus"
+            icon="el-icon-tickets"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:disease:edit']"
           >处置</el-button>
           <el-button
             size="mini"
             type="text"
-            icon="el-icon-delete"
+            icon="el-icon-close"
             @click="handleClose(scope.row)"
             v-hasPermi="['system:disease:edit']"
           >关闭</el-button>
@@ -154,7 +154,7 @@
           <el-input v-model="form.disposeRemark" type="textarea" placeholder="请输入内容" />
         </el-form-item>
         <el-form-item label="处置图片" prop="disposeImg">
-          <image-upload v-model="form.disposeImg"/>
+          <image-upload :limit="1" v-model="form.disposeImg"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -190,6 +190,7 @@ export default {
       loading: true,
       // 选中数组
       ids: [],
+      diseaseNames: [],
       // 非单个禁用
       single: true,
       // 非多个禁用
@@ -263,6 +264,7 @@ export default {
     // 取消按钮
     cancel() {
       this.open = false;
+      this.openClose = false;
       this.reset();
     },
     // 表单重置
@@ -318,6 +320,7 @@ export default {
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.wdid)
+      this.diseaseNames = selection.map(item => item.diseaseName)
       this.single = selection.length!==1
       this.multiple = !selection.length
     },
@@ -344,7 +347,7 @@ export default {
       getDisease(wdid).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改道路病害管理";
+        this.title = "病害处置";
       });
     },
     /** 提交按钮 */
@@ -354,14 +357,14 @@ export default {
         if (valid) {
           if (this.form.wdid != null) {
             updateDisease(this.form).then(response => {
-              this.$modal.msgSuccess("修改成功");
+              this.$modal.msgSuccess("操作成功");
               this.open = false;
               this.openClose = false;
               this.getList();
             });
           } else {
             addDisease(this.form).then(response => {
-              this.$modal.msgSuccess("新增成功");
+              this.$modal.msgSuccess("操作成功");
               this.open = false;
               this.getList();
             });
@@ -372,7 +375,8 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const wdids = row.wdid || this.ids;
-      this.$modal.confirm('是否确认删除道路病害管理编号为"' + wdids + '"的数据项？').then(function() {
+      const diseaseNames = row.diseaseName || this.diseaseNames;
+      this.$modal.confirm('是否确认删除道路病害名称为"' + diseaseNames + '"的数据项？').then(function() {
         return delDisease(wdids);
       }).then(() => {
         this.getList();

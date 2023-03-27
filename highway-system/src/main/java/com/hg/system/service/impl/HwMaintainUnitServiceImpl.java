@@ -108,6 +108,8 @@ public class HwMaintainUnitServiceImpl implements IHwMaintainUnitService
     @Override
     public int deleteHwMaintainUnitByMuids(Long[] muids)
     {
+        //批量删除权限
+        hwMaintainRegionMapper.deleteHwMaintainRegionByMuids(muids);
         return hwMaintainUnitMapper.deleteHwMaintainUnitByMuids(muids);
     }
 
@@ -120,6 +122,8 @@ public class HwMaintainUnitServiceImpl implements IHwMaintainUnitService
     @Override
     public int deleteHwMaintainUnitByMuid(Long muid)
     {
+        //批量删除权限
+        hwMaintainRegionMapper.deleteHwMaintainRegionByMuid(muid);
         return hwMaintainUnitMapper.deleteHwMaintainUnitByMuid(muid);
     }
 }
