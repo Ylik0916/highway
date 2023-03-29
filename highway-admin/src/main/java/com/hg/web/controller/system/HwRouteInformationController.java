@@ -7,6 +7,8 @@ import com.hg.common.core.page.TableDataInfo;
 import com.hg.common.enums.BusinessType;
 import com.hg.common.utils.poi.ExcelUtil;
 import com.hg.system.domain.HwRouteInformation;
+import com.hg.system.domain.vo.RouteMileage;
+import com.hg.system.domain.vo.RouterType;
 import com.hg.system.service.IHwRouteInformationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -94,5 +96,15 @@ public class HwRouteInformationController extends BaseController
     public AjaxResult remove(@PathVariable Long[] ids)
     {
         return toAjax(hwRouteInformationService.deleteHwRouteInformationByIds(ids));
+    }
+
+    @GetMapping("/routeType")
+    public List<RouterType> routerType(){
+        return hwRouteInformationService.routetype();
+    }
+
+    @GetMapping("/routeMileage")
+    public RouteMileage routeMileage(){
+        return hwRouteInformationService.routeMileage();
     }
 }

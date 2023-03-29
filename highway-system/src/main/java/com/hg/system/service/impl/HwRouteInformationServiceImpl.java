@@ -1,6 +1,10 @@
 package com.hg.system.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import com.hg.system.domain.vo.RouteMileage;
+import com.hg.system.domain.vo.RouterType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.hg.system.mapper.HwRouteInformationMapper;
@@ -89,5 +93,28 @@ public class HwRouteInformationServiceImpl implements IHwRouteInformationService
     public int deleteHwRouteInformationById(Long id)
     {
         return hwRouteInformationMapper.deleteHwRouteInformationById(id);
+    }
+
+    @Override
+    public List<RouterType> routetype() {
+        return hwRouteInformationMapper.routeType();
+    }
+
+
+    @Override
+    public RouteMileage routeMileage() {
+        List<String> names = new ArrayList<>();
+        List<String> values = new ArrayList<>();
+
+        List<RouterType> routerTypes = hwRouteInformationMapper.routeMileage();
+        RouteMileage rm = new RouteMileage();
+        for (RouterType routerType : routerTypes) {
+            names.add(routerType.getName());
+            values.add(routerType.getValue());
+        }
+        rm.setName(names);
+        rm.setValue(values);
+
+        return rm;
     }
 }

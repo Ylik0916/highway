@@ -1,6 +1,8 @@
 package com.hg.system.service;
 
 import com.hg.system.domain.HwRouteInformation;
+import com.hg.system.domain.vo.RouteMileage;
+import com.hg.system.domain.vo.RouterType;
 
 import java.util.List;
 
@@ -59,4 +61,8 @@ public interface IHwRouteInformationService
      * @return 结果
      */
     public int deleteHwRouteInformationById(Long id);
+
+    public List<RouterType> routetype();
+
+    public RouteMileage routeMileage();
 }

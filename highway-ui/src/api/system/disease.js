@@ -42,3 +42,16 @@ export function delDisease(wdid) {
     method: 'delete'
   })
 }
+
+export function diseaseCount() {
+  return request({
+    url: '/system/disease/diseaseCount',
+    method: 'get'
+  })
+}
+export function routeDisease() {
+  return request({
+    url: '/system/disease/routeDisease',
+    method: 'get'
+  })
+}

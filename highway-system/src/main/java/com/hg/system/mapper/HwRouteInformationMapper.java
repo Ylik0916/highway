@@ -2,6 +2,8 @@ package com.hg.system.mapper;
 
 import java.util.List;
 import com.hg.system.domain.HwRouteInformation;
+import com.hg.system.domain.vo.RouteMileage;
+import com.hg.system.domain.vo.RouterType;
 
 /**
  * 路线列表Mapper接口
@@ -58,4 +60,10 @@ public interface HwRouteInformationMapper
      * @return 结果
      */
     public int deleteHwRouteInformationByIds(Long[] ids);
+
+    public List<RouterType> routeType();
+
+
+    public List<RouterType> routeMileage();
+
 }

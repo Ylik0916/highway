@@ -67,7 +67,7 @@ public class HwWayDisease extends BaseEntity
 
     /** 状态 */
     @Excel(name = "状态")
-    private Long statusid;
+    private String statusid;
 
     /** 所属路线 */
     @Excel(name = "所属路线")
@@ -260,12 +260,12 @@ public class HwWayDisease extends BaseEntity
     {
         return reportType;
     }
-    public void setStatusid(Long statusid) 
+    public void setStatusid(String statusid)
     {
         this.statusid = statusid;
     }
 
-    public Long getStatusid() 
+    public String getStatusid()
     {
         return statusid;
     }

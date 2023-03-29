@@ -1,10 +1,21 @@
 <template>
-  <div align="center">
-    <h1>公路系统欢迎您</h1>
-  <img src="../assets/images/gl.jpg" alt="" width="900px">
+  <div>
+    <div class="bigBox">
+    <div style="display: flex">
+    <div id="left" :style="{width:'720px',height:'400px'}" class="smallBox"></div>
+    <div id="right" :style="{width:'520px',height:'400px'}" class="smallBox"></div>
+    </div>
+    <div style="display: flex" >
+    <div id="xLeft" :style="{width:'520px',height:'400px'}" class="smallBox"></div>
+    <div id="xRight" :style="{width:'720px',height:'400px'}" class="smallBox"></div>
+    </div>
+    </div>
   </div>
 </template>
 <script>
+import {routeMileage, routeType} from "@/api/system/information";
+import {diseaseCount, routeDisease} from "@/api/system/disease";
+
 export default {
   name: "Index",
   data() {
@@ -13,7 +24,172 @@ export default {
       version: "3.8.4",
     };
   },
+  mounted() {
+    this.getRouteDisease(),
+    this.getDiseaseCount();
+    this.getRouteMileage();
+    this.getRouteType();
+  },
   methods: {
+    getRouteDisease(){
+      routeDisease().then(resp=>{
+        let myChart = this.$echarts.init(document.getElementById('xRight'));
+        myChart.setOption({
+          title: {
+            text: '病害高发信息统计',
+            left: 'center'
+          },
+          xAxis: {
+            type: 'category',
+            data: resp.name
+          },
+          yAxis: {
+            type: 'value'
+          },
+          series: [
+            {
+              itemStyle : { normal: {label : {show: true}}},
+              data: resp.value,
+              type: 'line',
+              smooth: true
+            }
+          ]
+        })
+      })
+    },
+    getDiseaseCount(){
+      diseaseCount().then(resp=>{
+        var sum;
+        for (let i = 0; i < resp.length; i++) {
+          sum+=Number.parseInt(resp[i].value)
+        }
+        let myChart = this.$echarts.init(document.getElementById('xLeft'));
+        myChart.setOption({
+          title: {
+            text: '病害数量统计',
+            left: 'center'
+          },
+          tooltip: {
+            trigger: 'item'
+          },
+          legend: {
+            top: '5%',
+            left: 'right'
+          },
+          series: [
+            {
+              name: 'Access From',
+              type: 'pie',
+              radius: ['40%', '70%'],
+              avoidLabelOverlap: false,
+              itemStyle: {
+                borderRadius: 10,
+                borderColor: '#fff',
+                borderWidth: 2
+              },
+              label: {
+                show: false,
+                position: 'center'
+              },
+              emphasis: {
+                label: {
+                  show: true,
+                  fontSize: 40,
+                  fontWeight: 'bold'
+                }
+              },
+              labelLine: {
+                show: false
+              },
+              data: resp
+            }
+          ]
+        })
+      })
+    },
+    getRouteMileage(){
+      routeMileage().then(resp=>{
+        let myChart = this.$echarts.init(document.getElementById('left'));
+        myChart.setOption({
+          title: {
+            text: '道路里程统计',
+            left: 'center'
+          },
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              type: 'shadow'
+            }
+          },
+          grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+          },
+
+          xAxis: [
+            {
+              type: 'category',
+              data: resp.name,
+              axisTick: {
+                alignWithLabel: true
+              }
+            }
+          ],
+          itemStyle:{
+            color: '#6ab0b8'
+          },
+          yAxis: [
+            {
+              type: 'value'
+            },
+          ],
+          series: [
+
+            {
+              name: 'Direct',
+              type: 'bar',
+              barWidth: '60%',
+              data: resp.value
+            }
+          ]
+        })
+      });
+    },
+    getRouteType(){
+      routeType().then(resp=>{
+        let myChart = this.$echarts.init(document.getElementById('right'));
+        myChart.setOption({
+          title: {
+            text: '路线类型统计',
+            left: 'center'
+          },
+          tooltip: {
+            trigger: 'item'
+          },
+          legend: {
+            orient: 'vertical',
+            left: 'left'
+          },
+          series: [
+            {
+              name: 'Access From',
+              type: 'pie',
+              radius: '50%',
+              data: resp,
+              emphasis: {
+                itemStyle: {
+                  shadowBlur: 10,
+                  shadowOffsetX: 0,
+                  shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+              }
+            }
+          ]
+        })
+      })
+    },
     goTarget(href) {
       window.open(href, "_blank");
     },
@@ -22,66 +198,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.home {
-  blockquote {
-    padding: 10px 20px;
-    margin: 0 0 20px;
-    font-size: 17.5px;
-    border-left: 5px solid #eee;
-  }
-  hr {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    border: 0;
-    border-top: 1px solid #eee;
-  }
-  .col-item {
-    margin-bottom: 20px;
-  }
 
-  ul {
-    padding: 0;
-    margin: 0;
-  }
-
-  font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 13px;
-  color: #676a6c;
-  overflow-x: hidden;
-
-  ul {
-    list-style-type: none;
-  }
-
-  h4 {
-    margin-top: 0px;
-  }
-
-  h2 {
-    margin-top: 10px;
-    font-size: 26px;
-    font-weight: 100;
-  }
-
-  p {
-    margin-top: 10px;
-
-    b {
-      font-weight: 700;
-    }
-  }
-
-  .update-log {
-    ol {
-      display: block;
-      list-style-type: decimal;
-      margin-block-start: 1em;
-      margin-block-end: 1em;
-      margin-inline-start: 0;
-      margin-inline-end: 0;
-      padding-inline-start: 40px;
-    }
-  }
-}
 </style>
 

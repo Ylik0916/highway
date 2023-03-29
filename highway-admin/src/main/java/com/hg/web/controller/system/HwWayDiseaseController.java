@@ -10,6 +10,8 @@ import com.hg.common.core.page.TableDataInfo;
 import com.hg.common.enums.BusinessType;
 import com.hg.common.utils.poi.ExcelUtil;
 import com.hg.system.domain.HwWayDisease;
+import com.hg.system.domain.vo.RouteMileage;
+import com.hg.system.domain.vo.RouterType;
 import com.hg.system.service.IHwWayDiseaseService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,4 +104,13 @@ public class HwWayDiseaseController extends BaseController
     {
         return toAjax(hwWayDiseaseService.deleteHwWayDiseaseByWdids(wdids));
     }
+    @GetMapping("/diseaseCount")
+    public List<RouterType> diseaseCount(){
+       return hwWayDiseaseService.diseaseCount();
+    }
+
+   @GetMapping("/routeDisease")
+    public RouteMileage routeDisease(){
+        return hwWayDiseaseService.routeDisease();
+   }
 }

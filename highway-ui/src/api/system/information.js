@@ -42,3 +42,15 @@ export function delInformation(id) {
     method: 'delete'
   })
 }
+export function routeType() {
+  return request({
+    url: '/system/information/routeType',
+    method: 'get'
+  })
+}
+export function routeMileage() {
+  return request({
+    url: '/system/information/routeMileage',
+    method: 'get'
+  })
+}

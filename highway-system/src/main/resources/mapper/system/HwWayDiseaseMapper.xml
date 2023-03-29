@@ -90,7 +90,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectHwWayDiseaseVo"/>
         where wdid = #{wdid}
     </select>
-        
+    <select id="diseaseCount" resultType="com.hg.system.domain.vo.RouterType">
+        SELECT statusid NAME,COUNT(*) VALUE FROM `hw_way_disease` GROUP BY statusid    </select>
+    <select id="routeDisease" resultType="com.hg.system.domain.vo.RouterType">
+        SELECT route_type NAME,COUNT(route_type) VALUE FROM `hw_way_disease`,`hw_route_information` WHERE path_name=route_name GROUP BY route_type
+    </select>
+
     <insert id="insertHwWayDisease" parameterType="HwWayDisease" useGeneratedKeys="true" keyProperty="wdid">
         insert into hw_way_disease
         <trim prefix="(" suffix=")" suffixOverrides=",">

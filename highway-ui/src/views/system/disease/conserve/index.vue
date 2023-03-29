@@ -236,7 +236,7 @@ export default {
   methods: {
     /** 查询道路病害管理列表 */
     getList() {
-      this.queryParams.statusid=2;
+      this.queryParams.statusid="待养护";
       this.loading = true;
       listDisease(this.queryParams).then(response => {
         this.diseaseList = response.rows;

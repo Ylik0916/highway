@@ -50,7 +50,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectHwRouteInformationVo"/>
         where id = #{id}
     </select>
-        
+
+    <select id="routeType" resultType="com.hg.system.domain.vo.RouterType">
+        SELECT route_type NAME,COUNT(*) VALUE FROM `hw_route_information` GROUP BY route_type;
+    </select>
+    <select id="routeMileage" resultType="com.hg.system.domain.vo.RouterType">
+        SELECT route_type NAME,SUM(route_mileage) VALUE FROM `hw_route_information` GROUP BY route_type;
+    </select>
+
     <insert id="insertHwRouteInformation" parameterType="HwRouteInformation" useGeneratedKeys="true" keyProperty="id">
         insert into hw_route_information
         <trim prefix="(" suffix=")" suffixOverrides=",">

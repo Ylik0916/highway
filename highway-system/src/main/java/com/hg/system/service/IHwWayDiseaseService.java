@@ -1,6 +1,8 @@
 package com.hg.system.service;
 
 import com.hg.system.domain.HwWayDisease;
+import com.hg.system.domain.vo.RouteMileage;
+import com.hg.system.domain.vo.RouterType;
 
 import java.util.List;
 
@@ -59,4 +61,8 @@ public interface IHwWayDiseaseService
      * @return 结果
      */
     public int deleteHwWayDiseaseByWdid(Long wdid);
+
+    List<RouterType> diseaseCount();
+
+    RouteMileage routeDisease();
 }

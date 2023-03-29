@@ -1,6 +1,7 @@
 package com.hg.system.mapper;
 
 import com.hg.system.domain.HwWayDisease;
+import com.hg.system.domain.vo.RouterType;
 
 import java.util.List;
 
@@ -60,4 +61,8 @@ public interface HwWayDiseaseMapper
      * @return 结果
      */
     public int deleteHwWayDiseaseByWdids(Long[] wdids);
+
+    List<RouterType> diseaseCount();
+
+    List<RouterType> routeDisease();
 }

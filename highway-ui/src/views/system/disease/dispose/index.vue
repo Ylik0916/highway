@@ -249,7 +249,7 @@ export default {
   methods: {
     /** 查询道路病害管理列表 */
     getList() {
-      this.queryParams.statusid=1;
+      this.queryParams.statusid="待处置";
       this.loading = true;
       listDisease(this.queryParams).then(response => {
         this.diseaseList = response.rows;

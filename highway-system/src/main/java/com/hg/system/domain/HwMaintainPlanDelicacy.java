@@ -55,7 +55,7 @@ public class HwMaintainPlanDelicacy extends BaseEntity
 
     /** 审核状态id */
     @Excel(name = "审核状态id")
-    private Long auditStatusid;
+    private String auditStatusid;
 
     /** 审核人 */
     @Excel(name = "审核人")
@@ -156,12 +156,12 @@ public class HwMaintainPlanDelicacy extends BaseEntity
     {
         return amount;
     }
-    public void setAuditStatusid(Long auditStatusid) 
+    public void setAuditStatusid(String auditStatusid)
     {
         this.auditStatusid = auditStatusid;
     }
 
-    public Long getAuditStatusid() 
+    public String getAuditStatusid()
     {
         return auditStatusid;
     }

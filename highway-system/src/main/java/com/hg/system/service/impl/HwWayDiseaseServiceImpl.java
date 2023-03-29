@@ -1,8 +1,11 @@
 package com.hg.system.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.hg.system.domain.HwWayDisease;
+import com.hg.system.domain.vo.RouteMileage;
+import com.hg.system.domain.vo.RouterType;
 import com.hg.system.mapper.HwWayDiseaseMapper;
 import com.hg.system.service.IHwWayDiseaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,5 +93,25 @@ public class HwWayDiseaseServiceImpl implements IHwWayDiseaseService
     public int deleteHwWayDiseaseByWdid(Long wdid)
     {
         return hwWayDiseaseMapper.deleteHwWayDiseaseByWdid(wdid);
+    }
+
+    @Override
+    public List<RouterType> diseaseCount() {
+        return hwWayDiseaseMapper.diseaseCount();
+    }
+
+    @Override
+    public RouteMileage routeDisease() {
+        RouteMileage routeMileage = new RouteMileage();
+        List<String> name = new ArrayList<>();
+        List<String> value = new ArrayList<>();
+        List<RouterType> routerTypes = hwWayDiseaseMapper.routeDisease();
+        for (RouterType routerType : routerTypes) {
+            name.add(routerType.getName());
+            value.add(routerType.getValue());
+        }
+        routeMileage.setName(name);
+        routeMileage.setValue(value);
+        return routeMileage;
     }
 }

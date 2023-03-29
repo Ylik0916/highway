@@ -227,13 +227,12 @@
 <!--        <el-col :span="24"><div class="grid-content">{{form.maintainAccessory}}</div></el-col>-->
         <el-col :span="24">
           <div class="grid-content">
-            <el-button type="primary" @click="downAccessory(form.maintainAccessory)">{{form.maintainAccessory}}</el-button>
+            <el-button type="primary" @click="downAccessory(form.maintainAccessory)">下载</el-button>
           </div>
         </el-col>
       </el-row>
     </el-dialog>
   </div>
-
     </div>
   </div>
 </template>
@@ -311,13 +310,6 @@ export default {
   },
   methods: {
     downAccessory(url){
-      console.log(url)
-      let list = url.split("/");
-      let fileName = list[list.length-1];
-      //这是文件路径参数，因为download函数需要传三个参数，这是第二个参数
-      let params = {
-        resource:url
-      };
       this.$download.resource(url);
       // download('/common/download/resource',params,fileName);
     },
