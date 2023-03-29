@@ -197,7 +197,17 @@
             <el-table-column label="评价时间" align="center" prop="evaluateTime"/>
             <el-table-column label="评价分数" align="center" prop="evaluateScore"/>
             <el-table-column label="评价等级" align="center" prop="evaluateGrade"/>
-            <el-table-column label="评价附件" align="center" prop="evaluateDocumentUpload"/>
+            <el-table-column label="评价附件" align="center" prop="evaluateDocumentUpload">
+              <template slot-scope="scope">
+                <el-button
+                  size="mini"
+                  type="text"
+                  icon="el-icon-download"
+                  @click="downAccessory(scope.row.evaluateDocumentUpload)"
+                >下载
+                </el-button>
+              </template>
+            </el-table-column>
             <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
               <template slot-scope="scope">
                 <el-button
@@ -352,6 +362,10 @@ export default {
     this.getList();
   },
   methods: {
+    /** 下载方法 */
+    downAccessory(url) {
+      this.$download.resource(url);
+    },
     /** 查询历史评价列表 */
     getHistoryList(row) {
       const personId = row.personId || this.ids

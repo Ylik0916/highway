@@ -207,15 +207,18 @@
                   <span style="line-height: 30px;margin-left: 1px;font-weight: bold">投资估算（万元）</span>
                   <div class="cost">
                     <el-form-item label="建安费" prop="investCost" class="detailsInformation">
-                      <el-input-number style="width: 300px" placeholder="请输入建安费" v-model="form.investCost" controls-position="right" :min="0"
+                      <el-input-number style="width: 300px" placeholder="请输入建安费" v-model="form.investCost"
+                                       controls-position="right" :min="0"
                                        :disabled="disabled"/>
                     </el-form-item>
                     <el-form-item label="设备及工器购置费" prop="investEquipmentCost" class="detailsInformation">
-                      <el-input-number style="width: 300px" v-model="form.investEquipmentCost" controls-position="right" :min="0"
+                      <el-input-number style="width: 300px" v-model="form.investEquipmentCost" controls-position="right"
+                                       :min="0"
                                        :disabled="disabled"/>
                     </el-form-item>
                     <el-form-item label="工程费" prop="investEngineeringCost" class="detailsInformation">
-                      <el-input-number style="width: 300px" v-model="form.investEngineeringCost" controls-position="right" :min="0"
+                      <el-input-number style="width: 300px" v-model="form.investEngineeringCost"
+                                       controls-position="right" :min="0"
                                        :disabled="disabled"/>
                     </el-form-item>
                   </div>
@@ -229,11 +232,13 @@
                                        :disabled="disabled"/>
                     </el-form-item>
                     <el-form-item label="设备及工器购置费" prop="designEquipmentCost" class="detailsInformation">
-                      <el-input-number style="width: 300px" v-model="form.designEquipmentCost" controls-position="right" :min="0"
+                      <el-input-number style="width: 300px" v-model="form.designEquipmentCost" controls-position="right"
+                                       :min="0"
                                        :disabled="disabled"/>
                     </el-form-item>
                     <el-form-item label="工程费" prop="designEngineeringCost" class="detailsInformation">
-                      <el-input-number style="width: 300px" v-model="form.designEngineeringCost" controls-position="right" :min="0"
+                      <el-input-number style="width: 300px" v-model="form.designEngineeringCost"
+                                       controls-position="right" :min="0"
                                        :disabled="disabled"/>
                     </el-form-item>
                   </div>
@@ -243,15 +248,18 @@
                   <span style="line-height: 30px;margin-left: 1px;font-weight: bold">施工图预算（万元）</span>
                   <div class="cost">
                     <el-form-item label="建安费" prop="constructionCost" class="detailsInformation">
-                      <el-input-number style="width: 300px" v-model="form.constructionCost" controls-position="right" :min="0"
+                      <el-input-number style="width: 300px" v-model="form.constructionCost" controls-position="right"
+                                       :min="0"
                                        :disabled="disabled"/>
                     </el-form-item>
                     <el-form-item label="设备及工器购置费" prop="constructionEquipmentCost" class="detailsInformation">
-                      <el-input-number style="width: 300px" v-model="form.constructionEquipmentCost" controls-position="right" :min="0"
+                      <el-input-number style="width: 300px" v-model="form.constructionEquipmentCost"
+                                       controls-position="right" :min="0"
                                        :disabled="disabled"></el-input-number>
                     </el-form-item>
                     <el-form-item label="工程费" prop="constructionEngineeringCost" class="detailsInformation">
-                      <el-input-number style="width: 300px" v-model="form.constructionEngineeringCost" controls-position="right" :min="0"
+                      <el-input-number style="width: 300px" v-model="form.constructionEngineeringCost"
+                                       controls-position="right" :min="0"
                                        :disabled="disabled"/>
                     </el-form-item>
                   </div>
@@ -261,11 +269,13 @@
                   <span style="line-height: 30px;margin-left: 1px;font-weight: bold">招标费用（万元）</span>
                   <div class="cost">
                     <el-form-item label="合同价(不含暂定金)" prop="contractCost" class="detailsInformation">
-                      <el-input-number style="width: 300px" v-model="form.contractCost" controls-position="right" :min="0"
+                      <el-input-number style="width: 300px" v-model="form.contractCost" controls-position="right"
+                                       :min="0"
                                        :disabled="disabled"/>
                     </el-form-item>
                     <el-form-item label="暂定金" prop="provisionalPayment" class="detailsInformation">
-                      <el-input-number style="width: 300px" v-model="form.provisionalPayment" controls-position="right" :min="0"
+                      <el-input-number style="width: 300px" v-model="form.provisionalPayment" controls-position="right"
+                                       :min="0"
                                        :disabled="disabled"/>
                     </el-form-item>
                   </div>
@@ -305,8 +315,17 @@
                 </div>
               </div>
             </div>
-            <el-form-item label="附件" prop="documentUpload" style="margin-left: 80px">
+            <el-form-item label="附件" prop="documentUpload" style="margin-left: 80px" :hidden="hidden">
               <file-upload v-model="form.documentUpload"/>
+            </el-form-item>
+            <el-form-item label="附件" prop="documentUpload" style="margin-left: 80px" :hidden="buttonHidden">
+              <el-button
+                size="mini"
+                type="text"
+                icon="el-icon-download"
+                @click="downAccessory(form.documentUpload)"
+              >下载
+              </el-button>
             </el-form-item>
           </el-form>
 
@@ -472,6 +491,8 @@ export default {
   },
   data() {
     return {
+      buttonHidden: false,
+      hidden: false,
       disabled: false,
       // 项目阶段搜索
       options: [{
@@ -610,6 +631,10 @@ export default {
     this.getTreeselect();
   },
   methods: {
+    /** 下载方法 */
+    downAccessory(url) {
+      this.$download.resource(url);
+    },
     /** 项目阶段进度条 */
     next(num) {
       this.active = num;
@@ -829,6 +854,8 @@ export default {
         this.title = "项目信息管理详情";
         this.active = response.data.projectPhase;
         this.disabled = true;
+        this.hidden = "hidden";
+        this.buttonHidden = false;
       });
     },
     /** 新增按钮操作 */
@@ -837,6 +864,8 @@ export default {
       this.open = true;
       this.title = "添加项目信息管理";
       this.disabled = false;
+      this.hidden = false;
+      this.buttonHidden = "hidden";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
@@ -848,6 +877,8 @@ export default {
         this.title = "修改项目信息管理";
         this.active = response.data.projectPhase;
         this.disabled = false;
+        this.hidden = false;
+        this.buttonHidden = "hidden";
       });
     },
     /** 提交按钮 */
