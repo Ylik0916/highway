@@ -27,8 +27,8 @@ export default {
 }
 .bigBox{
   background-color: #ededf7;
-  box-shadow: #97a8be;
-  border-radius: 10px;
+  /*box-shadow: #97a8be;*/
+  /*border-radius: 10px;*/
   height: 800px;
   font-size: 18px;
   border: 1px #ededf7 ridge;

@@ -138,7 +138,7 @@ export default {
             }
           ],
           itemStyle:{
-            color: '#6ab0b8'
+            color: '#2f4554'
           },
           yAxis: [
             {
@@ -146,7 +146,6 @@ export default {
             },
           ],
           series: [
-
             {
               name: 'Direct',
               type: 'bar',
