@@ -8,7 +8,7 @@
       </div>
     </div>
     <div class="bigBox">
-      <div class="smallBox" style="padding: 25px;" >
+      <div class="smallBox" style="padding: 25px;">
         <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch"
                  label-width="68px">
           <el-form-item label="桥梁名称" prop="routeName">

@@ -192,7 +192,7 @@
                   <el-col :span="6">
                     <div class="grid-content bg-purple">
                       <el-form-item label="选择路线" prop="luId">
-                        <el-select v-model="form.luId" filterable placeholder="请输选择路线" :disabled="true">
+                        <el-select filterable placeholder="请输选择路线" :disabled="true">
                           <el-option
                             v-for="item in options"
                             :key="item.id"
