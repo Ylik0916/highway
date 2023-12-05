@@ -1050,12 +1050,6 @@ export default {
       }
     }
     const centreTime = (rules, value, callback) => {
-      // if (!value) {
-      //    callback(new Error('请选择改建时间'))
-      // } else {
-      //   if (!this.form.routeCompletionTime) {
-      //     callback(new Error('请选择建成时间！'))
-      //   } else
           if (Date.parse(this.form.routeCompletionTime) >= Date.parse(value)) {
           callback(new Error('改建时间必须大于建成时间！'))
         } else {

@@ -4,6 +4,7 @@
       <div class="app-container">
         <div id="one">
           <div id="main"></div>
+          <div id="main1"></div>
         </div>
       </div>
     </div>
@@ -265,6 +266,7 @@ export default {
   components: {Infdormations},
   mounted() {
     this.tu();
+    this.tu1();
   },
   name: "Quality",
   data() {
@@ -347,11 +349,11 @@ export default {
           title: {
             text: "北戴河区桥梁质量",
             textStyle: {
-              color: 'blue',
+              color: '#304156',
             },
             // backgroundColor:'',
             link: "http://www.baidu.com",
-            target: 'self',
+            target: 'self',//当前窗口打开链接
             x: 'center',
           },
           tooltip: {
@@ -359,11 +361,11 @@ export default {
             axisPointer: {
               type: "shadow",
             },
-            backgroundColor: 'yellow',
-            borderColor: 'black',
-            borderWidth: 2,
+            backgroundColor: 'white',//提示框的颜色
+            borderColor: '#304156',//提示字体的颜色
+            borderWidth: 0,
             textStyle: {
-              color: 'blue',
+              color: '#304156',
             },
             formatter(params) {
               console.log(params)
@@ -380,7 +382,7 @@ export default {
             itemWidth: 20,
             itemHeight: 20,
             textStyle: {
-              color: 'blue',
+              color: '#304156',
               fontSize: 15,
             }
           },
@@ -391,6 +393,7 @@ export default {
           series: {
             name: "数量",
             type: "bar",
+            color:"#304156",
             data: [2, 4, 6]
           },
         },
@@ -406,6 +409,51 @@ export default {
           })
         })
       )
+    },
+    tu1(){
+      var myEcharts1 = echarts.init(document.getElementById("main1"));
+      myEcharts1.setOption({
+        tooltip: {
+          trigger: 'item'
+        },
+        legend: {
+          top: '5%',
+          left: 'center'
+        }
+      },
+        request('/system/quality/you').then(response => {
+          this.datay = response
+          console.log(this.datay)
+          myEcharts1.setOption({
+            series: [
+              {
+                name: '数量',
+                type: 'pie',
+                radius: ['40%', '70%'],
+                avoidLabelOverlap: false,
+                label: {
+                  show: false,
+                  position: 'center'
+                },
+                emphasis: {
+                  label: {
+                    show: true,
+                    fontSize: 40,
+                    fontWeight: 'bold'
+                  }
+                },
+                labelLine: {
+                  show: false
+                },
+                data: [
+                  { value: this.datay[0], name: '优' },
+                  { value: this.datay[1], name: '良' },
+                  { value: this.datay[2], name: '中' },
+                ]
+              }
+            ]
+          })
+        }))
     },
     //选择桥梁信息
     shou(bridge, bridgeCode, bi, qu) {
@@ -541,5 +589,16 @@ export default {
   height: 330px;
   margin-left: 200px;
   /*margin-bottom: 20px;*/
+}
+#main1 {
+  /*border: 1px solid red;*/
+  background-color: white;
+  width: 300px;
+  height: 330px;
+  margin-left: 400px;
+  /*margin-bottom: 20px;*/
+}
+#one{
+  display: flex;
 }
 </style>

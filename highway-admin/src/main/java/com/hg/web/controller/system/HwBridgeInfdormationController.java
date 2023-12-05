@@ -2,6 +2,8 @@ package com.hg.web.controller.system;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.hg.common.core.redis.RedisCache;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +36,9 @@ public class HwBridgeInfdormationController extends BaseController
     @Autowired
     private IHwBridgeInfdormationService hwBridgeInfdormationService;
 
+    @Autowired
+    private RedisCache redisCache;
+
     /**
      * 查询桥梁信息列表
      */
@@ -42,8 +47,15 @@ public class HwBridgeInfdormationController extends BaseController
     public TableDataInfo list(HwBridgeInfdormation hwBridgeInfdormation)
     {
         startPage();
-        List<HwBridgeInfdormation> list = hwBridgeInfdormationService.selectHwBridgeInfdormationList(hwBridgeInfdormation);
-        return getDataTable(list);
+        List<HwBridgeInfdormation> bridges = redisCache.getCacheList("bridges");
+        if (!bridges.isEmpty()){
+            return getDataTable(bridges);
+        }else {
+            List<HwBridgeInfdormation> list = hwBridgeInfdormationService.selectHwBridgeInfdormationList(hwBridgeInfdormation);
+            redisCache.setCacheList("bridges",list);
+            redisCache.expire("bridges",10000);
+            return getDataTable(list);
+        }
     }
 
     /**

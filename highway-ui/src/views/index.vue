@@ -1,39 +1,43 @@
 <template>
   <div>
     <div class="bigBox">
-    <div style="display: flex">
-    <div id="left" :style="{width:'720px',height:'400px'}" class="smallBox"></div>
-    <div id="right" :style="{width:'520px',height:'400px'}" class="smallBox"></div>
-    </div>
-    <div style="display: flex" >
-    <div id="xLeft" :style="{width:'520px',height:'400px'}" class="smallBox"></div>
-    <div id="xRight" :style="{width:'720px',height:'400px'}" class="smallBox"></div>
-    </div>
+      <div class="smallBox">
+        <div class="app-container">
+          <div id="one">
+            <div id="left" :style="{width:'520px',height:'400px'}"></div>
+            <div id="right" :style="{width:'520px',height:'400px',marginTop:'50px'}"></div>
+          </div>
+          <div id="one">
+            <div id="xLeft" :style="{width:'520px',height:'400px'}"></div>
+            <div id="xRight" :style="{width:'520px',height:'400px'}"></div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 <script>
-import {routeMileage, routeType} from "@/api/system/information";
-import {diseaseCount, routeDisease} from "@/api/system/disease";
+import { routeMileage, routeType } from '@/api/system/information'
+import { diseaseCount, routeDisease } from '@/api/system/disease'
 
 export default {
-  name: "Index",
+  name: 'Index',
   data() {
     return {
       // 版本号
-      version: "3.8.4",
-    };
+      version: '3.8.4'
+    }
   },
   mounted() {
-    this.getRouteDisease(),
-    this.getDiseaseCount();
-    this.getRouteMileage();
-    this.getRouteType();
+    this.getRouteDisease()
+    this.getDiseaseCount()
+    this.getRouteMileage()
+    this.getRouteType()
   },
   methods: {
-    getRouteDisease(){
-      routeDisease().then(resp=>{
-        let myChart = this.$echarts.init(document.getElementById('xRight'));
+    getRouteDisease() {
+      routeDisease().then(resp => {
+        let myChart = this.$echarts.init(document.getElementById('xRight'))
         myChart.setOption({
           title: {
             text: '病害高发信息统计',
@@ -48,7 +52,7 @@ export default {
           },
           series: [
             {
-              itemStyle : { normal: {label : {show: true}}},
+              itemStyle: { normal: { label: { show: true } } },
               data: resp.value,
               type: 'line',
               smooth: true
@@ -57,17 +61,17 @@ export default {
         })
       })
     },
-    getDiseaseCount(){
-      diseaseCount().then(resp=>{
-        var sum;
+    getDiseaseCount() {
+      diseaseCount().then(resp => {
+        var sum
         for (let i = 0; i < resp.length; i++) {
-          sum+=Number.parseInt(resp[i].value)
+          sum += Number.parseInt(resp[i].value)
         }
-        let myChart = this.$echarts.init(document.getElementById('xLeft'));
+        let myChart = this.$echarts.init(document.getElementById('xLeft'))
         myChart.setOption({
           title: {
             text: '病害数量统计',
-            left: 'center'
+            left: 'center',
           },
           tooltip: {
             trigger: 'item'
@@ -107,9 +111,9 @@ export default {
         })
       })
     },
-    getRouteMileage(){
-      routeMileage().then(resp=>{
-        let myChart = this.$echarts.init(document.getElementById('left'));
+    getRouteMileage() {
+      routeMileage().then(resp => {
+        let myChart = this.$echarts.init(document.getElementById('left'))
         myChart.setOption({
           title: {
             text: '道路里程统计',
@@ -137,13 +141,13 @@ export default {
               }
             }
           ],
-          itemStyle:{
+          itemStyle: {
             color: '#2f4554'
           },
           yAxis: [
             {
               type: 'value'
-            },
+            }
           ],
           series: [
             {
@@ -154,11 +158,11 @@ export default {
             }
           ]
         })
-      });
+      })
     },
-    getRouteType(){
-      routeType().then(resp=>{
-        let myChart = this.$echarts.init(document.getElementById('right'));
+    getRouteType() {
+      routeType().then(resp => {
+        let myChart = this.$echarts.init(document.getElementById('right'))
         myChart.setOption({
           title: {
             text: '路线类型统计',
@@ -190,13 +194,17 @@ export default {
       })
     },
     goTarget(href) {
-      window.open(href, "_blank");
-    },
-  },
-};
+      window.open(href, '_blank')
+    }
+  }
+}
 </script>
 
 <style scoped lang="scss">
-
+#one {
+  display: flex;
+  justify-content: space-around;
+  //justify-content: space-between;
+}
 </style>
 

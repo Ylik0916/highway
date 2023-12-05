@@ -94,10 +94,7 @@
 </template>
 
 <script>
-import {
-  getInfdormation,
-  listInfdormation,
-} from "@/api/system/infdormation";
+import {getInfdormation, listInfdormation,} from "@/api/system/infdormation";
 import {listDept} from "@/api/system/dept";
 import Treeselect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
@@ -242,7 +239,6 @@ export default {
     getTreeselect() {
       listDept().then(response => {
         this.ordinaryOptions = [];
-        // const data = { deptId: 0, deptName: '大陆', children: [] };
         this.ordinaryOptions = this.handleTree(response.data, "deptId", "parentId");
       });
     },
